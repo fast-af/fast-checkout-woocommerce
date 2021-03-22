@@ -1,0 +1,7 @@
+{
+    "name": "fast/fast",
+    "description": "Fast for WooCommerce",
+    "require": {
+        "firebase/php-jwt": "^5.2"
+    }
+}
