@@ -1,2 +1,2 @@
-# woocommerce-plugin
-Official GitHub repository for Fast's WooCommerce plugin
+#Fast Checkout for WooCommerce
+Official GitHub repository for Fast's Checkout WooCommerce Plugin
