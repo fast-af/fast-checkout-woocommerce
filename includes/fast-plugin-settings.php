@@ -365,7 +365,7 @@ function fast_test_mode_content() {
 	$fast_test_mode = get_option( FAST_SETTING_TEST_MODE, FAST_SETTING_TEST_MODE_NOT_SET );
 
 	if ( FAST_SETTING_TEST_MODE_NOT_SET === $fast_test_mode ) {
-		// If the option is false specifically (not just any falsey value), then it hasn't yet been set. In this case, we
+		// If the option is FAST_SETTING_TEST_MODE_NOT_SET, then it hasn't yet been set. In this case, we
 		// want to configure test mode to be on.
 		$fast_test_mode = '1';
 		update_option( FAST_SETTING_TEST_MODE, '1' );
