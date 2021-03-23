@@ -9,6 +9,7 @@
 
 define( 'FAST_SETTING_APP_ID', 'fast_app_id' );
 define( 'FAST_SETTING_TEST_MODE', 'fast_test_mode' );
+define( 'FAST_SETTING_TEST_MODE_NOT_SET', 'fast test mode not set' );
 define( 'FAST_SETTING_FAST_JS_URL', 'fast_fast_js_url' );
 define( 'FAST_SETTING_FAST_JWKS_URL', 'fast_fast_jwks_url' );
 define( 'FAST_SETTING_ONBOARDING_URL', 'fast_onboarding_url' );
@@ -361,9 +362,9 @@ function fast_login_button_styles_content() {
  * Renders the Test Mode field.
  */
 function fast_test_mode_content() {
-	$fast_test_mode = get_option( FAST_SETTING_TEST_MODE );
+	$fast_test_mode = get_option( FAST_SETTING_TEST_MODE, FAST_SETTING_TEST_MODE_NOT_SET );
 
-	if ( false === $fast_test_mode ) {
+	if ( FAST_SETTING_TEST_MODE_NOT_SET === $fast_test_mode ) {
 		// If the option is false specifically (not just any falsey value), then it hasn't yet been set. In this case, we
 		// want to configure test mode to be on.
 		$fast_test_mode = '1';
@@ -378,7 +379,7 @@ function fast_test_mode_content() {
 				id="fast_test_mode"
 				type="checkbox"
 				value="1"
-				<?php echo checked( 1, $fast_test_mode, false ); ?>
+				<?php checked( 1, $fast_test_mode ); ?>
 			/>
 			<label for="fast_test_mode">Enable test mode</label>
 		</div>
