@@ -46,8 +46,9 @@ Whether you want to share your feedback, obtain support, or discuss general idea
 
 1. [Become a Seller](#become-a-seller)
 2. [Install WordPress Plugin](#install-wordpress-plugin)
-3. Obtain App ID
-4. Turn off Test Mode
+3. Complete business details in seller dashboard
+4. Test your store & button functionality
+5. Go live with Fast Checkout
 
 ### Become a Seller
 
@@ -68,7 +69,7 @@ Complete your integration details. Please be sure to add an active website domai
 [![Integration Details](https://www.dropbox.com/s/fvf3pztpvvbw0jt/03-integration-details.png?raw=1)](https://www.fast.co/business/onboarding/fast-checkout/checkout-app-details)
 
 #### Choose WooCommerce as your platform
-Choose your desired platform. In this case, we are using WooCommerce. This WordPress plugin only provides Fast Checkout to WooCommerce-powered WordPress sites.
+Choose your desired platform. In this case, we're using WooCommerce. This WordPress plugin only provides Fast Checkout to WooCommerce-powered WordPress sites.
 
 [![Choose Your Platform, WooCommerce](https://www.dropbox.com/s/xt1ecgdhqsfffla/04-platform-details-woocommerce.png?raw=1)](https://www.fast.co/business/onboarding/fast-checkout/platform)
 
@@ -77,8 +78,18 @@ You will need to give Fast permission to connect with your WooCommerce installat
 
 [![Authenticate WooCommerce](https://www.dropbox.com/s/qoj9guj6hdmk7jt/05-authenticate-woocommerce.png?raw=1)](https://www.fast.co/business/onboarding/fast-checkout/install-woocommerce)
 
+#### Capture your app ID
+Capture your app ID for use in the next section, installing the Fast Checkout for WooCommerce WordPress plugin.
+
+[![Cpature Your App ID](https://www.dropbox.com/s/6vlgk8iz0qep9fo/06-plugin-app-id.png?raw=1)](https://www.dropbox.com/s/6vlgk8iz0qep9fo/06-plugin-app-id.png?raw=1)
+
+##### Request help from Fast
+If you're not comfortable diving into WordPress and installing a plugin in the next section, this step allows you to ask for help from the Fast Customer Success team.
+
+Click the "Help me go Fast" button and it will initate a chat with our team where you can request an install.
+
 ### Install WordPress Plugin
-Test
+Content coming soon. Please check back shortly.
 
 ## Troubleshooting Guide
 Content coming soon. Please check back shortly.
