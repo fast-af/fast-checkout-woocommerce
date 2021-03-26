@@ -4,8 +4,8 @@ Official GitHub repository for Fast Checkout for WooCommerce Plugin. Our plugin 
 ##Navigation
 * [Getting Started](#getting-started-with-fast-checkout-for-woocommerce)
 * [Installation Guide](#installation-guide)
-* Troubleshooting Guide
-* Customizations
+* [Troubleshooting Guide](#troubleshooting-guide)
+* [Customizations](#customizations)
 * [Help from Fast](#need-more-help)
 
 ## Getting Started with Fast Checkout for WooCommerce
