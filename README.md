@@ -1,11 +1,26 @@
 # Fast Checkout for WooCommerce
-Official GitHub repository for Fast Checkout for WooCommerce Plugin. Our plugin is currently being prepared for submission to the WordPress plugin directory. Upon approval, you will be able to directly install and update your plugin from within the WordPress admin dashboard. 
+Official GitHub repository for Fast Checkout for WooCommerce Plugin. Our plugin is currently being prepared for submission to the WordPress plugin directory. Upon approval, you will be able to directly install and update your plugin from within the WordPress admin dashboard. This is the preferred manner to ensure easy future updates.
 
-##### Subscribe to Updates
+## About Fast Checkout
+Get the Checkout button that increases conversion, boosts sales and delights customers.
+
+Fast Checkout enables a hassle-free, secure one-click checkout experience for your customers. Install it in minutes so your customers can check out in seconds.
+
+Simply install & configure the Fast Checkout for WooCommerce WordPress plugin to start seeing fewer abandoned carts and more sales for your business. Our top sellers have seen a 20-35% uplift in conversion within one week of installing Fast Checkout.
+
+In addition to skyrocketing conversion, Fast delights your customers by letting them skip the headache of creating accounts, remembering passwords and filling out long forms. After making a purchase, they'll get free access to a one-stop dashboard where they can view transactions, track deliveries, and re-order with one-click.
+
+### Common Questions
+**How much does Fast cost?** 
+Fast replaces your current payment gateway. [View our current pricing](https://www.fast.co/pricing)
+
+### Subscribe to Updates
 You can [subscribe to Fast Devs substack](https://fastdevs.substack.com/) to be notified of updates to our plugin. No spam, just important product updates from Fast.
 
+### Share Your Feedback
+If you feel there is something missing from our documentation, please help us by creating an issue here in GitHub. We would love to hear how we can make our documentation and product better. Our DevRel team is just an [email](mailto:devrel@fast.co), [Twitter DM](https://twitter.com/Fast_Devs), or [**Community Discussion**](https://github.com/fast-af/fast-checkout-woocommerce/discussions/new) away.
+
 ## Documentation
-If you need help beyond what our documentation covers, please email hi@fast.co or DM [@fast_devs](https://twitter.com/Fast_Devs) on Twitter. 
 
 ### Installation Guide
 
@@ -36,3 +51,6 @@ Image
 
 #### Install WordPress Plugin
 Test
+
+## Need More Help?
+Drop us a note at [hi@fast.co](mailto:hi@fast.co).
