@@ -88,7 +88,7 @@ If you're not comfortable diving into WordPress and installing a plugin in the n
 Click the "Help me go Fast" button and it will initate a chat with our team where you can request an install.
 
 ### Install WordPress Plugin
-Test
+Content coming soon. Please check back shortly.
 
 ## Troubleshooting Guide
 Content coming soon. Please check back shortly.
