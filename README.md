@@ -1,7 +1,21 @@
 # Fast Checkout for WooCommerce
 Official GitHub repository for Fast Checkout for WooCommerce Plugin. Our plugin is currently being prepared for submission to the WordPress plugin directory. Upon approval, you will be able to directly install and update your plugin from within the WordPress admin dashboard. This is the preferred manner to ensure easy future updates.
 
-## About Fast Checkout
+* Getting Started
+* Installation Guide
+* Troubleshooting Guide
+* Customizations
+* Getting Help
+
+## Getting Started with Fast Checkout for WooCommerce
+
+* About Fast Checkout
+* Common Questions
+* Subscribe to Plugin Update Notifications
+* Share Your Feedback
+* Engage in Discussions
+
+### About Fast Checkout
 Get the Checkout button that increases conversion, boosts sales and delights customers.
 
 Fast Checkout enables a hassle-free, secure one-click checkout experience for your customers. Install it in minutes so your customers can check out in seconds.
@@ -23,16 +37,14 @@ If you feel there is something missing from our documentation, please help us by
 ### Engage in Discussions
 Whether you want to share your feedback, obtain support, or discuss general ideas, you can find us in the [Discussions](https://github.com/fast-af/fast-checkout-woocommerce/discussions) part of this repository. We want to ensure we're learning from every opportunity, and that means getting to know you, your use case and how we can make our offerings better.
 
-## Documentation
-
-### Installation Guide
+## Installation Guide
 
 1. [Become a Seller](#become-a-seller)
 2. [Install WordPress Plugin](#install-wordpress-plugin)
 3. Obtain App ID
 4. Turn off Test Mode
 
-#### Become a Seller
+### Become a Seller
 
 The first step to integrating Fast Checkout with your WooCommerce store is to become a seller with Fast. If you already have a seller account and an App ID, please move to the [Install WordPress Plugin](#install-wordpress-plugin) section.
 
@@ -40,19 +52,19 @@ The first step to integrating Fast Checkout with your WooCommerce store is to be
 
 [![Get Started as a Seller](https://www.dropbox.com/s/wkgzvje5ox4lekb/01-get-started.png?raw=1)](https://www.fast.co/business)
 
-##### Organization Details
+#### Organization Details
 Complete your organization details.
 
 [![Organization Details](https://www.dropbox.com/s/phaw5ucc91n6lp4/02-org-details.png?raw=1)](https://www.fast.co/business/onboarding/fast-checkout/org-details)
 
-##### Complete your integation details
+#### Complete your integation details
 
 https://www.fast.co/business/onboarding/fast-checkout/checkout-app-details
 
-##### Choose WooCommerce under Platform
+#### Choose WooCommerce under Platform
 Image
 
-#### Install WordPress Plugin
+### Install WordPress Plugin
 Test
 
 ## Need More Help?
