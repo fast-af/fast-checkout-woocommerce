@@ -94,7 +94,7 @@ Login to the admin side of your WordPress site. The url for this is usually `htt
 
 [![Login to WordPress admin dashboard](https://www.dropbox.com/s/pqq1tab5m1ex9ds/01-WordPress-admin-login.png?raw=1)](https://www.dropbox.com/s/pqq1tab5m1ex9ds/01-WordPress-admin-login.png?raw=1)
 
-*Tip: You must have admin access in order to install and remove plugins.*
+*Tip: You must have WordPress admin access in order to install and remove plugins.*
 
 #### Navigate to Plugins, Add New
 In the left hand sidebar of your WordPress admin dashboard, hover over Plugins, then click Add New.
