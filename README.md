@@ -6,6 +6,11 @@ If you're not able to find what you need, please email hi@fast.co.
 
 ### Installation Guide
 
+* [Become a Seller](#become-a-seller)
+* Install WordPress Plugin
+* Obtain App ID
+* Turn off Test Most
+
 #### Become a Seller
 
 The first step to integrating Fast Checkout with your WooCommerce store is to become a seller with Fast. If you already have a seller account and an App ID, please move to the Install WordPress Plugin section.
