@@ -9,11 +9,11 @@
 define( 'FAST_ROUTES_BASE', 'wc/fast/v1' );
 
 // Provides an API for polling shipping options.
-require_once FAST_PATH . 'includes/fast-shipping.php';
+require_once FAST_PATH . 'includes/routes/shipping.php';
 // Provides an API that exposes shipping zones.
-require_once FAST_PATH . 'includes/fast-shipping-zones.php';
+require_once FAST_PATH . 'includes/routes/shipping-zones.php';
 // Provides an API that exposes plugin info.
-require_once FAST_PATH . 'includes/fast-plugin-info.php';
+require_once FAST_PATH . 'includes/routes/plugin-info.php';
 
 /**
  * Register Fast Woocommerce routes for the REST API.
