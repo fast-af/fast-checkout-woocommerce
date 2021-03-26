@@ -46,8 +46,9 @@ Whether you want to share your feedback, obtain support, or discuss general idea
 
 1. [Become a Seller](#become-a-seller)
 2. [Install WordPress Plugin](#install-wordpress-plugin)
-3. Obtain App ID
-4. Turn off Test Mode
+3. Complete business details in seller dashboard
+4. Test your store & button functionality
+5. Go live with Fast Checkout
 
 ### Become a Seller
 
