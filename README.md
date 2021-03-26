@@ -10,11 +10,11 @@ Official GitHub repository for Fast Checkout for WooCommerce Plugin. Our plugin 
 
 ## Getting Started with Fast Checkout for WooCommerce
 
-* About Fast Checkout
-* Common Questions
-* Subscribe to Plugin Update Notifications
-* Share Your Feedback
-* Engage in Discussions
+* [About Fast Checkout](#about-fast-checkout)
+* [Common Questions](#common-questions)
+* [Subscribe to Plugin Update Notifications](#subscribe-to-updates)
+* [Share Your Feedback](#share-your-feedback)
+* [Engage in Discussions](#engage-in-discussions)
 
 ### About Fast Checkout
 Get the Checkout button that increases conversion, boosts sales and delights customers.
