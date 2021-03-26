@@ -33,3 +33,6 @@ https://www.fast.co/business/onboarding/fast-checkout/checkout-app-details
 
 ##### Choose WooCommerce under Platform
 Image
+
+#### Install WordPress Plugin
+Test
