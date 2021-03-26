@@ -11,7 +11,7 @@
 define( 'FAST_PATH', plugin_dir_path( __FILE__ ) );
 
 // WP Admin plugin settings.
-require_once FAST_PATH . 'includes/plugin-settings.php';
+require_once FAST_PATH . 'includes/admin/settings.php';
 // Loads fast.js.
 require_once FAST_PATH . 'includes/js.php';
 // Loads fast utilities.
