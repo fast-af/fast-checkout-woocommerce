@@ -255,10 +255,14 @@ add_action( 'woocommerce_before_checkout_form', 'fast_woocommerce_before_checkou
 /**
  * Handle the order object before it is inserted via the REST API.
  *
- * @param WC_Data         $order    Object object.
- * @param WP_REST_Request $request  Request object.
+ * @param WC_Data         $order   Object object.
+ * @param WP_REST_Request $request Request object.
+ *
+ * @return WC_Data
  */
 function fast_woocommerce_rest_pre_insert_shop_order_object( $order, $request ) {
+
+	$order = fast_maybe_update_order_for_multicurrency( $order, $request );
 
 	// For order updates with a coupon line item, make sure there is a cart object.
 	if (
