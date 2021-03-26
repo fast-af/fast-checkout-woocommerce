@@ -32,7 +32,9 @@ In addition to skyrocketing conversion, Fast delights your customers by letting 
 Fast replaces your current payment gateway. [View our current pricing](https://www.fast.co/pricing)
 
 ### Subscribe to Updates
-You can [subscribe to Fast Devs substack](https://fastdevs.substack.com/) to be notified of updates to our plugin. No spam, just important product updates from Fast.
+[Subscribe to Fast Devs substack](https://fastdevs.substack.com/) to be notified via email of updates to our plugin. No spam, just important product updates from Fast. 
+
+You can also follow us on Twitter for updates, [@Fast_Devs](https://twitter.com/fast_devs).
 
 ### Share Your Feedback
 If you feel there is something missing from our documentation, please help us by [creating an issue](https://github.com/fast-af/fast-checkout-woocommerce/issues/new) here in GitHub. We would love to hear how we can make our documentation and product better.
