@@ -85,6 +85,8 @@ Capture your app ID for use in the next section, installing the Fast Checkout fo
 ##### Request help from Fast
 If you're not comfortable diving into WordPress and installing a plugin in the next section, this step allows you to ask for help from the Fast Customer Success team.
 
+Click the "Help me go Fast" button and it will initate a chat with our team where you can request an install.
+
 ### Install WordPress Plugin
 Test
 
