@@ -35,7 +35,7 @@ Fast replaces your current payment gateway. [View our current pricing](https://w
 You can [subscribe to Fast Devs substack](https://fastdevs.substack.com/) to be notified of updates to our plugin. No spam, just important product updates from Fast.
 
 ### Share Your Feedback
-If you feel there is something missing from our documentation, please help us by creating an issue here in GitHub. We would love to hear how we can make our documentation and product better.
+If you feel there is something missing from our documentation, please help us by [creating an issue](https://github.com/fast-af/fast-checkout-woocommerce/issues/new) here in GitHub. We would love to hear how we can make our documentation and product better.
 
 ### Engage in Discussions
 Whether you want to share your feedback, obtain support, or discuss general ideas, you can find us in the [Discussions](https://github.com/fast-af/fast-checkout-woocommerce/discussions) part of this repository. We want to ensure we're learning from every opportunity, and that means getting to know you, your use case and how we can make our offerings better.
