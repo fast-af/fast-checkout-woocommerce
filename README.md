@@ -1,18 +1,18 @@
 # Fast Checkout for WooCommerce
 Official GitHub repository for Fast Checkout for WooCommerce Plugin. Our plugin is currently being prepared for submission to the WordPress plugin directory.
 
-##### Subscribe for Updates
-You can [subscribe to Fast Devs substack](https://fastdevs.substack.com/) to be notified of updates to our plugin. 
+##### Subscribe to Updates
+You can [subscribe to Fast Devs substack](https://fastdevs.substack.com/) to be notified of updates to our plugin. No spam, just important product updates from Fast.
 
 ## Documentation
 If you need help beyond what our documentation covers, please email hi@fast.co or DM [@fast_devs](https://twitter.com/Fast_Devs) on Twitter. 
 
 ### Installation Guide
 
-* [Become a Seller](#become-a-seller)
-* Install WordPress Plugin
-* Obtain App ID
-* Turn off Test Mode
+1. [Become a Seller](#become-a-seller)
+2. Install WordPress Plugin
+3. Obtain App ID
+4. Turn off Test Mode
 
 #### Become a Seller
 
