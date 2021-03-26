@@ -68,7 +68,7 @@ Complete your integration details. Please be sure to add an active website domai
 [![Integration Details](https://www.dropbox.com/s/fvf3pztpvvbw0jt/03-integration-details.png?raw=1)](https://www.fast.co/business/onboarding/fast-checkout/checkout-app-details)
 
 #### Choose WooCommerce as your platform
-Choose your desired platform. In this case, we are using WooCommerce. This WordPress plugin only provides Fast Checkout to WooCommerce-powered WordPress sites.
+Choose your desired platform. In this case, we're using WooCommerce. This WordPress plugin only provides Fast Checkout to WooCommerce-powered WordPress sites.
 
 [![Choose Your Platform, WooCommerce](https://www.dropbox.com/s/xt1ecgdhqsfffla/04-platform-details-woocommerce.png?raw=1)](https://www.fast.co/business/onboarding/fast-checkout/platform)
 
@@ -76,6 +76,14 @@ Choose your desired platform. In this case, we are using WooCommerce. This WordP
 You will need to give Fast permission to connect with your WooCommerce installation of WordPress. Click Authenticate and enter your admin credentials.
 
 [![Authenticate WooCommerce](https://www.dropbox.com/s/qoj9guj6hdmk7jt/05-authenticate-woocommerce.png?raw=1)](https://www.fast.co/business/onboarding/fast-checkout/install-woocommerce)
+
+#### Capture your app ID
+Capture your app ID for us in the next section, installing the Fast Checkout for WooCommerce WordPress plugin.
+
+[![Cpature Your App ID](https://www.dropbox.com/s/9stz9t76129q6yb/06-plugin-app-id.png?raw=1)](https://www.fast.co/business/onboarding/fast-checkout/install-woocommerce)
+
+##### Request help from Fast
+If you're not comfortable diving into WordPress and installing a plugin in the next section, this step allows you to ask for help from the Fast Customer Success team.
 
 ### Install WordPress Plugin
 Test
