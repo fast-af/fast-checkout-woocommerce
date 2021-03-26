@@ -72,6 +72,11 @@ Choose your desired platform. In this case, we are using WooCommerce. This WordP
 
 [![Choose Your Platform, WooCommerce](https://www.dropbox.com/s/xt1ecgdhqsfffla/04-platform-details-woocommerce.png?raw=1)](https://www.fast.co/business/onboarding/fast-checkout/platform)
 
+#### Authenticate WooCommerce
+You will need to give Fast permission to connect with your WooCommerce installation of WordPress. Click Authenticate and enter your admin credentials.
+
+[![Authenticate WooCommerce](https://www.dropbox.com/s/qoj9guj6hdmk7jt/05-authenticate-woocommerce.png?raw=1)](https://www.fast.co/business/onboarding/fast-checkout/install-woocommerce)
+
 ### Install WordPress Plugin
 Test
 
