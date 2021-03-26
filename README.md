@@ -78,7 +78,7 @@ You will need to give Fast permission to connect with your WooCommerce installat
 [![Authenticate WooCommerce](https://www.dropbox.com/s/qoj9guj6hdmk7jt/05-authenticate-woocommerce.png?raw=1)](https://www.fast.co/business/onboarding/fast-checkout/install-woocommerce)
 
 #### Capture your app ID
-Capture your app ID for us in the next section, installing the Fast Checkout for WooCommerce WordPress plugin.
+Capture your app ID for use in the next section, installing the Fast Checkout for WooCommerce WordPress plugin.
 
 [![Cpature Your App ID](https://www.dropbox.com/s/6vlgk8iz0qep9fo/06-plugin-app-id.png?raw=1)](https://www.fast.co/business/onboarding/fast-checkout/install-fast-checkout-woocommerce)
 
