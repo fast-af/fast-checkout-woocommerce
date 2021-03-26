@@ -260,8 +260,6 @@ add_action( 'woocommerce_before_checkout_form', 'fast_woocommerce_before_checkou
  */
 function fast_woocommerce_rest_pre_insert_shop_order_object( $order, $request ) {
 
-	$order->set_currency( 'CAD' );
-
 	// For order updates with a coupon line item, make sure there is a cart object.
 	if (
 		empty( WC()->cart ) &&
