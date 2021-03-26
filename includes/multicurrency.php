@@ -33,6 +33,9 @@ function fast_get_active_multicurrency_plugin() {
 	if ( ! empty( $multicurrency_plugins ) ) {
 		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 
+		// Loop through the list of supported plugins and return the first active one.
+		// This operates under the assumption that there would only be 1 active
+		// multicurrency plugin.
 		foreach ( $multicurrency_plugins as $multicurrency_plugin => $multicurrency_plugin_slug ) {
 			if ( is_plugin_active( $multicurrency_plugin ) ) {
 				return $multicurrency_plugin_slug;
