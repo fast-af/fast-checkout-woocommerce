@@ -57,7 +57,10 @@ function fast_get_active_multicurrency_plugin() {
 function fast_maybe_update_order_for_multicurrency( $order, $request ) {
 	$multicurrency_plugin = fast_get_active_multicurrency_plugin();
 
-	if ( false !== $multicurrency_plugin ) {
+	$wc_currency    = get_woocommerce_currency();
+	$order_currency = method_exists( $order, 'get_currency' ) ? $order->get_currency() : $wc_currency;
+
+	if ( false !== $multicurrency_plugin && $wc_currency !== $order_currency ) {
 		$order = apply_filters(
 			"fast_update_order_for_multicurrency_{$multicurrency_plugin}",
 			$order,
