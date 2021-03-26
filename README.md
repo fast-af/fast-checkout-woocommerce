@@ -80,7 +80,7 @@ You will need to give Fast permission to connect with your WooCommerce installat
 #### Capture your app ID
 Capture your app ID for use in the next section, installing the Fast Checkout for WooCommerce WordPress plugin.
 
-[![Cpature Your App ID](https://www.dropbox.com/s/6vlgk8iz0qep9fo/06-plugin-app-id.png?raw=1)](https://www.dropbox.com/s/6vlgk8iz0qep9fo/06-plugin-app-id.png?raw=1)
+[![Capture Your App ID](https://www.dropbox.com/s/6vlgk8iz0qep9fo/06-plugin-app-id.png?raw=1)](https://www.dropbox.com/s/6vlgk8iz0qep9fo/06-plugin-app-id.png?raw=1)
 
 ##### Request help from Fast
 If you're not comfortable diving into WordPress and installing a plugin in the next section, this step allows you to ask for help from the Fast Customer Success team.
@@ -88,13 +88,32 @@ If you're not comfortable diving into WordPress and installing a plugin in the n
 Click the "Help me go Fast" button and it will initate a chat with our team where you can request an install. Or you can drop our Customer Success team a note at [hi@fast.co](mailto:hi@fast.co).
 
 ### Install WordPress Plugin
-Content coming soon. Please check back shortly.
+
+#### Login to your WordPress admin dashboard
+Login to the admin side of your WordPress site. The url for this is usually `https://yourwebsite.com/wp-admin` 
+
+[![Login to WordPress admin dashboard](https://www.dropbox.com/s/pqq1tab5m1ex9ds/01-WordPress-admin-login.png?raw=1)](https://www.dropbox.com/s/pqq1tab5m1ex9ds/01-WordPress-admin-login.png?raw=1)
+
+*You must have admin access in order to install and remove plugins.*
+
+#### Install plugin
+In the left hand sidebar of your WordPress admin dashboard, hover over Plugins, then click Add new.
+
+[![Navigate to Plugins, Add new](https://www.dropbox.com/s/5w4592w4vfz4o2i/02-plugins-add-new.png?raw=1)](https://www.dropbox.com/s/5w4592w4vfz4o2i/02-plugins-add-new.png?raw=1)
+
+*Tip: Depending on your site setup, you may need to search a bit to find navigation items. Some themes and plugins alter the appearance of your WordPress admin dashboard.*
 
 ## Troubleshooting Guide
 Content coming soon. Please check back shortly.
 
 ## Customizations
-Content coming soon. Please check back shortly.
+
+### Common WooCommerce Themes
+
+#### Storefront Theme by WooCommerce
+Adjust margin on the Fast wrapper to avoid a conflict with the quantity box placement.
+
+`.fast-pdp-wrapper {margin: 60px 0 30px;}`
 
 ## Need More Help?
 
