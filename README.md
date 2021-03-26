@@ -106,5 +106,5 @@ Our DevRel team would love to hear your thoughts and ideas. Please use your pref
 
 * [Send us an email](mailto:devrel@fast.co)
 * [DM @fast_devs on Twitter](https://twitter.com/Fast_Devs)
-* [Start a discussion](https://github.com/fast-af/fast-checkout-woocommerce/discussions/new)
+* [Start a public discussion](https://github.com/fast-af/fast-checkout-woocommerce/discussions/new)
 * [Report documentation issues](https://github.com/fast-af/fast-checkout-woocommerce/issues/new)
