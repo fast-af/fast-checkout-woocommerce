@@ -94,14 +94,21 @@ Login to the admin side of your WordPress site. The url for this is usually `htt
 
 [![Login to WordPress admin dashboard](https://www.dropbox.com/s/pqq1tab5m1ex9ds/01-WordPress-admin-login.png?raw=1)](https://www.dropbox.com/s/pqq1tab5m1ex9ds/01-WordPress-admin-login.png?raw=1)
 
-*You must have admin access in order to install and remove plugins.*
+*Tip: You must have admin access in order to install and remove plugins.*
 
-#### Install plugin
-In the left hand sidebar of your WordPress admin dashboard, hover over Plugins, then click Add new.
+#### Navigate to Plugins, Add New
+In the left hand sidebar of your WordPress admin dashboard, hover over Plugins, then click Add New.
 
-[![Navigate to Plugins, Add new](https://www.dropbox.com/s/5w4592w4vfz4o2i/02-plugins-add-new.png?raw=1)](https://www.dropbox.com/s/5w4592w4vfz4o2i/02-plugins-add-new.png?raw=1)
+[![Navigate to Plugins, Add New](https://www.dropbox.com/s/5w4592w4vfz4o2i/02-plugins-add-new.png?raw=1)](https://www.dropbox.com/s/5w4592w4vfz4o2i/02-plugins-add-new.png?raw=1)
 
 *Tip: Depending on your site setup, you may need to search a bit to find navigation items. Some themes and plugins alter the appearance of your WordPress admin dashboard.*
+
+#### Upload plugin via zip file
+Click Upload Plugin just to the right of Add Plugins
+
+[![Upload plugin via zip file](https://www.dropbox.com/s/mya8j56qsf8x341/03-manual-upload-plugin.png?raw=1)](https://www.dropbox.com/s/mya8j56qsf8x341/03-manual-upload-plugin.png?raw=1)
+
+[Download the latest zip file from GitHub](https://github.com/fast-af/fast-checkout-woocommerce/archive/refs/heads/documentation.zip)
 
 ## Troubleshooting Guide
 Content coming soon. Please check back shortly.
