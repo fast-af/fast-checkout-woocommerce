@@ -12,7 +12,7 @@ The first step to integrating Fast Checkout with your WooCommerce store is to be
 
 [Become a Fast Seller](https://www.fast.co/business)
 
-![Get Started as a Seller](https://www.dropbox.com/s/wkgzvje5ox4lekb/01-get-started.png?raw=1)
+[![Get Started as a Seller](https://www.dropbox.com/s/wkgzvje5ox4lekb/01-get-started.png?raw=1)](https://www.fast.co/business)
 
 ##### Organization Details
 Complete your organization details.
