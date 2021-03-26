@@ -1,7 +1,7 @@
 # Fast Checkout for WooCommerce
 Official GitHub repository for Fast Checkout for WooCommerce Plugin. Our plugin is currently being prepared for submission to the WordPress plugin directory. Upon approval, you will be able to directly install and update our plugin from within the WordPress admin dashboard. This is the preferred manner to ensure easy future updates.
 
-##Navigation
+## Navigation
 * [Getting Started](#getting-started-with-fast-checkout-for-woocommerce)
 * [Installation Guide](#installation-guide)
 * [Troubleshooting Guide](#troubleshooting-guide)
@@ -75,4 +75,14 @@ Content coming soon. Please check back shortly.
 Content coming soon. Please check back shortly.
 
 ## Need More Help?
-Drop us a note at [hi@fast.co](mailto:hi@fast.co).
+
+### Account specific
+Drop our Customer Success team a note at [hi@fast.co](mailto:hi@fast.co).
+
+### Developer or installation specific
+Our DevRel team would love to hear your thoughts and ideas. Please use your preferred communication method below.
+
+* [Send us an email](mailto:devrel@fast.co)
+* [DM @fast_devs on Twitter](https://twitter.com/Fast_Devs)
+* [Start a discussion](https://github.com/fast-af/fast-checkout-woocommerce/discussions/new)
+* [Report documentation issues](https://github.com/fast-af/fast-checkout-woocommerce/issues/new)
