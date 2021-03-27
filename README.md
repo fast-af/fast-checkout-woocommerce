@@ -158,6 +158,10 @@ Navigate back to the [Fast Seller Dashboard](https://www.fast.co/business/dash/h
 
 [![Continue Fast seller account setup](https://www.dropbox.com/s/l0isxje5jz62j64/07-business-details.png?raw=1)](https://www.dropbox.com/s/l0isxje5jz62j64/07-business-details.png?raw=1)
 
+Click Continue account setup so you can complete your business verification. You will need your Employer Indentification Number (EIN) or your Social Security Number (SSN) if you use that for tax purposes.
+
+[![Business verification](https://www.dropbox.com/s/4kepm4jxg7kvndh/business-verification-with-stripe.png?raw=1)](https://www.dropbox.com/s/4kepm4jxg7kvndh/business-verification-with-stripe.png?raw=1)
+
 ### Turn off test mode
 Once you have tested the various sections where Fast is integrated, you're ready to turn off test mode! Navigate back to the Fast plugin settings page in your WordPress admin dashboard, and scroll below the CSS boxes. Then uncheck test mode, and scroll to the bottom and click Save Changes.
 
