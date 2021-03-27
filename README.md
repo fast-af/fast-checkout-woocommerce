@@ -165,9 +165,9 @@ If you really want to perfect your site's asthetic and alter the appearnce, writ
 
 * [W3Schools Intro to CSS](https://www.w3schools.com/css/default.asp*)
 * [View & Practice CSS in Chrome Dev Tools](https://developer.chrome.com/docs/devtools/css/)
-* [CSS 101: The Box Model](https://dev.to/neshaz/css-101-the-box-model-jjp).
+* [CSS 101: The Box Model](https://dev.to/neshaz/css-101-the-box-model-jjp)
 
-If this task is too daunting, or an area you prefer to avoid, we get it, so our team is standing by to help you with this part or all of your button installation. You can request this help in your seller dashboard, or you can drop our Customer Success team a note at [hi@fast.co](mailto:hi@fast.co).
+If this task is too daunting, or an area you prefer to avoid, we get it, so our team is standing by to help you with this part, or all of your button installation. You can request this help in your seller dashboard, or you can drop our Customer Success team a note at [hi@fast.co](mailto:hi@fast.co).
 
 ### Common WooCommerce Themes
 
