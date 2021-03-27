@@ -178,10 +178,10 @@ Adjust margin on the Fast wrapper to avoid a conflict with the quantity box plac
 
 ## Need More Help?
 
-### Account specific
+### 👤 Account specific
 Drop our Customer Success team a note at [hi@fast.co](mailto:hi@fast.co).
 
-### Developer or installation specific
+### 👩‍💻 Developer or installation specific
 Our DevRel team would love to hear your thoughts and ideas. Please use your preferred communication method below.
 
 * [Send us an email](mailto:devrel@fast.co)
