@@ -110,12 +110,26 @@ Click Upload Plugin just to the right of Add Plugins
 
 [Download the latest zip file from GitHub](https://github.com/fast-af/fast-checkout-woocommerce/archive/refs/heads/documentation.zip)
 
-#### Attach plugin zip file
+#### 📂 Attach plugin zip file
 Click choose file, then navigate your computer to find where you saved the zip file in the previous step.
 
 [![Attach plugin zip file](https://www.dropbox.com/s/0bhx3xkg4x8y5m4/04-manual-install-plugin.png?raw=1)](https://www.dropbox.com/s/0bhx3xkg4x8y5m4/04-manual-install-plugin.png?raw=1)
 
-*Tip: This is usually in your Downloads folder unless you've changed your browser settings.* 
+*Tip: This is usually in your Downloads folder unless you've changed your browser settings.*
+
+#### 🔛 Activate plugin
+Click to Activate plugin. Essentially this turns the plugin code functionality "on."
+
+[![Activate plugin](https://www.dropbox.com/s/7raxgoklit732vt/05-manual-activate-plugin.png?dl=0?raw=1)](https://www.dropbox.com/s/7raxgoklit732vt/05-manual-activate-plugin.png?raw=1)
+
+*Tip: You can deactivate plugins to troubleshoot website issues. Slowly deactivate them one-by-one, each time checking to see if the error persists. If you find one plugin is the problem, visit their changelog or website for latest news or updates. Also ensure all of your plugins are always up-to-date.* 
+
+#### Title
+Description
+
+[![Alt text](URl of image?raw=1)](Image link url)
+
+*Tip: xxx*
 
 ## Troubleshooting Guide
 Content coming soon. Please check back shortly.
