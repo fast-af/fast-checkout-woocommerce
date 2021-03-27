@@ -161,7 +161,13 @@ Once you have tested the various sections where Fast is integrated, you're ready
 Content coming soon. Please check back shortly.
 
 ## Customizations
-If you've never written CSS before, there are a few resources that can help you out: [W3Schools Intro to CSS](https://www.w3schools.com/css/default.asp*), [View & Practice CSS in Chrome Dev Tools](https://developer.chrome.com/docs/devtools/css/), [CSS 101: The Box Model](https://dev.to/neshaz/css-101-the-box-model-jjp)
+If you really want to perfect your site's asthetic and alter the appearnce, writing custom CSS is the best way to do that. If you've never written CSS before, there are a few resources below that can help you out.
+
+* [W3Schools Intro to CSS](https://www.w3schools.com/css/default.asp*)
+* [View & Practice CSS in Chrome Dev Tools](https://developer.chrome.com/docs/devtools/css/)
+* [CSS 101: The Box Model](https://dev.to/neshaz/css-101-the-box-model-jjp).
+
+If this task is too daunting, or an area you prefer to avoid, we get it, so our team is standing by to help you with this part or all of your button installation. You can request this help in your seller dashboard, or you can drop our Customer Success team a note at [hi@fast.co](mailto:hi@fast.co).
 
 ### Common WooCommerce Themes
 
