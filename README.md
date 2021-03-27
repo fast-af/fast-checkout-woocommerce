@@ -48,6 +48,7 @@ Whether you want to share your feedback, obtain support, or discuss general idea
 2. [Install WordPress Plugin](#install-wordpress-plugin)
 3. [Continue Fast Seller Account Setup](#)
 4. [Turn off Test Mode](#-turn-off-test-mode)
+5. [Enjoy Seller Benefits](#seller-benefits)
 
 ### Become a Seller
 
@@ -159,6 +160,11 @@ https://www.fast.co/business/dash/home
 Once you have tested the various sections where Fast is integrated, you're ready to turn off test mode! Navigate back to the Fast plugin settings page in your WordPress admin dashboard, and scroll below the CSS boxes. Then uncheck test mode, and scroll to the bottom and click Save Changes.
 
 [![Turn off test mode](https://www.dropbox.com/s/6683zaqc0u9xca7/turn-off-test-mode.png?raw=1)](https://www.dropbox.com/s/6683zaqc0u9xca7/turn-off-test-mode.png?raw=1)
+
+### Seller benefits
+Enjoy Fast seller benefits, like:
+
+* [Quick payouts](https://help.fast.co/hc/en-us/articles/360057081993-How-will-I-get-paid-)
 
 ## Troubleshooting Guide
 Content coming soon. Please check back shortly.
