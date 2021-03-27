@@ -169,7 +169,7 @@ Enjoy Fast seller benefits, like:
 * [Zero fraud guarantee](https://twitter.com/fast/status/1361706934907281413?s=20)
 * Awesome customer success team
 * Less abandoned carts
-* Higher conversion
+* Higher conversion rate
 
 ## Troubleshooting Guide
 Content coming soon. Please check back shortly.
