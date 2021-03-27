@@ -110,6 +110,13 @@ Click Upload Plugin just to the right of Add Plugins
 
 [Download the latest zip file from GitHub](https://github.com/fast-af/fast-checkout-woocommerce/archive/refs/heads/documentation.zip)
 
+#### Attach plugin zip file
+Click choose file, then navigate your computer to find where you saved the zip file in the previous step.
+
+[![Attach plugin zip file](https://www.dropbox.com/s/0bhx3xkg4x8y5m4/04-manual-install-plugin.png?raw=1)](https://www.dropbox.com/s/0bhx3xkg4x8y5m4/04-manual-install-plugin.png?raw=1)
+
+*Tip: This is usually in your Downloads folder unless you've changed your browser settings.* 
+
 ## Troubleshooting Guide
 Content coming soon. Please check back shortly.
 
