@@ -148,7 +148,9 @@ Test the following pages and functions of your website to ensure Fast is integra
 If your site is still in test mode, you can place orders without risk. [See Stripe's basic test cards](https://stripe.com/docs/testing#cards) to find test credit card numbers you can use for orders.
 
 ##### 🖌 Edit the appearance of the Fast button
-You can also edit the default CSS of the Fast button in this area. See the [Customizations](#customizations) section to learn more about customizing these fields.
+You can also edit the default CSS of the Fast button in this area. See the [Customizations](#customizations) section to learn more about customizing these fields. 
+
+*Tip: If you've never written CSS before, there are a few resources that can help you out: [W3Schools Intro to CSS](https://www.w3schools.com/css/default.asp*), [View & Practice CSS in Chrome Dev Tools](https://developer.chrome.com/docs/devtools/css/), [CSS 101: The Box Model](https://dev.to/neshaz/css-101-the-box-model-jjp)*
 
 #### Title
 Description
