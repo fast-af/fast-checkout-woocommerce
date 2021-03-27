@@ -164,10 +164,12 @@ Once you have tested the various sections where Fast is integrated, you're ready
 ### Seller benefits
 Enjoy Fast seller benefits, like:
 
-* [Quick payouts](https://help.fast.co/hc/en-us/articles/360057081993-How-will-I-get-paid-)
 * [Free — replaces your current payment processer](https://www.fast.co/pricing)
 * [Instant payouts](https://twitter.com/fast/status/1361706934907281413?s=20)
 * [Zero fraud guarantee](https://twitter.com/fast/status/1361706934907281413?s=20)
+* Awesome customer success team
+* Less abandoned carts
+* Higher conversion
 
 ## Troubleshooting Guide
 Content coming soon. Please check back shortly.
