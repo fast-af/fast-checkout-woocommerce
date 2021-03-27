@@ -132,6 +132,8 @@ Direct url to your plugin settings is `http://yourwebsite.com/wp-admin/admin.php
 ##### 🆔 Add your App ID
 Copy your App ID from your seller dashboard and enter it into the App ID field in the Fast plugin settings. Scroll down and click Save Changes at the bottom.
 
+[![Configure Fast plugin settings](https://www.dropbox.com/s/geqt419gp26ymrn/06-manual-configure-plugin.png?raw=1)](https://www.dropbox.com/s/geqt419gp26ymrn/06-manual-configure-plugin.png?raw=1)
+
 *Tip: You can copy & paste your App ID from the seller dashboard to your WordPress website so you don't have to re-type it all. Use your mouse to highlight the text. Navigate to edit in your menu bar, then click Copy. Navigate back to your WordPress admin dashboard and click into the App ID field. Go to edit again, but this time, click Paste.*
 
 ##### 🧪 Test functionality and review appearance of Fast buttons
@@ -146,9 +148,7 @@ Test the following pages and functions of your website to ensure Fast is integra
 If your site is still in test mode, you can place orders without risk. [See Stripe's basic test cards](https://stripe.com/docs/testing#cards) to find test credit card numbers you can use for orders.
 
 ##### 🖌 Edit the appearance of the Fast button
-You can also edit the default CSS of the Fast button in this area. See the [Customizations](#customizations) section to learn more about customizing these fields.  
-
-[![Configure Fast plugin settings](https://www.dropbox.com/s/geqt419gp26ymrn/06-manual-configure-plugin.png?raw=1)](https://www.dropbox.com/s/geqt419gp26ymrn/06-manual-configure-plugin.png?raw=1)
+You can also edit the default CSS of the Fast button in this area. See the [Customizations](#customizations) section to learn more about customizing these fields.
 
 #### Title
 Description
