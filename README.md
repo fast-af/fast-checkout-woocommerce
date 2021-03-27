@@ -120,7 +120,7 @@ Click choose file, then navigate your computer to find where you saved the zip f
 #### 🔛 Activate plugin
 Click to Activate plugin. Essentially this turns the plugin code functionality "on."
 
-[![Activate plugin](https://www.dropbox.com/s/7raxgoklit732vt/05-manual-activate-plugin.png?dl=0?raw=1)](https://www.dropbox.com/s/7raxgoklit732vt/05-manual-activate-plugin.png?raw=1)
+[![Activate plugin](https://www.dropbox.com/s/7raxgoklit732vt/05-manual-activate-plugin.png?raw=1)](https://www.dropbox.com/s/7raxgoklit732vt/05-manual-activate-plugin.png?raw=1)
 
 *Tip: You can deactivate plugins to troubleshoot website issues. Slowly deactivate them one-by-one, each time checking to see if the error persists. If you find one plugin is the problem, visit their changelog or website for latest news or updates. Also ensure all of your plugins are always up-to-date.* 
 
