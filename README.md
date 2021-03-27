@@ -162,6 +162,12 @@ Click Continue account setup so you can complete your business verification. You
 
 [![Business verification](https://www.dropbox.com/s/4kepm4jxg7kvndh/business-verification-with-stripe.png?raw=1)](https://www.dropbox.com/s/4kepm4jxg7kvndh/business-verification-with-stripe.png?raw=1)
 
+Complete any other onboarding tasks you may have in your Fast seller dashboard.
+
+[![Open seller onboarding tasks](https://www.dropbox.com/s/0mh904le0tvwumi/seller-dashboard-open-onboarding-tasks.png?raw=1)](https://www.dropbox.com/s/0mh904le0tvwumi/seller-dashboard-open-onboarding-tasks.png?raw=1)
+
+If all of your onboarding tasks are complete, you're ready to turn off test mode!
+
 ### Turn off test mode
 Once you have tested the various sections where Fast is integrated, you're ready to turn off test mode! Navigate back to the Fast plugin settings page in your WordPress admin dashboard, and scroll below the CSS boxes. Then uncheck test mode, and scroll to the bottom and click Save Changes.
 
