@@ -244,7 +244,7 @@ function fast_settings_admin_notice_woocommerce_not_installed() {
  */
 function fast_settings_page_content() {
 	?>
-		<div class="wrap">
+		<div class="wrap fast-settings">
 			<h2>Fast Settings</h2>
 			<form method="post" action="options.php">
 				<?php
@@ -445,17 +445,21 @@ function fast_admin_styles() {
 	}
 	?>
 		<style>
-			body, td, textarea, input, select {
+			.fast-settings,
+			.fast-settings td,
+			.fast-settings textarea,
+			.fast-settings input,
+			.fast-settings select {
 				font-family: "Lucida Grande";
 				font-size: 12px;
 			}
 			@media screen and (min-width: 783px) {
-				.input-field {
+				.fast-settings .input-field {
 					min-height: 40px;
 					width: 400px;
 				}
 			}
-			textarea {
+			.fast-settings textarea {
 				resize: none;
 			}
 		</style>
