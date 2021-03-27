@@ -49,7 +49,7 @@ Whether you want to share your feedback, obtain support, or discuss general idea
 3. Obtain App ID
 4. Turn off Test Mode
 
-### Become a Seller
+### 🛒 Become a Seller
 
 The first step to integrating Fast Checkout with your WooCommerce store is to become a seller with Fast. If you already have a seller account and an App ID, please move to the [Install WordPress Plugin](#install-wordpress-plugin) section.
 
@@ -57,53 +57,53 @@ The first step to integrating Fast Checkout with your WooCommerce store is to be
 
 [![Get Started as a Seller](https://www.dropbox.com/s/wkgzvje5ox4lekb/01-get-started.png?raw=1)](https://www.fast.co/business)
 
-#### Organization Details
+#### 🏢 Organization Details
 Complete your organization details. If a Partner sent you our way, we'd really love to hear about it in the supplied field.
 
 [![Organization Details](https://www.dropbox.com/s/phaw5ucc91n6lp4/02-org-details.png?raw=1)](https://www.fast.co/business/onboarding/fast-checkout/org-details)
 
-#### Complete your integation details
+#### 🌐 Complete your integation details
 Complete your integration details. Please be sure to add an active website domain or you will receive a verification error.
 
 [![Integration Details](https://www.dropbox.com/s/fvf3pztpvvbw0jt/03-integration-details.png?raw=1)](https://www.fast.co/business/onboarding/fast-checkout/checkout-app-details)
 
-#### Choose WooCommerce as your platform
+#### 🏪 Choose WooCommerce as your platform
 Choose your desired platform. In this case, we're using WooCommerce. This WordPress plugin only provides Fast Checkout to WooCommerce-powered WordPress sites.
 
 [![Choose Your Platform, WooCommerce](https://www.dropbox.com/s/xt1ecgdhqsfffla/04-platform-details-woocommerce.png?raw=1)](https://www.fast.co/business/onboarding/fast-checkout/platform)
 
-#### Authenticate WooCommerce
+#### 🔐 Authenticate WooCommerce
 You will need to give Fast permission to connect with your WooCommerce installation of WordPress. Click Authenticate and enter your admin credentials.
 
 [![Authenticate WooCommerce](https://www.dropbox.com/s/qoj9guj6hdmk7jt/05-authenticate-woocommerce.png?raw=1)](https://www.fast.co/business/onboarding/fast-checkout/install-woocommerce)
 
-#### Capture your app ID
+#### 🆔 Capture your app ID
 Capture your app ID for use in the next section, installing the Fast Checkout for WooCommerce WordPress plugin.
 
 [![Capture Your App ID](https://www.dropbox.com/s/6vlgk8iz0qep9fo/06-plugin-app-id.png?raw=1)](https://www.dropbox.com/s/6vlgk8iz0qep9fo/06-plugin-app-id.png?raw=1)
 
-##### Request help from Fast
+##### 🆘 Request help from Fast
 If you're not comfortable diving into WordPress and installing a plugin in the next section, this step allows you to ask for help from the Fast Customer Success team.
 
 Click the "Help me go Fast" button and it will initate a chat with our team where you can request an install. Or you can drop our Customer Success team a note at [hi@fast.co](mailto:hi@fast.co).
 
 ### Install WordPress Plugin
 
-#### Login to your WordPress admin dashboard
+#### 🔓 Login to your WordPress admin dashboard
 Login to the admin side of your WordPress site. The url for this is usually `https://yourwebsite.com/wp-admin` 
 
 [![Login to WordPress admin dashboard](https://www.dropbox.com/s/pqq1tab5m1ex9ds/01-WordPress-admin-login.png?raw=1)](https://www.dropbox.com/s/pqq1tab5m1ex9ds/01-WordPress-admin-login.png?raw=1)
 
 *Tip: You must have WordPress admin access in order to install and remove plugins.*
 
-#### Navigate to Plugins, Add New
+#### 🔌 Navigate to Plugins, Add New
 In the left hand sidebar of your WordPress admin dashboard, hover over Plugins, then click Add New.
 
 [![Navigate to Plugins, Add New](https://www.dropbox.com/s/5w4592w4vfz4o2i/02-plugins-add-new.png?raw=1)](https://www.dropbox.com/s/5w4592w4vfz4o2i/02-plugins-add-new.png?raw=1)
 
 *Tip: Depending on your site setup, you may need to search a bit to find navigation items. Some themes and plugins alter the appearance of your WordPress admin dashboard.*
 
-#### Upload plugin via zip file
+#### 🗄 Upload plugin via zip file
 Click Upload Plugin just to the right of Add Plugins
 
 [![Upload plugin via zip file](https://www.dropbox.com/s/mya8j56qsf8x341/03-manual-upload-plugin.png?raw=1)](https://www.dropbox.com/s/mya8j56qsf8x341/03-manual-upload-plugin.png?raw=1)
