@@ -154,7 +154,9 @@ You can also edit the default CSS of the Fast button in this area. See the [Cust
 *Tip: If you've never written CSS before, there are a few resources that can help you out: [W3Schools Intro to CSS](https://www.w3schools.com/css/default.asp*), [View & Practice CSS in Chrome Dev Tools](https://developer.chrome.com/docs/devtools/css/), [CSS 101: The Box Model](https://dev.to/neshaz/css-101-the-box-model-jjp)*
 
 ### Continue Fast seller account setup
-https://www.fast.co/business/dash/home
+Navigate back to the [Fast Seller Dashboard](https://www.fast.co/business/dash/home) to complete your business details, like business verification and banking information. We gotta make sure you get your money in the right place! 
+
+[![Continue Fast seller account setup](https://www.dropbox.com/s/l0isxje5jz62j64/07-business-details.png?raw=1)](https://www.dropbox.com/s/l0isxje5jz62j64/07-business-details.png?raw=1)
 
 ### Turn off test mode
 Once you have tested the various sections where Fast is integrated, you're ready to turn off test mode! Navigate back to the Fast plugin settings page in your WordPress admin dashboard, and scroll below the CSS boxes. Then uncheck test mode, and scroll to the bottom and click Save Changes.
