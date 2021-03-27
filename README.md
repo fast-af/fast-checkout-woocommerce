@@ -47,7 +47,7 @@ Whether you want to share your feedback, obtain support, or discuss general idea
 1. [Become a Seller](#become-a-seller)
 2. [Install WordPress Plugin](#install-wordpress-plugin)
 3. [Continue Fast Seller Account Setup](#)
-4. [Turn off Test Mode](#-turn-off-test-mode)
+4. [Turn off Test Mode](#turn-off-test-mode)
 5. [Enjoy Seller Benefits](#seller-benefits)
 
 ### Become a Seller
