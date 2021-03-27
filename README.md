@@ -49,7 +49,7 @@ Whether you want to share your feedback, obtain support, or discuss general idea
 3. [Continue Fast Seller Account Setup](#)
 4. [Turn off Test Mode](#-turn-off-test-mode)
 
-### 💰 Become a Seller
+### Become a Seller
 
 The first step to integrating Fast Checkout with your WooCommerce store is to become a seller with Fast. If you already have a seller account and an App ID, please move to the [Install WordPress Plugin](#install-wordpress-plugin) section.
 
