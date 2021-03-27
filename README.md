@@ -125,7 +125,7 @@ Click Activate Plugin. Essentially this turns the plugin code functionality "on.
 *Tip: You can deactivate plugins to troubleshoot website issues. Slowly deactivate them one-by-one, each time checking to see if the error persists. If you find one plugin is the problem, visit their changelog or website for latest news or updates. Also ensure all of your plugins are always up-to-date.*
 
 #### ⚙️ Configure Fast plugin settings
-Now that you activated the plugin, you can click the Fast plugin link listed in your left side admin navigation (towards the bottom usually) to get to the plugin settings window.
+Now that you activated the plugin, you can click the Fast plugin link now shown in the left side admin navigation (towards the bottom usually), to navigate to the plugin settings window.
 
 Direct url to your plugin settings is `http://yourwebsite.com/wp-admin/admin.php?page=fast`
 
