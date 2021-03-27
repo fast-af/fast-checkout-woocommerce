@@ -169,7 +169,7 @@ Complete any other onboarding tasks you may have in your Fast seller dashboard.
 If all of your onboarding tasks are complete, you're ready to turn off test mode!
 
 ### Turn off test mode
-Once you have tested the various sections where Fast is integrated, you're ready to turn off test mode! Navigate back to the Fast plugin settings page in your WordPress admin dashboard, and scroll below the CSS boxes. Then uncheck test mode, and scroll to the bottom and click Save Changes.
+Once you have tested the various sections where Fast is integrated, you're ready to turn off test mode! Navigate back to the Fast plugin settings page in your WordPress admin dashboard, scroll below the CSS boxes, then uncheck test mode, and scroll to the bottom and click Save Changes.
 
 [![Turn off test mode](https://www.dropbox.com/s/6683zaqc0u9xca7/turn-off-test-mode.png?raw=1)](https://www.dropbox.com/s/6683zaqc0u9xca7/turn-off-test-mode.png?raw=1)
 
