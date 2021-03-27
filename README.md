@@ -46,7 +46,7 @@ Whether you want to share your feedback, obtain support, or discuss general idea
 
 1. [Become a Seller](#become-a-seller)
 2. [Install WordPress Plugin](#install-wordpress-plugin)
-3. [Enter Business Details in Fast Seller Dashboard](https://www.fast.co/business/dash/home)
+3. [Continue Fast Seller Account Setup](#)
 4. [Turn off Test Mode](#-turn-off-test-mode)
 
 ### 💰 Become a Seller
@@ -152,6 +152,9 @@ You can also edit the default CSS of the Fast button in this area. See the [Cust
 
 *Tip: If you've never written CSS before, there are a few resources that can help you out: [W3Schools Intro to CSS](https://www.w3schools.com/css/default.asp*), [View & Practice CSS in Chrome Dev Tools](https://developer.chrome.com/docs/devtools/css/), [CSS 101: The Box Model](https://dev.to/neshaz/css-101-the-box-model-jjp)*
 
+### Continue Fast seller account setup
+https://www.fast.co/business/dash/home
+
 ### 🎚 Turn off test mode
 Once you have tested the various sections where Fast is integrated, you're ready to turn off test mode! Navigate back to the Fast plugin settings page in your WordPress admin dashboard, and scroll below the CSS boxes. Then uncheck test mode, and scroll to the bottom and click Save Changes.
 
@@ -161,7 +164,7 @@ Once you have tested the various sections where Fast is integrated, you're ready
 Content coming soon. Please check back shortly.
 
 ## Customizations
-If you really want to perfect your site's asthetic and alter the appearnce, writing custom CSS is the best way to do that. If you've never written CSS before, there are a few resources below that can help you out.
+If you really want to perfect your site's asthetic and alter the appearance, writing custom CSS is the best way to do that. If you've never written CSS before, there are a few resources below that can help you out.
 
 * [W3Schools Intro to CSS](https://www.w3schools.com/css/default.asp*)
 * [View & Practice CSS in Chrome Dev Tools](https://developer.chrome.com/docs/devtools/css/)
