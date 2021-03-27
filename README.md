@@ -139,11 +139,11 @@ Copy your App ID from your seller dashboard and enter it into the App ID field i
 ##### 🧪 Test functionality and review appearance of Fast buttons
 Test the following pages and functions of your website to ensure Fast is integrated properly, as well as appears the way you would like it to appear.
 
-* Product page
-* Cart page
-* Checkout page
-* Mini cart
-* Login page
+* Product page `https://yourwebsite.com/product/PRODUCT-NAME`
+* Cart page `https://yourwebsite.com/cart`
+* Checkout page `https://yourwebsite.com/checkout`
+* Mini cart `varies depending on theme`
+* Login page `https://yourwebsite.com/my-account`
 
 If your site is still in test mode, you can place orders without risk. [See Stripe's basic test cards](https://stripe.com/docs/testing#cards) to find test credit card numbers you can use for orders.
 
