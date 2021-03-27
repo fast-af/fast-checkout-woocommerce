@@ -118,7 +118,7 @@ Click choose file, then navigate your computer to find where you saved the zip f
 *Tip: This is usually in your Downloads folder unless you've changed your browser settings.*
 
 #### 🔛 Activate plugin
-Click to Activate plugin. Essentially this turns the plugin code functionality "on."
+Click Activate plugin. Essentially this turns the plugin code functionality "on."
 
 [![Activate plugin](https://www.dropbox.com/s/7raxgoklit732vt/05-manual-activate-plugin.png?raw=1)](https://www.dropbox.com/s/7raxgoklit732vt/05-manual-activate-plugin.png?raw=1)
 
