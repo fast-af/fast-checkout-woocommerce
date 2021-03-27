@@ -47,7 +47,7 @@ Whether you want to share your feedback, obtain support, or discuss general idea
 1. [Become a Seller](#become-a-seller)
 2. [Install WordPress Plugin](#install-wordpress-plugin)
 3. [Enter Business Details in Fast Seller Dashboard](https://www.fast.co/business/dash/home)
-4. Turn off Test Mode
+4. [Turn off Test Mode](#-turn-off-test-mode)
 
 ### 💰 Become a Seller
 
