@@ -287,7 +287,7 @@ function fast_woocommerce_rest_pre_insert_shop_order_object( $order, $request ) 
 	// Return the order object unchanged.
 	return $order;
 }
-add_filter( 'woocommerce_rest_pre_insert_shop_order_object', 'fast_woocommerce_rest_pre_insert_shop_order_object', 10, 3 );
+add_filter( 'woocommerce_rest_pre_insert_shop_order_object', 'fast_woocommerce_rest_pre_insert_shop_order_object', 10, 2 );
 
 /**
  * Fast transition trash to on-hold.
