@@ -63,8 +63,8 @@ function fast_get_active_multicurrency_plugin() {
 /**
  * Maybe update order for multicurrency.
  *
- * @param WC_Data         $order   The order to check.
- * @param WP_REST_Request $request Request object.
+ * @param WC_Data         $order    The order to check.
+ * @param WP_REST_Request $request  Request object.
  *
  * @return WC_Data
  */
@@ -74,13 +74,57 @@ function fast_maybe_update_order_for_multicurrency( $order, $request ) {
 	$wc_currency    = get_woocommerce_currency();
 	$order_currency = method_exists( $order, 'get_currency' ) ? $order->get_currency() : $wc_currency;
 
-	if ( false !== $multicurrency_plugin && $wc_currency !== $order_currency ) {
-		$order = apply_filters(
-			"fast_update_order_for_multicurrency_{$multicurrency_plugin}",
-			$order,
-			$request
-		);
+	if (
+		false !== $multicurrency_plugin // Make sure a supported multicurrency plugin is activated.
+		&& ! is_empty( $order_currency ) // Make sure the order currency is set.
+		&& $wc_currency !== $order_currency // Make sure the order currency is not the default currency.
+	) {
+		$order = fast_update_order_for_multicurrency( $order, $request );
 	}
+
+	return $order;
+}
+
+/**
+ * Update the order for multicurrency.
+ *
+ * @param WC_Data         $order    The order to check.
+ * @param WP_REST_Request $request  Request object.
+ *
+ * @return WC_Data
+ */
+function fast_update_order_for_multicurrency( $order, $request ) {
+
+	foreach ( $order->get_items() as $item_id => $item ) {
+		$product  = method_exists( $item, 'get_product' ) ? $item->get_product() : null;
+		$quantity = method_exists( $item, 'get_quantity' ) ? (int) $item->get_quantity() : 0;
+
+		if ( ! empty( $product ) ) {
+			// Get the price from the multicurrency plugin.
+			$price = apply_filters(
+				"fast_update_price_for_multicurrency_{$multicurrency_plugin}",
+				$product->get_price(),
+				$product,
+				$order,
+				$request
+			);
+
+			// Calculate the price by multiplying by quantity.
+			$new_price = $price * $quantity;
+
+			// Set the new price.
+			$item->set_subtotal( $new_price );
+			$item->set_totel( $new_price );
+
+			// Make new tax calculations.
+			$item->calculate_taxes();
+
+			// Save the item data.
+			$item->save();
+		}
+	}
+
+	$order->calculate_totals();
 
 	return $order;
 }
