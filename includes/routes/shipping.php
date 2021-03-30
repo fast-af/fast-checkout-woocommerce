@@ -152,7 +152,7 @@ function fast_shipping_calculate_packages() {
 	if ( count( $packages ) > 1 ) {
 		// Perform address check to make sure all are the same
 		for ( $x = 1; $x < count( $packages ); $x++ ) {
-			if ( $packages[0]->destination != $packages[ $x ]->destination ) {
+			if ( $packages[0]->destination !== $packages[ $x ]->destination ) {
 				return new WP_Error( 'shipping_packages', 'Shipping package to > 1 address is not supported', array( 'status' => 400 ) );
 			}
 		}
