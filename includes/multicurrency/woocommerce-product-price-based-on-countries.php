@@ -8,20 +8,6 @@
  */
 
 /**
- * Add to list of supported multicurrency plugins.
- *
- * @param array $supported_plugins The list of supported plugins.
- *
- * @return array
- */
-function fast_supported_multicurrency_plugins_woocommerce_product_price_based_on_countries( $supported_plugins ) {
-	$supported_plugins['woocommerce-product-price-based-on-countries/woocommerce-product-price-based-on-countries.php'] = 'woocommerce_product_price_based_on_countries';
-
-	return $supported_plugins;
-}
-add_filter( 'fast_supported_multicurrency_plugins', 'fast_supported_multicurrency_plugins_woocommerce_product_price_based_on_countries' );
-
-/**
  * Update the order for multicurrency.
  *
  * @param WC_Data         $order   The order to check.

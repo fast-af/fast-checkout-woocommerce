@@ -18,7 +18,21 @@ require_once FAST_PATH . 'includes/multicurrency/woocommerce-product-price-based
  * @return array
  */
 function fast_get_supported_multicurrency_plugins() {
-	return apply_filters( 'fast_supposted_multicurrency_plugins', array() );
+
+	// List of built-in supported multicurrency plugins.
+	$supported_plugins = array(
+		'currency_switcher_woocommerce'                => 'currency-switcher-woocommerce/currency-switcher-woocommerce.php',
+		'woocommerce_currency_switcher'                => 'woocommerce-currency-switcher/index.php',
+		'woocommerce_product_price_based_on_countries' => 'woocommerce-product-price-based-on-countries/woocommerce-product-price-based-on-countries.php',
+	);
+
+	/**
+	 * Filter the list of supported multicurrency plugins to add
+	 * support for more third-party plugins.
+	 *
+	 * @param array $supported_plugins The list of supported plugins.
+	 */
+	return apply_filters( 'fast_supposted_multicurrency_plugins', $supported_plugins );
 }
 
 /**
@@ -36,7 +50,7 @@ function fast_get_active_multicurrency_plugin() {
 		// Loop through the list of supported plugins and return the first active one.
 		// This operates under the assumption that there would only be 1 active
 		// multicurrency plugin.
-		foreach ( $multicurrency_plugins as $multicurrency_plugin => $multicurrency_plugin_slug ) {
+		foreach ( $multicurrency_plugins as $multicurrency_plugin_slug => $multicurrency_plugin ) {
 			if ( is_plugin_active( $multicurrency_plugin ) ) {
 				return $multicurrency_plugin_slug;
 			}
