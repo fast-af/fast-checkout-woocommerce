@@ -7,23 +7,23 @@
  * @package Fast
  */
 
-define( 'FAST_SETTING_APP_ID', 'fast_app_id' );
-define( 'FAST_SETTING_TEST_MODE', 'fast_test_mode' );
-define( 'FAST_SETTING_TEST_MODE_NOT_SET', 'fast test mode not set' );
-define( 'FAST_SETTING_FAST_JS_URL', 'fast_fast_js_url' );
-define( 'FAST_SETTING_FAST_JWKS_URL', 'fast_fast_jwks_url' );
-define( 'FAST_SETTING_ONBOARDING_URL', 'fast_onboarding_url' );
-define( 'FAST_SETTING_PDP_BUTTON_STYLES', 'fast_pdp_button_styles' );
-define( 'FAST_SETTING_CART_BUTTON_STYLES', 'fast_cart_button_styles' );
-define( 'FAST_SETTING_MINI_CART_BUTTON_STYLES', 'fast_mini_cart_button_styles' );
-define( 'FAST_SETTING_CHECKOUT_BUTTON_STYLES', 'fast_checkout_button_styles' );
-define( 'FAST_SETTING_LOGIN_BUTTON_STYLES', 'fast_login_button_styles' );
-define( 'FAST_JWKS_URL', 'https://api.fast.co/v1/oauth2/jwks' );
-define( 'FAST_JS_URL', 'https://js.fast.co/fast-woocommerce.js' );
-define( 'FAST_ONBOARDING_URL', 'https://fast.co/business' );
+define( 'FASTWC_SETTING_APP_ID', 'fast_app_id' );
+define( 'FASTWC_SETTING_TEST_MODE', 'fast_test_mode' );
+define( 'FASTWC_SETTING_TEST_MODE_NOT_SET', 'fast test mode not set' );
+define( 'FASTWC_SETTING_FAST_JS_URL', 'fast_fast_js_url' );
+define( 'FASTWC_SETTING_FAST_JWKS_URL', 'fast_fast_jwks_url' );
+define( 'FASTWC_SETTING_ONBOARDING_URL', 'fast_onboarding_url' );
+define( 'FASTWC_SETTING_PDP_BUTTON_STYLES', 'fast_pdp_button_styles' );
+define( 'FASTWC_SETTING_CART_BUTTON_STYLES', 'fast_cart_button_styles' );
+define( 'FASTWC_SETTING_MINI_CART_BUTTON_STYLES', 'fast_mini_cart_button_styles' );
+define( 'FASTWC_SETTING_CHECKOUT_BUTTON_STYLES', 'fast_checkout_button_styles' );
+define( 'FASTWC_SETTING_LOGIN_BUTTON_STYLES', 'fast_login_button_styles' );
+define( 'FASTWC_JWKS_URL', 'https://api.fast.co/v1/oauth2/jwks' );
+define( 'FASTWC_JS_URL', 'https://js.fast.co/fast-woocommerce.js' );
+define( 'FASTWC_ONBOARDING_URL', 'https://fast.co/business' );
 
 define(
-	'FAST_SETTING_PDP_BUTTON_STYLES_DEFAULT',
+	'FASTWC_SETTING_PDP_BUTTON_STYLES_DEFAULT',
 	<<<CSS
 .fast-pdp-wrapper {
   padding: 21px 0 20px 0;
@@ -64,7 +64,7 @@ CSS
 );
 
 define(
-	'FAST_SETTING_CART_BUTTON_STYLES_DEFAULT',
+	'FASTWC_SETTING_CART_BUTTON_STYLES_DEFAULT',
 	<<<CSS
 .fast-cart-wrapper {
   padding: 21px 0 20px 0;
@@ -105,7 +105,7 @@ CSS
 );
 
 define(
-	'FAST_SETTING_MINI_CART_BUTTON_STYLES_DEFAULT',
+	'FASTWC_SETTING_MINI_CART_BUTTON_STYLES_DEFAULT',
 	<<<CSS
 .fast-mini-cart-wrapper {
   height: 68px;
@@ -127,7 +127,7 @@ CSS
 );
 
 define(
-	'FAST_SETTING_CHECKOUT_BUTTON_STYLES_DEFAULT',
+	'FASTWC_SETTING_CHECKOUT_BUTTON_STYLES_DEFAULT',
 	<<<CSS
 .fast-checkout-wrapper {
   padding: 21px 0 20px 0;
@@ -168,7 +168,7 @@ CSS
 );
 
 define(
-	'FAST_SETTING_LOGIN_BUTTON_STYLES_DEFAULT',
+	'FASTWC_SETTING_LOGIN_BUTTON_STYLES_DEFAULT',
 	<<<CSS
 .fast-login-wrapper {
   border: 1.25px solid #d3ced2;
@@ -214,16 +214,16 @@ function fastwc_admin_create_menu() {
 	$position   = 100;
 
 	add_menu_page( $page_title, $menu_title, $capability, $slug, $callback, $icon, $position );
-	register_setting( 'fast', FAST_SETTING_APP_ID );
-	register_setting( 'fast', FAST_SETTING_PDP_BUTTON_STYLES );
-	register_setting( 'fast', FAST_SETTING_CART_BUTTON_STYLES );
-	register_setting( 'fast', FAST_SETTING_MINI_CART_BUTTON_STYLES );
-	register_setting( 'fast', FAST_SETTING_CHECKOUT_BUTTON_STYLES );
-	register_setting( 'fast', FAST_SETTING_LOGIN_BUTTON_STYLES );
-	register_setting( 'fast', FAST_SETTING_TEST_MODE );
-	register_setting( 'fast', FAST_SETTING_FAST_JS_URL );
-	register_setting( 'fast', FAST_SETTING_FAST_JWKS_URL );
-	register_setting( 'fast', FAST_SETTING_ONBOARDING_URL );
+	register_setting( 'fast', FASTWC_SETTING_APP_ID );
+	register_setting( 'fast', FASTWC_SETTING_PDP_BUTTON_STYLES );
+	register_setting( 'fast', FASTWC_SETTING_CART_BUTTON_STYLES );
+	register_setting( 'fast', FASTWC_SETTING_MINI_CART_BUTTON_STYLES );
+	register_setting( 'fast', FASTWC_SETTING_CHECKOUT_BUTTON_STYLES );
+	register_setting( 'fast', FASTWC_SETTING_LOGIN_BUTTON_STYLES );
+	register_setting( 'fast', FASTWC_SETTING_TEST_MODE );
+	register_setting( 'fast', FASTWC_SETTING_FAST_JS_URL );
+	register_setting( 'fast', FASTWC_SETTING_FAST_JWKS_URL );
+	register_setting( 'fast', FASTWC_SETTING_ONBOARDING_URL );
 
 	// Check whether the woocommerce plugin is active.
 	$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
@@ -275,19 +275,19 @@ function fastwc_admin_setup_sections() {
  * Sets up fields for Fast settings page.
  */
 function fastwc_admin_setup_fields() {
-	add_settings_field( FAST_SETTING_APP_ID, 'App ID', 'fastwc_app_id_content', 'fast', 'fast_app_info' );
+	add_settings_field( FASTWC_SETTING_APP_ID, 'App ID', 'fastwc_app_id_content', 'fast', 'fast_app_info' );
 
-	add_settings_field( FAST_SETTING_PDP_BUTTON_STYLES, 'Product page button styles', 'fastwc_pdp_button_styles_content', 'fast', 'fast_styles' );
-	add_settings_field( FAST_SETTING_CART_BUTTON_STYLES, 'Cart page button styles', 'fastwc_cart_button_styles_content', 'fast', 'fast_styles' );
-	add_settings_field( FAST_SETTING_MINI_CART_BUTTON_STYLES, 'Mini cart widget button styles', 'fastwc_mini_cart_button_styles_content', 'fast', 'fast_styles' );
-	add_settings_field( FAST_SETTING_CHECKOUT_BUTTON_STYLES, 'Checkout page button styles', 'fastwc_checkout_button_styles_content', 'fast', 'fast_styles' );
-	add_settings_field( FAST_SETTING_LOGIN_BUTTON_STYLES, 'Login button styles', 'fastwc_login_button_styles_content', 'fast', 'fast_styles' );
+	add_settings_field( FASTWC_SETTING_PDP_BUTTON_STYLES, 'Product page button styles', 'fastwc_pdp_button_styles_content', 'fast', 'fast_styles' );
+	add_settings_field( FASTWC_SETTING_CART_BUTTON_STYLES, 'Cart page button styles', 'fastwc_cart_button_styles_content', 'fast', 'fast_styles' );
+	add_settings_field( FASTWC_SETTING_MINI_CART_BUTTON_STYLES, 'Mini cart widget button styles', 'fastwc_mini_cart_button_styles_content', 'fast', 'fast_styles' );
+	add_settings_field( FASTWC_SETTING_CHECKOUT_BUTTON_STYLES, 'Checkout page button styles', 'fastwc_checkout_button_styles_content', 'fast', 'fast_styles' );
+	add_settings_field( FASTWC_SETTING_LOGIN_BUTTON_STYLES, 'Login button styles', 'fastwc_login_button_styles_content', 'fast', 'fast_styles' );
 
-	add_settings_field( FAST_SETTING_TEST_MODE, 'Test Mode', 'fastwc_test_mode_content', 'fast', 'fast_test_mode' );
+	add_settings_field( FASTWC_SETTING_TEST_MODE, 'Test Mode', 'fastwc_test_mode_content', 'fast', 'fast_test_mode' );
 
-	add_settings_field( FAST_SETTING_FAST_JS_URL, 'Fast JS URL', 'fastwc_fastwc_js_content', 'fast', 'fast_advanced' );
-	add_settings_field( FAST_SETTING_FAST_JWKS_URL, 'Fast JWKS URL', 'fastwc_fastwc_jwks_content', 'fast', 'fast_advanced' );
-	add_settings_field( FAST_SETTING_ONBOARDING_URL, 'Fast Onboarding URL', 'fastwc_onboarding_url_content', 'fast', 'fast_advanced' );
+	add_settings_field( FASTWC_SETTING_FAST_JS_URL, 'Fast JS URL', 'fastwc_fastwc_js_content', 'fast', 'fast_advanced' );
+	add_settings_field( FASTWC_SETTING_FAST_JWKS_URL, 'Fast JWKS URL', 'fastwc_fastwc_jwks_content', 'fast', 'fast_advanced' );
+	add_settings_field( FASTWC_SETTING_ONBOARDING_URL, 'Fast Onboarding URL', 'fastwc_onboarding_url_content', 'fast', 'fast_advanced' );
 }
 
 /**
@@ -295,7 +295,7 @@ function fastwc_admin_setup_fields() {
  */
 function fastwc_app_id_content() {
 	$fastwc_setting_app_id              = fastwc_get_app_id();
-	$fastwc_setting_fast_onboarding_url = fastwc_get_option_or_set_default( FAST_SETTING_ONBOARDING_URL, FAST_ONBOARDING_URL );
+	$fastwc_setting_fast_onboarding_url = fastwc_get_option_or_set_default( FASTWC_SETTING_ONBOARDING_URL, FASTWC_ONBOARDING_URL );
 	?>
 		<input
 			name="fast_app_id"
@@ -312,7 +312,7 @@ function fastwc_app_id_content() {
  * Renders the PDP button styles field.
  */
 function fastwc_pdp_button_styles_content() {
-	$fastwc_setting_pdp_button_styles = fastwc_get_option_or_set_default( FAST_SETTING_PDP_BUTTON_STYLES, FAST_SETTING_PDP_BUTTON_STYLES_DEFAULT );
+	$fastwc_setting_pdp_button_styles = fastwc_get_option_or_set_default( FASTWC_SETTING_PDP_BUTTON_STYLES, FASTWC_SETTING_PDP_BUTTON_STYLES_DEFAULT );
 	?>
 		<textarea name="fast_pdp_button_styles" id="fast_pdp_button_styles" rows="10" cols="50"><?php echo esc_textarea( $fastwc_setting_pdp_button_styles ); ?></textarea>
 	<?php
@@ -322,7 +322,7 @@ function fastwc_pdp_button_styles_content() {
  * Renders the cart button styles field.
  */
 function fastwc_cart_button_styles_content() {
-	$fastwc_setting_cart_button_styles = fastwc_get_option_or_set_default( FAST_SETTING_CART_BUTTON_STYLES, FAST_SETTING_CART_BUTTON_STYLES_DEFAULT );
+	$fastwc_setting_cart_button_styles = fastwc_get_option_or_set_default( FASTWC_SETTING_CART_BUTTON_STYLES, FASTWC_SETTING_CART_BUTTON_STYLES_DEFAULT );
 	?>
 		<textarea name="fast_cart_button_styles" id="fast_cart_button_styles" rows="10" cols="50"><?php echo esc_textarea( $fastwc_setting_cart_button_styles ); ?></textarea>
 	<?php
@@ -332,7 +332,7 @@ function fastwc_cart_button_styles_content() {
  * Renders the mini-cart button styles field.
  */
 function fastwc_mini_cart_button_styles_content() {
-	$fastwc_setting_mini_cart_button_styles = fastwc_get_option_or_set_default( FAST_SETTING_MINI_CART_BUTTON_STYLES, FAST_SETTING_MINI_CART_BUTTON_STYLES_DEFAULT );
+	$fastwc_setting_mini_cart_button_styles = fastwc_get_option_or_set_default( FASTWC_SETTING_MINI_CART_BUTTON_STYLES, FASTWC_SETTING_MINI_CART_BUTTON_STYLES_DEFAULT );
 	?>
 		<textarea name="fast_mini_cart_button_styles" id="fast_mini_cart_button_styles" rows="10" cols="50"><?php echo esc_textarea( $fastwc_setting_mini_cart_button_styles ); ?></textarea>
 	<?php
@@ -342,7 +342,7 @@ function fastwc_mini_cart_button_styles_content() {
  * Renders the checkout button styles field.
  */
 function fastwc_checkout_button_styles_content() {
-	$fastwc_setting_checkout_button_styles = fastwc_get_option_or_set_default( FAST_SETTING_CHECKOUT_BUTTON_STYLES, FAST_SETTING_CHECKOUT_BUTTON_STYLES_DEFAULT );
+	$fastwc_setting_checkout_button_styles = fastwc_get_option_or_set_default( FASTWC_SETTING_CHECKOUT_BUTTON_STYLES, FASTWC_SETTING_CHECKOUT_BUTTON_STYLES_DEFAULT );
 	?>
 		<textarea name="fast_checkout_button_styles" id="fast_checkout_button_styles" rows="10" cols="50"><?php echo esc_textarea( $fastwc_setting_checkout_button_styles ); ?></textarea>
 	<?php
@@ -352,7 +352,7 @@ function fastwc_checkout_button_styles_content() {
  * Renders the login button styles field.
  */
 function fastwc_login_button_styles_content() {
-	$fastwc_setting_login_button_styles = fastwc_get_option_or_set_default( FAST_SETTING_LOGIN_BUTTON_STYLES, FAST_SETTING_LOGIN_BUTTON_STYLES_DEFAULT );
+	$fastwc_setting_login_button_styles = fastwc_get_option_or_set_default( FASTWC_SETTING_LOGIN_BUTTON_STYLES, FASTWC_SETTING_LOGIN_BUTTON_STYLES_DEFAULT );
 	?>
 		<textarea name="fast_login_button_styles" id="fast_login_button_styles" rows="10" cols="50"><?php echo esc_textarea( $fastwc_setting_login_button_styles ); ?></textarea>
 	<?php
@@ -362,13 +362,13 @@ function fastwc_login_button_styles_content() {
  * Renders the Test Mode field.
  */
 function fastwc_test_mode_content() {
-	$fastwc_test_mode = get_option( FAST_SETTING_TEST_MODE, FAST_SETTING_TEST_MODE_NOT_SET );
+	$fastwc_test_mode = get_option( FASTWC_SETTING_TEST_MODE, FASTWC_SETTING_TEST_MODE_NOT_SET );
 
-	if ( FAST_SETTING_TEST_MODE_NOT_SET === $fastwc_test_mode ) {
-		// If the option is FAST_SETTING_TEST_MODE_NOT_SET, then it hasn't yet been set. In this case, we
+	if ( FASTWC_SETTING_TEST_MODE_NOT_SET === $fastwc_test_mode ) {
+		// If the option is FASTWC_SETTING_TEST_MODE_NOT_SET, then it hasn't yet been set. In this case, we
 		// want to configure test mode to be on.
 		$fastwc_test_mode = '1';
-		update_option( FAST_SETTING_TEST_MODE, '1' );
+		update_option( FASTWC_SETTING_TEST_MODE, '1' );
 	}
 
 	?>
@@ -390,7 +390,7 @@ function fastwc_test_mode_content() {
  * Renders the fast.js URL field.
  */
 function fastwc_fastwc_js_content() {
-	$fastwc_setting_fast_js_url = fastwc_get_option_or_set_default( FAST_SETTING_FAST_JS_URL, FAST_JS_URL );
+	$fastwc_setting_fast_js_url = fastwc_get_option_or_set_default( FASTWC_SETTING_FAST_JS_URL, FASTWC_JS_URL );
 	?>
 		<input
 		name="fast_fast_js_url"
@@ -406,7 +406,7 @@ function fastwc_fastwc_js_content() {
  * Renders the Fast JWKS URL field.
  */
 function fastwc_fastwc_jwks_content() {
-	$fastwc_setting_fast_jwks_url = fastwc_get_option_or_set_default( FAST_SETTING_FAST_JWKS_URL, FAST_JWKS_URL );
+	$fastwc_setting_fast_jwks_url = fastwc_get_option_or_set_default( FASTWC_SETTING_FAST_JWKS_URL, FASTWC_JWKS_URL );
 	?>
 		<input
 			name="fast_fast_jwks_url"
@@ -422,7 +422,7 @@ function fastwc_fastwc_jwks_content() {
  * Renders the onboarding URL field.
  */
 function fastwc_onboarding_url_content() {
-	$url = fastwc_get_option_or_set_default( FAST_SETTING_ONBOARDING_URL, FAST_ONBOARDING_URL );
+	$url = fastwc_get_option_or_set_default( FASTWC_SETTING_ONBOARDING_URL, FASTWC_ONBOARDING_URL );
 	?>
 		<input
 			name="fast_onboarding_url"
@@ -491,5 +491,5 @@ function fastwc_get_option_or_set_default( $option, $default ) {
  * @return string
  */
 function fastwc_get_app_id() {
-	return get_option( FAST_SETTING_APP_ID );
+	return get_option( FASTWC_SETTING_APP_ID );
 }

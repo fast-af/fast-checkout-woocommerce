@@ -9,8 +9,8 @@
 
 $loader = require_once __DIR__ . '/../vendor/autoload.php';
 
-define( 'FAST_PARAM_WP_NONCE', '_wpnonce' );
-define( 'FAST_RESPONSE_401', '401 Unauthorized' );
+define( 'FASTWC_PARAM_WP_NONCE', '_wpnonce' );
+define( 'FASTWC_RESPONSE_401', '401 Unauthorized' );
 
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\JWK;
@@ -18,7 +18,7 @@ use \Firebase\JWT\JWK;
 /**
  * Returns true if the Fast Login button should be hidden for any of the following reasons:
  * - Test mode is enabled and current user is someone who should NOT see the button when test mode is on.
- * - The FAST_SETTING_APP_ID option is empty.
+ * - The FASTWC_SETTING_APP_ID option is empty.
  */
 function fastwc_should_hide_login_button() {
 	$return = false;
@@ -33,7 +33,7 @@ function fastwc_should_hide_login_button() {
 
 	// If test mode option is not yet set (e.g. plugin was just installed), treat it as enabled.
 	// There is code in the settings page that actually sets this to enabled the first time the user views the form.
-	$fastwc_test_mode = get_option( FAST_SETTING_TEST_MODE, '1' );
+	$fastwc_test_mode = get_option( FASTWC_SETTING_TEST_MODE, '1' );
 	if ( ! $return && $fastwc_test_mode ) {
 		// In test mode, show the login button if the user is an admin or their email ends with @fast.co.
 		// Otherwise, hide it.
@@ -71,13 +71,13 @@ function fastwc_login_init() {
 	}
 
 	// Verify the nonce.
-	if ( ! isset( $_GET[ FAST_PARAM_WP_NONCE ] ) ) {
+	if ( ! isset( $_GET[ FASTWC_PARAM_WP_NONCE ] ) ) {
 		return;
 	}
 
-	$nonce = sanitize_text_field( wp_unslash( $_GET[ FAST_PARAM_WP_NONCE ] ) );
+	$nonce = sanitize_text_field( wp_unslash( $_GET[ FASTWC_PARAM_WP_NONCE ] ) );
 	if ( ! wp_verify_nonce( $nonce, 'fast-backend-login-auth' ) ) {
-		wp_die( '401 Unauthorized: Invalid nonce.', esc_attr( FAST_RESPONSE_401 ) );
+		wp_die( '401 Unauthorized: Invalid nonce.', esc_attr( FASTWC_RESPONSE_401 ) );
 	}
 
 	$auth_token = sanitize_text_field( wp_unslash( $_GET['auth'] ) );
@@ -86,21 +86,21 @@ function fastwc_login_init() {
 	try {
 		$claims = fastwc_backend_verify_jwt( $auth_token );
 	} catch ( Exception $e ) {
-		wp_die( '401 Unauthorized: Failed to login.', esc_attr( FAST_RESPONSE_401 ) );
+		wp_die( '401 Unauthorized: Failed to login.', esc_attr( FASTWC_RESPONSE_401 ) );
 	}
 
 	$user_to_login = get_user_by( 'email', $claims->email );
 
 	if ( ! $user_to_login ) {
-		wp_die( '401 Unauthorized: Failed to get user.', esc_attr( FAST_RESPONSE_401 ) );
+		wp_die( '401 Unauthorized: Failed to get user.', esc_attr( FASTWC_RESPONSE_401 ) );
 	}
 
 	// Some sanity checks before we use these variables.
 	if ( ! isset( $_SERVER['REQUEST_URI'] ) ) {
-		wp_die( '401 Unauthorized: Failed to get request URI.', esc_attr( FAST_RESPONSE_401 ) );
+		wp_die( '401 Unauthorized: Failed to get request URI.', esc_attr( FASTWC_RESPONSE_401 ) );
 	}
 	if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
-		wp_die( '401 Unauthorized: Failed to get HTTP Host.', esc_attr( FAST_RESPONSE_401 ) );
+		wp_die( '401 Unauthorized: Failed to get HTTP Host.', esc_attr( FASTWC_RESPONSE_401 ) );
 	}
 
 	// Get the path and query of the page being requested.
@@ -131,7 +131,7 @@ add_action( 'init', 'fastwc_login_init' );
 function fastwc_backend_strip_auth_query_param( $get ) {
 	$get_copy = $get;
 	unset( $get_copy['auth'] );
-	unset( $get_copy[ FAST_PARAM_WP_NONCE ] );
+	unset( $get_copy[ FASTWC_PARAM_WP_NONCE ] );
 	$get_query = fastwc_backend_join_get_parameters( $get_copy );
 	if ( strlen( $get_query ) > 0 ) {
 		$get_query = '?' . $get_query;
@@ -160,7 +160,7 @@ function fastwc_backend_join_get_parameters( $parameters ) {
  * @throws UnexpectedValueException Thrown when JWT audience doesn't match this app's ID.
  */
 function fastwc_backend_verify_jwt( $token_str ) {
-	$res     = wp_remote_get( get_option( FAST_SETTING_FAST_JWKS_URL ) );
+	$res     = wp_remote_get( get_option( FASTWC_SETTING_FAST_JWKS_URL ) );
 	$jwks    = wp_remote_retrieve_body( $res );
 	$keys    = json_decode( $jwks, true );
 	$key_set = JWK::parseKeySet( $keys );

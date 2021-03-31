@@ -22,7 +22,7 @@ function fastwc_load_template( $template_name, $args = array() ) {
 		get_template_directory() . '/templates/' . $template_name . '.php',
 
 		// Plugin directory.
-		FAST_PATH . 'templates/' . $template_name . '.php',
+		FASTWC_PATH . 'templates/' . $template_name . '.php',
 	);
 
 	// Check each file location and load the first one that exists.
@@ -51,7 +51,7 @@ function fastwc_load_template( $template_name, $args = array() ) {
 function fastwc_is_hidden_for_test_mode() {
 	// If test mode option is not yet set (e.g. plugin was just installed), treat it as enabled.
 	// There is code in the settings page that actually sets this to enabled the first time the user views the form.
-	$fastwc_test_mode = get_option( FAST_SETTING_TEST_MODE, '1' );
+	$fastwc_test_mode = get_option( FASTWC_SETTING_TEST_MODE, '1' );
 	if ( $fastwc_test_mode ) {
 		// In test mode, we only want to show the button if the user is an admin or their email ends with @fast.co.
 		$current_user = wp_get_current_user();

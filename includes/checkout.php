@@ -49,7 +49,7 @@ function fastwc_get_cart_data() {
  * - The product is a grouped product (not yet supported).
  * - The product is a subscription product (not yet supported).
  * - The product is an external product (never supported).
- * - The FAST_SETTING_APP_ID option is empty.
+ * - The FASTWC_SETTING_APP_ID option is empty.
  */
 function fastwc_should_hide_checkout_button() {
 	$return = false;
@@ -103,7 +103,7 @@ function fastwc_should_hide_checkout_button() {
  * - The cart has multiple coupons (not yet supported).
  * - A product in the cart has addons (not yet supported).
  * - A product in the cart is a subscription (not yet supported).
- * - The FAST_SETTING_APP_ID option is empty.
+ * - The FASTWC_SETTING_APP_ID option is empty.
  */
 function fastwc_should_hide_cart_checkout_button() {
 	// Check for test mode and app id set.
