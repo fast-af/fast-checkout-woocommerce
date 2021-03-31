@@ -13,24 +13,24 @@
  * @return array|WP_Error|WP_REST_Response
  * @throws Exception If failed to add items to cart or no shipping options available for address.
  */
-function fast_calculate_shipping( WP_REST_Request $request ) {
+function fastwc_calculate_shipping( WP_REST_Request $request ) {
 	$params = $request->get_params();
 	$return = false;
 
 	// This is needed for session to work.
 	wc()->frontend_includes();
 
-	fast_shipping_init_wc_session();
-	fast_shipping_init_wc_customer();
-	fast_shipping_init_wc_cart();
-	$return = fast_shipping_add_line_items_to_cart( $params );
+	fastwc_shipping_init_wc_session();
+	fastwc_shipping_init_wc_customer();
+	fastwc_shipping_init_wc_cart();
+	$return = fastwc_shipping_add_line_items_to_cart( $params );
 
 	if ( false === $return ) {
-		$return = fast_shipping_update_customer_information( $params );
+		$return = fastwc_shipping_update_customer_information( $params );
 	}
 
 	if ( false === $return ) {
-		$return = fast_shipping_calculate_packages();
+		$return = fastwc_shipping_calculate_packages();
 	}
 
 	// Cleanup cart.
@@ -42,7 +42,7 @@ function fast_calculate_shipping( WP_REST_Request $request ) {
 /**
  * Initialize the WC session.
  */
-function fast_shipping_init_wc_session() {
+function fastwc_shipping_init_wc_session() {
 	if ( null === WC()->session ) {
 		$session_class = apply_filters( 'woocommerce_session_handler', 'WC_Session_Handler' );
 		WC()->session  = new $session_class();
@@ -53,7 +53,7 @@ function fast_shipping_init_wc_session() {
 /**
  * Initialize the WC customer.
  */
-function fast_shipping_init_wc_customer() {
+function fastwc_shipping_init_wc_customer() {
 	if ( null === WC()->customer ) {
 		WC()->customer = new WC_Customer( get_current_user_id(), false );
 	}
@@ -62,7 +62,7 @@ function fast_shipping_init_wc_customer() {
 /**
  * Initialize the WC cart.
  */
-function fast_shipping_init_wc_cart() {
+function fastwc_shipping_init_wc_cart() {
 	if ( null === WC()->cart ) {
 		WC()->cart = new WC_Cart();
 		// We need to force a refresh of the cart contents
@@ -80,7 +80,7 @@ function fast_shipping_init_wc_cart() {
  *
  * @return mixed
  */
-function fast_shipping_add_line_items_to_cart( $params ) {
+function fastwc_shipping_add_line_items_to_cart( $params ) {
 	// Add body line items to cart.
 	foreach ( $params['line_items'] as $line_item ) {
 		$variation_id = ! empty( $line_item['variation_id'] ) ? $line_item['variation_id'] : 0;
@@ -111,7 +111,7 @@ function fast_shipping_add_line_items_to_cart( $params ) {
  *
  * @return mixed
  */
-function fast_shipping_update_customer_information( $params ) {
+function fastwc_shipping_update_customer_information( $params ) {
 	// Update customer information.
 	wc()->customer->set_props(
 		array(
@@ -144,7 +144,7 @@ function fast_shipping_update_customer_information( $params ) {
  *
  * @return mixed
  */
-function fast_shipping_calculate_packages() {
+function fastwc_shipping_calculate_packages() {
 	// Get packages for the cart.
 	$packages = WC()->cart->get_shipping_packages();
 
@@ -166,7 +166,7 @@ function fast_shipping_calculate_packages() {
 	}
 	$calculated_packages = wc()->shipping()->calculate_shipping( $packages );
 
-	$resp = fast_get_item_response( $calculated_packages );
+	$resp = fastwc_get_item_response( $calculated_packages );
 
 	return new WP_REST_Response( $resp, 200 );
 }
@@ -177,7 +177,7 @@ function fast_shipping_calculate_packages() {
  * @param array $package WooCommerce shipping packages.
  * @return array
  */
-function fast_get_item_response( $package ) {
+function fastwc_get_item_response( $package ) {
 	// Add product names and quantities.
 	$items = array();
 	foreach ( $package[0]['contents'] as $item_id => $values ) {
@@ -206,7 +206,7 @@ function fast_get_item_response( $package ) {
 				'country'   => $package[0]['destination']['country'],
 			),
 		'items'          => $items,
-		'shipping_rates' => fast_prepare_rates_response( $package ),
+		'shipping_rates' => fastwc_prepare_rates_response( $package ),
 	);
 }
 
@@ -216,13 +216,13 @@ function fast_get_item_response( $package ) {
  * @param array $package Shipping package complete with rates from WooCommerce.
  * @return array
  */
-function fast_prepare_rates_response( $package ) {
+function fastwc_prepare_rates_response( $package ) {
 	$rates = $package [0]['rates'];
 
 	$response = array();
 
 	foreach ( $rates as $rate ) {
-		$response[] = fast_get_rate_response( $rate );
+		$response[] = fastwc_get_rate_response( $rate );
 	}
 
 	return $response;
@@ -235,20 +235,20 @@ function fast_prepare_rates_response( $package ) {
  * @param WC_Shipping_Rate $rate Rate object.
  * @return array
  */
-function fast_get_rate_response( $rate ) {
+function fastwc_get_rate_response( $rate ) {
 	return array_merge(
 		array(
-			'rate_id'       => fast_get_rate_prop( $rate, 'id' ),
-			'name'          => fast_prepare_html_response( fast_get_rate_prop( $rate, 'label' ) ),
-			'description'   => fast_prepare_html_response( fast_get_rate_prop( $rate, 'description' ) ),
-			'delivery_time' => fast_prepare_html_response( fast_get_rate_prop( $rate, 'delivery_time' ) ),
-			'price'         => fast_get_rate_prop( $rate, 'cost' ),
-			'taxes'         => fast_get_rate_prop( $rate, 'taxes' ),
-			'instance_id'   => fast_get_rate_prop( $rate, 'instance_id' ),
-			'method_id'     => fast_get_rate_prop( $rate, 'method_id' ),
-			'meta_data'     => fast_get_rate_meta_data( $rate ),
+			'rate_id'       => fastwc_get_rate_prop( $rate, 'id' ),
+			'name'          => fastwc_prepare_html_response( fastwc_get_rate_prop( $rate, 'label' ) ),
+			'description'   => fastwc_prepare_html_response( fastwc_get_rate_prop( $rate, 'description' ) ),
+			'delivery_time' => fastwc_prepare_html_response( fastwc_get_rate_prop( $rate, 'delivery_time' ) ),
+			'price'         => fastwc_get_rate_prop( $rate, 'cost' ),
+			'taxes'         => fastwc_get_rate_prop( $rate, 'taxes' ),
+			'instance_id'   => fastwc_get_rate_prop( $rate, 'instance_id' ),
+			'method_id'     => fastwc_get_rate_prop( $rate, 'method_id' ),
+			'meta_data'     => fastwc_get_rate_meta_data( $rate ),
 		),
-		fast_get_store_currency_response()
+		fastwc_get_store_currency_response()
 	);
 }
 
@@ -257,7 +257,7 @@ function fast_get_rate_response( $rate ) {
  *
  * @return array
  */
-function fast_get_store_currency_response() {
+function fastwc_get_store_currency_response() {
 	$position = get_option( 'woocommerce_currency_pos' );
 	$symbol   = html_entity_decode( get_woocommerce_currency_symbol() );
 	$prefix   = '';
@@ -299,7 +299,7 @@ function fast_get_store_currency_response() {
  * @param string           $prop Prop name.
  * @return string
  */
-function fast_get_rate_prop( $rate, $prop ) {
+function fastwc_get_rate_prop( $rate, $prop ) {
 	$getter = 'get_' . $prop;
 	return \is_callable( array( $rate, $getter ) ) ? $rate->$getter() : '';
 }
@@ -310,7 +310,7 @@ function fast_get_rate_prop( $rate, $prop ) {
  * @param WC_Shipping_Rate $rate Rate object.
  * @return array
  */
-function fast_get_rate_meta_data( $rate ) {
+function fastwc_get_rate_meta_data( $rate ) {
 	$meta_data = $rate->get_meta_data();
 
 	return array_reduce(
@@ -335,9 +335,9 @@ function fast_get_rate_meta_data( $rate ) {
  * @param string|array $response Data to format.
  * @return string|array Formatted data.
  */
-function fast_prepare_html_response( $response ) {
+function fastwc_prepare_html_response( $response ) {
 	if ( is_array( $response ) ) {
-		return array_map( 'fast_prepare_html_response', $response );
+		return array_map( 'fastwc_prepare_html_response', $response );
 	}
 	return is_scalar( $response ) ? wp_kses_post( trim( convert_chars( wptexturize( $response ) ) ) ) : $response;
 }

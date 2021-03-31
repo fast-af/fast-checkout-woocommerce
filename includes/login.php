@@ -9,8 +9,8 @@
 
 $loader = require_once __DIR__ . '/../vendor/autoload.php';
 
-define( 'FAST_PARAM_WP_NONCE', '_wpnonce' );
-define( 'FAST_RESPONSE_401', '401 Unauthorized' );
+define( 'FASTWC_PARAM_WP_NONCE', '_wpnonce' );
+define( 'FASTWC_RESPONSE_401', '401 Unauthorized' );
 
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\JWK;
@@ -18,14 +18,14 @@ use \Firebase\JWT\JWK;
 /**
  * Returns true if the Fast Login button should be hidden for any of the following reasons:
  * - Test mode is enabled and current user is someone who should NOT see the button when test mode is on.
- * - The FAST_SETTING_APP_ID option is empty.
+ * - The FASTWC_SETTING_APP_ID option is empty.
  */
-function fast_should_hide_login_button() {
+function fastwc_should_hide_login_button() {
 	$return = false;
 
 	// Hide the button if the app isn't configured.
-	$fast_app_id = fast_get_app_id();
-	if ( empty( $fast_app_id ) ) {
+	$fastwc_app_id = fastwc_get_app_id();
+	if ( empty( $fastwc_app_id ) ) {
 		$return = true;
 	}
 
@@ -33,8 +33,8 @@ function fast_should_hide_login_button() {
 
 	// If test mode option is not yet set (e.g. plugin was just installed), treat it as enabled.
 	// There is code in the settings page that actually sets this to enabled the first time the user views the form.
-	$fast_test_mode = get_option( FAST_SETTING_TEST_MODE, '1' );
-	if ( ! $return && $fast_test_mode ) {
+	$fastwc_test_mode = get_option( FASTWC_SETTING_TEST_MODE, '1' );
+	if ( ! $return && $fastwc_test_mode ) {
 		// In test mode, show the login button if the user is an admin or their email ends with @fast.co.
 		// Otherwise, hide it.
 		$return = ! preg_match( '/@fast.co$/i', $current_user->user_email ) && ! $current_user->has_cap( 'administrator' );
@@ -52,61 +52,61 @@ function fast_should_hide_login_button() {
 /**
  * Inject Fast login component in the footer.
  */
-function fast_add_login_to_footer() {
-	if ( fast_should_hide_login_button() ) {
+function fastwc_add_login_to_footer() {
+	if ( fastwc_should_hide_login_button() ) {
 		return;
 	}
 
-	fast_load_template( 'fast-login' );
+	fastwc_load_template( 'fast-login' );
 }
-add_action( 'get_footer', 'fast_add_login_to_footer' );
+add_action( 'get_footer', 'fastwc_add_login_to_footer' );
 
 /**
  * Init Fast login.
  */
-function fast_login_init() {
+function fastwc_login_init() {
 	// If the "auth" query param isn't set, exit.
 	if ( ! isset( $_GET['auth'] ) ) {
 		return;
 	}
 
 	// Verify the nonce.
-	if ( ! isset( $_GET[ FAST_PARAM_WP_NONCE ] ) ) {
+	if ( ! isset( $_GET[ FASTWC_PARAM_WP_NONCE ] ) ) {
 		return;
 	}
 
-	$nonce = sanitize_text_field( wp_unslash( $_GET[ FAST_PARAM_WP_NONCE ] ) );
+	$nonce = sanitize_text_field( wp_unslash( $_GET[ FASTWC_PARAM_WP_NONCE ] ) );
 	if ( ! wp_verify_nonce( $nonce, 'fast-backend-login-auth' ) ) {
-		wp_die( '401 Unauthorized: Invalid nonce.', esc_attr( FAST_RESPONSE_401 ) );
+		wp_die( '401 Unauthorized: Invalid nonce.', esc_attr( FASTWC_RESPONSE_401 ) );
 	}
 
 	$auth_token = sanitize_text_field( wp_unslash( $_GET['auth'] ) );
 
 	$claims = null;
 	try {
-		$claims = fast_backend_verify_jwt( $auth_token );
+		$claims = fastwc_backend_verify_jwt( $auth_token );
 	} catch ( Exception $e ) {
-		wp_die( '401 Unauthorized: Failed to login.', esc_attr( FAST_RESPONSE_401 ) );
+		wp_die( '401 Unauthorized: Failed to login.', esc_attr( FASTWC_RESPONSE_401 ) );
 	}
 
 	$user_to_login = get_user_by( 'email', $claims->email );
 
 	if ( ! $user_to_login ) {
-		wp_die( '401 Unauthorized: Failed to get user.', esc_attr( FAST_RESPONSE_401 ) );
+		wp_die( '401 Unauthorized: Failed to get user.', esc_attr( FASTWC_RESPONSE_401 ) );
 	}
 
 	// Some sanity checks before we use these variables.
 	if ( ! isset( $_SERVER['REQUEST_URI'] ) ) {
-		wp_die( '401 Unauthorized: Failed to get request URI.', esc_attr( FAST_RESPONSE_401 ) );
+		wp_die( '401 Unauthorized: Failed to get request URI.', esc_attr( FASTWC_RESPONSE_401 ) );
 	}
 	if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
-		wp_die( '401 Unauthorized: Failed to get HTTP Host.', esc_attr( FAST_RESPONSE_401 ) );
+		wp_die( '401 Unauthorized: Failed to get HTTP Host.', esc_attr( FASTWC_RESPONSE_401 ) );
 	}
 
 	// Get the path and query of the page being requested.
 	$request_uri = esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
 	$target_page = wp_parse_url( $request_uri, PHP_URL_PATH );
-	$get_query   = fast_backend_strip_auth_query_param( $_GET );
+	$get_query   = fastwc_backend_strip_auth_query_param( $_GET );
 
 	wp_set_auth_cookie( $user_to_login->ID, true );
 	wp_set_current_user( $user_to_login->ID );
@@ -121,18 +121,18 @@ function fast_login_init() {
 
 	wp_safe_redirect( 'https://' . wp_unslash( $_SERVER['HTTP_HOST'] ) . $target_page . $get_query );
 }
-add_action( 'init', 'fast_login_init' );
+add_action( 'init', 'fastwc_login_init' );
 
 /**
  * Removes the "auth" query parameter from the URL.
  *
  * @param object $get The GET request.
  */
-function fast_backend_strip_auth_query_param( $get ) {
+function fastwc_backend_strip_auth_query_param( $get ) {
 	$get_copy = $get;
 	unset( $get_copy['auth'] );
-	unset( $get_copy[ FAST_PARAM_WP_NONCE ] );
-	$get_query = fast_backend_join_get_parameters( $get_copy );
+	unset( $get_copy[ FASTWC_PARAM_WP_NONCE ] );
+	$get_query = fastwc_backend_join_get_parameters( $get_copy );
 	if ( strlen( $get_query ) > 0 ) {
 		$get_query = '?' . $get_query;
 	}
@@ -144,7 +144,7 @@ function fast_backend_strip_auth_query_param( $get ) {
  *
  * @param object $parameters A copy of the GET request.
  */
-function fast_backend_join_get_parameters( $parameters ) {
+function fastwc_backend_join_get_parameters( $parameters ) {
 	$keys        = array_keys( $parameters );
 	$assignments = array();
 	foreach ( $keys as $key ) {
@@ -159,15 +159,15 @@ function fast_backend_join_get_parameters( $parameters ) {
  * @param string $token_str The stringified token from the auth query param.
  * @throws UnexpectedValueException Thrown when JWT audience doesn't match this app's ID.
  */
-function fast_backend_verify_jwt( $token_str ) {
-	$res     = wp_remote_get( get_option( FAST_SETTING_FAST_JWKS_URL ) );
+function fastwc_backend_verify_jwt( $token_str ) {
+	$res     = wp_remote_get( get_option( FASTWC_SETTING_FAST_JWKS_URL ) );
 	$jwks    = wp_remote_retrieve_body( $res );
 	$keys    = json_decode( $jwks, true );
 	$key_set = JWK::parseKeySet( $keys );
 
 	$claims = JWT::decode( $token_str, $key_set, array( 'RS256' ) );
 
-	$app_id = fast_get_app_id();
+	$app_id = fastwc_get_app_id();
 	if ( $app_id !== $claims->aud ) {
 		throw new UnexpectedValueException( 'Audience mismatch' );
 	}
