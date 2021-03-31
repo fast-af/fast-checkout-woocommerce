@@ -6,72 +6,72 @@
  */
 
 // Define the API route base path.
-define( 'FAST_ROUTES_BASE', 'wc/fast/v1' );
+define( 'FASTWC_ROUTES_BASE', 'wc/fast/v1' );
 
 // Provides an API for polling shipping options.
-require_once FAST_PATH . 'includes/routes/shipping.php';
+require_once FASTWC_PATH . 'includes/routes/shipping.php';
 // Provides an API that exposes shipping zones.
-require_once FAST_PATH . 'includes/routes/shipping-zones.php';
+require_once FASTWC_PATH . 'includes/routes/shipping-zones.php';
 // Provides an API that exposes plugin info.
-require_once FAST_PATH . 'includes/routes/plugin-info.php';
+require_once FASTWC_PATH . 'includes/routes/plugin-info.php';
 
 /**
  * Register Fast Woocommerce routes for the REST API.
  */
-function fast_rest_api_init() {
+function fastwc_rest_api_init() {
 	// Register a utility route to get information on installed plugins.
 	register_rest_route(
-		FAST_ROUTES_BASE . '/store',
+		FASTWC_ROUTES_BASE . '/store',
 		'plugins',
 		array(
 			'methods'             => 'GET',
-			'callback'            => 'fast_get_plugin_info',
-			'permission_callback' => 'fast_api_permission_callback',
+			'callback'            => 'fastwc_get_plugin_info',
+			'permission_callback' => 'fastwc_api_permission_callback',
 		)
 	);
 
 	// Register a route to collect all possible shipping locations.
 	register_rest_route(
-		FAST_ROUTES_BASE,
+		FASTWC_ROUTES_BASE,
 		'shipping_zones',
 		array(
 			'methods'             => 'GET',
-			'callback'            => 'fast_get_zones',
-			'permission_callback' => 'fast_api_permission_callback',
+			'callback'            => 'fastwc_get_zones',
+			'permission_callback' => 'fastwc_api_permission_callback',
 		)
 	);
 
 	// Register a route to calculate available shipping rates.
 	// FE -> OMS -> Blender -> (pID, variantID, Shipping info, CustomerID)Plugin.
 	register_rest_route(
-		FAST_ROUTES_BASE,
+		FASTWC_ROUTES_BASE,
 		'shipping',
 		array(
 			'methods'             => 'POST',
-			'callback'            => 'fast_calculate_shipping',
-			'permission_callback' => 'fast_api_permission_callback',
+			'callback'            => 'fastwc_calculate_shipping',
+			'permission_callback' => 'fastwc_api_permission_callback',
 		)
 	);
 
 	// Register a route to test the Authorization header.
 	register_rest_route(
-		FAST_ROUTES_BASE,
+		FASTWC_ROUTES_BASE,
 		'authecho',
 		array(
 			'methods'             => 'GET',
-			'callback'            => 'fast_test_authorization_header',
+			'callback'            => 'fastwc_test_authorization_header',
 			'permission_callback' => '__return_true',
 		)
 	);
 }
-add_action( 'rest_api_init', 'fast_rest_api_init' );
+add_action( 'rest_api_init', 'fastwc_rest_api_init' );
 
 /**
  * REST API permissions callback.
  *
  * @return bool
  */
-function fast_api_permission_callback() {
+function fastwc_api_permission_callback() {
 	// Make sure an instance of WooCommerce is loaded.
 	// This will load the `WC_REST_Authentication` class, which
 	// handles the API consumer key and secret.
@@ -87,7 +87,7 @@ function fast_api_permission_callback() {
  *
  * @return array|WP_Error|WP_REST_Response
  */
-function fast_test_authorization_header( $request ) {
+function fastwc_test_authorization_header( $request ) {
 	$auth_header = 'No Authorization Header';
 
 	$headers = $request->get_headers();

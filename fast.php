@@ -10,21 +10,22 @@
  * @package Fast
  */
 
-define( 'FAST_PATH', plugin_dir_path( __FILE__ ) );
+define( 'FASTWC_PATH', plugin_dir_path( __FILE__ ) );
 
 // WP Admin plugin settings.
-require_once FAST_PATH . 'includes/admin/settings.php';
+require_once FASTWC_PATH . 'includes/admin/settings.php';
 // Loads fast.js.
-require_once FAST_PATH . 'includes/js.php';
+require_once FASTWC_PATH . 'includes/js.php';
 // Loads fast utilities.
+require_once FASTWC_PATH . 'includes/utilities.php';
 require_once FAST_PATH . 'includes/utilities.php';
 // Add suppot for multicurrency.
 require_once FAST_PATH . 'includes/multicurrency.php';
 // Adds Fast Checkout button to store.
-require_once FAST_PATH . 'includes/checkout.php';
+require_once FASTWC_PATH . 'includes/checkout.php';
 // Adds Fast Login button to store.
-require_once FAST_PATH . 'includes/login.php';
+require_once FASTWC_PATH . 'includes/login.php';
 // Registers routes for the plugin API endpoints.
-require_once FAST_PATH . 'includes/routes.php';
+require_once FASTWC_PATH . 'includes/routes.php';
 // Add Fast button shortcodes.
-require_once FAST_PATH . 'includes/shortcodes.php';
+require_once FASTWC_PATH . 'includes/shortcodes.php';

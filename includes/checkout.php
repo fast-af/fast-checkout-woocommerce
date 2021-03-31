@@ -11,35 +11,35 @@
  * Returns cart item data that Fast Checkout button can interpret.
  * This function also populates some global variables about cart state, such as whether it contains products we don't support.
  */
-function fast_get_cart_data() {
-	$fast_cart_data = array();
+function fastwc_get_cart_data() {
+	$fastwc_cart_data = array();
 
 	if ( ! empty( WC()->cart ) ) {
 		foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
 			// Populate info about this cart item.
 			// Fast backend expects strings for product/variant/quantity so we use strval() here.
-			$fast_cart_item_data = array(
+			$fastwc_cart_item_data = array(
 				'product_id' => strval( $cart_item['product_id'] ),
 				'quantity'   => strval( intval( $cart_item['quantity'] ) ), // quantity is a float in wc, casting to int first to be safer.
 			);
 			if ( ! empty( $cart_item['variation_id'] ) ) {
 				// Only track variation_id if it's set.
-				$fast_cart_item_data['variant_id'] = strval( $cart_item['variation_id'] );
+				$fastwc_cart_item_data['variant_id'] = strval( $cart_item['variation_id'] );
 			}
 			if ( ! empty( $cart_item['variation'] ) ) {
 				// Track the attribute options if they are set.
 				foreach ( $cart_item['variation'] as $option_id => $option_value ) {
-					$fast_cart_item_data['option_values'][] = array(
+					$fastwc_cart_item_data['option_values'][] = array(
 						'option_id'    => $option_id,
 						'option_value' => $option_value,
 					);
 				}
 			}
-			$fast_cart_data[ $cart_item_key ] = $fast_cart_item_data;
+			$fastwc_cart_data[ $cart_item_key ] = $fastwc_cart_item_data;
 		}
 	}
 
-	return $fast_cart_data;
+	return $fastwc_cart_data;
 }
 
 /**
@@ -49,13 +49,13 @@ function fast_get_cart_data() {
  * - The product is a grouped product (not yet supported).
  * - The product is a subscription product (not yet supported).
  * - The product is an external product (never supported).
- * - The FAST_SETTING_APP_ID option is empty.
+ * - The FASTWC_SETTING_APP_ID option is empty.
  */
-function fast_should_hide_checkout_button() {
+function fastwc_should_hide_checkout_button() {
 	$return = false;
 
 	// Check for test mode and app id set.
-	if ( fast_is_hidden_for_test_mode() || fast_is_app_id_empty() ) {
+	if ( fastwc_is_hidden_for_test_mode() || fastwc_is_app_id_empty() ) {
 		$return = true;
 	}
 
@@ -64,11 +64,11 @@ function fast_should_hide_checkout_button() {
 		// - wc_product_addon_start
 		// - woocommerce_grouped_product_list_before
 		// They are ran on the PDP before this function is called.
-		global $fast_product_has_addons, $fast_product_is_grouped;
+		global $fastwc_product_has_addons, $fastwc_product_is_grouped;
 
 		if (
-			$fast_product_has_addons ||
-			$fast_product_is_grouped
+			$fastwc_product_has_addons ||
+			$fastwc_product_is_grouped
 		) {
 			$return = true;
 		}
@@ -103,15 +103,15 @@ function fast_should_hide_checkout_button() {
  * - The cart has multiple coupons (not yet supported).
  * - A product in the cart has addons (not yet supported).
  * - A product in the cart is a subscription (not yet supported).
- * - The FAST_SETTING_APP_ID option is empty.
+ * - The FASTWC_SETTING_APP_ID option is empty.
  */
-function fast_should_hide_cart_checkout_button() {
+function fastwc_should_hide_cart_checkout_button() {
 	// Check for test mode and app id set.
 	if (
-		fast_is_hidden_for_test_mode() ||
-		fast_is_app_id_empty() ||
-		fast_should_hide_because_unsupported_products() ||
-		fast_should_hide_because_too_many_coupons()
+		fastwc_is_hidden_for_test_mode() ||
+		fastwc_is_app_id_empty() ||
+		fastwc_should_hide_because_unsupported_products() ||
+		fastwc_should_hide_because_too_many_coupons()
 	) {
 		return true;
 	}
@@ -124,7 +124,7 @@ function fast_should_hide_cart_checkout_button() {
  *
  * @return bool
  */
-function fast_should_hide_because_too_many_coupons() {
+function fastwc_should_hide_because_too_many_coupons() {
 	$cart = WC()->cart;
 
 	// Check the coupon count.
@@ -141,7 +141,7 @@ function fast_should_hide_because_too_many_coupons() {
  *
  * @return bool
  */
-function fast_should_hide_because_unsupported_products() {
+function fastwc_should_hide_because_unsupported_products() {
 	$cart   = WC()->cart;
 	$return = false;
 
@@ -183,34 +183,34 @@ function fast_should_hide_because_unsupported_products() {
 /**
  * Detect if the product has any addons (Fast Checkout does not yet support these products).
  */
-function fast_wc_product_addon_start() {
+function fastwc_wc_product_addon_start() {
 	// If the store has the addons plugin installed, then this hook will run on any PDP pages for products with addons.
 	// In this situation, we want to note this so that our hook that displays the button can instead hide the button.
-	global $fast_product_has_addons;
-	$fast_product_has_addons = true;
+	global $fastwc_product_has_addons;
+	$fastwc_product_has_addons = true;
 }
-add_action( 'wc_product_addon_start', 'fast_wc_product_addon_start' );
+add_action( 'wc_product_addon_start', 'fastwc_wc_product_addon_start' );
 
 /**
  * Detect if the product is a grouped product (Fast Checkout does not yet support these products).
  */
-function fast_woocommerce_grouped_product_list_before() {
-	global $fast_product_is_grouped;
-	$fast_product_is_grouped = true;
+function fastwc_woocommerce_grouped_product_list_before() {
+	global $fastwc_product_is_grouped;
+	$fastwc_product_is_grouped = true;
 }
-add_action( 'woocommerce_grouped_product_list_before', 'fast_woocommerce_grouped_product_list_before' );
+add_action( 'woocommerce_grouped_product_list_before', 'fastwc_woocommerce_grouped_product_list_before' );
 
 /**
  * Inject Fast Checkout button after Add to Cart button.
  */
-function fast_woocommerce_after_add_to_cart_quantity() {
-	if ( fast_should_hide_checkout_button() ) {
+function fastwc_woocommerce_after_add_to_cart_quantity() {
+	if ( fastwc_should_hide_checkout_button() ) {
 		return;
 	}
 
-	fast_load_template( 'fast-pdp' );
+	fastwc_load_template( 'fast-pdp' );
 }
-add_action( 'woocommerce_after_add_to_cart_quantity', 'fast_woocommerce_after_add_to_cart_quantity' );
+add_action( 'woocommerce_after_add_to_cart_quantity', 'fastwc_woocommerce_after_add_to_cart_quantity' );
 
 /**
  * Cart page
@@ -219,38 +219,38 @@ add_action( 'woocommerce_after_add_to_cart_quantity', 'fast_woocommerce_after_ad
 /**
  * Inject Fast Checkout button after Proceed to Checkout button on cart page.
  */
-function fast_woocommerce_proceed_to_checkout() {
-	if ( fast_should_hide_cart_checkout_button() ) {
+function fastwc_woocommerce_proceed_to_checkout() {
+	if ( fastwc_should_hide_cart_checkout_button() ) {
 		return;
 	}
 
-	fast_load_template( 'fast-cart' );
+	fastwc_load_template( 'fast-cart' );
 }
-add_action( 'woocommerce_proceed_to_checkout', 'fast_woocommerce_proceed_to_checkout', 9 );
+add_action( 'woocommerce_proceed_to_checkout', 'fastwc_woocommerce_proceed_to_checkout', 9 );
 
 /**
  * Mini-cart widget
  */
-function fast_woocommerce_widget_shopping_cart_before_buttons() {
-	if ( fast_should_hide_cart_checkout_button() ) {
+function fastwc_woocommerce_widget_shopping_cart_before_buttons() {
+	if ( fastwc_should_hide_cart_checkout_button() ) {
 		return;
 	}
 
-	fast_load_template( 'fast-mini-cart' );
+	fastwc_load_template( 'fast-mini-cart' );
 }
-add_action( 'woocommerce_widget_shopping_cart_before_buttons', 'fast_woocommerce_widget_shopping_cart_before_buttons', 30 );
+add_action( 'woocommerce_widget_shopping_cart_before_buttons', 'fastwc_woocommerce_widget_shopping_cart_before_buttons', 30 );
 
 /**
  * Checkout page
  */
-function fast_woocommerce_before_checkout_form() {
-	if ( fast_should_hide_cart_checkout_button() ) {
+function fastwc_woocommerce_before_checkout_form() {
+	if ( fastwc_should_hide_cart_checkout_button() ) {
 		return;
 	}
 
-	fast_load_template( 'fast-checkout' );
+	fastwc_load_template( 'fast-checkout' );
 }
-add_action( 'woocommerce_before_checkout_form', 'fast_woocommerce_before_checkout_form' );
+add_action( 'woocommerce_before_checkout_form', 'fastwc_woocommerce_before_checkout_form' );
 
 /**
  * Handle the order object before it is inserted via the REST API.
@@ -260,7 +260,7 @@ add_action( 'woocommerce_before_checkout_form', 'fast_woocommerce_before_checkou
  *
  * @return WC_Data
  */
-function fast_woocommerce_rest_pre_insert_shop_order_object( $order, $request ) {
+function fastwc_woocommerce_rest_pre_insert_shop_order_object( $order, $request ) {
 
 	$order = fast_maybe_update_order_for_multicurrency( $order, $request );
 
@@ -287,7 +287,7 @@ function fast_woocommerce_rest_pre_insert_shop_order_object( $order, $request ) 
 	// Return the order object unchanged.
 	return $order;
 }
-add_filter( 'woocommerce_rest_pre_insert_shop_order_object', 'fast_woocommerce_rest_pre_insert_shop_order_object', 10, 2 );
+add_filter( 'woocommerce_rest_pre_insert_shop_order_object', 'fastwc_woocommerce_rest_pre_insert_shop_order_object', 10, 3 );
 
 /**
  * Fast transition trash to on-hold.
@@ -295,7 +295,7 @@ add_filter( 'woocommerce_rest_pre_insert_shop_order_object', 'fast_woocommerce_r
  * @param int      $order_id The order ID.
  * @param WC_Order $order    The order object.
  */
-function fast_order_status_trash_to_on_hold( $order_id, $order ) {
+function fastwc_order_status_trash_to_on_hold( $order_id, $order ) {
 
 	if ( ! empty( $order ) ) {
 		$meta_data = $order->get_meta_data();
@@ -320,12 +320,12 @@ function fast_order_status_trash_to_on_hold( $order_id, $order ) {
 		}
 	}
 }
-add_action( 'woocommerce_order_status_trash_to_on-hold', 'fast_order_status_trash_to_on_hold', 10, 2 );
+add_action( 'woocommerce_order_status_trash_to_on-hold', 'fastwc_order_status_trash_to_on_hold', 10, 2 );
 
 /**
  * Clear the cart of `fast_order_created=1` is added to the URL.
  */
-function fast_maybe_clear_cart_and_redirect() {
+function fastwc_maybe_clear_cart_and_redirect() {
 	$fast_order_created = isset( $_GET['fast_order_created'] ) ? absint( $_GET['fast_order_created'] ) : false; // phpcs:ignore
 
 	if (
@@ -338,4 +338,4 @@ function fast_maybe_clear_cart_and_redirect() {
 		wp_safe_redirect( $cart_url );
 	}
 }
-add_action( 'init', 'fast_maybe_clear_cart_and_redirect' );
+add_action( 'init', 'fastwc_maybe_clear_cart_and_redirect' );
