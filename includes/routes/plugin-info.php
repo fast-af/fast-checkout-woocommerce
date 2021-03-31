@@ -31,7 +31,7 @@
  *     }
  * }
  */
-function fast_get_plugin_info() {
+function fastwc_get_plugin_info() {
 
 	// Get all plugins.
 	include_once 'wp-admin/includes/plugin.php';

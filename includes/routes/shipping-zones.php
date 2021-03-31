@@ -11,7 +11,7 @@
  *
  * @return array|WP_Error|WP_REST_Response
  */
-function fast_get_zones() {
+function fastwc_get_zones() {
 	$zone_ids = array_keys( array( '' ) + WC_Shipping_Zones::get_zones() );
 	$loc_arr  = array();
 
@@ -25,7 +25,7 @@ function fast_get_zones() {
 
 		$loc_arr = array_merge(
 			$loc_arr,
-			fast_parse_locations( $locations, $loc_arr )
+			fastwc_parse_locations( $locations, $loc_arr )
 		);
 	}
 
@@ -40,7 +40,7 @@ function fast_get_zones() {
  *
  * @return array
  */
-function fast_parse_locations( $locations, $loc_arr ) {
+function fastwc_parse_locations( $locations, $loc_arr ) {
 	$new_loc_arr = array();
 
 	foreach ( $locations as $location ) {
@@ -49,7 +49,7 @@ function fast_parse_locations( $locations, $loc_arr ) {
 		}
 
 		// Do not insert item with same code.
-		if ( ! fast_loc_arr_has_location( $loc_arr, $location ) ) {
+		if ( ! fastwc_loc_arr_has_location( $loc_arr, $location ) ) {
 			$new_loc_arr[] = array(
 				'code' => $location->code,
 				'type' => $location->type,
@@ -68,7 +68,7 @@ function fast_parse_locations( $locations, $loc_arr ) {
  *
  * @return bool
  */
-function fast_loc_arr_has_location( $loc_arr, $location ) {
+function fastwc_loc_arr_has_location( $loc_arr, $location ) {
 	foreach ( $loc_arr as $li ) {
 		if ( $li->code === $location->code ) {
 			return true;
