@@ -17,9 +17,9 @@
  *
  * @return string
  */
-function fast_update_price_for_multicurrency_woocommerce_currency_switcher( $price, $product, $order, $request ) {
+function fastwc_update_price_for_multicurrency_woocommerce_currency_switcher( $price, $product, $order, $request ) {
 	global $WOOCS; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase
 
 	return $WOOCS->raw_woocommerce_price( $price, $product ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase
 }
-add_filter( 'fast_update_price_for_multicurrency_woocommerce_currency_switcher', 'fast_update_price_for_multicurrency_woocommerce_currency_switcher', 10, 4 );
+add_filter( 'fastwc_update_price_for_multicurrency_woocommerce_currency_switcher', 'fastwc_update_price_for_multicurrency_woocommerce_currency_switcher', 10, 4 );

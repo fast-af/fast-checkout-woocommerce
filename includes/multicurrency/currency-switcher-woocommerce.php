@@ -17,10 +17,10 @@
  *
  * @return string
  */
-function fast_update_price_for_multicurrency_currency_switcher_woocommerce( $price, $product, $order, $request ) {
+function fastwc_update_price_for_multicurrency_currency_switcher_woocommerce( $price, $product, $order, $request ) {
 
 	// Entry point for updating the order for multicurrency using this plugin.
 
 	return $order;
 }
-add_filter( 'fast_update_price_for_multicurrency_currency_switcher_woocommerce', 'fast_update_price_for_multicurrency_currency_switcher_woocommerce', 10, 4 );
+add_filter( 'fastwc_update_price_for_multicurrency_currency_switcher_woocommerce', 'fastwc_update_price_for_multicurrency_currency_switcher_woocommerce', 10, 4 );

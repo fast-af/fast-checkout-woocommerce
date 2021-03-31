@@ -6,18 +6,18 @@
  */
 
 // Add support for Currency Switcher for WooCommerce plugin.
-require_once FAST_PATH . 'includes/multicurrency/currency-switcher-woocommerce.php';
+require_once FASTWC_PATH . 'includes/multicurrency/currency-switcher-woocommerce.php';
 // Add support for WooCommerce Currency Switcher plugin.
-require_once FAST_PATH . 'includes/multicurrency/woocommerce-currency-switcher.php';
+require_once FASTWC_PATH . 'includes/multicurrency/woocommerce-currency-switcher.php';
 // Add support for Price Based on Country for WooCommerce plugin.
-require_once FAST_PATH . 'includes/multicurrency/woocommerce-product-price-based-on-countries.php';
+require_once FASTWC_PATH . 'includes/multicurrency/woocommerce-product-price-based-on-countries.php';
 
 /**
  * Get a list of multicurrency plugins supported by Fast.
  *
  * @return array
  */
-function fast_get_supported_multicurrency_plugins() {
+function fastwc_get_supported_multicurrency_plugins() {
 
 	// List of built-in supported multicurrency plugins.
 	$supported_plugins = array(
@@ -32,7 +32,7 @@ function fast_get_supported_multicurrency_plugins() {
 	 *
 	 * @param array $supported_plugins The list of supported plugins.
 	 */
-	return apply_filters( 'fast_supposted_multicurrency_plugins', $supported_plugins );
+	return apply_filters( 'fastwc_supposted_multicurrency_plugins', $supported_plugins );
 }
 
 /**
@@ -41,8 +41,8 @@ function fast_get_supported_multicurrency_plugins() {
  *
  * @return mixed
  */
-function fast_get_active_multicurrency_plugin() {
-	$multicurrency_plugins = fast_get_supported_multicurrency_plugins();
+function fastwc_get_active_multicurrency_plugin() {
+	$multicurrency_plugins = fastwc_get_supported_multicurrency_plugins();
 
 	if ( ! empty( $multicurrency_plugins ) ) {
 		include_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -68,8 +68,8 @@ function fast_get_active_multicurrency_plugin() {
  *
  * @return WC_Data
  */
-function fast_maybe_update_order_for_multicurrency( $order, $request ) {
-	$multicurrency_plugin = fast_get_active_multicurrency_plugin();
+function fastwc_maybe_update_order_for_multicurrency( $order, $request ) {
+	$multicurrency_plugin = fastwc_get_active_multicurrency_plugin();
 
 	$wc_currency    = get_woocommerce_currency();
 	$order_currency = method_exists( $order, 'get_currency' ) ? $order->get_currency() : $wc_currency;
@@ -79,7 +79,7 @@ function fast_maybe_update_order_for_multicurrency( $order, $request ) {
 		&& ! is_empty( $order_currency ) // Make sure the order currency is set.
 		&& $wc_currency !== $order_currency // Make sure the order currency is not the default currency.
 	) {
-		$order = fast_update_order_for_multicurrency( $order, $request );
+		$order = fastwc_update_order_for_multicurrency( $order, $request );
 	}
 
 	return $order;
@@ -93,7 +93,7 @@ function fast_maybe_update_order_for_multicurrency( $order, $request ) {
  *
  * @return WC_Data
  */
-function fast_update_order_for_multicurrency( $order, $request ) {
+function fastwc_update_order_for_multicurrency( $order, $request ) {
 
 	foreach ( $order->get_items() as $item_id => $item ) {
 		$product  = method_exists( $item, 'get_product' ) ? $item->get_product() : null;
@@ -102,7 +102,7 @@ function fast_update_order_for_multicurrency( $order, $request ) {
 		if ( ! empty( $product ) ) {
 			// Get the price from the multicurrency plugin.
 			$price = apply_filters(
-				"fast_update_price_for_multicurrency_{$multicurrency_plugin}",
+				"fastwc_update_price_for_multicurrency_{$multicurrency_plugin}",
 				$product->get_price(),
 				$product,
 				$order,
