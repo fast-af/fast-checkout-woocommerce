@@ -13,25 +13,25 @@
  * @uses add_shortcode
  * @see https://codex.wordpress.org/Shortcode_API
  */
-function fast_add_shortcodes() {
+function fastwc_add_shortcodes() {
 	// Add PDP checkout button shortcode.
-	add_shortcode( 'fast_product', 'fast_shortcode_product_button' );
+	add_shortcode( 'fast_product', 'fastwc_shortcode_product_button' );
 
 	// Add cart checktout button shortcode.
-	add_shortcode( 'fast_cart', 'fast_shortcode_cart_button' );
+	add_shortcode( 'fast_cart', 'fastwc_shortcode_cart_button' );
 }
-add_action( 'init', 'fast_add_shortcodes' );
+add_action( 'init', 'fastwc_add_shortcodes' );
 
 /**
- * Display the Fast PDP button from the `fast_product` shortcode.
+ * Display the Fast PDP button from the `fastwc_product` shortcode.
  * Note: This is currently exprimental and should not be used in a production site.
  *
  * @param array $atts Shortcode attributes.
  *
  * @return string
  */
-function fast_shortcode_product_button( $atts ) {
-	return fast_shortcode_button_template(
+function fastwc_shortcode_product_button( $atts ) {
+	return fastwc_shortcode_button_template(
 		'buttons/fast-checkout-button',
 		$atts
 	);
@@ -44,8 +44,8 @@ function fast_shortcode_product_button( $atts ) {
  *
  * @return string
  */
-function fast_shortcode_cart_button( $atts ) {
-	return fast_shortcode_button_template(
+function fastwc_shortcode_cart_button( $atts ) {
+	return fastwc_shortcode_button_template(
 		'buttons/fast-checkout-cart-button',
 		$atts
 	);
@@ -59,13 +59,13 @@ function fast_shortcode_cart_button( $atts ) {
  *
  * @return string
  */
-function fast_shortcode_button_template( $template, $atts ) {
+function fastwc_shortcode_button_template( $template, $atts ) {
 
 	// Start the output buffer.
 	ob_start();
 
 	// Load the button template, passing in `$atts` as the template's `$args`.
-	fast_load_template( $template, $atts );
+	fastwc_load_template( $template, $atts );
 
 	return ob_get_clean();
 }
