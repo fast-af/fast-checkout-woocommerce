@@ -262,7 +262,7 @@ add_action( 'woocommerce_before_checkout_form', 'fastwc_woocommerce_before_check
  */
 function fastwc_woocommerce_rest_pre_insert_shop_order_object( $order, $request ) {
 
-	$order = fast_maybe_update_order_for_multicurrency( $order, $request );
+	$order = fastwc_maybe_update_order_for_multicurrency( $order, $request );
 
 	// For order updates with a coupon line item, make sure there is a cart object.
 	if (
@@ -287,7 +287,7 @@ function fastwc_woocommerce_rest_pre_insert_shop_order_object( $order, $request 
 	// Return the order object unchanged.
 	return $order;
 }
-add_filter( 'woocommerce_rest_pre_insert_shop_order_object', 'fastwc_woocommerce_rest_pre_insert_shop_order_object', 10, 3 );
+add_filter( 'woocommerce_rest_pre_insert_shop_order_object', 'fastwc_woocommerce_rest_pre_insert_shop_order_object', 10, 2 );
 
 /**
  * Fast transition trash to on-hold.
