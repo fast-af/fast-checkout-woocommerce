@@ -79,7 +79,7 @@ function fastwc_maybe_update_order_for_multicurrency( $order, $request ) {
 		&& ! empty( $order_currency ) // Make sure the order currency is set.
 		&& $wc_currency !== $order_currency // Make sure the order currency is not the default currency.
 	) {
-		$order = fastwc_update_order_for_multicurrency( $order, $request );
+		$order = fastwc_update_order_for_multicurrency( $order, $request, $multicurrency_plugin );
 	}
 
 	return $order;
@@ -88,12 +88,13 @@ function fastwc_maybe_update_order_for_multicurrency( $order, $request ) {
 /**
  * Update the order for multicurrency.
  *
- * @param WC_Data         $order    The order to check.
- * @param WP_REST_Request $request  Request object.
+ * @param WC_Data         $order                The order to check.
+ * @param WP_REST_Request $request              Request object.
+ * @param string          $multicurrency_plugin The name of the multicurrency plugin.
  *
  * @return WC_Data
  */
-function fastwc_update_order_for_multicurrency( $order, $request ) {
+function fastwc_update_order_for_multicurrency( $order, $request, $multicurrency_plugin ) {
 
 	foreach ( $order->get_items() as $item_id => $item ) {
 		$product  = method_exists( $item, 'get_product' ) ? $item->get_product() : null;
