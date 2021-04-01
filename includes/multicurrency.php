@@ -114,7 +114,7 @@ function fastwc_update_order_for_multicurrency( $order, $request ) {
 
 			// Set the new price.
 			$item->set_subtotal( $new_price );
-			$item->set_totel( $new_price );
+			$item->set_total( $new_price );
 
 			// Make new tax calculations.
 			$item->calculate_taxes();
