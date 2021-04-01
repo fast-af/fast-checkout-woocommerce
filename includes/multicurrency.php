@@ -76,7 +76,7 @@ function fastwc_maybe_update_order_for_multicurrency( $order, $request ) {
 
 	if (
 		false !== $multicurrency_plugin // Make sure a supported multicurrency plugin is activated.
-		&& ! is_empty( $order_currency ) // Make sure the order currency is set.
+		&& ! empty( $order_currency ) // Make sure the order currency is set.
 		&& $wc_currency !== $order_currency // Make sure the order currency is not the default currency.
 	) {
 		$order = fastwc_update_order_for_multicurrency( $order, $request );
