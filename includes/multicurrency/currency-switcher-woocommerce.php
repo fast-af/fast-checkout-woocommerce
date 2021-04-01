@@ -21,7 +21,7 @@ function fastwc_update_price_for_multicurrency_currency_switcher_woocommerce( $p
 
 	$wc_currency    = get_woocommerce_currency();
 	$order_currency = method_exists( $order, 'get_currency' ) ? $order->get_currency() : $wc_currency;
-	$new_price      = alg_get_product_price_by_currency( $price, $product, $order_currency );
+	$new_price      = alg_get_product_price_by_currency( $price, $order_currency, $product );
 
 	if ( ! empty( $new_price ) ) {
 		return $new_price;
