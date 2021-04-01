@@ -18,6 +18,8 @@ require_once FASTWC_PATH . 'includes/admin/settings.php';
 require_once FASTWC_PATH . 'includes/js.php';
 // Loads fast utilities.
 require_once FASTWC_PATH . 'includes/utilities.php';
+// Add suppot for multicurrency.
+require_once FASTWC_PATH . 'includes/multicurrency.php';
 // Adds Fast Checkout button to store.
 require_once FASTWC_PATH . 'includes/checkout.php';
 // Adds Fast Login button to store.
