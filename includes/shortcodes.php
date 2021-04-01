@@ -31,10 +31,16 @@ add_action( 'init', 'fastwc_add_shortcodes' );
  * @return string
  */
 function fastwc_shortcode_product_button( $atts ) {
-	return fastwc_shortcode_button_template(
-		'buttons/fast-checkout-button',
-		$atts
-	);
+	if ( fastwc_should_hide_checkout_button() ) {
+		$shortcode_output = '';
+	} else {
+		$shortcode_output = fastwc_shortcode_button_template(
+			'buttons/fast-checkout-button',
+			$atts
+		);
+	}
+
+	return $shortcode_output;
 }
 
 /**
@@ -45,10 +51,16 @@ function fastwc_shortcode_product_button( $atts ) {
  * @return string
  */
 function fastwc_shortcode_cart_button( $atts ) {
-	return fastwc_shortcode_button_template(
-		'buttons/fast-checkout-cart-button',
-		$atts
-	);
+	if ( fastwc_should_hide_cart_checkout_button() ) {
+		$shortcode_output = '';
+	} else {
+		$shortcode_output = fastwc_shortcode_button_template(
+			'buttons/fast-checkout-cart-button',
+			$atts
+		);
+	}
+
+	return $shortcode_output;
 }
 
 /**
