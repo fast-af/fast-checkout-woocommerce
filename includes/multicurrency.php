@@ -101,7 +101,14 @@ function fastwc_update_order_for_multicurrency( $order, $request, $multicurrency
 		$quantity = method_exists( $item, 'get_quantity' ) ? (int) $item->get_quantity() : 0;
 
 		if ( ! empty( $product ) ) {
-			// Get the price from the multicurrency plugin.
+			/**
+			 * Get the price from the multicurrency plugin.
+			 *
+			 * @param string     $price   Value of the price.
+			 * @param WC_Product $product The product object.
+			 * @param WC_Data    $order   The order to check.
+			 * @param WC_Request $request Request object.
+			 */
 			$price = apply_filters(
 				"fastwc_update_price_for_multicurrency_{$multicurrency_plugin}",
 				$product->get_price(),
