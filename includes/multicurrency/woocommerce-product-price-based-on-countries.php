@@ -21,6 +21,6 @@ function fastwc_update_price_for_multicurrency_woocommerce_product_price_based_o
 
 	// Entry point for updating the order for multicurrency using this plugin.
 
-	return $order;
+	return $price;
 }
 add_filter( 'fastwc_update_price_for_multicurrency_woocommerce_product_price_based_on_countries', 'fastwc_update_price_for_multicurrency_woocommerce_product_price_based_on_countries', 10, 2 );

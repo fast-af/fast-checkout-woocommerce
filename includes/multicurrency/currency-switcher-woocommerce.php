@@ -21,6 +21,6 @@ function fastwc_update_price_for_multicurrency_currency_switcher_woocommerce( $p
 
 	// Entry point for updating the order for multicurrency using this plugin.
 
-	return $order;
+	return $price;
 }
 add_filter( 'fastwc_update_price_for_multicurrency_currency_switcher_woocommerce', 'fastwc_update_price_for_multicurrency_currency_switcher_woocommerce', 10, 4 );
