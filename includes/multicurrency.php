@@ -32,7 +32,7 @@ function fastwc_get_supported_multicurrency_plugins() {
 	 *
 	 * @param array $supported_plugins The list of supported plugins.
 	 */
-	return apply_filters( 'fastwc_supposted_multicurrency_plugins', $supported_plugins );
+	return apply_filters( 'fastwc_supported_multicurrency_plugins', $supported_plugins );
 }
 
 /**
