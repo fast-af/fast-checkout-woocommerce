@@ -70,6 +70,9 @@ function fastwc_shipping_init_wc_cart() {
 		// refreshed on wp_loaded, which has already happened
 		// by this point).
 		WC()->cart->get_cart();
+
+		// This cart may contain items from prev session empty before using
+		WC()->cart->empty_cart();
 	}
 }
 
