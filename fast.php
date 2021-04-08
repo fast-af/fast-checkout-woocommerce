@@ -11,6 +11,7 @@
  */
 
 define( 'FASTWC_PATH', plugin_dir_path( __FILE__ ) );
+define( 'FASTWC_URL', plugin_dir_url( __FILE__ ) );
 
 // WP Admin plugin settings.
 require_once FASTWC_PATH . 'includes/admin/settings.php';
