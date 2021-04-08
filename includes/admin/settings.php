@@ -7,193 +7,10 @@
  * @package Fast
  */
 
-define( 'FASTWC_SETTING_APP_ID', 'fast_app_id' );
-define( 'FASTWC_SETTING_TEST_MODE', 'fast_test_mode' );
-define( 'FASTWC_SETTING_TEST_MODE_NOT_SET', 'fast test mode not set' );
-define( 'FASTWC_SETTING_FAST_JS_URL', 'fast_fast_js_url' );
-define( 'FASTWC_SETTING_FAST_JWKS_URL', 'fast_fast_jwks_url' );
-define( 'FASTWC_SETTING_ONBOARDING_URL', 'fast_onboarding_url' );
-define( 'FASTWC_SETTING_PDP_BUTTON_STYLES', 'fast_pdp_button_styles' );
-define( 'FASTWC_SETTING_CART_BUTTON_STYLES', 'fast_cart_button_styles' );
-define( 'FASTWC_SETTING_MINI_CART_BUTTON_STYLES', 'fast_mini_cart_button_styles' );
-define( 'FASTWC_SETTING_CHECKOUT_BUTTON_STYLES', 'fast_checkout_button_styles' );
-define( 'FASTWC_SETTING_LOGIN_BUTTON_STYLES', 'fast_login_button_styles' );
-define( 'FASTWC_JWKS_URL', 'https://api.fast.co/v1/oauth2/jwks' );
-define( 'FASTWC_JS_URL', 'https://js.fast.co/fast-woocommerce.js' );
-define( 'FASTWC_ONBOARDING_URL', 'https://fast.co/business' );
-
-define(
-	'FASTWC_SETTING_PDP_BUTTON_STYLES_DEFAULT',
-	<<<CSS
-.fast-pdp-wrapper {
-  padding: 21px 0 20px 0;
-  margin: 20px 0;
-}
-
-.fast-pdp-or {
-  position: relative;
-  top: 21px;
-  width: 40px;
-  height: 1px;
-  line-height: 0;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-  color: #757575;
-  background: white;
-}
-
-@media only screen and (max-width: 767px) {
-  .fast-pdp-wrapper {
-    border-bottom: 1px solid #dfdfdf;
-    border-radius: none;
-    padding-right: 1%;
-    padding-left: 1%;
-  }
-}
-
-@media only screen and (min-width: 768px) {
-  .fast-pdp-wrapper {
-    border: 1px solid #dfdfdf;
-    border-radius: 5px;
-    padding-right: 10%;
-    padding-left: 10%;
-  }
-}
-CSS
-);
-
-define(
-	'FASTWC_SETTING_CART_BUTTON_STYLES_DEFAULT',
-	<<<CSS
-.fast-cart-wrapper {
-  padding: 21px 0 20px 0;
-  margin-bottom: 20px;
-}
-
-.fast-cart-or {
-  position: relative;
-  top: 21px;
-  width: 40px;
-  height: 1px;
-  line-height: 0;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-  color: #757575;
-  background: white;
-}
-
-@media only screen and (max-width: 767px) {
-  .fast-cart-wrapper {
-    border-bottom: 1px solid #dfdfdf;
-    border-radius: none;
-    padding-right: 1%;
-    padding-left: 1%;
-  }
-}
-
-@media only screen and (min-width: 768px) {
-  .fast-cart-wrapper {
-    border: 1px solid #dfdfdf;
-    border-radius: 5px;
-    padding-right: 10%;
-    padding-left: 10%;
-  }
-}
-CSS
-);
-
-define(
-	'FASTWC_SETTING_MINI_CART_BUTTON_STYLES_DEFAULT',
-	<<<CSS
-.fast-mini-cart-wrapper {
-  height: 68px;
-  clear: both;
-  border-bottom: 1px solid #dfdfdf;
-  padding-bottom: 0px;
-}
-
-.fast-mini-cart-or {
-  position: relative;
-  background: inherit;
-  width: 40px;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-  color: #dfdfdf;
-}
-CSS
-);
-
-define(
-	'FASTWC_SETTING_CHECKOUT_BUTTON_STYLES_DEFAULT',
-	<<<CSS
-.fast-checkout-wrapper {
-  padding: 21px 0 20px 0;
-  margin-bottom: 20px;
-}
-
-.fast-checkout-or {
-  position: relative;
-  top: 21px;
-  width: 40px;
-  height: 1px;
-  line-height: 0;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-  color: #757575;
-  background: white;
-}
-
-@media only screen and (max-width: 767px) {
-  .fast-checkout-wrapper {
-    border-bottom: 1px solid #dfdfdf;
-    border-radius: none;
-    padding-right: 1%;
-    padding-left: 1%;
-  }
-}
-
-@media only screen and (min-width: 768px) {
-  .fast-checkout-wrapper {
-    border: 1px solid #dfdfdf;
-    border-radius: 5px;
-    padding-right: 10%;
-    padding-left: 10%;
-  }
-}
-CSS
-);
-
-define(
-	'FASTWC_SETTING_LOGIN_BUTTON_STYLES_DEFAULT',
-	<<<CSS
-.fast-login-wrapper {
-  border: 1.25px solid #d3ced2;
-  padding: 16px 30% 16px 30%;
-  margin-left: 16px;
-  margin-right: 16px;
-}
-
-@media (min-width: 560px) {
-  .fast-login-wrapper {
-    width: 100%;
-    padding: 16px 30% 16px 30%;
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-
-@media (min-width: 1006px) {
-  .fast-login-wrapper {
-    width: 1006px;
-    padding: 16px 300px 16px 300px;
-  }
-}
-CSS
-);
+// Load admin constants.
+require_once FASTWC_PATH . 'includes/admin/constants.php';
+// Load admin fields.
+require_once FASTWC_PATH . 'includes/admin/fields.php';
 
 add_action( 'admin_head', 'fastwc_admin_styles' );
 add_action( 'admin_menu', 'fastwc_admin_create_menu' );
@@ -296,16 +113,14 @@ function fastwc_admin_setup_fields() {
 function fastwc_app_id_content() {
 	$fastwc_setting_app_id              = fastwc_get_app_id();
 	$fastwc_setting_fast_onboarding_url = fastwc_get_option_or_set_default( FASTWC_SETTING_ONBOARDING_URL, FASTWC_ONBOARDING_URL );
-	?>
-		<input
-			name="fast_app_id"
-			id="fast_app_id"
-			type="text"
-			class="input-field"
-			value="<?php echo esc_attr( $fastwc_setting_app_id ); ?>"
-		/>
-		<p>Don't have an app yet? Click <a href="<?php echo esc_url( $fastwc_setting_fast_onboarding_url ); ?>" target="_blank" rel="noopener">here</a> to create one.</p>
-	<?php
+
+	fastwc_settings_field_input(
+		array(
+			'name'        => 'fast_app_id',
+			'value'       => $fastwc_setting_app_id,
+			'description' => 'Don\'t have an app yet? Click <a href="' . esc_url( $fastwc_setting_fast_onboarding_url ) . '" target="_blank" rel="noopener">here</a> to create one.',
+		)
+	);
 }
 
 /**
@@ -313,9 +128,13 @@ function fastwc_app_id_content() {
  */
 function fastwc_pdp_button_styles_content() {
 	$fastwc_setting_pdp_button_styles = fastwc_get_option_or_set_default( FASTWC_SETTING_PDP_BUTTON_STYLES, FASTWC_SETTING_PDP_BUTTON_STYLES_DEFAULT );
-	?>
-		<textarea name="fast_pdp_button_styles" id="fast_pdp_button_styles" rows="10" cols="50"><?php echo esc_textarea( $fastwc_setting_pdp_button_styles ); ?></textarea>
-	<?php
+
+	fastwc_settings_field_textarea(
+		array(
+			'name'  => 'fast_pdp_button_styles',
+			'value' => $fastwc_setting_pdp_button_styles,
+		)
+	);
 }
 
 /**
@@ -323,9 +142,13 @@ function fastwc_pdp_button_styles_content() {
  */
 function fastwc_cart_button_styles_content() {
 	$fastwc_setting_cart_button_styles = fastwc_get_option_or_set_default( FASTWC_SETTING_CART_BUTTON_STYLES, FASTWC_SETTING_CART_BUTTON_STYLES_DEFAULT );
-	?>
-		<textarea name="fast_cart_button_styles" id="fast_cart_button_styles" rows="10" cols="50"><?php echo esc_textarea( $fastwc_setting_cart_button_styles ); ?></textarea>
-	<?php
+
+	fastwc_settings_field_textarea(
+		array(
+			'name'  => 'fast_cart_button_styles',
+			'value' => $fastwc_setting_cart_button_styles,
+		)
+	);
 }
 
 /**
@@ -333,9 +156,13 @@ function fastwc_cart_button_styles_content() {
  */
 function fastwc_mini_cart_button_styles_content() {
 	$fastwc_setting_mini_cart_button_styles = fastwc_get_option_or_set_default( FASTWC_SETTING_MINI_CART_BUTTON_STYLES, FASTWC_SETTING_MINI_CART_BUTTON_STYLES_DEFAULT );
-	?>
-		<textarea name="fast_mini_cart_button_styles" id="fast_mini_cart_button_styles" rows="10" cols="50"><?php echo esc_textarea( $fastwc_setting_mini_cart_button_styles ); ?></textarea>
-	<?php
+
+	fastwc_settings_field_textarea(
+		array(
+			'name'  => 'fast_mini_cart_button_styles',
+			'value' => $fastwc_setting_mini_cart_button_styles,
+		)
+	);
 }
 
 /**
@@ -343,9 +170,13 @@ function fastwc_mini_cart_button_styles_content() {
  */
 function fastwc_checkout_button_styles_content() {
 	$fastwc_setting_checkout_button_styles = fastwc_get_option_or_set_default( FASTWC_SETTING_CHECKOUT_BUTTON_STYLES, FASTWC_SETTING_CHECKOUT_BUTTON_STYLES_DEFAULT );
-	?>
-		<textarea name="fast_checkout_button_styles" id="fast_checkout_button_styles" rows="10" cols="50"><?php echo esc_textarea( $fastwc_setting_checkout_button_styles ); ?></textarea>
-	<?php
+
+	fastwc_settings_field_textarea(
+		array(
+			'name'  => 'fast_checkout_button_styles',
+			'value' => $fastwc_setting_checkout_button_styles,
+		)
+	);
 }
 
 /**
@@ -353,9 +184,13 @@ function fastwc_checkout_button_styles_content() {
  */
 function fastwc_login_button_styles_content() {
 	$fastwc_setting_login_button_styles = fastwc_get_option_or_set_default( FASTWC_SETTING_LOGIN_BUTTON_STYLES, FASTWC_SETTING_LOGIN_BUTTON_STYLES_DEFAULT );
-	?>
-		<textarea name="fast_login_button_styles" id="fast_login_button_styles" rows="10" cols="50"><?php echo esc_textarea( $fastwc_setting_login_button_styles ); ?></textarea>
-	<?php
+
+	fastwc_settings_field_textarea(
+		array(
+			'name'  => 'fast_login_button_styles',
+			'value' => $fastwc_setting_login_button_styles,
+		)
+	);
 }
 
 /**
@@ -371,19 +206,14 @@ function fastwc_test_mode_content() {
 		update_option( FASTWC_SETTING_TEST_MODE, '1' );
 	}
 
-	?>
-		<span>When test mode is enabled, only logged-in admin users will see the Fast Checkout button.</span>
-		<div>
-			<input
-				name="fast_test_mode"
-				id="fast_test_mode"
-				type="checkbox"
-				value="1"
-				<?php checked( 1, $fastwc_test_mode ); ?>
-			/>
-			<label for="fast_test_mode">Enable test mode</label>
-		</div>
-	<?php
+	fastwc_settings_field_checkbox(
+		array(
+			'name'        => 'fast_test_mode',
+			'current'     => $fastwc_test_mode,
+			'label'       => 'Enable test mode',
+			'description' => 'When test mode is enabled, only logged-in admin users will see the Fast Checkout button.',
+		)
+	);
 }
 
 /**
@@ -391,15 +221,13 @@ function fastwc_test_mode_content() {
  */
 function fastwc_fastwc_js_content() {
 	$fastwc_setting_fast_js_url = fastwc_get_option_or_set_default( FASTWC_SETTING_FAST_JS_URL, FASTWC_JS_URL );
-	?>
-		<input
-		name="fast_fast_js_url"
-		id="fast_fast_js_url"
-		type="text"
-		class="input-field"
-		value="<?php echo esc_attr( $fastwc_setting_fast_js_url ); ?>"
-	/>
-	<?php
+
+	fastwc_settings_field_input(
+		array(
+			'name'  => 'fast_fast_js_url',
+			'value' => $fastwc_setting_fast_js_url,
+		)
+	);
 }
 
 /**
@@ -407,15 +235,13 @@ function fastwc_fastwc_js_content() {
  */
 function fastwc_fastwc_jwks_content() {
 	$fastwc_setting_fast_jwks_url = fastwc_get_option_or_set_default( FASTWC_SETTING_FAST_JWKS_URL, FASTWC_JWKS_URL );
-	?>
-		<input
-			name="fast_fast_jwks_url"
-			id="fast_fast_jwks_url"
-			type="text"
-			class="input-field"
-			value="<?php echo esc_attr( $fastwc_setting_fast_jwks_url ); ?>"
-		/>
-	<?php
+
+	fastwc_settings_field_input(
+		array(
+			'name'  => 'fast_fast_jwks_url',
+			'value' => $fastwc_setting_fast_jwks_url,
+		)
+	);
 }
 
 /**
@@ -423,15 +249,13 @@ function fastwc_fastwc_jwks_content() {
  */
 function fastwc_onboarding_url_content() {
 	$url = fastwc_get_option_or_set_default( FASTWC_SETTING_ONBOARDING_URL, FASTWC_ONBOARDING_URL );
-	?>
-		<input
-			name="fast_onboarding_url"
-			id="fast_onboarding_url"
-			type="text"
-			class="input-field"
-			value="<?php echo esc_attr( $url ); ?>"
-		/>
-	<?php
+
+	fastwc_settings_field_input(
+		array(
+			'name'  => 'fast_onboarding_url',
+			'value' => $url,
+		)
+	);
 }
 
 /**
