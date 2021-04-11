@@ -18,12 +18,16 @@ function fastwc_calculate_shipping( WP_REST_Request $request ) {
 	$return = false;
 
 	if ( ! empty( $params['currency'] ) ) {
+		global $fast_currency;
+
+		$fast_currency = $params['currency'];
+
 		add_filter(
 			'woocommerce_currency',
-			function( $currency ) {
-				$currency = $params['currency'];
+			function() {
+				global $fast_currency;
 
-				return $currency;
+				return $fast_currency;
 			},
 			PHP_INT_MAX
 		);
