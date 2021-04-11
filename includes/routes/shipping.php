@@ -17,6 +17,18 @@ function fastwc_calculate_shipping( WP_REST_Request $request ) {
 	$params = $request->get_params();
 	$return = false;
 
+	if ( ! empty( $params['currency'] ) ) {
+		add_filter(
+			'woocommerce_currency',
+			function( $currency ) {
+				$currency = $params['currency'];
+
+				return $currency;
+			},
+			PHP_INT_MAX
+		);
+	}
+
 	// This is needed for session to work.
 	wc()->frontend_includes();
 
@@ -70,6 +82,9 @@ function fastwc_shipping_init_wc_cart() {
 		// refreshed on wp_loaded, which has already happened
 		// by this point).
 		WC()->cart->get_cart();
+
+		// This cart may contain items from prev session empty before using
+		WC()->cart->empty_cart();
 	}
 }
 
