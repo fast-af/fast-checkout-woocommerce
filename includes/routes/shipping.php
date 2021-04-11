@@ -17,22 +17,6 @@ function fastwc_calculate_shipping( WP_REST_Request $request ) {
 	$params = $request->get_params();
 	$return = false;
 
-	if ( ! empty( $params['currency'] ) ) {
-		global $fast_currency;
-
-		$fast_currency = $params['currency'];
-
-		add_filter(
-			'woocommerce_currency',
-			function() {
-				global $fast_currency;
-
-				return $fast_currency;
-			},
-			PHP_INT_MAX
-		);
-	}
-
 	// This is needed for session to work.
 	wc()->frontend_includes();
 
@@ -161,16 +145,19 @@ function fastwc_shipping_update_customer_information( $params ) {
 /**
  * Calculate packages
  *
+ * @param string $currency The customer's currency.
+ *
  * @return mixed
  */
-function fastwc_shipping_calculate_packages() {
+function fastwc_shipping_calculate_packages( $currency = '' ) {
 	// Get packages for the cart.
 	$packages = WC()->cart->get_shipping_packages();
 
 	// Currently we only support 1 shipping address per package.
 	if ( count( $packages ) > 1 ) {
-		// Perform address check to make sure all are the same
-		for ( $x = 1; $x < count( $packages ); $x++ ) {
+		// Perform address check to make sure all are the same.
+		$count_packages = count( $packages );
+		for ( $x = 1; $x < $count_packages; $x++ ) {
 			if ( $packages[0]->destination !== $packages[ $x ]->destination ) {
 				return new WP_Error( 'shipping_packages', 'Shipping package to > 1 address is not supported', array( 'status' => 400 ) );
 			}
@@ -185,7 +172,7 @@ function fastwc_shipping_calculate_packages() {
 	}
 	$calculated_packages = wc()->shipping()->calculate_shipping( $packages );
 
-	$resp = fastwc_get_item_response( $calculated_packages );
+	$resp = fastwc_get_item_response( $calculated_packages, $currency );
 
 	return new WP_REST_Response( $resp, 200 );
 }
@@ -193,10 +180,12 @@ function fastwc_shipping_calculate_packages() {
 /**
  * Build JSON response for line item.
  *
- * @param array $package WooCommerce shipping packages.
+ * @param array  $package  WooCommerce shipping packages.
+ * @param string $currency The customer's currency.
+ *
  * @return array
  */
-function fastwc_get_item_response( $package ) {
+function fastwc_get_item_response( $package, $currency ) {
 	// Add product names and quantities.
 	$items = array();
 	foreach ( $package[0]['contents'] as $item_id => $values ) {
@@ -225,23 +214,25 @@ function fastwc_get_item_response( $package ) {
 				'country'   => $package[0]['destination']['country'],
 			),
 		'items'          => $items,
-		'shipping_rates' => fastwc_prepare_rates_response( $package ),
+		'shipping_rates' => fastwc_prepare_rates_response( $package, $currency ),
 	);
 }
 
 /**
  * Prepare an array of rates from a package for the response.
  *
- * @param array $package Shipping package complete with rates from WooCommerce.
+ * @param array  $package Shipping package complete with rates from WooCommerce.
+ * @param string $currency The cutsomer's currency.
+ *
  * @return array
  */
-function fastwc_prepare_rates_response( $package ) {
+function fastwc_prepare_rates_response( $package, $currency ) {
 	$rates = $package [0]['rates'];
 
 	$response = array();
 
 	foreach ( $rates as $rate ) {
-		$response[] = fastwc_get_rate_response( $rate );
+		$response[] = fastwc_get_rate_response( $rate, $currency );
 	}
 
 	return $response;
@@ -252,21 +243,44 @@ function fastwc_prepare_rates_response( $package ) {
  * Response for a single rate.
  *
  * @param WC_Shipping_Rate $rate Rate object.
+ * @param string $currency The cutsomer's currency.
+ *
  * @return array
  */
-function fastwc_get_rate_response( $rate ) {
+function fastwc_get_rate_response( $rate, $currency ) {
+	$rate_info = array(
+		'rate_id'       => fastwc_get_rate_prop( $rate, 'id' ),
+		'name'          => fastwc_prepare_html_response( fastwc_get_rate_prop( $rate, 'label' ) ),
+		'description'   => fastwc_prepare_html_response( fastwc_get_rate_prop( $rate, 'description' ) ),
+		'delivery_time' => fastwc_prepare_html_response( fastwc_get_rate_prop( $rate, 'delivery_time' ) ),
+		'price'         => fastwc_get_rate_prop( $rate, 'cost' ),
+		'taxes'         => fastwc_get_rate_prop( $rate, 'taxes' ),
+		'instance_id'   => fastwc_get_rate_prop( $rate, 'instance_id' ),
+		'method_id'     => fastwc_get_rate_prop( $rate, 'method_id' ),
+		'meta_data'     => fastwc_get_rate_meta_data( $rate ),
+	);
+
+	if ( ! empty( $currency ) ) {
+		global $fast_currency;
+
+		$wc_currency   = get_woocommerce_currency();
+		$fast_currency = $currency;
+
+		add_filter(
+			'woocommerce_currency',
+			function() {
+				global $fast_currency;
+
+				return $fast_currency;
+			},
+			PHP_INT_MAX
+		);
+
+		$rate_info = fastwc_maybe_update_shipping_rate_for_multicurrency( $rate_info, $wc_currency, $currency );
+	}
+
 	return array_merge(
-		array(
-			'rate_id'       => fastwc_get_rate_prop( $rate, 'id' ),
-			'name'          => fastwc_prepare_html_response( fastwc_get_rate_prop( $rate, 'label' ) ),
-			'description'   => fastwc_prepare_html_response( fastwc_get_rate_prop( $rate, 'description' ) ),
-			'delivery_time' => fastwc_prepare_html_response( fastwc_get_rate_prop( $rate, 'delivery_time' ) ),
-			'price'         => fastwc_get_rate_prop( $rate, 'cost' ),
-			'taxes'         => fastwc_get_rate_prop( $rate, 'taxes' ),
-			'instance_id'   => fastwc_get_rate_prop( $rate, 'instance_id' ),
-			'method_id'     => fastwc_get_rate_prop( $rate, 'method_id' ),
-			'meta_data'     => fastwc_get_rate_meta_data( $rate ),
-		),
+		$rate_info,
 		fastwc_get_store_currency_response()
 	);
 }
