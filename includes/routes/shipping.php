@@ -17,6 +17,18 @@ function fastwc_calculate_shipping( WP_REST_Request $request ) {
 	$params = $request->get_params();
 	$return = false;
 
+	if ( ! empty( $params['currency'] ) ) {
+		add_filter(
+			'woocommerce_currency',
+			function( $currency ) {
+				$currency = $params['currency'];
+
+				return $currency;
+			},
+			PHP_INT_MAX
+		);
+	}
+
 	// This is needed for session to work.
 	wc()->frontend_includes();
 
