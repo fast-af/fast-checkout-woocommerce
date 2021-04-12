@@ -1,4 +1,4 @@
-=== Plugin Name ===
+=== Fast Checkout for WooCommerce ===
 Contributors: fastaf, tessak22, corywebb
 Tags: fast, fast checkout, checkout, woocommerce, woocommerce payment, woocommerce checkout, quick checkout, 1 click checkout, one click checkout
 Requires at least: 5.1
