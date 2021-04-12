@@ -30,3 +30,19 @@ function fastwc_update_price_for_multicurrency_currency_switcher_woocommerce( $p
 	return $price;
 }
 add_filter( 'fastwc_update_price_for_multicurrency_currency_switcher_woocommerce', 'fastwc_update_price_for_multicurrency_currency_switcher_woocommerce', 10, 4 );
+
+/**
+ * Update the shipping rate for multicurrency.
+ *
+ * @param array  $rate_info The rate response information.
+ * @param string $currency  The customer currency.
+ *
+ * @return array
+ */
+function fastwc_update_shipping_rate_for_multicurrency_currency_switcher_woocommerce( $rate_info, $currency ) {
+
+	// Entry point for updating the shipping for multicurrency using this plugin.
+
+	return $rate_info;
+}
+add_filter( 'fastwc_update_shipping_rate_for_multicurrency_currency_switcher_woocommerce', 'fastwc_update_shipping_rate_for_multicurrency_currency_switcher_woocommerce', 10, 4 );

@@ -23,3 +23,20 @@ function fastwc_update_price_for_multicurrency_woocommerce_currency_switcher( $p
 	return $WOOCS->raw_woocommerce_price( $price, $product ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase
 }
 add_filter( 'fastwc_update_price_for_multicurrency_woocommerce_currency_switcher', 'fastwc_update_price_for_multicurrency_woocommerce_currency_switcher', 10, 4 );
+
+/**
+ * Update the shipping rate for multicurrency.
+ *
+ * @param array  $rate_info The rate response information.
+ * @param string $currency  The customer currency.
+ *
+ * @return array
+ */
+function fastwc_update_shipping_rate_for_multicurrency_woocommerce_currency_switcher( $rate_info, $currency ) {
+	global $WOOCS; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase
+
+	// Entry point for updating the shipping for multicurrency using this plugin.
+
+	return $rate_info;
+}
+add_filter( 'fastwc_update_shipping_rate_for_multicurrency_woocommerce_currency_switcher', 'fastwc_update_shipping_rate_for_multicurrency_woocommerce_currency_switcher', 10, 4 );

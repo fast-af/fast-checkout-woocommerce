@@ -24,3 +24,19 @@ function fastwc_update_price_for_multicurrency_woocommerce_product_price_based_o
 	return $price;
 }
 add_filter( 'fastwc_update_price_for_multicurrency_woocommerce_product_price_based_on_countries', 'fastwc_update_price_for_multicurrency_woocommerce_product_price_based_on_countries', 10, 2 );
+
+/**
+ * Update the shipping rate for multicurrency.
+ *
+ * @param array  $rate_info The rate response information.
+ * @param string $currency  The customer currency.
+ *
+ * @return array
+ */
+function fastwc_update_shipping_rate_for_multicurrency_woocommerce_product_price_based_on_countries( $rate_info, $currency ) {
+
+	// Entry point for updating the shipping for multicurrency using this plugin.
+
+	return $rate_info;
+}
+add_filter( 'fastwc_update_shipping_rate_for_multicurrency_woocommerce_product_price_based_on_countries', 'fastwc_update_shipping_rate_for_multicurrency_woocommerce_product_price_based_on_countries', 10, 2 );
