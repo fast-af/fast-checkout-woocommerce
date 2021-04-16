@@ -19,8 +19,7 @@
  */
 function fastwc_update_price_for_multicurrency_currency_switcher_woocommerce( $price, $product, $order, $request ) {
 
-	$wc_currency    = get_woocommerce_currency();
-	$order_currency = method_exists( $order, 'get_currency' ) ? $order->get_currency() : $wc_currency;
+	$order_currency = fastwc_get_order_currency( $order );
 	$new_price      = alg_get_product_price_by_currency( $price, $order_currency, $product, true );
 
 	if ( ! empty( $new_price ) ) {
@@ -41,7 +40,8 @@ add_filter( 'fastwc_update_price_for_multicurrency_currency_switcher_woocommerce
  */
 function fastwc_update_shipping_rate_for_multicurrency_currency_switcher_woocommerce( $rate_info, $currency ) {
 
-	// Entry point for updating the shipping for multicurrency using this plugin.
+	$rate_info['price'] = alg_get_product_price_by_currency_global( $rate_info['price'], $currency );
+	$rate_info['taxes'] = alg_get_product_price_by_currency_global( $rate_info['taxes'], $currency );
 
 	return $rate_info;
 }
