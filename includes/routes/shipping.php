@@ -118,7 +118,7 @@ function fastwc_shipping_add_line_items_to_cart( $params ) {
  */
 function fastwc_shipping_update_customer_information( $params ) {
 	// Update customer information.
-	wc()->customer->set_props(
+	WC()->customer->set_props(
 		array(
 			'shipping_country'   => $params['shipping']['country'],
 			'shipping_state'     => $params['shipping']['state'],
@@ -172,7 +172,7 @@ function fastwc_shipping_calculate_packages( $currency = '' ) {
 			$packages[ $key ]['package_id'] = $key;
 		}
 	}
-	$calculated_packages = wc()->shipping()->calculate_shipping( $packages );
+	$calculated_packages = WC()->shipping()->calculate_shipping( $packages );
 
 	$resp = fastwc_get_item_response( $calculated_packages, $currency );
 
