@@ -41,7 +41,13 @@ add_filter( 'fastwc_update_price_for_multicurrency_currency_switcher_woocommerce
 function fastwc_update_shipping_rate_for_multicurrency_currency_switcher_woocommerce( $rate_info, $currency ) {
 
 	$rate_info['price'] = alg_get_product_price_by_currency_global( $rate_info['price'], $currency );
-	$rate_info['taxes'] = alg_get_product_price_by_currency_global( $rate_info['taxes'], $currency );
+	if ( ! empty( $rate_info['taxes'] ) ) {
+		$rate_taxes = $rate_info['taxes'];
+
+		foreach ( $rate_taxes as $rate_tax_id => $rate_tax ) {
+			$rate_info['taxes'][ $rate_tax_id ] = alg_get_product_price_by_currency_global( $rate_tax, $currency );
+		}
+	}
 
 	return $rate_info;
 }
