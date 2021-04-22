@@ -87,7 +87,9 @@ function fastwc_should_hide_checkout_button() {
 				is_string( $product ) ||
 				// Don't show Fast checkout on PDP if the product is out of stock or on backorder.
 				$product->get_stock_status() === 'outofstock' ||
-				is_a( $product, WC_Product_Subscription::class )
+				// Don't show if the product is a subscription product (not yet supported by Fast).
+				is_a( $product, WC_Product_Subscription::class ) ||
+				is_a( $product, WC_Product_Variable_Subscription::class )
 			)
 		) {
 			$return = true;
@@ -160,7 +162,8 @@ function fastwc_should_hide_because_unsupported_products() {
 		}
 
 		// Subscriptions are not yet supported.
-		if ( is_a( wc_get_product( $cart_item['product_id'] ), WC_Product_Subscription::class ) ) {
+		$product = wc_get_product( $cart_item['product_id'] );
+		if ( is_a( $product, WC_Product_Subscription::class ) || is_a( $product, WC_Product_Variable_Subscription::class ) ) {
 			$return = true;
 			break;
 		}

@@ -86,6 +86,19 @@ function fastwc_maybe_update_order_for_multicurrency( $order, $request ) {
 }
 
 /**
+ * Get the order currency.
+ *
+ * @param WC_Data $order The order to check.
+ *
+ * @return string
+ */
+function fastwc_get_order_currency( $order ) {
+	$wc_currency = get_woocommerce_currency();
+
+	return method_exists( $order, 'get_currency' ) ? $order->get_currency() : $wc_currency;
+}
+
+/**
  * Update the order for multicurrency.
  *
  * @param WC_Data         $order                The order to check.
@@ -154,31 +167,21 @@ function fastwc_maybe_update_shipping_rate_for_multicurrency( $rate_info, $wc_cu
 		&& ! empty( $currency ) // Make sure the customer currency is set.
 		&& $wc_currency !== $order_currency // Make sure the customer currency is not the default currency.
 	) {
-		$rate_info = fastwc_update_shipping_rate_for_multicurrency( $rate_info, $currency, $multicurrency_plugin );
+		/**
+		 * Update shipping rates for multicurrency.
+		 *
+		 * @param array  $rate_info            The rate response information.
+		 * @param string $currency             The customer currency.
+		 * @param string $multicurrency_plugin The name of the multicurrency plugin.
+		 *
+		 * @return array
+		 */
+		$rate_info = apply_filters(
+			"fastwc_update_shipping_rate_for_multicurrency_{$multicurrency_plugin}",
+			$rate_info,
+			$currency
+		);
 	}
 
 	return $rate_info;
-}
-
-/**
- * Update shipping rates for multicurrency.
- *
- * @param array  $rate_info            The rate response information.
- * @param string $currency             The customer currency.
- * @param string $multicurrency_plugin The name of the multicurrency plugin.
- *
- * @return array
- */
-function fastwc_update_shipping_rate_for_multicurrency( $rate_info, $currency, $multicurrency_plugin ) {
-	/**
-	 * Get the rate info from the multicurrency plugin.
-	 *
-	 * @param array  $rate_info The rate response information.
-	 * @param string $currency  The customer currency.
-	 */
-	return apply_filters(
-		"fastwc_update_shipping_rate_for_multicurrency_{$multicurrency_plugin}",
-		$rate_info,
-		$currency
-	);
 }
