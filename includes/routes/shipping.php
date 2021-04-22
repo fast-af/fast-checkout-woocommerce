@@ -17,8 +17,10 @@ function fastwc_calculate_shipping( WP_REST_Request $request ) {
 	$params = $request->get_params();
 	$return = false;
 
+	$currency = ! empty( $params['currency'] ) ? $params['currency'] : '';
+
 	// This is needed for session to work.
-	wc()->frontend_includes();
+	WC()->frontend_includes();
 
 	fastwc_shipping_init_wc_session();
 	fastwc_shipping_init_wc_customer();
@@ -30,7 +32,7 @@ function fastwc_calculate_shipping( WP_REST_Request $request ) {
 	}
 
 	if ( false === $return ) {
-		$return = fastwc_shipping_calculate_packages();
+		$return = fastwc_shipping_calculate_packages( $currency );
 	}
 
 	// Cleanup cart.
@@ -116,7 +118,7 @@ function fastwc_shipping_add_line_items_to_cart( $params ) {
  */
 function fastwc_shipping_update_customer_information( $params ) {
 	// Update customer information.
-	wc()->customer->set_props(
+	WC()->customer->set_props(
 		array(
 			'shipping_country'   => $params['shipping']['country'],
 			'shipping_state'     => $params['shipping']['state'],
@@ -170,7 +172,7 @@ function fastwc_shipping_calculate_packages( $currency = '' ) {
 			$packages[ $key ]['package_id'] = $key;
 		}
 	}
-	$calculated_packages = wc()->shipping()->calculate_shipping( $packages );
+	$calculated_packages = WC()->shipping()->calculate_shipping( $packages );
 
 	$resp = fastwc_get_item_response( $calculated_packages, $currency );
 
