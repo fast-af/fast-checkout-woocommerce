@@ -44,6 +44,8 @@ function fastwc_get_supported_multicurrency_plugins() {
 function fastwc_get_active_multicurrency_plugin() {
 	$multicurrency_plugins = fastwc_get_supported_multicurrency_plugins();
 
+	error_log( print_r( $multicurrency_plugins, true ) );
+
 	if ( ! empty( $multicurrency_plugins ) ) {
 		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 
@@ -52,10 +54,13 @@ function fastwc_get_active_multicurrency_plugin() {
 		// multicurrency plugin.
 		foreach ( $multicurrency_plugins as $multicurrency_plugin_slug => $multicurrency_plugin ) {
 			if ( is_plugin_active( $multicurrency_plugin ) ) {
+				error_log( 'multicurrency_plugin: ' . $multicurrency_plugin_slug );
 				return $multicurrency_plugin_slug;
 			}
 		}
 	}
+
+	error_log( 'return false' );
 
 	return false;
 }
