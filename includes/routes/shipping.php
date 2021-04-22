@@ -260,6 +260,9 @@ function fastwc_get_rate_response( $rate, $currency ) {
 		'meta_data'     => fastwc_get_rate_meta_data( $rate ),
 	);
 
+	error_log( print_r( $rate_info, true ) );
+	error_log( 'currency: ' . $currency );
+
 	if ( ! empty( $currency ) ) {
 		global $fast_currency;
 
