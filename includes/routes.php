@@ -9,49 +9,25 @@
 define( 'FASTWC_ROUTES_BASE', 'wc/fast/v1' );
 
 // Provides an API for polling shipping options.
-require_once FASTWC_PATH . 'includes/routes/shipping.php';
+require_once FASTWC_PATH . 'includes/routes/class-shipping.php';
 // Provides an API that exposes shipping zones.
-require_once FASTWC_PATH . 'includes/routes/shipping-zones.php';
+require_once FASTWC_PATH . 'includes/routes/class-shipping-zones.php';
 // Provides an API that exposes plugin info.
-require_once FASTWC_PATH . 'includes/routes/plugin-info.php';
+require_once FASTWC_PATH . 'includes/routes/class-plugin-info.php';
 
 /**
  * Register Fast Woocommerce routes for the REST API.
  */
 function fastwc_rest_api_init() {
 	// Register a utility route to get information on installed plugins.
-	register_rest_route(
-		FASTWC_ROUTES_BASE . '/store',
-		'plugins',
-		array(
-			'methods'             => 'GET',
-			'callback'            => 'fastwc_get_plugin_info',
-			'permission_callback' => 'fastwc_api_permission_callback',
-		)
-	);
+	\FastWC\Routes\Plugin_Info::get_instance();
 
 	// Register a route to collect all possible shipping locations.
-	register_rest_route(
-		FASTWC_ROUTES_BASE,
-		'shipping_zones',
-		array(
-			'methods'             => 'GET',
-			'callback'            => 'fastwc_get_zones',
-			'permission_callback' => 'fastwc_api_permission_callback',
-		)
-	);
+	\FastWC\Routes\Shipping_Zones::get_instance();
 
 	// Register a route to calculate available shipping rates.
 	// FE -> OMS -> Blender -> (pID, variantID, Shipping info, CustomerID)Plugin.
-	register_rest_route(
-		FASTWC_ROUTES_BASE,
-		'shipping',
-		array(
-			'methods'             => 'POST',
-			'callback'            => 'fastwc_calculate_shipping',
-			'permission_callback' => 'fastwc_api_permission_callback',
-		)
-	);
+	\FastWC\Routes\Shipping::get_instance();
 
 	// Register a route to test the Authorization header.
 	register_rest_route(
