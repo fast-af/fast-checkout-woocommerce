@@ -27,7 +27,7 @@ class Shipping_Zones extends Base {
 	 *
 	 * @return array|WP_Error|WP_REST_Response
 	 */
-	public function callback( $request ) {
+	public function callback( WP_REST_Request $request ) {
 		$this->request = $request;
 
 		$zone_ids = array_keys( array( '' ) + \WC_Shipping_Zones::get_zones() );
