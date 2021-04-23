@@ -153,13 +153,14 @@ function fastwc_update_order_for_multicurrency( $order, $request, $multicurrency
 /**
  * Maybe update shipping rates for multicurrency.
  *
- * @param array  $rate_info   The rate response information.
- * @param string $wc_currency The default WooCommerce currency.
- * @param string $currency    The customer currency.
+ * @param array           $rate_info   The rate response information.
+ * @param string          $wc_currency The default WooCommerce currency.
+ * @param string          $currency    The customer currency.
+ * @param WP_REST_Request $request     The request object.
  *
  * @return array
  */
-function fastwc_maybe_update_shipping_rate_for_multicurrency( $rate_info, $wc_currency, $currency ) {
+function fastwc_maybe_update_shipping_rate_for_multicurrency( $rate_info, $wc_currency, $currency, $request ) {
 	$multicurrency_plugin = fastwc_get_active_multicurrency_plugin();
 
 	if (
@@ -170,16 +171,17 @@ function fastwc_maybe_update_shipping_rate_for_multicurrency( $rate_info, $wc_cu
 		/**
 		 * Update shipping rates for multicurrency.
 		 *
-		 * @param array  $rate_info            The rate response information.
-		 * @param string $currency             The customer currency.
-		 * @param string $multicurrency_plugin The name of the multicurrency plugin.
+		 * @param array           $rate_info The rate response information.
+		 * @param string          $currency  The customer currency.
+		 * @param WP_REST_Request $request   The request object.
 		 *
 		 * @return array
 		 */
 		$rate_info = apply_filters(
 			"fastwc_update_shipping_rate_for_multicurrency_{$multicurrency_plugin}",
 			$rate_info,
-			$currency
+			$currency,
+			$request
 		);
 	}
 
