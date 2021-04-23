@@ -42,7 +42,13 @@ function fastwc_update_shipping_rate_for_multicurrency_woocommerce_currency_swit
 	$_REQUEST['woocs_raw_woocommerce_price_currency'] = $currency;
 
 	$rate_info['price'] = $WOOCS->raw_woocommerce_price( $rate_info['price'] ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase
-	$rate_info['taxes'] = $WOOCS->raw_woocommerce_price( $rate_info['taxes'] ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase
+	if ( ! empty( $rate_info['taxes'] ) ) {
+		$rate_taxes = $rate_info['taxes'];
+
+		foreach ( $rate_taxes as $rate_tax_id => $rate_tax ) {
+			$rate_info['taxes'][ $rate_tax_id ] = $WOOCS->raw_woocommerce_price( $rate_tax ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase
+		}
+	}
 
 	return $rate_info;
 }
