@@ -33,12 +33,13 @@ add_filter( 'fastwc_update_price_for_multicurrency_currency_switcher_woocommerce
 /**
  * Update the shipping rate for multicurrency.
  *
- * @param array  $rate_info The rate response information.
- * @param string $currency  The customer currency.
+ * @param array           $rate_info The rate response information.
+ * @param string          $currency  The customer currency.
+ * @param WP_REST_Request $request   The request object.
  *
  * @return array
  */
-function fastwc_update_shipping_rate_for_multicurrency_currency_switcher_woocommerce( $rate_info, $currency ) {
+function fastwc_update_shipping_rate_for_multicurrency_currency_switcher_woocommerce( $rate_info, $currency, $request ) {
 
 	$rate_info['price'] = alg_get_product_price_by_currency_global( $rate_info['price'], $currency );
 	if ( ! empty( $rate_info['taxes'] ) ) {
@@ -51,4 +52,4 @@ function fastwc_update_shipping_rate_for_multicurrency_currency_switcher_woocomm
 
 	return $rate_info;
 }
-add_filter( 'fastwc_update_shipping_rate_for_multicurrency_currency_switcher_woocommerce', 'fastwc_update_shipping_rate_for_multicurrency_currency_switcher_woocommerce', 10, 4 );
+add_filter( 'fastwc_update_shipping_rate_for_multicurrency_currency_switcher_woocommerce', 'fastwc_update_shipping_rate_for_multicurrency_currency_switcher_woocommerce', 10, 3 );
