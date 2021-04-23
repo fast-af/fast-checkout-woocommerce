@@ -233,8 +233,25 @@ function fastwc_prepare_rates_response( $package, $currency ) {
 
 	$response = array();
 
+	$wc_currency = get_woocommerce_currency();
+
+	if ( ! empty( $currency ) ) {
+		global $fast_currency;
+		$fast_currency = $currency;
+
+		add_filter(
+			'woocommerce_currency',
+			function() {
+				global $fast_currency;
+
+				return $fast_currency;
+			},
+			PHP_INT_MAX
+		);
+	}
+
 	foreach ( $rates as $rate ) {
-		$response[] = fastwc_get_rate_response( $rate, $currency );
+		$response[] = fastwc_get_rate_response( $rate, $currency, $wc_currency );
 	}
 
 	return $response;
@@ -244,12 +261,13 @@ function fastwc_prepare_rates_response( $package, $currency ) {
 /**
  * Response for a single rate.
  *
- * @param WC_Shipping_Rate $rate Rate object.
- * @param string $currency The cutsomer's currency.
+ * @param WC_Shipping_Rate $rate        Rate object.
+ * @param string           $currency    The cutsomer's currency.
+ * @param string           $wc_currency WooCommerce currency.
  *
  * @return array
  */
-function fastwc_get_rate_response( $rate, $currency ) {
+function fastwc_get_rate_response( $rate, $currency, $wc_currency ) {
 	$rate_info = array(
 		'rate_id'       => fastwc_get_rate_prop( $rate, 'id' ),
 		'name'          => fastwc_prepare_html_response( fastwc_get_rate_prop( $rate, 'label' ) ),
@@ -263,21 +281,6 @@ function fastwc_get_rate_response( $rate, $currency ) {
 	);
 
 	if ( ! empty( $currency ) ) {
-		global $fast_currency;
-
-		$wc_currency   = get_woocommerce_currency();
-		$fast_currency = $currency;
-
-		add_filter(
-			'woocommerce_currency',
-			function() {
-				global $fast_currency;
-
-				return $fast_currency;
-			},
-			PHP_INT_MAX
-		);
-
 		$rate_info = fastwc_maybe_update_shipping_rate_for_multicurrency( $rate_info, $wc_currency, $currency );
 	}
 
