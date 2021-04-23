@@ -27,6 +27,13 @@ class Shipping extends Base {
 	protected $currency = '';
 
 	/**
+	 * WooCommerce base currency code.
+	 *
+	 * @var string
+	 */
+	protected $wc_currency = '';
+
+	/**
 	 * Given shipping address and product, attempts to calculate available shipping rates for the address.
 	 * Doesn't support shipping > 1 address.
 	 *
@@ -42,7 +49,10 @@ class Shipping extends Base {
 		$params = $this->request->get_params();
 		$return = false;
 
-		$this->currency = ! empty( $params['currency'] ) ? $params['currency'] : '';
+		$this->currency    = ! empty( $params['currency'] ) ? $params['currency'] : '';
+		$this->wc_currency = \woocommerce_currency();
+
+		\add_filter( 'woocommerce_currency', array( $this, 'update_woocommerce_currency' ), PHP_INT_MAX );
 
 		// This is needed for session to work.
 		\WC()->frontend_includes();
@@ -282,13 +292,7 @@ class Shipping extends Base {
 			'meta_data'     => $this->get_rate_meta_data( $rate ),
 		);
 
-		if ( ! empty( $this->currency ) ) {
-			$wc_currency = \get_woocommerce_currency();
-
-			\add_filter( 'woocommerce_currency', array( $this, 'update_woocommerce_currency' ), PHP_INT_MAX );
-
-			$rate_info = \fastwc_maybe_update_shipping_rate_for_multicurrency( $rate_info, $wc_currency, $this->currency );
-		}
+		$rate_info = \fastwc_maybe_update_shipping_rate_for_multicurrency( $rate_info, $this->wc_currency, $this->currency );
 
 		return array_merge(
 			$rate_info,
@@ -299,10 +303,16 @@ class Shipping extends Base {
 	/**
 	 * Update WC currency.
 	 *
+	 * @param string $currency The base currency.
+	 *
 	 * @return string
 	 */
-	public function update_woocommerce_currency() {
-		return $this->currency;
+	public function update_woocommerce_currency( $currency ) {
+		if ( ! empty( $this->currency ) ) {
+			$currnecy = $this->currency;
+		}
+
+		return $currency;
 	}
 
 	/**
