@@ -24,7 +24,7 @@ abstract class Base {
 	 *
 	 * @var string
 	 */
-	protected $namespace = '';
+	protected $namespace = FASTWC_ROUTES_BASE;
 
 	/**
 	 * Route name.
@@ -65,11 +65,6 @@ abstract class Base {
 	 * Route constructor, protected to prevent multiple instances.
 	 */
 	protected function __construct() {
-		// Set the default namespace.
-		if ( empty( $this->namespace ) ) {
-			$this->namespace = FASTWC_ROUTES_BASE;
-		}
-
 		$this->init();
 		$this->register();
 	}
