@@ -64,7 +64,7 @@ class Shipping extends Base {
 		$return = false;
 
 		$this->currency    = ! empty( $params['currency'] ) ? $params['currency'] : '';
-		$this->wc_currency = \woocommerce_currency();
+		$this->wc_currency = \get_woocommerce_currency();
 
 		\add_filter( 'woocommerce_currency', array( $this, 'update_woocommerce_currency' ), PHP_INT_MAX );
 
@@ -106,7 +106,7 @@ class Shipping extends Base {
 	 */
 	protected function shipping_init_wc_customer() {
 		if ( null === \WC()->customer ) {
-			\WC()->customer = new WC_Customer( get_current_user_id(), false );
+			\WC()->customer = new \WC_Customer( get_current_user_id(), false );
 		}
 	}
 
@@ -115,7 +115,7 @@ class Shipping extends Base {
 	 */
 	protected function shipping_init_wc_cart() {
 		if ( null === \WC()->cart ) {
-			\WC()->cart = new WC_Cart();
+			\WC()->cart = new \WC_Cart();
 			// We need to force a refresh of the cart contents
 			// from session here (cart contents are normally
 			// refreshed on wp_loaded, which has already happened
@@ -306,7 +306,16 @@ class Shipping extends Base {
 			'meta_data'     => $this->get_rate_meta_data( $rate ),
 		);
 
-		$rate_info = \fastwc_maybe_update_shipping_rate_for_multicurrency( $rate_info, $this->wc_currency, $this->currency );
+		$rate_info = \fastwc_maybe_update_shipping_rate_for_multicurrency( $rate_info, $this->wc_currency, $this->currency, $this->request );
+
+		$rate_info['price'] = \wc_format_decimal( $rate_info['price'], 2 );
+		if ( ! empty( $rate_info['taxes'] ) ) {
+			$rate_taxes = $rate_info['taxes'];
+
+			foreach ( $rate_taxes as $rate_tax_id => $rate_tax ) {
+				$rate_info['taxes'][ $rate_tax_id ] = \wc_format_decimal( $rate_tax, 2 );
+			}
+		}
 
 		return array_merge(
 			$rate_info,
@@ -336,7 +345,8 @@ class Shipping extends Base {
 	 */
 	protected function get_store_currency_response() {
 		$position = \get_option( 'woocommerce_currency_pos' );
-		$symbol   = html_entity_decode( \get_woocommerce_currency_symbol() );
+		$currency = ! empty( $this->currency ) ? $this->currency : \get_woocommerce_currency();
+		$symbol   = html_entity_decode( \get_woocommerce_currency_symbol( $currency ) );
 		$prefix   = '';
 		$suffix   = '';
 
@@ -358,7 +368,7 @@ class Shipping extends Base {
 		}
 
 		return array(
-			'currency_code'               => \get_woocommerce_currency(),
+			'currency_code'               => $currency,
 			'currency_symbol'             => $symbol,
 			'currency_minor_unit'         => \wc_get_price_decimals(),
 			'currency_decimal_separator'  => \wc_get_price_decimal_separator(),
@@ -418,25 +428,5 @@ class Shipping extends Base {
 			return array_map( 'fastwc_prepare_html_response', $response );
 		}
 		return is_scalar( $response ) ? \wp_kses_post( trim( \convert_chars( \wptexturize( $response ) ) ) ) : $response;
-	}
-
-	/**
-	 * Convert monetary values from WooCommerce to string based integers, using
-	 * the smallest unit of a currency.
-	 *
-	 * @param string|float $amount Monetary amount with decimals.
-	 * @param int          $decimals Number of decimals the amount is formatted with.
-	 * @param int          $rounding_mode Defaults to the PHP_ROUND_HALF_UP constant.
-	 *
-	 * @return string      The new amount.
-	 */
-	protected function prepare_money_response( $amount, $decimals = 2, $rounding_mode = PHP_ROUND_HALF_UP ) {
-		return (string) intval(
-			round(
-				( (float) \wc_format_decimal( $amount ) ) * ( 10 ** $decimals ),
-				0,
-				absint( $rounding_mode )
-			)
-		);
 	}
 }
