@@ -166,7 +166,7 @@ function fastwc_maybe_update_shipping_rate_for_multicurrency( $rate_info, $wc_cu
 	if (
 		false !== $multicurrency_plugin // Make sure a supported multicurrency plugin is activated.
 		&& ! empty( $currency ) // Make sure the customer currency is set.
-		&& $wc_currency !== $order_currency // Make sure the customer currency is not the default currency.
+		&& $wc_currency !== $currency // Make sure the customer currency is not the default currency.
 	) {
 		/**
 		 * Update shipping rates for multicurrency.
