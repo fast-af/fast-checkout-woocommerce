@@ -64,9 +64,12 @@ class Shipping extends Base {
 		$return = false;
 
 		$this->currency    = ! empty( $params['currency'] ) ? $params['currency'] : '';
-		$this->wc_currency = \woocommerce_currency();
+		$this->wc_currency = \get_woocommerce_currency();
 
-		\add_filter( 'woocommerce_currency', array( $this, 'update_woocommerce_currency' ), PHP_INT_MAX );
+		if ( $this->currency !== $this->wc_currency ) {
+			\add_filter( 'woocommerce_currency', array( $this, 'update_woocommerce_currency' ), PHP_INT_MAX );
+			\get_woocommerce_currency();
+		}
 
 		// This is needed for session to work.
 		\WC()->frontend_includes();
@@ -106,7 +109,7 @@ class Shipping extends Base {
 	 */
 	protected function shipping_init_wc_customer() {
 		if ( null === \WC()->customer ) {
-			\WC()->customer = new WC_Customer( get_current_user_id(), false );
+			\WC()->customer = new \WC_Customer( get_current_user_id(), false );
 		}
 	}
 
@@ -115,7 +118,7 @@ class Shipping extends Base {
 	 */
 	protected function shipping_init_wc_cart() {
 		if ( null === \WC()->cart ) {
-			\WC()->cart = new WC_Cart();
+			\WC()->cart = new \WC_Cart();
 			// We need to force a refresh of the cart contents
 			// from session here (cart contents are normally
 			// refreshed on wp_loaded, which has already happened
@@ -306,7 +309,16 @@ class Shipping extends Base {
 			'meta_data'     => $this->get_rate_meta_data( $rate ),
 		);
 
-		$rate_info = \fastwc_maybe_update_shipping_rate_for_multicurrency( $rate_info, $this->wc_currency, $this->currency );
+		$rate_info = \fastwc_maybe_update_shipping_rate_for_multicurrency( $rate_info, $this->wc_currency, $this->currency, $this->request );
+
+		$rate_info['price'] = \wc_format_decimal( $rate_info['price'], 2 );
+		if ( ! empty( $rate_info['taxes'] ) ) {
+			$rate_taxes = $rate_info['taxes'];
+
+			foreach ( $rate_taxes as $rate_tax_id => $rate_tax ) {
+				$rate_info['taxes'][ $rate_tax_id ] = \wc_format_decimal( $rate_tax, 2 );
+			}
+		}
 
 		return array_merge(
 			$rate_info,

@@ -22,14 +22,14 @@ require_once FASTWC_PATH . 'includes/routes/class-plugin-info.php';
  */
 function fastwc_rest_api_init() {
 	// Register a utility route to get information on installed plugins.
-	\FastWC\Routes\Plugin_Info::get_instance();
+	new \FastWC\Routes\Plugin_Info();
 
 	// Register a route to collect all possible shipping locations.
-	\FastWC\Routes\Shipping_Zones::get_instance();
+	new \FastWC\Routes\Shipping_Zones();
 
 	// Register a route to calculate available shipping rates.
 	// FE -> OMS -> Blender -> (pID, variantID, Shipping info, CustomerID)Plugin.
-	\FastWC\Routes\Shipping::get_instance();
+	new \FastWC\Routes\Shipping();
 
 	// Register a route to test the Authorization header.
 	register_rest_route(

@@ -13,13 +13,6 @@ namespace FastWC\Routes;
 abstract class Base {
 
 	/**
-	 * Instance of the route object.
-	 *
-	 * @var FastWC\Routes\Base
-	 */
-	protected static $instance = null;
-
-	/**
 	 * Route namespace.
 	 *
 	 * @var string
@@ -64,22 +57,9 @@ abstract class Base {
 	/**
 	 * Route constructor, protected to prevent multiple instances.
 	 */
-	protected function __construct() {
+	public function __construct() {
 		$this->init();
 		$this->register();
-	}
-
-	/**
-	 * Return an instance of the route object.
-	 *
-	 * @return \FastWC\Routes\Base
-	 */
-	public static function get_instance() {
-		if ( empty( static::$instance ) ) {
-			static::$instance = new static();
-		}
-
-		return static::$instance;
 	}
 
 	/**
