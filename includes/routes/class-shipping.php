@@ -31,7 +31,7 @@ class Shipping extends Base {
 	 *
 	 * @var string
 	 */
-	protected $methods = 'GET';
+	protected $methods = 'POST';
 
 	/**
 	 * Currency code.
