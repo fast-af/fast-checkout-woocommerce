@@ -66,10 +66,7 @@ class Shipping extends Base {
 		$this->currency    = ! empty( $params['currency'] ) ? $params['currency'] : '';
 		$this->wc_currency = \get_woocommerce_currency();
 
-		if ( $this->currency !== $this->wc_currency ) {
-			\add_filter( 'woocommerce_currency', array( $this, 'update_woocommerce_currency' ), PHP_INT_MAX );
-			\get_woocommerce_currency();
-		}
+		\add_filter( 'woocommerce_currency', array( $this, 'update_woocommerce_currency' ), PHP_INT_MAX );
 
 		// This is needed for session to work.
 		\WC()->frontend_includes();
@@ -348,7 +345,8 @@ class Shipping extends Base {
 	 */
 	protected function get_store_currency_response() {
 		$position = \get_option( 'woocommerce_currency_pos' );
-		$symbol   = html_entity_decode( \get_woocommerce_currency_symbol() );
+		$currency = ! empty( $this->currency ) ? $this->currency : \get_woocommerce_currency();
+		$symbol   = html_entity_decode( \get_woocommerce_currency_symbol( $currency ) );
 		$prefix   = '';
 		$suffix   = '';
 
@@ -370,7 +368,7 @@ class Shipping extends Base {
 		}
 
 		return array(
-			'currency_code'               => \get_woocommerce_currency(),
+			'currency_code'               => $currency,
 			'currency_symbol'             => $symbol,
 			'currency_minor_unit'         => \wc_get_price_decimals(),
 			'currency_decimal_separator'  => \wc_get_price_decimal_separator(),
