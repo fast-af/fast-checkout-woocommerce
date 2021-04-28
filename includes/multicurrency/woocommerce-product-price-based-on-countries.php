@@ -19,7 +19,23 @@
  */
 function fastwc_update_price_for_multicurrency_woocommerce_product_price_based_on_countries( $price, $product, $order, $request ) {
 
-	// Entry point for updating the order for multicurrency using this plugin.
+	$country = '';
+
+	if ( ! emtpy( $request['billing']['country'] ) ) {
+		$country = $request['billing']['country'];
+	} elseif ( ! empty( $request['shipping']['country'] ) ) {
+		$country = $request['shipping']['country'];
+	}
+
+	if ( ! empty( $country ) ) {
+		$zone = wcpbc_get_zone_by_country( $country );
+
+		if ( ! empty( $zone ) ) {
+			// TODO: Use get_post_price() method from $zone instead.
+			$exchange_rate = $zone->get_exchange_rate();
+			$price         = $zone->get_exchange_rate_price( $price );
+		}
+	}
 
 	return $price;
 }
