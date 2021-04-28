@@ -43,7 +43,7 @@ class Shipping extends Base {
 	 *
 	 * @throws Exception If failed to add items to cart or no shipping options available for address.
 	 */
-	public function callback( WP_REST_Request $request ) {
+	public function callback( $request ) {
 		$this->request = $request;
 
 		$params = $this->request->get_params();
