@@ -431,24 +431,4 @@ class Shipping extends Base {
 		}
 		return is_scalar( $response ) ? \wp_kses_post( trim( \convert_chars( \wptexturize( $response ) ) ) ) : $response;
 	}
-
-	/**
-	 * Convert monetary values from WooCommerce to string based integers, using
-	 * the smallest unit of a currency.
-	 *
-	 * @param string|float $amount Monetary amount with decimals.
-	 * @param int          $decimals Number of decimals the amount is formatted with.
-	 * @param int          $rounding_mode Defaults to the PHP_ROUND_HALF_UP constant.
-	 *
-	 * @return string      The new amount.
-	 */
-	protected function prepare_money_response( $amount, $decimals = 2, $rounding_mode = PHP_ROUND_HALF_UP ) {
-		return (string) intval(
-			round(
-				( (float) \wc_format_decimal( $amount ) ) * ( 10 ** $decimals ),
-				0,
-				absint( $rounding_mode )
-			)
-		);
-	}
 }
