@@ -54,7 +54,7 @@ class Plugin_Info extends Base {
 	 *     }
 	 * }
 	 */
-	public function callback( WP_REST_Request $request ) {
+	public function callback( $request ) {
 		$this->request = $request;
 
 		// Get all plugins.
