@@ -18,6 +18,7 @@ define( 'FASTWC_SETTING_CART_BUTTON_STYLES', 'fast_cart_button_styles' );
 define( 'FASTWC_SETTING_MINI_CART_BUTTON_STYLES', 'fast_mini_cart_button_styles' );
 define( 'FASTWC_SETTING_CHECKOUT_BUTTON_STYLES', 'fast_checkout_button_styles' );
 define( 'FASTWC_SETTING_LOGIN_BUTTON_STYLES', 'fast_login_button_styles' );
+define( 'FASTWC_SETTING_DISABLE_MULTICURRENCY', 'fastwc_disable_multicurrency' );
 define( 'FASTWC_JWKS_URL', 'https://api.fast.co/v1/oauth2/jwks' );
 define( 'FASTWC_JS_URL', 'https://js.fast.co/fast-woocommerce.js' );
 define( 'FASTWC_ONBOARDING_URL', 'https://fast.co/business' );
@@ -221,6 +222,7 @@ function fastwc_admin_create_menu() {
 	register_setting( 'fast', FASTWC_SETTING_CHECKOUT_BUTTON_STYLES );
 	register_setting( 'fast', FASTWC_SETTING_LOGIN_BUTTON_STYLES );
 	register_setting( 'fast', FASTWC_SETTING_TEST_MODE );
+	register_setting( 'fast', FASTWC_SETTING_DISABLE_MULTICURRENCY );
 	register_setting( 'fast', FASTWC_SETTING_FAST_JS_URL );
 	register_setting( 'fast', FASTWC_SETTING_FAST_JWKS_URL );
 	register_setting( 'fast', FASTWC_SETTING_ONBOARDING_URL );
@@ -275,19 +277,30 @@ function fastwc_admin_setup_sections() {
  * Sets up fields for Fast settings page.
  */
 function fastwc_admin_setup_fields() {
-	add_settings_field( FASTWC_SETTING_APP_ID, 'App ID', 'fastwc_app_id_content', 'fast', 'fast_app_info' );
+	$settings_page = 'fast';
 
-	add_settings_field( FASTWC_SETTING_PDP_BUTTON_STYLES, 'Product page button styles', 'fastwc_pdp_button_styles_content', 'fast', 'fast_styles' );
-	add_settings_field( FASTWC_SETTING_CART_BUTTON_STYLES, 'Cart page button styles', 'fastwc_cart_button_styles_content', 'fast', 'fast_styles' );
-	add_settings_field( FASTWC_SETTING_MINI_CART_BUTTON_STYLES, 'Mini cart widget button styles', 'fastwc_mini_cart_button_styles_content', 'fast', 'fast_styles' );
-	add_settings_field( FASTWC_SETTING_CHECKOUT_BUTTON_STYLES, 'Checkout page button styles', 'fastwc_checkout_button_styles_content', 'fast', 'fast_styles' );
-	add_settings_field( FASTWC_SETTING_LOGIN_BUTTON_STYLES, 'Login button styles', 'fastwc_login_button_styles_content', 'fast', 'fast_styles' );
+	// App Info settings.
+	$settings_section = 'fast_app_info';
+	add_settings_field( FASTWC_SETTING_APP_ID, 'App ID', 'fastwc_app_id_content', $settings_page, $settings_section );
 
-	add_settings_field( FASTWC_SETTING_TEST_MODE, 'Test Mode', 'fastwc_test_mode_content', 'fast', 'fast_test_mode' );
+	// Button style settings.
+	$settings_section = 'fast_styles';
+	add_settings_field( FASTWC_SETTING_PDP_BUTTON_STYLES, 'Product page button styles', 'fastwc_pdp_button_styles_content', $settings_page, $settings_section );
+	add_settings_field( FASTWC_SETTING_CART_BUTTON_STYLES, 'Cart page button styles', 'fastwc_cart_button_styles_content', $settings_page, $settings_section );
+	add_settings_field( FASTWC_SETTING_MINI_CART_BUTTON_STYLES, 'Mini cart widget button styles', 'fastwc_mini_cart_button_styles_content', $settings_page, $settings_section );
+	add_settings_field( FASTWC_SETTING_CHECKOUT_BUTTON_STYLES, 'Checkout page button styles', 'fastwc_checkout_button_styles_content', $settings_page, $settings_section );
+	add_settings_field( FASTWC_SETTING_LOGIN_BUTTON_STYLES, 'Login button styles', 'fastwc_login_button_styles_content', $settings_page, $settings_section );
 
-	add_settings_field( FASTWC_SETTING_FAST_JS_URL, 'Fast JS URL', 'fastwc_fastwc_js_content', 'fast', 'fast_advanced' );
-	add_settings_field( FASTWC_SETTING_FAST_JWKS_URL, 'Fast JWKS URL', 'fastwc_fastwc_jwks_content', 'fast', 'fast_advanced' );
-	add_settings_field( FASTWC_SETTING_ONBOARDING_URL, 'Fast Onboarding URL', 'fastwc_onboarding_url_content', 'fast', 'fast_advanced' );
+	// Test Mode settings.
+	$settings_section = 'fast_test_mode';
+	add_settings_field( FASTWC_SETTING_TEST_MODE, 'Test Mode', 'fastwc_test_mode_content', $settings_page, $settings_section );
+	add_settings_field( FASTWC_SETTING_DISABLE_MULTICURRENCY, __( 'Disable Multicurrency Support', 'fast' ), 'fastwc_disable_multicurrency_content', $settings_page, $settings_section );
+
+	// Advanced settings.
+	$settings_section = 'fast_advanced';
+	add_settings_field( FASTWC_SETTING_FAST_JS_URL, 'Fast JS URL', 'fastwc_fastwc_js_content', $settings_page, $settings_section );
+	add_settings_field( FASTWC_SETTING_FAST_JWKS_URL, 'Fast JWKS URL', 'fastwc_fastwc_jwks_content', $settings_page, $settings_section );
+	add_settings_field( FASTWC_SETTING_ONBOARDING_URL, 'Fast Onboarding URL', 'fastwc_onboarding_url_content', $settings_page, $settings_section );
 }
 
 /**
@@ -372,7 +385,6 @@ function fastwc_test_mode_content() {
 	}
 
 	?>
-		<span>When test mode is enabled, only logged-in admin users will see the Fast Checkout button.</span>
 		<div>
 			<input
 				name="fast_test_mode"
@@ -381,8 +393,30 @@ function fastwc_test_mode_content() {
 				value="1"
 				<?php checked( 1, $fastwc_test_mode ); ?>
 			/>
-			<label for="fast_test_mode">Enable test mode</label>
+			<label for="fast_test_mode"><?php esc_html_e( 'Enable test mode', 'fast' ); ?></label>
 		</div>
+		<p class="description"><?php esc_html_e( 'When test mode is enabled, only logged-in admin users will see the Fast Checkout button.', 'fast' ); ?></p>
+	<?php
+}
+
+/**
+ * Renders the Disable Multicurrency field.
+ */
+function fastwc_disable_multicurrency_content() {
+	$fastwc_disable_multicurrency = get_option( FASTWC_SETTING_DISABLE_MULTICURRENCY, 0 );
+
+	?>
+		<div>
+			<input
+				name="fastwc_disable_multicurrency"
+				id="fastwc_disable_multicurrency"
+				type="checkbox"
+				value="1"
+				<?php checked( 1, $fastwc_disable_multicurrency ); ?>
+			/>
+			<label for="fastwc_disable_multicurrency"><?php esc_html_e( 'Disable Multicurrency Support', 'fast' ); ?></label>
+		</div>
+		<p class="description"><?php esc_html_e( 'Disable multicurrency support in Fast Checkout.', 'fast' ); ?></p>
 	<?php
 }
 
