@@ -25,7 +25,7 @@ function fastwc_update_price_for_multicurrency_woocommerce_product_price_based_o
 		$zone = wcpbc_get_zone_by_country( $country );
 
 		if ( ! empty( $zone ) ) {
-			$price = $zone->get_post_price( $product, '_price' );
+			$price = $zone->get_post_price( $product->get_id(), '_price' );
 		}
 	}
 
