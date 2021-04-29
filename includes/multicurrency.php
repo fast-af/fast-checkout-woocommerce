@@ -61,6 +61,22 @@ function fastwc_get_active_multicurrency_plugin() {
 }
 
 /**
+ * Checks if multicurrency support is disabled.
+ *
+ * @return bool True if multicurrency support is disabled. False otherwise.
+ */
+function fastwc_is_multicurrency_support_disabled() {
+	$fastwc_disable_multicurrency = get_option( FASTWC_SETTING_DISABLE_MULTICURRENCY, false );
+
+	if ( ! empty( $fastwc_disable_multicurrency ) ) {
+		return true;
+	}
+
+	return false;
+
+}
+
+/**
  * Maybe update order for multicurrency.
  *
  * @param WC_Data         $order    The order to check.
@@ -69,17 +85,22 @@ function fastwc_get_active_multicurrency_plugin() {
  * @return WC_Data
  */
 function fastwc_maybe_update_order_for_multicurrency( $order, $request ) {
-	$multicurrency_plugin = fastwc_get_active_multicurrency_plugin();
+	$multicurrency_disabled = fastwc_is_multicurrency_support_disabled();
 
-	$wc_currency    = get_woocommerce_currency();
-	$order_currency = method_exists( $order, 'get_currency' ) ? $order->get_currency() : $wc_currency;
+	// Do nothing if multicurrency is disabled.
+	if ( fasle === $multicurrency_disabled ) {
+		$multicurrency_plugin = fastwc_get_active_multicurrency_plugin();
 
-	if (
-		false !== $multicurrency_plugin // Make sure a supported multicurrency plugin is activated.
-		&& ! empty( $order_currency ) // Make sure the order currency is set.
-		&& $wc_currency !== $order_currency // Make sure the order currency is not the default currency.
-	) {
-		$order = fastwc_update_order_for_multicurrency( $order, $request, $multicurrency_plugin );
+		$wc_currency    = get_woocommerce_currency();
+		$order_currency = fastwc_get_order_currency( $order );
+
+		if (
+			false !== $multicurrency_plugin // Make sure a supported multicurrency plugin is activated.
+			&& ! empty( $order_currency ) // Make sure the order currency is set.
+			&& $wc_currency !== $order_currency // Make sure the order currency is not the default currency.
+		) {
+			$order = fastwc_update_order_for_multicurrency( $order, $request, $multicurrency_plugin );
+		}
 	}
 
 	return $order;
@@ -161,28 +182,33 @@ function fastwc_update_order_for_multicurrency( $order, $request, $multicurrency
  * @return array
  */
 function fastwc_maybe_update_shipping_rate_for_multicurrency( $rate_info, $wc_currency, $currency, $request ) {
-	$multicurrency_plugin = fastwc_get_active_multicurrency_plugin();
+	$multicurrency_disabled = fastwc_is_multicurrency_support_disabled();
 
-	if (
-		false !== $multicurrency_plugin // Make sure a supported multicurrency plugin is activated.
-		&& ! empty( $currency ) // Make sure the customer currency is set.
-		&& $wc_currency !== $currency // Make sure the customer currency is not the default currency.
-	) {
-		/**
-		 * Update shipping rates for multicurrency.
-		 *
-		 * @param array           $rate_info The rate response information.
-		 * @param string          $currency  The customer currency.
-		 * @param WP_REST_Request $request   The request object.
-		 *
-		 * @return array
-		 */
-		$rate_info = apply_filters(
-			"fastwc_update_shipping_rate_for_multicurrency_{$multicurrency_plugin}",
-			$rate_info,
-			$currency,
-			$request
-		);
+	// Do nothing if multicurrency is disabled.
+	if ( false === $multicurrency_disabled ) {
+		$multicurrency_plugin = fastwc_get_active_multicurrency_plugin();
+
+		if (
+			false !== $multicurrency_plugin // Make sure a supported multicurrency plugin is activated.
+			&& ! empty( $currency ) // Make sure the customer currency is set.
+			&& $wc_currency !== $currency // Make sure the customer currency is not the default currency.
+		) {
+			/**
+			 * Update shipping rates for multicurrency.
+			 *
+			 * @param array           $rate_info The rate response information.
+			 * @param string          $currency  The customer currency.
+			 * @param WP_REST_Request $request   The request object.
+			 *
+			 * @return array
+			 */
+			$rate_info = apply_filters(
+				"fastwc_update_shipping_rate_for_multicurrency_{$multicurrency_plugin}",
+				$rate_info,
+				$currency,
+				$request
+			);
+		}
 	}
 
 	return $rate_info;
