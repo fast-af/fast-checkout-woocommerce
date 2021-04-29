@@ -166,17 +166,26 @@ class Shipping extends Base {
 	 * @return mixed
 	 */
 	protected function shipping_update_customer_information( $params ) {
-		// Update customer information.
-		\WC()->customer->set_props(
-			array(
-				'shipping_country'   => $params['shipping']['country'],
-				'shipping_state'     => $params['shipping']['state'],
-				'shipping_postcode'  => $params['shipping']['postcode'],
-				'shipping_city'      => $params['shipping']['city'],
-				'shipping_address_1' => $params['shipping']['address_1'],
-				'shipping_address_2' => $params['shipping']['address_2'],
-			)
+		$customer_props = array(
+			'shipping_country'   => $params['shipping']['country'],
+			'shipping_state'     => $params['shipping']['state'],
+			'shipping_postcode'  => $params['shipping']['postcode'],
+			'shipping_city'      => $params['shipping']['city'],
+			'shipping_address_1' => $params['shipping']['address_1'],
+			'shipping_address_2' => $params['shipping']['address_2'],
 		);
+
+		// Add billing address info if it is part of the request.
+		if ( ! empty( $params['billing'] ) && is_array( $params['billing'] ) ) {
+			$customer_props = wp_parse_args(
+				$params['billing'],
+				$customer_props
+			);
+		}
+
+		// Update customer information.
+		\WC()->customer->set_props( $customer_props );
+
 		// Save what we added.
 		\WC()->customer->save();
 
