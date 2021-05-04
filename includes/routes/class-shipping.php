@@ -63,10 +63,7 @@ class Shipping extends Base {
 		$params = $this->request->get_params();
 		$return = false;
 
-		$this->currency    = ! empty( $params['currency'] ) ? $params['currency'] : '';
-		$this->wc_currency = \get_woocommerce_currency();
-
-		\add_filter( 'woocommerce_currency', array( $this, 'update_woocommerce_currency' ), PHP_INT_MAX );
+		$this->get_currency();
 
 		// This is needed for session to work.
 		\WC()->frontend_includes();
@@ -88,6 +85,29 @@ class Shipping extends Base {
 		\WC()->cart->empty_cart();
 
 		return $return;
+	}
+
+	/**
+	 * Get the currency from the request object.
+	 */
+	protected function get_currency() {
+		if ( empty( $this->request ) ) {
+			return;
+		}
+
+		$params = $this->request->get_params();
+
+		$this->wc_currency = \get_woocommerce_currency();
+		$order_id          = ! empty( $params['order_id'] ) ? $params['order_id'] : 0;
+
+		if ( empty( $order_id ) ) {
+			$this->currency = $this->wc_currency;
+		} else {
+			$order          = new WC_Order( $id );
+			$this->currency = \fastwc_get_order_currency( $order );
+		}
+
+		\add_filter( 'woocommerce_currency', array( $this, 'update_woocommerce_currency' ), PHP_INT_MAX );
 	}
 
 	/**
