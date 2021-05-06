@@ -13,13 +13,6 @@ namespace FastWC\Routes;
 class Shipping extends Base {
 
 	/**
-	 * Route namespace.
-	 *
-	 * @var string
-	 */
-	protected $namespace = FASTWC_ROUTES_BASE;
-
-	/**
 	 * Route name.
 	 *
 	 * @var string

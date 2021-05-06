@@ -17,7 +17,7 @@ abstract class Base {
 	 *
 	 * @var string
 	 */
-	protected $namespace;
+	protected $namespace = FASTWC_ROUTES_BASE;
 
 	/**
 	 * Route name.
@@ -31,7 +31,7 @@ abstract class Base {
 	 *
 	 * @var string
 	 */
-	protected $methods;
+	protected $methods = 'GET';
 
 	/**
 	 * Route callback.

@@ -13,25 +13,11 @@ namespace FastWC\Routes;
 class Shipping_Zones extends Base {
 
 	/**
-	 * Route namespace.
-	 *
-	 * @var string
-	 */
-	protected $namespace = FASTWC_ROUTES_BASE;
-
-	/**
 	 * Route name.
 	 *
 	 * @var string
 	 */
 	protected $route = 'shipping_zones';
-
-	/**
-	 * Route methods.
-	 *
-	 * @var string
-	 */
-	protected $methods = 'GET';
 
 	/**
 	 * Collects all possible shipping locations at once

@@ -29,13 +29,6 @@ class Plugin_Info extends Base {
 	protected $route = 'plugins';
 
 	/**
-	 * Route methods.
-	 *
-	 * @var string
-	 */
-	protected $methods = 'GET';
-
-	/**
 	 * Utility to get information on installed plugins.
 	 *
 	 * Returns an array of all installed plugins and indicates which are
