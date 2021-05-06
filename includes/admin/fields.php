@@ -144,3 +144,50 @@ function fastwc_settings_field_checkbox( $args ) {
 	<?php
 	fastwc_maybe_render_feild_description( $args['description'] );
 }
+
+/**
+ * Ajax select settings field.
+ *
+ * @param array $args Attribute args for the field.
+ */
+function fastwc_settings_field_ajax_select( $args ) {
+	$args = fastwc_get_field_args(
+		array(
+			'name'        => '',
+			'id'          => '',
+			'class'       => 'fast-select',
+			'description' => '',
+			'nonce'       => '',
+			'selected'    => array(),
+			'style'       => 'width: 400px;',
+		),
+		$args
+	);
+
+	// A textarea field with no name is invalid. Do nothing if the name is empty.
+	// For security purposes, a nonce must be added as well.
+	if ( empty( $args['name'] ) || empty( $args['nonce'] ) ) {
+		return;
+	}
+	?>
+	<select
+		data-security="<?php echo esc_attr( wp_create_nonce( $args['nonce'] ) ); ?>"
+		multiple
+		class="<?php echo esc_attr( $args['class'] ); ?>"
+		name="<?php echo esc_attr( $args['name'] ); ?>[]"
+		id="<?php echo esc_attr( $args['id'] ); ?>"
+		style="<?php echo esc_attr( $args['style'] ); ?>"
+	>
+	<?php
+	if ( ! empty( $args['selected'] ) ) :
+		foreach ( $args['selected'] as $value => $label ) :
+			?>
+		<option value="<?php echo esc_attr( $value ); ?>" selected="selected"><?php echo esc_html( $label ); ?></option>
+			<?php
+		endforeach;
+	endif;
+	?>
+	</select>
+	<?php
+	fastwc_maybe_render_feild_description( $args['description'] );
+}

@@ -40,5 +40,14 @@ function fastwc_admin_enqueue_scripts() {
 		array(),
 		$select2_version
 	);
+
+	$fast_js_version = '1.0.0';
+	wp_enqueue_script(
+		'fastwc-admin-js',
+		FASTWC_URL . 'assets/src/fastwc.js',
+		array( 'jquery', 'select2' ),
+		$fast_js_version,
+		true
+	);
 }
 add_action( 'admin_enqueue_scripts', 'fastwc_admin_enqueue_scripts' );

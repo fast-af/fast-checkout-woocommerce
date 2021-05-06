@@ -37,6 +37,7 @@ function fastwc_admin_create_menu() {
 	register_setting( 'fast', FASTWC_SETTING_MINI_CART_BUTTON_STYLES );
 	register_setting( 'fast', FASTWC_SETTING_CHECKOUT_BUTTON_STYLES );
 	register_setting( 'fast', FASTWC_SETTING_LOGIN_BUTTON_STYLES );
+	register_setting( 'fast', FASTWC_SETTING_HIDE_BUTTON_PRODUCTS );
 	register_setting( 'fast', FASTWC_SETTING_TEST_MODE );
 	register_setting( 'fast', FASTWC_SETTING_FAST_JS_URL );
 	register_setting( 'fast', FASTWC_SETTING_FAST_JWKS_URL );
@@ -53,7 +54,10 @@ function fastwc_admin_create_menu() {
  * Prints the error message when woocommerce isn't installed.
  */
 function fastwc_settings_admin_notice_woocommerce_not_installed() {
-	printf( '<div class="notice notice-error"><p>Your Fast plugin won\'t work without an active WooCommerce installation.</p></div>' );
+	printf(
+		'<div class="notice notice-error"><p>%s</p></div>',
+		esc_html__( "Your Fast plugin won't work without an active WooCommerce installation.", 'fast' )
+	);
 }
 
 /**
@@ -62,7 +66,7 @@ function fastwc_settings_admin_notice_woocommerce_not_installed() {
 function fastwc_settings_page_content() {
 	?>
 		<div class="wrap fast-settings">
-			<h2>Fast Settings</h2>
+			<h2><?php esc_html_e( 'Fast Settings', 'fast' ); ?></h2>
 			<form method="post" action="options.php">
 				<?php
 					settings_fields( 'fast' );
@@ -78,9 +82,10 @@ function fastwc_settings_page_content() {
  * Sets up sections for Fast settings page.
  */
 function fastwc_admin_setup_sections() {
-	add_settings_section( 'fast_app_info', 'App Info', false, 'fast' );
-	add_settings_section( 'fast_styles', 'Button Styles', false, 'fast' );
-	add_settings_section( 'fast_test_mode', 'Test Mode', false, 'fast' );
+	add_settings_section( 'fast_app_info', __( 'App Info', 'fast' ), false, 'fast' );
+	add_settings_section( 'fast_styles', __( 'Button Styles', 'fast' ), false, 'fast' );
+	add_settings_section( 'fast_options', __( 'Button Options', 'fast' ), false, 'fast' );
+	add_settings_section( 'fast_test_mode', __( 'Test Mode', 'fast' ), false, 'fast' );
 
 	// For now, only allow fast users to see advanced settings.
 	if ( preg_match( '/@fast.co$/i', wp_get_current_user()->user_email ) ) {
@@ -92,19 +97,21 @@ function fastwc_admin_setup_sections() {
  * Sets up fields for Fast settings page.
  */
 function fastwc_admin_setup_fields() {
-	add_settings_field( FASTWC_SETTING_APP_ID, 'App ID', 'fastwc_app_id_content', 'fast', 'fast_app_info' );
+	add_settings_field( FASTWC_SETTING_APP_ID, __( 'App ID', 'fast' ), 'fastwc_app_id_content', 'fast', 'fast_app_info' );
 
-	add_settings_field( FASTWC_SETTING_PDP_BUTTON_STYLES, 'Product page button styles', 'fastwc_pdp_button_styles_content', 'fast', 'fast_styles' );
-	add_settings_field( FASTWC_SETTING_CART_BUTTON_STYLES, 'Cart page button styles', 'fastwc_cart_button_styles_content', 'fast', 'fast_styles' );
-	add_settings_field( FASTWC_SETTING_MINI_CART_BUTTON_STYLES, 'Mini cart widget button styles', 'fastwc_mini_cart_button_styles_content', 'fast', 'fast_styles' );
-	add_settings_field( FASTWC_SETTING_CHECKOUT_BUTTON_STYLES, 'Checkout page button styles', 'fastwc_checkout_button_styles_content', 'fast', 'fast_styles' );
-	add_settings_field( FASTWC_SETTING_LOGIN_BUTTON_STYLES, 'Login button styles', 'fastwc_login_button_styles_content', 'fast', 'fast_styles' );
+	add_settings_field( FASTWC_SETTING_PDP_BUTTON_STYLES, __( 'Product page button styles', 'fast' ), 'fastwc_pdp_button_styles_content', 'fast', 'fast_styles' );
+	add_settings_field( FASTWC_SETTING_CART_BUTTON_STYLES, __( 'Cart page button styles', 'fast' ), 'fastwc_cart_button_styles_content', 'fast', 'fast_styles' );
+	add_settings_field( FASTWC_SETTING_MINI_CART_BUTTON_STYLES, __( 'Mini cart widget button styles', 'fast' ), 'fastwc_mini_cart_button_styles_content', 'fast', 'fast_styles' );
+	add_settings_field( FASTWC_SETTING_CHECKOUT_BUTTON_STYLES, __( 'Checkout page button styles', 'fast' ), 'fastwc_checkout_button_styles_content', 'fast', 'fast_styles' );
+	add_settings_field( FASTWC_SETTING_LOGIN_BUTTON_STYLES, __( 'Login button styles', 'fast' ), 'fastwc_login_button_styles_content', 'fast', 'fast_styles' );
 
-	add_settings_field( FASTWC_SETTING_TEST_MODE, 'Test Mode', 'fastwc_test_mode_content', 'fast', 'fast_test_mode' );
+	add_settings_field( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS, __( 'Hide Buttons for these Products', 'fast' ), 'fastwc_hide_button_products', 'fast', 'fast_options' );
 
-	add_settings_field( FASTWC_SETTING_FAST_JS_URL, 'Fast JS URL', 'fastwc_fastwc_js_content', 'fast', 'fast_advanced' );
-	add_settings_field( FASTWC_SETTING_FAST_JWKS_URL, 'Fast JWKS URL', 'fastwc_fastwc_jwks_content', 'fast', 'fast_advanced' );
-	add_settings_field( FASTWC_SETTING_ONBOARDING_URL, 'Fast Onboarding URL', 'fastwc_onboarding_url_content', 'fast', 'fast_advanced' );
+	add_settings_field( FASTWC_SETTING_TEST_MODE, __( 'Test Mode', 'fast' ), 'fastwc_test_mode_content', 'fast', 'fast_test_mode' );
+
+	add_settings_field( FASTWC_SETTING_FAST_JS_URL, __( 'Fast JS URL', 'fast' ), 'fastwc_fastwc_js_content', 'fast', 'fast_advanced' );
+	add_settings_field( FASTWC_SETTING_FAST_JWKS_URL, __( 'Fast JWKS URL', 'fast' ), 'fastwc_fastwc_jwks_content', 'fast', 'fast_advanced' );
+	add_settings_field( FASTWC_SETTING_ONBOARDING_URL, __( 'Fast Onboarding URL', 'fast' ), 'fastwc_onboarding_url_content', 'fast', 'fast_advanced' );
 }
 
 /**
@@ -189,6 +196,40 @@ function fastwc_login_button_styles_content() {
 		array(
 			'name'  => 'fast_login_button_styles',
 			'value' => $fastwc_setting_login_button_styles,
+		)
+	);
+}
+
+/**
+ * Renders the Hide Buttons for Products field.
+ */
+function fastwc_hide_button_products() {
+	$fastwc_setting_hide_button_products = fastwc_get_option_or_set_default( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS, array() );
+
+	$selected = array();
+	if ( ! empty( $fastwc_setting_hide_button_products ) ) {
+		if ( ! is_array( $fastwc_setting_hide_button_products ) ) {
+			$fastwc_setting_hide_button_products = array( $fastwc_setting_hide_button_products );
+		}
+
+		$fastwc_hide_products = wc_get_products(
+			array(
+				'include' => $fastwc_setting_hide_button_products,
+			)
+		);
+
+		foreach ( $fastwc_hide_products as $fastwc_hide_product ) {
+			$selected[ $fastwc_hide_product->get_id() ] = $fastwc_hide_product->get_name();
+		}
+	}
+
+	fastwc_settings_field_ajax_select(
+		array(
+			'name'        => FASTWC_SETTING_HIDE_BUTTON_PRODUCTS,
+			'selected'    => $selected,
+			'class'       => 'fast-select fast-select--hide-button-products',
+			'description' => __( 'Select products for which the Fast checkout button should be hidden', 'fast' ),
+			'nonce'       => 'search-products',
 		)
 	);
 }
