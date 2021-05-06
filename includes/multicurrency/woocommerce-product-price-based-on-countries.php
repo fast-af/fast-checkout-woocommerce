@@ -19,7 +19,7 @@
  */
 function fastwc_update_price_for_multicurrency_woocommerce_product_price_based_on_countries( $price, $product, $order, $request ) {
 
-	$country = fastwc_woocommerce_product_price_based_on_countries_get_billing_address_country( $request );
+	$country = fastwc_woocommerce_product_price_based_on_countries_get_country( $request );
 
 	if ( ! empty( $country ) ) {
 		$zone = wcpbc_get_zone_by_country( $country );
@@ -44,7 +44,7 @@ add_filter( 'fastwc_update_price_for_multicurrency_woocommerce_product_price_bas
  */
 function fastwc_update_shipping_rate_for_multicurrency_woocommerce_product_price_based_on_countries( $rate_info, $currency, $request ) {
 
-	$country = fastwc_woocommerce_product_price_based_on_countries_get_billing_address_country( $request );
+	$country = fastwc_woocommerce_product_price_based_on_countries_get_country( $request );
 
 	if ( ! empty( $country ) ) {
 		$zone = wcpbc_get_zone_by_country( $country );
@@ -73,18 +73,26 @@ add_filter( 'fastwc_update_shipping_rate_for_multicurrency_woocommerce_product_p
  *
  * @return string
  */
-function fastwc_woocommerce_product_price_based_on_countries_get_billing_address_country( $request ) {
+function fastwc_woocommerce_product_price_based_on_countries_get_country( $request ) {
 	$country = '';
 
+	$valid_based_on = array( 'billing', 'shipping' );
+	$based_on       = get_option( 'wc_price_based_country_based_on', 'billing' );
+
+	// Make sure based on is billing or shipping.
+	if ( ! in_array( $based_on, $valid_based_on, true ) ) {
+		$based_on = 'billing';
+	}
+
 	if ( is_array( $request ) ) {
-		if ( ! emtpy( $request['billing']['country'] ) ) {
-			$country = $request['billing']['country'];
+		if ( ! emtpy( $request[ $based_on ]['country'] ) ) {
+			$country = $request[ $based_on ]['country'];
 		}
 	} elseif ( is_a( $request, 'WP_REST_Request' ) ) {
 		$params = $request->get_params();
 
-		if ( ! emtpy( $params['billing']['country'] ) ) {
-			$country = $params['billing']['country'];
+		if ( ! emtpy( $params[ $based_on ]['country'] ) ) {
+			$country = $params[ $based_on ]['country'];
 		}
 	}
 
