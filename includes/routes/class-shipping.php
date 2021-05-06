@@ -97,13 +97,18 @@ class Shipping extends Base {
 
 		$params = $this->request->get_params();
 
-		$this->wc_currency = \get_woocommerce_currency();
-		$order_id          = ! empty( $params['order_id'] ) ? $params['order_id'] : 0;
+		// Maybe set the wc_currency parameter.
+		if ( empty( $this->wc_currency ) ) {
+			$this->wc_currency = \get_woocommerce_currency();
+		}
+
+		// Get the order ID from the request params.
+		$order_id = ! empty( $params['order_id'] ) ? $params['order_id'] : 0;
 
 		if ( empty( $order_id ) ) {
 			$this->currency = $this->wc_currency;
 		} else {
-			$order          = new WC_Order( $id );
+			$order          = new WC_Order( $order_id );
 			$this->currency = \fastwc_get_order_currency( $order );
 		}
 
