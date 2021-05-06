@@ -88,7 +88,7 @@ function fastwc_maybe_update_order_for_multicurrency( $order, $request ) {
 	$multicurrency_disabled = fastwc_is_multicurrency_support_disabled();
 
 	// Do nothing if multicurrency is disabled.
-	if ( fasle === $multicurrency_disabled ) {
+	if ( false === $multicurrency_disabled ) {
 		$multicurrency_plugin = fastwc_get_active_multicurrency_plugin();
 
 		$wc_currency    = get_woocommerce_currency();
