@@ -88,7 +88,11 @@ class Shipping_Zones extends Base {
 	 */
 	protected function loc_arr_has_location( $loc_arr, $location ) {
 		foreach ( $loc_arr as $li ) {
-			if ( $li->code === $location->code ) {
+			if (
+				! empty( $li->code ) &&
+				! empty( $location->code ) &&
+				$li->code === $location->code
+			) {
 				return true;
 			}
 		}
