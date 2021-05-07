@@ -16,6 +16,7 @@ define( 'FASTWC_SETTING_CART_BUTTON_STYLES', 'fast_cart_button_styles' );
 define( 'FASTWC_SETTING_MINI_CART_BUTTON_STYLES', 'fast_mini_cart_button_styles' );
 define( 'FASTWC_SETTING_CHECKOUT_BUTTON_STYLES', 'fast_checkout_button_styles' );
 define( 'FASTWC_SETTING_LOGIN_BUTTON_STYLES', 'fast_login_button_styles' );
+define( 'FASTWC_SETTING_DISABLE_MULTICURRENCY', 'fastwc_disable_multicurrency' );
 define( 'FASTWC_SETTING_HIDE_BUTTON_PRODUCTS', 'fast_hide_button_products' );
 define( 'FASTWC_JWKS_URL', 'https://api.fast.co/v1/oauth2/jwks' );
 define( 'FASTWC_JS_URL', 'https://js.fast.co/fast-woocommerce.js' );
