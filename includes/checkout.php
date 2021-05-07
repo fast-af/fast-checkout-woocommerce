@@ -182,23 +182,37 @@ function fastwc_should_hide_because_unsupported_products() {
 }
 
 /**
+ * Get the list of products for which the button should be hidden.
+ *
+ * @return array
+ */
+function fastwc_get_products_to_hide_buttons() {
+	$fastwc_hidden_products = get_option( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS );
+
+	if ( ! empty( $fastwc_hidden_products ) ) {
+		$fastwc_count_products = count( $fastwc_hidden_products );
+
+		for ( $i = 0; $i < $fastwc_count_products; $i++ ) {
+			$fastwc_count_products[ $i ] = (int) $fastwc_count_products[ $i ];
+		}
+	}
+
+	return $fastwc_hidden_products;
+}
+
+/**
  * Determine if the Fast PDP button should be hidden for a specific product.
  *
  * @return bool
  */
 function fastwc_should_hide_pdp_button_for_product() {
-	$fastwc_hidden_products = get_option( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS );
-
-	error_log( 'hide for products: ' . print_r( $fastwc_hidden_products, true ) );
+	$fastwc_hidden_products = fastwc_get_products_to_hide_buttons();
 
 	if ( ! empty( $fastwc_hidden_products ) && is_product() ) {
 		// Check current product ID.
 		global $product;
 
 		$product_id = ! empty( $product ) ? $product->get_id() : 0;
-
-		error_log( 'product_id: ' . $product_id );
-		error_log( 'product_id type: ' . gettype( $product_id ) );
 
 		if ( ! empty( $product_id ) && in_array( $product_id, $fastwc_hidden_products, true ) ) {
 			return true;
@@ -214,7 +228,7 @@ function fastwc_should_hide_pdp_button_for_product() {
  * @return bool
  */
 function fastwc_should_hide_cart_button_for_product() {
-	$fastwc_hidden_products = get_option( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS );
+	$fastwc_hidden_products = fastwc_get_products_to_hide_buttons();
 
 	if ( ! empty( WC()->cart ) ) {
 		$cart = WC()->cart->get_cart();
