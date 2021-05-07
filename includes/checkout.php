@@ -189,11 +189,16 @@ function fastwc_should_hide_because_unsupported_products() {
 function fastwc_should_hide_pdp_button_for_product() {
 	$fastwc_hidden_products = get_option( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS );
 
+	error_log( 'hide for products: ' . print_r( $fastwc_hidden_products ) );
+
 	if ( ! empty( $fastwc_hidden_products ) && is_product() ) {
 		// Check current product ID.
 		global $product;
 
 		$product_id = ! empty( $product ) ? $product->get_id() : 0;
+
+		error_log( 'product_id: ' . $product_id );
+		error_log( 'product_id type: ' . gettype( $product_id ) );
 
 		if ( ! empty( $product_id ) && in_array( $product_id, $fastwc_hidden_products, true ) ) {
 			return true;
