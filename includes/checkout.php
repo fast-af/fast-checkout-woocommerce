@@ -196,7 +196,7 @@ function fastwc_get_products_to_hide_buttons() {
 		$fastwc_count_products = count( $fastwc_hidden_products );
 
 		for ( $i = 0; $i < $fastwc_count_products; $i++ ) {
-			$fastwc_count_products[ $i ] = (int) $fastwc_count_products[ $i ];
+			$fastwc_hidden_products[ $i ] = (int) $fastwc_hidden_products[ $i ];
 		}
 	}
 
