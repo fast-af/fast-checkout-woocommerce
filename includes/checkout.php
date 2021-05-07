@@ -192,7 +192,7 @@ function fastwc_should_hide_because_unsupported_products() {
 function fastwc_should_hide_pdp_button_for_product() {
 	$fastwc_hidden_products = get_option( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS );
 
-	error_log( 'hide for products: ' . print_r( $fastwc_hidden_products ) );
+	error_log( 'hide for products: ' . print_r( $fastwc_hidden_products, true ) );
 
 	if ( ! empty( $fastwc_hidden_products ) && is_product() ) {
 		// Check current product ID.
