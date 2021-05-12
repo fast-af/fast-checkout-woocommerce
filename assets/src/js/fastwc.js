@@ -24,7 +24,7 @@
 						data: function( params ) {
 							var query = {
 								term : params.term,
-								action : 'woocommerce_json_search_products_and_variations',
+								action : 'woocommerce_json_search_products',
 								security: productSelect.attr('data-security'),
 							};
 
