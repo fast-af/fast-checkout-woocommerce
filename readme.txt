@@ -4,7 +4,7 @@ Tags: fast, fast checkout, checkout, woocommerce, woocommerce payment, woocommer
 Requires at least: 5.1
 Tested up to: 5.7
 Requires PHP: 7.2
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
@@ -34,6 +34,9 @@ Fast replaces your current payment processor. You can see our fee schedule, simi
 
  
 == Changelog ==
- 
+
+= 1.0.1 =
+* Hide the Fast Checkout button for variable subscription products.
+
 = 1.0 =
 * Fast Checkout for WooCommerce launch
