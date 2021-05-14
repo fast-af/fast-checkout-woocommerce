@@ -1,0 +1,30 @@
+{
+  "name": "fast-checkout-woocommerce",
+  "version": "1.0.0",
+  "description": "Fast Checkout for WooCommerce",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fast-af/fast-checkout-woocommerce.git"
+  },
+  "keywords": [
+    "fast",
+    "checkout",
+    "woocommerce"
+  ],
+  "author": "Fast AF, Inc.",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/fast-af/fast-checkout-woocommerce/issues"
+  },
+  "homepage": "https://github.com/fast-af/fast-checkout-woocommerce#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-eslint": "^6.0.0",
+    "gulp-uglify": "^3.0.2"
+  }
+}

@@ -11,11 +11,12 @@
  */
 
 define( 'FASTWC_PATH', plugin_dir_path( __FILE__ ) );
+define( 'FASTWC_URL', plugin_dir_url( __FILE__ ) );
 
 // WP Admin plugin settings.
 require_once FASTWC_PATH . 'includes/admin/settings.php';
-// Loads fast.js.
-require_once FASTWC_PATH . 'includes/js.php';
+// Loads Fast js and css assets.
+require_once FASTWC_PATH . 'includes/assets.php';
 // Loads fast utilities.
 require_once FASTWC_PATH . 'includes/utilities.php';
 // Adds Fast Checkout button to store.
