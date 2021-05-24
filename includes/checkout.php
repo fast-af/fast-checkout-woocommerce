@@ -273,6 +273,19 @@ function fastwc_woocommerce_grouped_product_list_before() {
 add_action( 'woocommerce_grouped_product_list_before', 'fastwc_woocommerce_grouped_product_list_before' );
 
 /**
+ * Maybe render the cart button.
+ *
+ * @param string $template The name of the template to render.
+ */
+function fastwc_maybe_render_cart_button( $template ) {
+	if ( fastwc_should_hide_cart_checkout_button() ) {
+		return;
+	}
+
+	fastwc_load_template( $template );
+}
+
+/**
  * Inject Fast Checkout button after Add to Cart button.
  */
 function fastwc_woocommerce_after_add_to_cart_quantity() {
@@ -292,11 +305,7 @@ add_action( 'woocommerce_after_add_to_cart_quantity', 'fastwc_woocommerce_after_
  * Inject Fast Checkout button after Proceed to Checkout button on cart page.
  */
 function fastwc_woocommerce_proceed_to_checkout() {
-	if ( fastwc_should_hide_cart_checkout_button() ) {
-		return;
-	}
-
-	fastwc_load_template( 'fast-cart' );
+	fastwc_maybe_render_cart_button( 'fast-cart' );
 }
 add_action( 'woocommerce_proceed_to_checkout', 'fastwc_woocommerce_proceed_to_checkout', 9 );
 
@@ -304,11 +313,7 @@ add_action( 'woocommerce_proceed_to_checkout', 'fastwc_woocommerce_proceed_to_ch
  * Mini-cart widget
  */
 function fastwc_woocommerce_widget_shopping_cart_before_buttons() {
-	if ( fastwc_should_hide_cart_checkout_button() ) {
-		return;
-	}
-
-	fastwc_load_template( 'fast-mini-cart' );
+	fastwc_maybe_render_cart_button( 'fast-mini-cart' );
 }
 add_action( 'woocommerce_widget_shopping_cart_before_buttons', 'fastwc_woocommerce_widget_shopping_cart_before_buttons', 30 );
 
@@ -316,11 +321,7 @@ add_action( 'woocommerce_widget_shopping_cart_before_buttons', 'fastwc_woocommer
  * Checkout page
  */
 function fastwc_woocommerce_before_checkout_form() {
-	if ( fastwc_should_hide_cart_checkout_button() ) {
-		return;
-	}
-
-	fastwc_load_template( 'fast-checkout' );
+	fastwc_maybe_render_cart_button( 'fast-checkout' );
 }
 add_action( 'woocommerce_before_checkout_form', 'fastwc_woocommerce_before_checkout_form' );
 
