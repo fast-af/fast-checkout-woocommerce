@@ -17,26 +17,30 @@
 function fastwc_should_hide_checkout_button() {
 	$return = false;
 
+	global $product;
+
+	$product_id = ! empty( $product ) ? $product->ID : 0;
+
 	// Check for test mode and app id set.
-	if ( fastwc_is_hidden_for_test_mode() || fastwc_is_app_id_empty() ) {
+	if (
+		! empty( $product_id ) &&
+		(
+			fastwc_is_hidden_for_test_mode() ||
+			fastwc_is_app_id_empty() ||
+			fastwc_should_hide_pdp_button_for_product() ||
+			fastwc_should_hide_for_product_addons( $product_id )
+		)
+	) {
 		$return = true;
 	}
 
 	if ( ! $return ) {
-		$return = fastwc_should_hide_pdp_button_for_product();
-	}
-
-	if ( ! $return ) {
-		// These variables are set in the following hooks:
-		// - wc_product_addon_start
+		// This variable is set in the following hook:
 		// - woocommerce_grouped_product_list_before
-		// They are ran on the PDP before this function is called.
-		global $fastwc_product_has_addons, $fastwc_product_is_grouped;
+		// It is run on the PDP before this function is called.
+		global $fastwc_product_is_grouped;
 
-		if (
-			$fastwc_product_has_addons ||
-			$fastwc_product_is_grouped
-		) {
+		if ( $fastwc_product_is_grouped ) {
 			$return = true;
 		}
 	}
@@ -117,16 +121,10 @@ function fastwc_should_hide_because_unsupported_products() {
 
 	// Check for products we don't support.
 	foreach ( $cart->get_cart() as $cart_item ) {
-		// Addons are not yet supported.
-		if ( class_exists( WC_Product_Addons_Helper::class ) ) {
-			// If the store has the addons plugin installed, then we can use its static function to see if this product has any
-			// addons.
-			$addons = WC_Product_Addons_Helper::get_product_addons( $cart_item['product_id'] );
-			if ( ! empty( $addons ) ) {
-				// If this product has any addons (not just the one in the cart, but the product as a whole), hide the button.
-				$return = true;
-				break;
-			}
+		$hide_for_addons = fastwc_should_hide_for_product_addons( $cart_item['product_id'] );
+		if ( $hide_for_addons ) {
+			$return = true;
+			break;
 		}
 
 		// Subscriptions are not yet supported.
@@ -213,14 +211,27 @@ function fastwc_should_hide_cart_button_for_product() {
 
 /**
  * Detect if the product has any addons (Fast Checkout does not yet support these products).
+ *
+ * @param int $product_id The ID of the product.
+ *
+ * @return bool
  */
-function fastwc_wc_product_addon_start() {
-	// If the store has the addons plugin installed, then this hook will run on any PDP pages for products with addons.
-	// In this situation, we want to note this so that our hook that displays the button can instead hide the button.
-	global $fastwc_product_has_addons;
-	$fastwc_product_has_addons = true;
+function fastwc_should_hide_for_product_addons( $product_id ) {
+	$return = false;
+
+	if ( class_exists( WC_Product_Addons_Helper::class ) ) {
+		// If the store has the addons plugin installed, then we can use its static function to see if this product has any
+		// addons.
+		$addons = WC_Product_Addons_Helper::get_product_addons( $product_id );
+		if ( ! empty( $addons ) ) {
+			// If this product has any addons (not just the one in the cart, but the product as a whole), hide the button.
+			$return = true;
+		}
+	}
+
+	return $return;
 }
-add_action( 'wc_product_addon_start', 'fastwc_wc_product_addon_start' );
+
 
 /**
  * Detect if the product is a grouped product (Fast Checkout does not yet support these products).
