@@ -6,9 +6,9 @@
  */
 
 // Define the PDP button widget.
-require_once FASTWC_PATH . 'includes/widgets/fast-pdp-button.php';
+require_once FASTWC_PATH . 'includes/widgets/class-product.php';
 // Define the cart button widget.
-require_once FASTWC_PATH . 'includes/widgets/fast-cart-button.php';
+require_once FASTWC_PATH . 'includes/widgets/class-cart.php';
 
 /**
  * Register the Fast Checkout button widgets.
