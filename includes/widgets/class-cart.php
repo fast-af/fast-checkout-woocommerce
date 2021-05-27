@@ -30,7 +30,12 @@ class Cart extends \WP_Widget {
 	 * @param array $instance Widget options for the current instance.
 	 */
 	public function widget( $args, $instance ) {
-		// TODO.
+		$widget_data = array(
+			'args'     => $args,
+			'instance' => $instance,
+		);
+
+		\fastwc_load_template( 'widgets/fast-cart', $widget_data );
 	}
 
 	/**
@@ -39,18 +44,31 @@ class Cart extends \WP_Widget {
 	 * @param array $instance Widget options for the current instance.
 	 */
 	public function form( $instance ) {
-		// TODO.
+		$title      = isset( $instance['title'] ) ? $instance['title'] : '';
+		$product_id = isset( $instance['product_id'] ) && is_numeric( $instance['product_id'] ) ? $instance['product_id'] : 0;
+		?>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_fields_name( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'fast' ); ?></label>
+			<input
+				class="widefat"
+				id="<?php echo esc_attr( $this->get_fields_id( 'title' ) ); ?>"
+				name="<?php echo esc_attr( $this->get_fields_name( 'title' ) ); ?>"
+				type="text"
+				value="<?php echo esc_attr( $title ); ?>"
+			/>
+		</p>
+		<?php
 	}
 
 	/**
 	 * Save the widget options to the database.
 	 *
 	 * @param array $new_instance The new settings for the widget.
-	 * @param array $old_instance The old settings for the widget.
 	 */
-	public function update( $new_instance, $old_instance ) {
+	public function update( $new_instance ) {
 		$instance = array();
-		// TODO.
+
+		$instance['title'] = isset( $new_instance['title'] ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
 
 		return $instance;
 	}
