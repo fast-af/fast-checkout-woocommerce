@@ -52,7 +52,10 @@ function fastwc_get_cart_data() {
  * @param string $template    The template to use.
  */
 function fastwc_maybe_render_checkout_button( $button_type, $template ) {
+	$button_types = array( 'pdp', 'cart' );
+
 	if (
+		! in_array( $button_type, $button_types, true ) ||
 		( 'pdp' === $button_type && fastwc_should_hide_pdp_checkout_button() ) ||
 		( 'cart' === $button_type && fastwc_should_hide_cart_checkout_button() )
 	) {
