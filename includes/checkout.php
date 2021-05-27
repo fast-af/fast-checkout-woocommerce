@@ -62,7 +62,7 @@ function fastwc_maybe_render_cart_button( $template ) {
  * Inject Fast Checkout button after Add to Cart button.
  */
 function fastwc_woocommerce_after_add_to_cart_quantity() {
-	if ( fastwc_should_hide_checkout_button() ) {
+	if ( fastwc_should_hide_pdp_checkout_button() ) {
 		return;
 	}
 

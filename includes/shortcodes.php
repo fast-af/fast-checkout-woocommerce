@@ -31,7 +31,15 @@ add_action( 'init', 'fastwc_add_shortcodes' );
  * @return string
  */
 function fastwc_shortcode_product_button( $atts ) {
-	if ( fastwc_should_hide_checkout_button() ) {
+	$atts = wp_shortcode_atts(
+		array(
+			'product_id' => 0,
+		),
+		$atts,
+		'fast_product'
+	);
+
+	if ( fastwc_should_hide_pdp_checkout_button( $atts['product_id'] ) ) {
 		$shortcode_output = '';
 	} else {
 		$shortcode_output = fastwc_shortcode_button_template(
