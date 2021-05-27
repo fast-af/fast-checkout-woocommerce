@@ -175,7 +175,7 @@ function fastwc_should_hide_pdp_button_for_out_of_stock_product( $should_hide, $
 add_filter( 'fastwc_should_hide_pdp_checkout_button', 'fastwc_should_hide_pdp_button_for_out_of_stock_product', 4, 2 );
 
 /**
- * Determine if the Fast PDP button shoudl be hidden for an external product (i.e. not purchased on this store).
+ * Determine if the Fast PDP button should be hidden for an external product (i.e. not purchased on this store).
  *
  * @param bool       $should_hide Flag from filter to hide or not hide the PDP button.
  * @param WC_Product $product     The product to check.
