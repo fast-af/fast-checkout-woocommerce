@@ -74,8 +74,9 @@ class Product extends \WP_Widget {
 	 * Save the widget options to the database.
 	 *
 	 * @param array $new_instance The new settings for the widget.
+	 * @param array $old_instance The old settings for the widget.
 	 */
-	public function update( $new_instance ) {
+	public function update( $new_instance, $old_instance ) {
 		$instance = array();
 
 		$instance['title']      = isset( $new_instance['title'] ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
