@@ -18,8 +18,7 @@ class Product extends \WP_Widget {
 	public function __constrcut() {
 		parent::__construct(
 			'fastwc-pdp-widget',
-			__( 'Fast Product Button', 'fast' ),
-			__( 'Widget for displayin the Fast Checkout product button.', 'fast' )
+			__( 'Fast Product Button', 'fast' )
 		);
 	}
 
