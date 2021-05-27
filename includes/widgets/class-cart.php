@@ -16,7 +16,11 @@ class Cart extends \WP_Widget {
 	 * Widget constructor.
 	 */
 	public function __constrcut() {
-		// TODO.
+		parent::__construct(
+			'fastwc-pdp-widget',
+			__( 'Fast Cart Button', 'fast' ),
+			__( 'Widget for displayin the Fast Checkout cart button.', 'fast' )
+		);
 	}
 
 	/**
@@ -45,6 +49,9 @@ class Cart extends \WP_Widget {
 	 * @param array $old_instance The old settings for the widget.
 	 */
 	public function update( $new_instance, $old_instance ) {
+		$instance = array();
 		// TODO.
+
+		return $instance;
 	}
 }
