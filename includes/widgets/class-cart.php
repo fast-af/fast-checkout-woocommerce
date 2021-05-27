@@ -15,9 +15,9 @@ class Cart extends \WP_Widget {
 	/**
 	 * Widget constructor.
 	 */
-	public function __constrcut() {
+	public function __construct() {
 		parent::__construct(
-			'fastwc-pdp-widget',
+			'fastwc_cart_widget',
 			__( 'Fast Cart Button', 'fast' )
 		);
 	}
