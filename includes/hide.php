@@ -288,13 +288,3 @@ function fastwc_should_hide_cart_checkout_button_because_too_many_coupons( $shou
 	return $should_hide;
 }
 add_filter( 'fastwc_should_hide_cart_checkout_button', 'fastwc_should_hide_cart_checkout_button_because_too_many_coupons', 2 );
-
-/**
- * Detect if the product is a grouped product (Fast Checkout does not yet support these products).
- * TODO: Remove the need for this.
- */
-function fastwc_woocommerce_grouped_product_list_before() {
-	global $fastwc_product_is_grouped;
-	$fastwc_product_is_grouped = true;
-}
-add_action( 'woocommerce_grouped_product_list_before', 'fastwc_woocommerce_grouped_product_list_before' );

@@ -161,14 +161,14 @@ function fastwc_product_has_addons( $product_id ) {
 function fastwc_product_is_grouped( $product_id ) {
 	$is_grouped = false;
 
-	// TODO: Check for grouped product.
+	$product = wc_get_product( $product_id );
 
-	// This variable is set in the following hook:
-	// - woocommerce_grouped_product_list_before
-	// It is run on the PDP before this function is called.
-	global $fastwc_product_is_grouped;
-
-	$is_grouped = $fastwc_product_is_grouped;
+	if (
+		method_exists( $product, 'get_type' ) &&
+		'grouped' === $product->get_type()
+	) {
+		$is_grouped = true;
+	}
 
 	return $is_grouped;
 }
