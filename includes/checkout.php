@@ -46,12 +46,16 @@ function fastwc_get_cart_data() {
 }
 
 /**
- * Maybe render the cart button.
+ * Maybe render the Fast Checkout button.
  *
- * @param string $template The name of the template to render.
+ * @param string $button_type The type of button to maybe render.
+ * @param string $template    The template to use.
  */
-function fastwc_maybe_render_cart_button( $template ) {
-	if ( fastwc_should_hide_cart_checkout_button() ) {
+function fastwc_maybe_render_checkout_button( $button_type, $template ) {
+	if (
+		( 'pdp' === $button_type && fastwc_should_hide_pdp_checkout_button() ) ||
+		( 'cart' === $button_type && fastwc_should_hide_cart_checkout_button() )
+	) {
 		return;
 	}
 
@@ -62,11 +66,7 @@ function fastwc_maybe_render_cart_button( $template ) {
  * Inject Fast Checkout button after Add to Cart button.
  */
 function fastwc_woocommerce_after_add_to_cart_quantity() {
-	if ( fastwc_should_hide_pdp_checkout_button() ) {
-		return;
-	}
-
-	fastwc_load_template( 'fast-pdp' );
+	fastwc_maybe_render_checkout_button( 'pdp', 'fast-pdp' );
 }
 add_action( 'woocommerce_after_add_to_cart_quantity', 'fastwc_woocommerce_after_add_to_cart_quantity' );
 
@@ -74,7 +74,7 @@ add_action( 'woocommerce_after_add_to_cart_quantity', 'fastwc_woocommerce_after_
  * Inject Fast Checkout button after Proceed to Checkout button on cart page.
  */
 function fastwc_woocommerce_proceed_to_checkout() {
-	fastwc_maybe_render_cart_button( 'fast-cart' );
+	fastwc_maybe_render_checkout_button( 'cart', 'fast-cart' );
 }
 add_action( 'woocommerce_proceed_to_checkout', 'fastwc_woocommerce_proceed_to_checkout', 9 );
 
@@ -82,7 +82,7 @@ add_action( 'woocommerce_proceed_to_checkout', 'fastwc_woocommerce_proceed_to_ch
  * Inject the Fast Checkout button on the mini-cart widget.
  */
 function fastwc_woocommerce_widget_shopping_cart_before_buttons() {
-	fastwc_maybe_render_cart_button( 'fast-mini-cart' );
+	fastwc_maybe_render_checkout_button( 'cart', 'fast-mini-cart' );
 }
 add_action( 'woocommerce_widget_shopping_cart_before_buttons', 'fastwc_woocommerce_widget_shopping_cart_before_buttons', 30 );
 
@@ -90,7 +90,7 @@ add_action( 'woocommerce_widget_shopping_cart_before_buttons', 'fastwc_woocommer
  * Inject the Fast Checkout button on the checkout page.
  */
 function fastwc_woocommerce_before_checkout_form() {
-	fastwc_maybe_render_cart_button( 'fast-checkout' );
+	fastwc_maybe_render_checkout_button( 'cart', 'fast-checkout' );
 }
 add_action( 'woocommerce_before_checkout_form', 'fastwc_woocommerce_before_checkout_form' );
 
