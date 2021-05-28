@@ -52,6 +52,24 @@ function fastwc_should_hide_cart_checkout_button() {
 }
 
 /**
+ * Returns true if the Fast Login button should be hidden for any of the following reasons:
+ * - Test mode is enabled and current user is someone who should NOT see the button when test mode is on.
+ * - The FASTWC_SETTING_APP_ID option is empty.
+ *
+ * @return bool
+ */
+function fastwc_should_hide_login_button() {
+	/**
+	 * Filter to set whether or not to hide the Fast Login button. Returns false by default.
+	 *
+	 * @param bool $should_hide Flag to pass through the filters for whether or not to hide the login button.
+	 *
+	 * @return bool
+	 */
+	return apply_filters( 'fastwc_should_hide_login_button', false );
+}
+
+/**
  * Checks if the Fast Checkout button should be hidden for the current user based on the Test Mode field and their email
  * The button should be hidden for all non-Fast users if Test Mode is enabled, and should be visible for everyone if
  * Test Mode is disabled.
@@ -80,6 +98,7 @@ function fastwc_is_hidden_for_test_mode( $should_hide ) {
 }
 add_filter( 'fastwc_should_hide_pdp_checkout_button', 'fastwc_is_hidden_for_test_mode', 1 );
 add_filter( 'fastwc_should_hide_cart_checkout_button', 'fastwc_is_hidden_for_test_mode', 1 );
+add_filter( 'fastwc_should_hide_login_button', 'fastwc_is_hidden_for_test_mode', 1 );
 
 /**
  * Checks if the store's app ID is empty.
@@ -102,6 +121,7 @@ function fastwc_is_app_id_empty( $should_hide ) {
 }
 add_filter( 'fastwc_should_hide_pdp_checkout_button', 'fastwc_is_app_id_empty', 1 );
 add_filter( 'fastwc_should_hide_cart_checkout_button', 'fastwc_is_app_id_empty', 1 );
+add_filter( 'fastwc_should_hide_login_button', 'fastwc_is_app_id_empty', 1 );
 
 /**
  * Determine if the Fast PDP button should be hidden for a specific product.
@@ -288,3 +308,15 @@ function fastwc_should_hide_cart_checkout_button_because_too_many_coupons( $shou
 	return $should_hide;
 }
 add_filter( 'fastwc_should_hide_cart_checkout_button', 'fastwc_should_hide_cart_checkout_button_because_too_many_coupons', 2 );
+
+/**
+ * Check if the login button should be hidden because the user is logged in.
+ *
+ * @param bool $should_hide Flag from filter to hide or not hide the login button.
+ *
+ * @return bool
+ */
+function fastwc_should_hide_login_button_for_logged_in_user( $should_hide ) {
+	return is_user_logged_in() ? true : $should_hide;
+}
+add_filter( 'fastwc_should_hide_login_button', 'fastwc_should_hide_login_button_for_logged_in_user' );
