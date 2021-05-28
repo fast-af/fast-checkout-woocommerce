@@ -17,8 +17,11 @@ class Cart extends \WP_Widget {
 	 */
 	public function __construct() {
 		parent::__construct(
-			'fastwc_cart_widget',
-			__( 'Fast Cart Button', 'fast' )
+			'fastwc_cart',
+			__( 'Fast Cart Button', 'fast' ),
+			array(
+				'description' => __( 'Display the Fast Checkout cart button.', 'fast' ),
+			)
 		);
 	}
 
@@ -43,15 +46,14 @@ class Cart extends \WP_Widget {
 	 * @param array $instance Widget options for the current instance.
 	 */
 	public function form( $instance ) {
-		$title      = isset( $instance['title'] ) ? $instance['title'] : '';
-		$product_id = isset( $instance['product_id'] ) && is_numeric( $instance['product_id'] ) ? $instance['product_id'] : 0;
+		$title = isset( $instance['title'] ) ? $instance['title'] : '';
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_fields_name( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'fast' ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'fast' ); ?></label>
 			<input
 				class="widefat"
-				id="<?php echo esc_attr( $this->get_fields_id( 'title' ) ); ?>"
-				name="<?php echo esc_attr( $this->get_fields_name( 'title' ) ); ?>"
+				id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
+				name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>"
 				type="text"
 				value="<?php echo esc_attr( $title ); ?>"
 			/>

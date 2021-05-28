@@ -17,8 +17,11 @@ class Product extends \WP_Widget {
 	 */
 	public function __construct() {
 		parent::__construct(
-			'fastwc_pdp_widget',
-			__( 'Fast Product Button', 'fast' )
+			'fastwc_product',
+			__( 'Fast Product Button', 'fast' ),
+			array(
+				'description' => __( 'Display the Fast Checkout product button.', 'fast' ),
+			)
 		);
 	}
 
@@ -47,22 +50,22 @@ class Product extends \WP_Widget {
 		$product_id = isset( $instance['product_id'] ) && is_numeric( $instance['product_id'] ) ? $instance['product_id'] : 0;
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_fields_name( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'fast' ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'fast' ); ?></label>
 			<input
 				class="widefat"
-				id="<?php echo esc_attr( $this->get_fields_id( 'title' ) ); ?>"
-				name="<?php echo esc_attr( $this->get_fields_name( 'title' ) ); ?>"
+				id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
+				name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>"
 				type="text"
 				value="<?php echo esc_attr( $title ); ?>"
 			/>
 		</p>
 
 		<p>
-			<label for="<?php echo esc_attr( $this->get_fields_name( 'product_id' ) ); ?>"><?php esc_html_e( 'Product ID (Optional):', 'fast' ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_name( 'product_id' ) ); ?>"><?php esc_html_e( 'Product ID (Optional):', 'fast' ); ?></label>
 			<input
 				class="widefat"
-				id="<?php echo esc_attr( $this->get_fields_id( 'product_id' ) ); ?>"
-				name="<?php echo esc_attr( $this->get_fields_name( 'product_id' ) ); ?>"
+				id="<?php echo esc_attr( $this->get_field_id( 'product_id' ) ); ?>"
+				name="<?php echo esc_attr( $this->get_field_name( 'product_id' ) ); ?>"
 				type="text"
 				value="<?php echo esc_attr( $product_id ); ?>"
 			/>
