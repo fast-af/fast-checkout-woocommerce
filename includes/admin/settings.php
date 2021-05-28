@@ -40,6 +40,7 @@ function fastwc_admin_create_menu() {
 	register_setting( 'fast', FASTWC_SETTING_HIDE_BUTTON_PRODUCTS );
 	register_setting( 'fast', FASTWC_SETTING_TEST_MODE );
 	register_setting( 'fast', FASTWC_SETTING_DISABLE_MULTICURRENCY );
+	register_setting( 'fast', FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER );
 	register_setting( 'fast', FASTWC_SETTING_FAST_JS_URL );
 	register_setting( 'fast', FASTWC_SETTING_FAST_JWKS_URL );
 	register_setting( 'fast', FASTWC_SETTING_ONBOARDING_URL );
@@ -115,6 +116,7 @@ function fastwc_admin_setup_fields() {
 	// Button options settings.
 	$settings_section = 'fast_options';
 	add_settings_field( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS, __( 'Hide Buttons for these Products', 'fast' ), 'fastwc_hide_button_products', $settings_page, $settings_section );
+	add_settings_field( FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, __( 'Display Login in Footer', 'fast' ), 'fastwc_show_login_button_footer', $settings_page, $settings_section );
 
 	// Test Mode settings.
 	$settings_section = 'fast_test_mode';
@@ -244,6 +246,29 @@ function fastwc_hide_button_products() {
 			'class'       => 'fast-select fast-select--hide-button-products',
 			'description' => __( 'Select products for which the Fast checkout button should be hidden', 'fast' ),
 			'nonce'       => 'search-products',
+		)
+	);
+}
+
+/**
+ * Renders the show login in footer field.
+ */
+function fastwc_show_login_button_footer() {
+	$fastwc_show_login_button_footer = get_option( FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, FASTWC_SETTING_LOGIN_FOOTER_NOT_SET );
+
+	if ( FASTWC_SETTING_LOGIN_FOOTER_NOT_SET === $fastwc_show_login_button_footer ) {
+		// If the option is FASTWC_SETTING_LOGIN_FOOTER_NOT_SET, then it hasn't yet been set. In this case, we
+		// want to configure it to true.
+		$fastwc_show_login_button_footer = '1';
+		update_option( FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, $fastwc_show_login_button_footer );
+	}
+
+	fastwc_settings_field_checkbox(
+		array(
+			'name'        => FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER,
+			'current'     => $fastwc_show_login_button_footer,
+			'label'       => __( 'Display Fast Login Button in Footer', 'fast' ),
+			'description' => __( 'Disable the Fast Login button in the footer automatically.', 'fast' ),
 		)
 	);
 }
