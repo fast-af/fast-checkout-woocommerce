@@ -32,12 +32,17 @@ class Cart extends \WP_Widget {
 	 * @param array $instance Widget options for the current instance.
 	 */
 	public function widget( $args, $instance ) {
+		if ( \fastwc_should_hide_cart_checkout_button() ) {
+			return;
+		}
+
 		$widget_data = array(
+			'template' => 'widgets/fast-cart',
 			'args'     => $args,
 			'instance' => $instance,
 		);
 
-		\fastwc_load_template( 'widgets/fast-cart', $widget_data );
+		\fastwc_load_template( 'widgets/fast-widget', $widget_data );
 	}
 
 	/**
@@ -46,7 +51,8 @@ class Cart extends \WP_Widget {
 	 * @param array $instance Widget options for the current instance.
 	 */
 	public function form( $instance ) {
-		$title = isset( $instance['title'] ) ? $instance['title'] : '';
+		$title       = isset( $instance['title'] ) ? $instance['title'] : '';
+		$description = isset( $instance['description'] ) ? $instance['description'] : '';
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'fast' ); ?></label>
@@ -57,6 +63,10 @@ class Cart extends \WP_Widget {
 				type="text"
 				value="<?php echo esc_attr( $title ); ?>"
 			/>
+		</p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_name( 'description' ) ); ?>"><?php esc_html_e( 'Description:', 'fast' ); ?></label>
+			<?php wp_editor( esc_attr( $description ), $this->get_field_id( 'description' ) ); ?>
 		</p>
 		<?php
 	}
@@ -70,7 +80,8 @@ class Cart extends \WP_Widget {
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
 
-		$instance['title'] = isset( $new_instance['title'] ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
+		$instance['title']       = isset( $new_instance['title'] ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
+		$instance['description'] = isset( $new_instance['description'] ) ? $new_instance['description'] : '';
 
 		return $instance;
 	}

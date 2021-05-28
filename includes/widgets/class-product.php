@@ -32,12 +32,18 @@ class Product extends \WP_Widget {
 	 * @param array $instance Widget options for the current instance.
 	 */
 	public function widget( $args, $instance ) {
+		$product_id = isset( $instance['product_id'] ) ? $instance['product_id'] : 0;
+		if ( \fastwc_should_hide_pdp_checkout_button( $product_id ) ) {
+			return;
+		}
+
 		$widget_data = array(
+			'template' => 'widgets/fast-product',
 			'args'     => $args,
 			'instance' => $instance,
 		);
 
-		\fastwc_load_template( 'widgets/fast-product', $widget_data );
+		\fastwc_load_template( 'widgets/fast-widget', $widget_data );
 	}
 
 	/**
@@ -46,8 +52,9 @@ class Product extends \WP_Widget {
 	 * @param array $instance Widget options for the current instance.
 	 */
 	public function form( $instance ) {
-		$title      = isset( $instance['title'] ) ? $instance['title'] : '';
-		$product_id = isset( $instance['product_id'] ) && is_numeric( $instance['product_id'] ) ? $instance['product_id'] : 0;
+		$title       = isset( $instance['title'] ) ? $instance['title'] : '';
+		$product_id  = isset( $instance['product_id'] ) && is_numeric( $instance['product_id'] ) ? $instance['product_id'] : 0;
+		$description = isset( $instance['description'] ) ? $instance['description'] : '';
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'fast' ); ?></label>
@@ -61,7 +68,7 @@ class Product extends \WP_Widget {
 		</p>
 
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_name( 'product_id' ) ); ?>"><?php esc_html_e( 'Product ID (Optional):', 'fast' ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_name( 'product_id' ) ); ?>"><?php esc_html_e( 'Product ID:', 'fast' ); ?></label>
 			<input
 				class="widefat"
 				id="<?php echo esc_attr( $this->get_field_id( 'product_id' ) ); ?>"
@@ -69,6 +76,10 @@ class Product extends \WP_Widget {
 				type="text"
 				value="<?php echo esc_attr( $product_id ); ?>"
 			/>
+		</p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_name( 'description' ) ); ?>"><?php esc_html_e( 'Description:', 'fast' ); ?></label>
+			<?php wp_editor( esc_attr( $description ), $this->get_field_id( 'description' ) ); ?>
 		</p>
 		<?php
 	}
@@ -82,8 +93,9 @@ class Product extends \WP_Widget {
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
 
-		$instance['title']      = isset( $new_instance['title'] ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
-		$instance['product_id'] = isset( $new_instance['product_id'] ) && is_numeric( $new_instance['product_id'] ) ? $new_instance['product_id'] : 0;
+		$instance['title']       = isset( $new_instance['title'] ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
+		$instance['product_id']  = isset( $new_instance['product_id'] ) && is_numeric( $new_instance['product_id'] ) ? $new_instance['product_id'] : 0;
+		$instance['description'] = isset( $new_instance['description'] ) ? $new_instance['description'] : '';
 
 		return $instance;
 	}
