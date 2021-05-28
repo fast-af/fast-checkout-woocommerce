@@ -1,0 +1,3 @@
+/**
+ * Fast Checkout Cart Button
+ */
