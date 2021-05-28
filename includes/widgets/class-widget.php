@@ -69,7 +69,11 @@ class Widget extends \WP_Widget {
 		</p>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_name( 'description' ) ); ?>"><?php esc_html_e( 'Description:', 'fast' ); ?></label>
-			<?php wp_editor( esc_attr( $description ), $this->get_field_id( 'description' ) ); ?>
+			<textarea
+				class="widefat"
+				id="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"
+				name="<?php echo esc_attr( $this->get_field_name( 'description' ) ); ?>"
+				><?php echo esc_html( $description ); ?></textarea>
 		</p>
 		<?php
 	}
