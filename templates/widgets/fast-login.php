@@ -1,6 +1,6 @@
 <?php
 /**
- * Fast Checkout cart button widget template.
+ * Fast login button widget template.
  *
  * @package Fast
  */
@@ -9,10 +9,10 @@ $description = ! empty( $args['instance']['description'] ) ? $args['instance']['
 
 if ( ! empty( $description ) ) :
 	?>
-<div class="fast-checkout-button-widget-description fast-cart-checkout-button-widget-description">
+<div class="fast-login-button-widget-description">
 	<?php echo wp_kses_post( wpautop( $description ) ); ?>
 </div>
 	<?php
 endif;
 
-fastwc_load_template( 'buttons/fast-checkout-cart-button' );
+fastwc_load_template( 'fast-login' );

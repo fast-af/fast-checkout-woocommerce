@@ -1,6 +1,6 @@
 <?php
 /**
- * Fast cart button widget.
+ * Fast login button widget.
  *
  * @package Fast
  */
@@ -8,26 +8,26 @@
 namespace FastWC\Widgets;
 
 /**
- * Fast cart button widget class.
+ * Fast login button widget class.
  */
-class Cart extends Widget {
+class Login extends Widget {
 
 	/**
 	 * Widget template name.
 	 *
 	 * @var string
 	 */
-	protected $template = 'widgets/fast-cart';
+	protected $template = 'widgets/fast-login';
 
 	/**
 	 * Widget constructor.
 	 */
 	public function __construct() {
 		parent::__construct(
-			'fastwc_cart',
-			__( 'Fast Cart Button', 'fast' ),
+			'fastwc_login',
+			__( 'Fast Login Button', 'fast' ),
 			array(
-				'description' => __( 'Display the Fast Checkout cart button.', 'fast' ),
+				'description' => __( 'Display the Fast Login button.', 'fast' ),
 			)
 		);
 	}
@@ -38,6 +38,6 @@ class Cart extends Widget {
 	 * @param array $instance Widget options for the current instance.
 	 */
 	protected function should_hide( $instance ) {
-		return \fastwc_should_hide_cart_checkout_button();
+		return \fastwc_should_hide_login_button();
 	}
 }
