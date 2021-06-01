@@ -63,6 +63,15 @@ abstract class Block {
 	}
 
 	/**
+	 * Check to see if the button should be hidden.
+	 *
+	 * @return bool
+	 */
+	protected function should_hide() {
+		return false;
+	}
+
+	/**
 	 * Render the block.
 	 *
 	 * @param array  $attributes Attributes passed form the block to the server for server side rendering.
@@ -73,7 +82,10 @@ abstract class Block {
 	public function render( $attributes, $content ) {
 		$block_output = '';
 
-		if ( ! empty( $this->template ) ) {
+		if (
+			! $this->should_hide() &&
+			! empty( $this->template )
+		) {
 			ob_start();
 
 			\fastwc_load_template( $this->template, $attributes );

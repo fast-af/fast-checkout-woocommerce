@@ -41,4 +41,13 @@ class Pdp extends Block {
 			),
 		);
 	}
+
+	/**
+	 * Check to see if the button should be hidden.
+	 *
+	 * @return bool
+	 */
+	protected function should_hide() {
+		return fastwc_should_hide_pdp_checkout_button();
+	}
 }

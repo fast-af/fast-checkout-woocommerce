@@ -25,4 +25,13 @@ class Cart extends Block {
 	 * @var string
 	 */
 	protected $template = 'buttons/fast-checkout-cart-button';
+
+	/**
+	 * Check to see if the button should be hidden.
+	 *
+	 * @return bool
+	 */
+	protected function should_hide() {
+		return fastwc_should_hide_cart_checkout_button();
+	}
 }
