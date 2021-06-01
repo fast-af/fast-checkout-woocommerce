@@ -42,34 +42,153 @@ function fastwc_load_template( $template_name, $args = array() ) {
 }
 
 /**
- * Checks if the Fast Checkout button should be hidden for the current user based on the Test Mode field and their email
- * The button should be hidden for all non-Fast users if Test Mode is enabled, and should be visible for everyone if
- * Test Mode is disabled.
+ * Get the list of products for which the button should be hidden.
  *
- * @return bool true if we should hide the button, false otherwise
+ * @return array
  */
-function fastwc_is_hidden_for_test_mode() {
-	// If test mode option is not yet set (e.g. plugin was just installed), treat it as enabled.
-	// There is code in the settings page that actually sets this to enabled the first time the user views the form.
-	$fastwc_test_mode = get_option( FASTWC_SETTING_TEST_MODE, '1' );
-	if ( $fastwc_test_mode ) {
-		// In test mode, we only want to show the button if the user is an admin or their email ends with @fast.co.
-		$current_user = wp_get_current_user();
-		if ( ! preg_match( '/@fast.co$/i', $current_user->user_email ) && ! $current_user->has_cap( 'administrator' ) ) {
-			// User is not an admin or a Fast employee. Return early so button never sees the light of day.
-			return true;
+function fastwc_get_products_to_hide_buttons() {
+	$fastwc_hidden_products = get_option( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS );
+
+	if ( ! empty( $fastwc_hidden_products ) ) {
+		$fastwc_count_products = count( $fastwc_hidden_products );
+
+		for ( $i = 0; $i < $fastwc_count_products; $i++ ) {
+			$fastwc_hidden_products[ $i ] = (int) $fastwc_hidden_products[ $i ];
 		}
-	} else {
-		return false;
 	}
+
+	return $fastwc_hidden_products;
 }
 
 /**
- * Checks if the store's app ID is empty
+ * Determine if a product is supported.
  *
- * @return bool true if the app ID is empty, false otherwise
+ * @param int $product_id The product ID to check.
+ *
+ * @return bool
  */
-function fastwc_is_app_id_empty() {
-	$fastwc_app_id = fastwc_get_app_id();
-	return empty( $fastwc_app_id );
+function fastwc_product_is_supported( $product_id ) {
+	/**
+	 * Filter to determine if a product is supported by Fast Checkout. Returns true by default.
+	 *
+	 * @param bool $is_supported Flag to pass through the filters to set if the product is supported.
+	 * @param int  $product_id   The ID of the product to check.
+	 */
+	return apply_filters( 'fastwc_product_is_supported', true, $product_id );
+}
+
+/**
+ * Check if a product is supported based on if it has addons.
+ *
+ * @param bool $is_supported Flag to pass through the filters to set if the product is supported.
+ * @param int  $product_id   The ID of the product to check.
+ *
+ * @return bool
+ */
+function fastwc_product_is_supported_if_no_addons( $is_supported, $product_id ) {
+	if ( fastwc_product_has_addons( $product_id ) ) {
+		$is_supported = false;
+	}
+
+	return $is_supported;
+}
+add_filter( 'fastwc_product_is_supported', 'fastwc_product_is_supported_if_no_addons', 10, 2 );
+
+/**
+ * Check if a product is supported based on if it is not a grouped product.
+ *
+ * @param bool $is_supported Flag to pass through the filters to set if the product is supported.
+ * @param int  $product_id   The ID of the product to check.
+ *
+ * @return bool
+ */
+function fastwc_product_is_supported_if_not_grouped( $is_supported, $product_id ) {
+	if ( fastwc_product_is_grouped( $product_id ) ) {
+		$is_supported = false;
+	}
+
+	return $is_supported;
+}
+add_filter( 'fastwc_product_is_supported', 'fastwc_product_is_supported_if_not_grouped', 10, 2 );
+
+/**
+ * Check if a product is supported based on if it is not a subscription product.
+ *
+ * @param bool $is_supported Flag to pass through the filters to set if the product is supported.
+ * @param int  $product_id   The ID of the product to check.
+ *
+ * @return bool
+ */
+function fastwc_product_is_supported_if_not_subscription( $is_supported, $product_id ) {
+	if ( fastwc_product_is_subscription( $product_id ) ) {
+		$is_supported = false;
+	}
+
+	return $is_supported;
+}
+add_filter( 'fastwc_product_is_supported', 'fastwc_product_is_supported_if_not_subscription', 10, 2 );
+
+/**
+ * Detect if the product has any addons (Fast Checkout does not yet support these products).
+ *
+ * @param int $product_id The ID of the product.
+ *
+ * @return bool
+ */
+function fastwc_product_has_addons( $product_id ) {
+	$has_addons = false;
+
+	if ( class_exists( WC_Product_Addons_Helper::class ) ) {
+		// If the store has the addons plugin installed, then we can use its static function to see if this product has any
+		// addons.
+		$addons = WC_Product_Addons_Helper::get_product_addons( $product_id );
+		if ( ! empty( $addons ) ) {
+			// If this product has any addons (not just the one in the cart, but the product as a whole), hide the button.
+			$has_addons = true;
+		}
+	}
+
+	return $has_addons;
+}
+
+/**
+ * Detect if the product is a grouped product (Fast Checkout does not yet support these products).
+ *
+ * @param int $product_id The ID of the product.
+ *
+ * @return bool
+ */
+function fastwc_product_is_grouped( $product_id ) {
+	$is_grouped = false;
+
+	$product = wc_get_product( $product_id );
+
+	if (
+		method_exists( $product, 'get_type' ) &&
+		'grouped' === $product->get_type()
+	) {
+		$is_grouped = true;
+	}
+
+	return $is_grouped;
+}
+
+/**
+ * Detect if the product is a subscription product (Fast Checkout does not yet support these products).
+ *
+ * @param int $product_id The ID of the product.
+ *
+ * @return bool
+ */
+function fastwc_product_is_subscription( $product_id ) {
+	$product = wc_get_product( $product_id );
+
+	if (
+		is_a( $product, WC_Product_Subscription::class ) ||
+		is_a( $product, WC_Product_Variable_Subscription::class )
+	) {
+		return true;
+	}
+
+	return false;
 }

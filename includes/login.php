@@ -16,40 +16,6 @@ use \Firebase\JWT\JWT;
 use \Firebase\JWT\JWK;
 
 /**
- * Returns true if the Fast Login button should be hidden for any of the following reasons:
- * - Test mode is enabled and current user is someone who should NOT see the button when test mode is on.
- * - The FASTWC_SETTING_APP_ID option is empty.
- */
-function fastwc_should_hide_login_button() {
-	$return = false;
-
-	// Hide the button if the app isn't configured.
-	$fastwc_app_id = fastwc_get_app_id();
-	if ( empty( $fastwc_app_id ) ) {
-		$return = true;
-	}
-
-	$current_user = wp_get_current_user();
-
-	// If test mode option is not yet set (e.g. plugin was just installed), treat it as enabled.
-	// There is code in the settings page that actually sets this to enabled the first time the user views the form.
-	$fastwc_test_mode = get_option( FASTWC_SETTING_TEST_MODE, '1' );
-	if ( ! $return && $fastwc_test_mode ) {
-		// In test mode, show the login button if the user is an admin or their email ends with @fast.co.
-		// Otherwise, hide it.
-		$return = ! preg_match( '/@fast.co$/i', $current_user->user_email ) && ! $current_user->has_cap( 'administrator' );
-	}
-
-	// Hide the button if the user is already logged in and we're live.
-	if ( ! $return && $current_user->exists() ) {
-		$return = true;
-	}
-
-	// Otherwise, show the button.
-	return $return;
-}
-
-/**
  * Inject Fast login component in the footer.
  */
 function fastwc_add_login_to_footer() {
