@@ -12,6 +12,7 @@
 
 define( 'FASTWC_PATH', plugin_dir_path( __FILE__ ) );
 define( 'FASTWC_URL', plugin_dir_url( __FILE__ ) );
+define( 'FASTWC_VERSION', '1.0.2' );
 
 // WP Admin plugin settings.
 require_once FASTWC_PATH . 'includes/admin/settings.php';
@@ -29,3 +30,5 @@ require_once FASTWC_PATH . 'includes/routes.php';
 require_once FASTWC_PATH . 'includes/shortcodes.php';
 // Add Fast button widgets.
 require_once FASTWC_PATH . 'includes/widgets.php';
+// Add Fast button blocks.
+require_once FASTWC_PATH . 'includes/blocks.php';
