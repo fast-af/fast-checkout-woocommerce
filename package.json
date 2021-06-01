@@ -22,9 +22,13 @@
   },
   "homepage": "https://github.com/fast-af/fast-checkout-woocommerce#readme",
   "devDependencies": {
+    "@wordpress/scripts": "^16.1.0",
     "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
     "gulp-eslint": "^6.0.0",
     "gulp-uglify": "^3.0.2"
+  },
+  "scripts": {
+    "build": "wp-scripts build assets/src/blocks/index.js --output-path=assets/dist/blocks --webpack-no-externals"
   }
 }
