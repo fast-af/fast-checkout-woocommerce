@@ -25,4 +25,20 @@ class Pdp extends Block {
 	 * @var string
 	 */
 	protected $template = 'buttons/fast-checkout-button';
+
+	/**
+	 * Get the args to use to register the block type.
+	 *
+	 * @return array
+	 */
+	protected function get_block_args() {
+		return array(
+			'attributes' => array(
+				'product_id' => array(
+					'type'    => 'integer',
+					'default' => 0,
+				),
+			),
+		);
+	}
 }
