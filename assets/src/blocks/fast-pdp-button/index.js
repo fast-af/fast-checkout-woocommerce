@@ -1,12 +1,12 @@
 /**
- * Fast Checkout PDP Button
+ * Fast Checkout PDP Button.
  */
 
 import icons from '../components/icons.js';
+import FastButton from '../components/button.js';
 
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
-const { Placeholder, ServerSideRender } = wp.components;
 
 // =========================================
 // Register the block with the block editor.
@@ -24,20 +24,11 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 		__( 'button' ),
 	],
 
-	attributes: {
-		context: {
-			type: 'string',
-			default: 'editor',
-		},
-	},
+	attributes: {},
 
 	edit: ( props ) => {
 		return (
-			<div>
-				<Placeholder>
-					{ __( 'Fast Checkout Product Button' ) }
-				</Placeholder>
-			</div>
+			<FastButton type="checkout" />
 		);
 	},
 
