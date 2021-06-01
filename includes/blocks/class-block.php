@@ -65,9 +65,11 @@ abstract class Block {
 	/**
 	 * Check to see if the button should be hidden.
 	 *
+	 * @param array $attributes Block attributes.
+	 *
 	 * @return bool
 	 */
-	protected function should_hide() {
+	protected function should_hide( $attributes ) {
 		return false;
 	}
 
@@ -83,7 +85,7 @@ abstract class Block {
 		$block_output = '';
 
 		if (
-			! $this->should_hide() &&
+			! $this->should_hide( $attributes ) &&
 			! empty( $this->template )
 		) {
 			ob_start();
