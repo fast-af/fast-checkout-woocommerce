@@ -41,13 +41,36 @@ function fastwc_admin_enqueue_scripts() {
 		$select2_version
 	);
 
-	$fast_js_version = '1.0.0';
 	wp_enqueue_script(
 		'fastwc-admin-js',
 		FASTWC_URL . 'assets/dist/scripts.min.js',
 		array( 'jquery', 'select2' ),
-		$fast_js_version,
+		FASTWC_VERSION,
 		true
 	);
 }
 add_action( 'admin_enqueue_scripts', 'fastwc_admin_enqueue_scripts' );
+
+/**
+ * Enqueue block editor assets for the Gutenberg blocks.
+ */
+function fastwc_enqueue_block_editor_assets() {
+
+	// Enqueue the script.
+	wp_enqueue_script(
+		'fastwc-block-editor-js',
+		FASTWC_URL . 'assets/dist/blocks/index.js',
+		array( 'wp-blocks', 'wp-i18n', 'wp-components', 'wp-element' ),
+		FASTWC_VERSION,
+		true
+	);
+
+	// Enqueue the stylesheet.
+	wp_enqueue_style(
+		'fastwc-block-editor-css',
+		FASTWC_URL . 'assets/dist/blocks/index.css',
+		array(),
+		FASTWC_VERSION
+	);
+}
+add_action( 'enqueue_block_editor_assets', 'fastwc_enqueue_block_editor_assets' );
