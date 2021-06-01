@@ -41,4 +41,16 @@ class Pdp extends Block {
 			),
 		);
 	}
+
+	/**
+	 * Check to see if the button should be hidden.
+	 *
+	 * @param array $attributes Block attributes.
+	 *
+	 * @return bool
+	 */
+	protected function should_hide( $attributes ) {
+		$product_id = isset( $attributes['product_id'] ) ? $attributes['product_id'] : 0;
+		return fastwc_should_hide_pdp_checkout_button( $product_id );
+	}
 }

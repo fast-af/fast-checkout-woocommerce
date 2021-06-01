@@ -25,4 +25,15 @@ class Login extends Block {
 	 * @var string
 	 */
 	protected $template = 'fast-login';
+
+	/**
+	 * Check to see if the button should be hidden.
+	 *
+	 * @param array $attributes Block attributes.
+	 *
+	 * @return bool
+	 */
+	protected function should_hide( $attributes ) {
+		return fastwc_should_hide_login_button();
+	}
 }
