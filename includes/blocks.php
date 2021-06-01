@@ -17,7 +17,7 @@ require_once FASTWC_PATH . 'includes/blocks/class-pdp.php';
 /**
  * Register the block types.
  */
-function fastwc_regster_block_types() {
+function fastwc_register_block_types() {
 	$blocks = array(
 		new FastWC\Blocks\Cart(),
 		new FastWC\Blocks\Pdp(),
