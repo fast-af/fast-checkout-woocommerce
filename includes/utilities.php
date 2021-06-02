@@ -57,17 +57,6 @@ function fastwc_get_pdp_button_hook() {
 }
 
 /**
- * Check if the selected PDP button hook is "other".
- *
- * @return bool
- */
-function fastwc_pdp_button_hook_is_other() {
-	$fastwc_pdp_button_hook = get_option( FASTWC_SETTING_PDP_BUTTON_HOOK, FASTWC_DEFAULT_PDP_BUTTON_HOOK );
-
-	return 'other' === $fastwc_pdp_button_hook;
-}
-
-/**
  * Get the list of products for which the button should be hidden.
  *
  * @return array
