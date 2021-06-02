@@ -7,6 +7,9 @@
  * @package Fast
  */
 
+// Load helpers to check if/when to hide the Fast Checkout buttons.
+require_once FASTWC_PATH . 'includes/hide.php';
+
 /**
  * Returns cart item data that Fast Checkout button can interpret.
  * This function also populates some global variables about cart state, such as whether it contains products we don't support.
@@ -43,284 +46,54 @@ function fastwc_get_cart_data() {
 }
 
 /**
- * Returns true if the fast-checkout-button should be hidden for any of the following reasons:
- * - Test mode is enabled and current user is someone who should NOT see the button when test mode is on.
- * - The product has addons (not yet supported).
- * - The product is a grouped product (not yet supported).
- * - The product is a subscription product (not yet supported).
- * - The product is an external product (never supported).
- * - The FASTWC_SETTING_APP_ID option is empty.
+ * Maybe render the Fast Checkout button.
+ *
+ * @param string $button_type The type of button to maybe render.
+ * @param string $template    The template to use.
  */
-function fastwc_should_hide_checkout_button() {
-	$return = false;
+function fastwc_maybe_render_checkout_button( $button_type, $template ) {
+	$button_types = array( 'pdp', 'cart' );
 
-	// Check for test mode and app id set.
-	if ( fastwc_is_hidden_for_test_mode() || fastwc_is_app_id_empty() ) {
-		$return = true;
-	}
-
-	if ( ! $return ) {
-		$return = fastwc_should_hide_pdp_button_for_product();
-	}
-
-	if ( ! $return ) {
-		// These variables are set in the following hooks:
-		// - wc_product_addon_start
-		// - woocommerce_grouped_product_list_before
-		// They are ran on the PDP before this function is called.
-		global $fastwc_product_has_addons, $fastwc_product_is_grouped;
-
-		if (
-			$fastwc_product_has_addons ||
-			$fastwc_product_is_grouped
-		) {
-			$return = true;
-		}
-	}
-
-	if ( ! $return ) {
-		// Don't show Fast checkout for the following types of products:
-		// - External (i.e. not purchased on this store).
-		// - Grouped (multiple products on one PDP; this can be supported later).
-		global $product;
-
-		if (
-			$product &&
-			(
-				is_a( $product, WC_Product_External::class ) ||
-				is_string( $product ) ||
-				// Don't show Fast checkout on PDP if the product is out of stock or on backorder.
-				$product->get_stock_status() === 'outofstock' ||
-				// Don't show if the product is a subscription product (not yet supported by Fast).
-				is_a( $product, WC_Product_Subscription::class ) ||
-				is_a( $product, WC_Product_Variable_Subscription::class )
-			)
-		) {
-			$return = true;
-		}
-	}
-
-	return $return;
-}
-
-/**
- * Returns true if the fast-cart-checkout-button should be hidden for any of the following reasons:
- * - Test mode is enabled and current user is someone who should NOT see the button when test mode is on.
- * - The cart has multiple coupons (not yet supported).
- * - A product in the cart has addons (not yet supported).
- * - A product in the cart is a subscription (not yet supported).
- * - The FASTWC_SETTING_APP_ID option is empty.
- */
-function fastwc_should_hide_cart_checkout_button() {
-	// Check for test mode and app id set.
 	if (
-		fastwc_is_hidden_for_test_mode() ||
-		fastwc_is_app_id_empty() ||
-		fastwc_should_hide_cart_button_for_product() ||
-		fastwc_should_hide_because_unsupported_products() ||
-		fastwc_should_hide_because_too_many_coupons()
+		! in_array( $button_type, $button_types, true ) ||
+		( 'pdp' === $button_type && fastwc_should_hide_pdp_checkout_button() ) ||
+		( 'cart' === $button_type && fastwc_should_hide_cart_checkout_button() )
 	) {
-		return true;
+		return;
 	}
 
-	return false;
+	fastwc_load_template( $template );
 }
-
-/**
- * Check the coupon count.
- *
- * @return bool
- */
-function fastwc_should_hide_because_too_many_coupons() {
-	$cart = WC()->cart;
-
-	// Check the coupon count.
-	$applied_coupons = $cart->get_applied_coupons();
-	if ( count( $applied_coupons ) > 1 ) {
-		return true;
-	}
-
-	return false;
-}
-
-/**
- * Check cart for products we don't support.
- *
- * @return bool
- */
-function fastwc_should_hide_because_unsupported_products() {
-	$cart   = WC()->cart;
-	$return = false;
-
-	// Check for products we don't support.
-	foreach ( $cart->get_cart() as $cart_item ) {
-		// Addons are not yet supported.
-		if ( class_exists( WC_Product_Addons_Helper::class ) ) {
-			// If the store has the addons plugin installed, then we can use its static function to see if this product has any
-			// addons.
-			$addons = WC_Product_Addons_Helper::get_product_addons( $cart_item['product_id'] );
-			if ( ! empty( $addons ) ) {
-				// If this product has any addons (not just the one in the cart, but the product as a whole), hide the button.
-				$return = true;
-				break;
-			}
-		}
-
-		// Subscriptions are not yet supported.
-		$product = wc_get_product( $cart_item['product_id'] );
-		if ( is_a( $product, WC_Product_Subscription::class ) || is_a( $product, WC_Product_Variable_Subscription::class ) ) {
-			$return = true;
-			break;
-		}
-		if ( ! empty( $cart_item['wcsatt_data'] ) && ! empty( $cart_item['wcsatt_data']['active_subscription_scheme'] ) ) {
-			// If the store is using "WooCommerce All Products For Subscriptions" plugin, then this field might be set.
-			// If it is anything other than false, then this is a product that has been converted to a subcription; hide the
-			// button.
-			$return = true;
-			break;
-		}
-	}
-
-	return $return;
-}
-
-/**
- * Get the list of products for which the button should be hidden.
- *
- * @return array
- */
-function fastwc_get_products_to_hide_buttons() {
-	$fastwc_hidden_products = get_option( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS );
-
-	if ( ! empty( $fastwc_hidden_products ) ) {
-		$fastwc_count_products = count( $fastwc_hidden_products );
-
-		for ( $i = 0; $i < $fastwc_count_products; $i++ ) {
-			$fastwc_hidden_products[ $i ] = (int) $fastwc_hidden_products[ $i ];
-		}
-	}
-
-	return $fastwc_hidden_products;
-}
-
-/**
- * Determine if the Fast PDP button should be hidden for a specific product.
- *
- * @return bool
- */
-function fastwc_should_hide_pdp_button_for_product() {
-	$fastwc_hidden_products = fastwc_get_products_to_hide_buttons();
-
-	if ( ! empty( $fastwc_hidden_products ) && is_product() ) {
-		// Check current product ID.
-		global $product;
-
-		$product_id = ! empty( $product ) ? $product->get_id() : 0;
-
-		if ( ! empty( $product_id ) && in_array( $product_id, $fastwc_hidden_products, true ) ) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
-/**
- * Determine if the Fast cart button should be hidden for a specific product.
- *
- * @return bool
- */
-function fastwc_should_hide_cart_button_for_product() {
-	$fastwc_hidden_products = fastwc_get_products_to_hide_buttons();
-
-	if ( ! empty( WC()->cart ) ) {
-		$cart = WC()->cart->get_cart();
-
-		foreach ( $cart as $cart_item ) {
-			$product_id = ! empty( $cart_item['product_id'] ) ? $cart_item['product_id'] : 0;
-
-			if ( ! empty( $product_id ) && in_array( $product_id, $fastwc_hidden_products, true ) ) {
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
-
-/**
- * Product detail page
- */
-
-/**
- * Detect if the product has any addons (Fast Checkout does not yet support these products).
- */
-function fastwc_wc_product_addon_start() {
-	// If the store has the addons plugin installed, then this hook will run on any PDP pages for products with addons.
-	// In this situation, we want to note this so that our hook that displays the button can instead hide the button.
-	global $fastwc_product_has_addons;
-	$fastwc_product_has_addons = true;
-}
-add_action( 'wc_product_addon_start', 'fastwc_wc_product_addon_start' );
-
-/**
- * Detect if the product is a grouped product (Fast Checkout does not yet support these products).
- */
-function fastwc_woocommerce_grouped_product_list_before() {
-	global $fastwc_product_is_grouped;
-	$fastwc_product_is_grouped = true;
-}
-add_action( 'woocommerce_grouped_product_list_before', 'fastwc_woocommerce_grouped_product_list_before' );
 
 /**
  * Inject Fast Checkout button after Add to Cart button.
  */
 function fastwc_woocommerce_after_add_to_cart_quantity() {
-	if ( fastwc_should_hide_checkout_button() ) {
-		return;
-	}
-
-	fastwc_load_template( 'fast-pdp' );
+	fastwc_maybe_render_checkout_button( 'pdp', 'fast-pdp' );
 }
 add_action( 'woocommerce_after_add_to_cart_quantity', 'fastwc_woocommerce_after_add_to_cart_quantity' );
-
-/**
- * Cart page
- */
 
 /**
  * Inject Fast Checkout button after Proceed to Checkout button on cart page.
  */
 function fastwc_woocommerce_proceed_to_checkout() {
-	if ( fastwc_should_hide_cart_checkout_button() ) {
-		return;
-	}
-
-	fastwc_load_template( 'fast-cart' );
+	fastwc_maybe_render_checkout_button( 'cart', 'fast-cart' );
 }
 add_action( 'woocommerce_proceed_to_checkout', 'fastwc_woocommerce_proceed_to_checkout', 9 );
 
 /**
- * Mini-cart widget
+ * Inject the Fast Checkout button on the mini-cart widget.
  */
 function fastwc_woocommerce_widget_shopping_cart_before_buttons() {
-	if ( fastwc_should_hide_cart_checkout_button() ) {
-		return;
-	}
-
-	fastwc_load_template( 'fast-mini-cart' );
+	fastwc_maybe_render_checkout_button( 'cart', 'fast-mini-cart' );
 }
 add_action( 'woocommerce_widget_shopping_cart_before_buttons', 'fastwc_woocommerce_widget_shopping_cart_before_buttons', 30 );
 
 /**
- * Checkout page
+ * Inject the Fast Checkout button on the checkout page.
  */
 function fastwc_woocommerce_before_checkout_form() {
-	if ( fastwc_should_hide_cart_checkout_button() ) {
-		return;
-	}
-
-	fastwc_load_template( 'fast-checkout' );
+	fastwc_maybe_render_checkout_button( 'cart', 'fast-checkout' );
 }
 add_action( 'woocommerce_before_checkout_form', 'fastwc_woocommerce_before_checkout_form' );
 
