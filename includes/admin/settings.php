@@ -37,6 +37,8 @@ function fastwc_admin_create_menu() {
 	register_setting( 'fast', FASTWC_SETTING_MINI_CART_BUTTON_STYLES );
 	register_setting( 'fast', FASTWC_SETTING_CHECKOUT_BUTTON_STYLES );
 	register_setting( 'fast', FASTWC_SETTING_LOGIN_BUTTON_STYLES );
+	register_setting( 'fast', FASTWC_SETTING_PDP_BUTTON_HOOK );
+	register_setting( 'fast', FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER );
 	register_setting( 'fast', FASTWC_SETTING_HIDE_BUTTON_PRODUCTS );
 	register_setting( 'fast', FASTWC_SETTING_TEST_MODE );
 	register_setting( 'fast', FASTWC_SETTING_DISABLE_MULTICURRENCY );
@@ -115,6 +117,8 @@ function fastwc_admin_setup_fields() {
 
 	// Button options settings.
 	$settings_section = 'fast_options';
+	add_settings_field( FASTWC_SETTING_PDP_BUTTON_HOOK, __( 'Select Product Button Location', 'fast' ), 'fastwc_pdp_button_hook', $settings_page, $settings_section );
+	add_settings_field( FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER, __( 'Enter Alternate Product Button Location', 'fast' ), 'fastwc_pdp_button_hook_other', $settings_page, $settings_section );
 	add_settings_field( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS, __( 'Hide Buttons for these Products', 'fast' ), 'fastwc_hide_button_products', $settings_page, $settings_section );
 	add_settings_field( FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, __( 'Display Login in Footer', 'fast' ), 'fastwc_show_login_button_footer', $settings_page, $settings_section );
 
@@ -212,6 +216,44 @@ function fastwc_login_button_styles_content() {
 		array(
 			'name'  => 'fast_login_button_styles',
 			'value' => $fastwc_setting_login_button_styles,
+		)
+	);
+}
+
+/**
+ * Renders the PDP Button Hook field.
+ */
+function fastwc_pdp_button_hook() {
+	$fastwc_setting_pdp_button_hook = fastwc_get_option_or_set_default( FASTWC_SETTING_PDP_BUTTON_HOOK, FASTWC_DEFAULT_PDP_BUTTON_HOOK );
+
+	fastwc_settings_field_select(
+		array(
+			'name'        => FASTWC_SETTING_PDP_BUTTON_HOOK,
+			'description' => __( 'Select a location within the Add to Cart form to display the Fast Product Checkout button.', 'fast' ),
+			'value'       => $fastwc_setting_pdp_button_hook,
+			'options'     => array(
+				''                                        => __( 'Select Location', 'fast' ),
+				'woocommerce_before_add_to_cart_button'   => __( 'Before Add to Cart Button', 'fast' ),
+				'woocommerce_before_add_to_cart_quantity' => __( 'Before Quantity Selection', 'fast' ),
+				'woocommerce_after_add_to_cart_quantity'  => __( 'After Quantity Selection', 'fast' ),
+				'woocommerce_after_add_to_cart_button'    => __( 'After Add to Cart Button', 'fast' ),
+				'other'                                   => __( 'Other (for advanced users only)', 'fast' ),
+			),
+		)
+	);
+}
+
+/**
+ * Renders the PDP Button Hook alternate field.
+ */
+function fastwc_pdp_button_hook_other() {
+	$fastwc_setting_pdp_button_hook_other = fastwc_get_option_or_set_default( FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER, '' );
+
+	fastwc_settings_field_input(
+		array(
+			'name'        => FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER,
+			'description' => __( 'Enter an alternative location for displaying the Fast Product Checkout button. For advanced users only.', 'fast' ),
+			'value'       => $fastwc_setting_pdp_button_hook_other,
 		)
 	);
 }
