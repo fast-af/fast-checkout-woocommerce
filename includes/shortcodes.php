@@ -31,7 +31,7 @@ add_action( 'init', 'fastwc_add_shortcodes' );
  * @return string
  */
 function fastwc_shortcode_product_button( $atts ) {
-	$atts = wp_shortcode_atts(
+	$atts = shortcode_atts(
 		array(
 			'product_id' => 0,
 		),
