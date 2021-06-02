@@ -146,6 +146,46 @@ function fastwc_settings_field_checkbox( $args ) {
 }
 
 /**
+ * Regular select settings field.
+ *
+ * @param array $args Attribute args for the field.
+ */
+function fastwc_settings_field_select( $args ) {
+	$args = fastwc_get_field_args(
+		array(
+			'name'        => '',
+			'id'          => '',
+			'class'       => 'fast-select',
+			'description' => '',
+			'options'     => array(),
+			'value'       => '',
+		),
+		$args
+	);
+
+	// A select field with no name or no options is invalid.
+	if ( empty( $args['name'] ) || empty( $args['options'] ) ) {
+		return;
+	}
+	?>
+	<select
+		class="<?php echo esc_attr( $args['class'] ); ?>"
+		name="<?php echo esc_attr( $args['name'] ); ?>"
+		id="<?php echo esc_attr( $args['id'] ); ?>"
+	>
+	<?php
+	foreach ( $args['options'] as $value => $label ) :
+		?>
+	<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $args['value'], $value ); ?>><?php echo esc_html( $label ); ?></option>
+		<?php
+	endforeach;
+	?>
+	</select>
+	<?php
+	fastwc_maybe_render_feild_description( $args['description'] );
+}
+
+/**
  * Ajax select settings field.
  *
  * @param array $args Attribute args for the field.
