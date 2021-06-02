@@ -67,71 +67,25 @@ function fastwc_maybe_render_checkout_button( $button_type, $template ) {
 
 /**
  * Maybe render the PDP checkout button.
- *
- * @param string $hook The name of the hook being used.
  */
-function fastwc_maybe_render_pdp_button( $hook ) {
+function fastwc_maybe_render_pdp_button() {
+	$current_hook           = current_action();
 	$fastwc_pdp_button_hook = fastwc_get_pdp_button_hook();
 
-	if ( $hook === $fastwc_pdp_button_hook ) {
+	if ( $current_hook === $fastwc_pdp_button_hook ) {
 		fastwc_maybe_render_checkout_button( 'pdp', 'fast-pdp' );
 	}
 }
 
 /**
- * Inject Fast Checkout button before Add to Cart quantity.
+ * Inject Fast Checkout button at the selected hook.
  */
-function fastwc_woocommerce_before_add_to_cart_quantity() {
-	fastwc_maybe_render_pdp_button( 'woocommerce_before_add_to_cart_quantity' );
-}
-add_action( 'woocommerce_before_add_to_cart_quantity', 'fastwc_woocommerce_before_add_to_cart_quantity' );
-
-/**
- * Inject Fast Checkout button after Add to Cart quantity.
- */
-function fastwc_woocommerce_after_add_to_cart_quantity() {
-	fastwc_maybe_render_pdp_button( 'woocommerce_after_add_to_cart_quantity' );
-}
-add_action( 'woocommerce_after_add_to_cart_quantity', 'fastwc_woocommerce_after_add_to_cart_quantity' );
-
-/**
- * Inject Fast Checkout button before Add to Cart button.
- */
-function fastwc_woocommerce_before_add_to_cart_button() {
-	fastwc_maybe_render_pdp_button( 'woocommerce_before_add_to_cart_button' );
-}
-add_action( 'woocommerce_before_add_to_cart_button', 'fastwc_woocommerce_before_add_to_cart_button' );
-
-/**
- * Inject Fast Checkout button after Add to Cart button.
- */
-function fastwc_woocommerce_after_add_to_cart_button() {
-	fastwc_maybe_render_pdp_button( 'woocommerce_after_add_to_cart_button' );
-}
-add_action( 'woocommerce_after_add_to_cart_button', 'fastwc_woocommerce_after_add_to_cart_button' );
-
-/**
- * Inject Fast Checkout button with an alternate hook.
- */
-function fastwc_pdp_button_hook_other_init() {
-
-	if ( ! fastwc_pdp_button_hook_is_other() ) {
-		return;
-	}
-
+function fastwc_pdp_button_hook_init() {
 	$fastwc_pdp_button_hook = fastwc_get_pdp_button_hook();
 
-	add_action( $fastwc_pdp_button_hook, 'fastwc_pdp_button_alternate_hook' );
+	add_action( $fastwc_pdp_button_hook, 'fastwc_maybe_render_pdp_button' );
 }
 add_action( 'init', 'fastwc_pdp_button_hook_other_init' );
-
-/**
- * Handler for the alternate hook.
- */
-function fastwc_pdp_button_alternate_hook() {
-	$fastwc_pdp_button_hook = fastwc_get_pdp_button_hook();
-	fastwc_maybe_render_pdp_button( $fastwc_pdp_button_hook );
-}
 
 /**
  * Inject Fast Checkout button after Proceed to Checkout button on cart page.
