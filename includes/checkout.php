@@ -85,7 +85,7 @@ function fastwc_pdp_button_hook_init() {
 
 	add_action( $fastwc_pdp_button_hook, 'fastwc_maybe_render_pdp_button' );
 }
-add_action( 'init', 'fastwc_pdp_button_hook_other_init' );
+add_action( 'init', 'fastwc_pdp_button_hook_init' );
 
 /**
  * Inject Fast Checkout button after Proceed to Checkout button on cart page.
