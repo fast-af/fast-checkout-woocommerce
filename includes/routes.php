@@ -73,7 +73,7 @@ function fastwc_rest_api_init() {
 		array(
 			'methods'             => 'GET',
 			'callback'            => 'fastwc_fetch_order',
-			// 'permission_callback' => 'fastwc_api_permission_callback',
+			'permission_callback' => 'fastwc_api_permission_callback',
 		)
 	);
 
