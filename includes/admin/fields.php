@@ -186,6 +186,67 @@ function fastwc_settings_field_select( $args ) {
 }
 
 /**
+ * Image select settings field.
+ *
+ * @param array $args Attribute args for the field.
+ */
+function fastwc_settings_field_image_select( $args ) {
+	$args = fastwc_get_field_args(
+		array(
+			'name'        => '',
+			'id'          => '',
+			'class'       => 'fast-select',
+			'description' => '',
+			'options'     => array(),
+			'value'       => '',
+		),
+		$args
+	);
+
+	// A select field with no name or no options is invalid.
+	if ( empty( $args['name'] ) || empty( $args['options'] ) ) {
+		return;
+	}
+
+	fastwc_maybe_render_feild_description( $args['description'] );
+	?>
+	<div class="fast-image-select" id="fast-image-select-<?php echo esc_attr( $args['name'] ); ?>">
+	<?php
+	$index = 0;
+	foreach ( $args['options'] as $value => $option ) :
+		$label = ! empty( $option['label'] ) ? $option['label'] : '';
+		$image = ! empty( $option['image'] ) ? $option['image'] : '';
+		$id    = $args['name'] . '-' . $index;
+		$index++;
+		?>
+		<div class="fast-image-select--item">
+			<input
+				type="radio"
+				name="<?php echo esc_attr( $args['name'] ); ?>"
+				id="<?php echo esc_attr( $id ); ?>"
+				class="fast-image-select--input screen-reader-text"
+				value="<?php echo esc_attr( $value ); ?>"
+				<?php checked( $args['value'], $value ); ?>
+			/>
+			<label
+				for="<?php echo esc_attr( $id ); ?>"
+				class="fast-image-select--label"
+			>
+				<span class="fast-image-select--label-text"><?php echo esc_html( $label ); ?></span>
+				<?php if ( ! empty( $image ) ) : ?>
+				<img src="<?php echo esc_url( $image ); ?>" class="fast-image-select--image" />
+				<?php endif; ?>
+			</label>
+		</div>
+			<?php
+	endforeach;
+	?>
+	</div>
+	<?php
+}
+
+
+/**
  * Ajax select settings field.
  *
  * @param array $args Attribute args for the field.
