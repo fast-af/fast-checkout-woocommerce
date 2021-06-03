@@ -226,19 +226,35 @@ function fastwc_login_button_styles_content() {
 function fastwc_pdp_button_hook() {
 	$fastwc_setting_pdp_button_hook = fastwc_get_option_or_set_default( FASTWC_SETTING_PDP_BUTTON_HOOK, FASTWC_DEFAULT_PDP_BUTTON_HOOK );
 
-	fastwc_settings_field_select(
+	$options = array(
+		'woocommerce_before_add_to_cart_button'   => array(
+			'label' => __( 'Before Add to Cart Button', 'fast' ),
+			'image' => FASTWC_URL . 'assets/img/before-quantity-selection-before-atc-button.jpg',
+		),
+		'woocommerce_before_add_to_cart_quantity' => array(
+			'label' => __( 'Before Quantity Selection', 'fast' ),
+			'image' => FASTWC_URL . 'assets/img/before-quantity-selection-before-atc-button.jpg',
+		),
+		'woocommerce_after_add_to_cart_quantity'  => array(
+			'label' => __( 'After Quantity Selection', 'fast' ),
+			'image' => FASTWC_URL . 'assets/img/after-quantity-selection.jpg',
+		),
+		'woocommerce_after_add_to_cart_button'    => array(
+			'label' => __( 'After Add to Cart Button', 'fast' ),
+			'image' => FASTWC_URL . 'assets/img/after-atc-button.jpg',
+		),
+		'other'                                   => array(
+			'label' => __( 'Other (for advanced users only)', 'fast' ),
+			'image' => FASTWC_URL . 'assets/img/other.jpg',
+		),
+	);
+
+	fastwc_settings_field_image_select(
 		array(
 			'name'        => FASTWC_SETTING_PDP_BUTTON_HOOK,
 			'description' => __( 'Select a location within the Add to Cart form to display the Fast Product Checkout button.', 'fast' ),
 			'value'       => $fastwc_setting_pdp_button_hook,
-			'options'     => array(
-				''                                        => __( 'Select Location', 'fast' ),
-				'woocommerce_before_add_to_cart_button'   => __( 'Before Add to Cart Button', 'fast' ),
-				'woocommerce_before_add_to_cart_quantity' => __( 'Before Quantity Selection', 'fast' ),
-				'woocommerce_after_add_to_cart_quantity'  => __( 'After Quantity Selection', 'fast' ),
-				'woocommerce_after_add_to_cart_button'    => __( 'After Add to Cart Button', 'fast' ),
-				'other'                                   => __( 'Other (for advanced users only)', 'fast' ),
-			),
+			'options'     => $options,
 		)
 	);
 }
@@ -423,6 +439,42 @@ function fastwc_admin_styles() {
 			}
 			.fast-settings textarea {
 				resize: none;
+			}
+
+			.fast-image-select {
+				display: flex;
+				flex-wrap: wrap;
+				margin: 0 -10px;
+				padding-top: 10px;
+			}
+			.fast-image-select--item {
+				flex-basis: 33.3333%;
+				padding: 0 10px;
+				margin: 0 0 20px;
+				box-sizing: border-box;
+			}
+			@media screen and (max-width: 782px) {
+				.fast-image-select--item {
+					flex-basis: 50%;
+				}
+			}
+			@media screen and (max-width: 480px) {
+				.fast-image-select--item {
+					flex-basis: 100%;
+				}
+			}
+			.fast-image-select--label-text {
+				display: block;
+				margin-bottom: 6px;
+			}
+			.fast-image-select--image {
+				max-width: 100%;
+				height: auto;
+				border: 1px solid #bdbdbd;
+			}
+			.fast-image-select--input:checked + label .fast-image-select--image {
+				border: 1px solid #666;
+				box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
 			}
 		</style>
 	<?php
