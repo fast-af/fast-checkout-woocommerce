@@ -428,6 +428,16 @@ function fastwc_admin_styles() {
 				margin: 0 0 20px;
 				box-sizing: border-box;
 			}
+			@media screen and (max-width: 782px) {
+				.fast-image-select--item {
+					flex-basis: 50%;
+				}
+			}
+			@media screen and (max-width: 480px) {
+				.fast-image-select--item {
+					flex-basis: 100%;
+				}
+			}
 			.fast-image-select--label-text {
 				display: block;
 				margin-bottom: 6px;
