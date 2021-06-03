@@ -36,7 +36,7 @@ function fastwc_fetch_order( WP_REST_Request $request ) {
 		if ( empty( $order ) ) {
 			$response = new WP_Error( 'invalid_order_id', __( 'Invalid order ID.', 'fast' ), $order_id );
 		} else {
-			$response = new WP_REST_Response( $order, 200 );
+			$response = new WP_REST_Response( $order->get_data(), 200 );
 		}
 	}
 
