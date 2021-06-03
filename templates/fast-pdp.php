@@ -9,7 +9,7 @@ $fastwc_pdp_button_styles = fastwc_get_option_or_set_default( FASTWC_SETTING_PDP
 $fastwc_pdp_button_hook   = fastwc_get_pdp_button_hook();
 ?>
 
-		<div class="fast-pdp-wrapper">
+		<div class="fast-pdp-wrapper <?php echo esc_attr( $fastwc_pdp_button_hook ); ?>">
 			<?php if ( 'woocommerce_after_add_to_cart_button' === $fastwc_pdp_button_hook ) : ?>
 			<div class="fast-pdp-or"><?php esc_html_e( 'OR', 'fast' ); ?></div>
 			<?php endif; ?>
