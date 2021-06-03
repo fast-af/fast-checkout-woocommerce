@@ -48,6 +48,10 @@ define(
   background: white;
 }
 
+.woocommerce_after_add_to_cart_button .fast-pdp-or {
+  top: -22px;
+}
+
 @media only screen and (max-width: 767px) {
   .fast-pdp-wrapper {
     border-bottom: 1px solid #dfdfdf;
