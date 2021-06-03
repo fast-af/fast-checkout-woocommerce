@@ -234,7 +234,7 @@ function fastwc_settings_field_image_select( $args ) {
 			>
 				<span class="fast-image-select--label-text"><?php echo esc_html( $label ); ?></span>
 				<?php if ( ! empty( $image ) ) : ?>
-				<img src="<?php echo esc_url( $image ); ?>" class="fast-image-select--image" />
+				<img src="<?php echo esc_url( $image ); ?>" class="fast-image-select--image" alt="<?php echo esc_attr( $label ); ?>" />
 				<?php endif; ?>
 			</label>
 		</div>
