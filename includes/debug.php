@@ -31,12 +31,10 @@ function fastwc_debug_mode_enabled() {
  * @param string $message Message to log.
  */
 function fastwc_log( $level, $message ) {
-	if ( ! fastwc_debug_mode_enabled() ) {
-		return;
+	if ( fastwc_debug_mode_enabled() ) {
+		$logger = wc_get_logger();
+		$logger->log( $level, $message, array( 'source' => 'fastwc' ) );
 	}
-
-	$logger = wc_get_logger();
-	$logger->log( $level, $message, array( 'source' => 'fastwc' ) );
 }
 
 /**
