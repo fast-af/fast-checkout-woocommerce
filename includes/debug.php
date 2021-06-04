@@ -20,14 +20,14 @@ function fastwc_debug_mode_enabled() {
  * Log a message if Fast debug mode is enabled.
  *
  * @param string $level   WooCommerce log level. One of the following:
- *     'emergency': System is unusable.
- *     'alert': Action must be taken immediately.
- *     'critical': Critical conditions.
- *     'error': Error conditions.
- *     'warning': Warning conditions.
- *     'notice': Normal but significant condition.
- *     'info': Informational messages.
- *     'debug': Debug-level messages.
+ *                          'emergency': System is unusable.
+ *                          'alert': Action must be taken immediately.
+ *                          'critical': Critical conditions.
+ *                          'error': Error conditions.
+ *                          'warning': Warning conditions.
+ *                          'notice': Normal but significant condition.
+ *                          'info': Informational messages.
+ *                          'debug': Debug-level messages.
  * @param string $message Message to log.
  */
 function fastwc_log( $level, $message ) {
