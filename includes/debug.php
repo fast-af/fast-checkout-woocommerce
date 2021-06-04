@@ -46,7 +46,7 @@ function fastwc_log( $level, $message ) {
  *
  * @param string $message Message to log.
  */
-function fastwc_emergency( $message ) {
+function fastwc_log_emergency( $message ) {
 	fastwc_log( WC_Log_Levels::EMERGENCY, $message );
 }
 
@@ -60,7 +60,7 @@ function fastwc_emergency( $message ) {
  *
  * @param string $message Message to log.
  */
-function fastwc_alert( $message ) {
+function fastwc_log_alert( $message ) {
 	fastwc_log( WC_Log_Levels::ALERT, $message );
 }
 
@@ -74,7 +74,7 @@ function fastwc_alert( $message ) {
  *
  * @param string $message Message to log.
  */
-function fastwc_critical( $message ) {
+function fastwc_log_critical( $message ) {
 	fastwc_log( WC_Log_Levels::CRITICAL, $message );
 }
 
@@ -88,7 +88,7 @@ function fastwc_critical( $message ) {
  *
  * @param string $message Message to log.
  */
-function fastwc_error( $message ) {
+function fastwc_log_error( $message ) {
 	fastwc_log( WC_Log_Levels::ERROR, $message );
 }
 
@@ -104,7 +104,7 @@ function fastwc_error( $message ) {
  *
  * @param string $message Message to log.
  */
-function fastwc_warning( $message ) {
+function fastwc_log_warning( $message ) {
 	fastwc_log( WC_Log_Levels::WARNING, $message );
 }
 
@@ -117,7 +117,7 @@ function fastwc_warning( $message ) {
  *
  * @param string $message Message to log.
  */
-function fastwc_notice( $message ) {
+function fastwc_log_notice( $message ) {
 	fastwc_log( WC_Log_Levels::NOTICE, $message );
 }
 
@@ -131,7 +131,7 @@ function fastwc_notice( $message ) {
  *
  * @param string $message Message to log.
  */
-function fastwc_info( $message ) {
+function fastwc_log_info( $message ) {
 	fastwc_log( WC_Log_Levels::INFO, $message );
 }
 
@@ -144,6 +144,6 @@ function fastwc_info( $message ) {
  *
  * @param string $message Message to log.
  */
-function fastwc_debug( $message ) {
+function fastwc_log_debug( $message ) {
 	fastwc_log( WC_Log_Levels::DEBUG, $message );
 }
