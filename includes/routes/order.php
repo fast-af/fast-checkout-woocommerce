@@ -12,9 +12,24 @@
  * @return array|WP_Error|WP_REST_Response
  */
 function fastwc_update_order( WP_REST_Request $request ) {
-	// TODO: Add/update the order.
+	// 1. Get shipping lines and shipping_options if new order.
+	$shipping = fastwc_calculate_shipping( $request );
 
-	return array();
+	// 2. Create/update order. (/wp-json/wc/v3/orders)
+	$wc_rest_orders_controller = new WC_REST_Orders_Controller();
+	$wc_order                  = $wc_rest_orders_controller->save_object( $request, true );
+
+	// 3. Fetch product details for each product in the order. (/wp-json/wc/v3/products/87368)
+
+	// 4. Return the merged response.
+
+	return WP_REST_Request(
+		array(
+			'order'    => $wc_order,
+			'shipping' => $shipping,
+		),
+		200
+	);
 }
 
 /**
