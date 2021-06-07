@@ -30,6 +30,8 @@ function fastwc_rest_api_init() {
 		)
 	);
 
+	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/store/plugins' );
+
 	// Register a route to collect all possible shipping locations.
 	register_rest_route(
 		FASTWC_ROUTES_BASE,
@@ -40,6 +42,8 @@ function fastwc_rest_api_init() {
 			'permission_callback' => 'fastwc_api_permission_callback',
 		)
 	);
+
+	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/shipping_zones' );
 
 	// Register a route to calculate available shipping rates.
 	// FE -> OMS -> Blender -> (pID, variantID, Shipping info, CustomerID)Plugin.
@@ -53,6 +57,8 @@ function fastwc_rest_api_init() {
 		)
 	);
 
+	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/shipping' );
+
 	// Register a route to test the Authorization header.
 	register_rest_route(
 		FASTWC_ROUTES_BASE,
@@ -63,6 +69,8 @@ function fastwc_rest_api_init() {
 			'permission_callback' => '__return_true',
 		)
 	);
+
+	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/authecho' );
 }
 add_action( 'rest_api_init', 'fastwc_rest_api_init' );
 
@@ -77,7 +85,11 @@ function fastwc_api_permission_callback() {
 	// handles the API consumer key and secret.
 	WC();
 
-	return current_user_can( 'manage_options' );
+	$has_permission = current_user_can( 'manage_options' );
+
+	fastwc_log_info( 'API Permission Callback: ' ( $has_permission ? 'granted' : 'denied' ) );
+
+	return $has_permission;
 }
 
 /**
@@ -101,6 +113,8 @@ function fastwc_test_authorization_header( $request ) {
 			$auth_header = $headers['authorization'];
 		}
 	}
+
+	fastwc_log_info( 'Authorization header endpoint called: ' . $auth_header );
 
 	return new WP_REST_Response( $auth_header, 200 );
 }

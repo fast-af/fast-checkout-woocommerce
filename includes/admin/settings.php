@@ -44,6 +44,7 @@ function fastwc_admin_create_menu() {
 	register_setting( 'fast', FASTWC_SETTING_FAST_JS_URL );
 	register_setting( 'fast', FASTWC_SETTING_FAST_JWKS_URL );
 	register_setting( 'fast', FASTWC_SETTING_ONBOARDING_URL );
+	register_setting( 'fast', FASTWC_SETTING_DEBUG_MODE );
 
 	// Check whether the woocommerce plugin is active.
 	$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
@@ -121,6 +122,7 @@ function fastwc_admin_setup_fields() {
 	// Test Mode settings.
 	$settings_section = 'fast_test_mode';
 	add_settings_field( FASTWC_SETTING_TEST_MODE, __( 'Test Mode', 'fast' ), 'fastwc_test_mode_content', $settings_page, $settings_section );
+	add_settings_field( FASTWC_SETTING_DEBUG_MODE, __( 'Debug Mode', 'fast' ), 'fastwc_debug_mode_content', $settings_page, $settings_section );
 	add_settings_field( FASTWC_SETTING_DISABLE_MULTICURRENCY, __( 'Disable Multicurrency Support', 'fast' ), 'fastwc_disable_multicurrency_content', $settings_page, $settings_section );
 
 	// Advanced settings.
@@ -292,6 +294,29 @@ function fastwc_test_mode_content() {
 			'current'     => $fastwc_test_mode,
 			'label'       => __( 'Enable test mode', 'fast' ),
 			'description' => __( 'When test mode is enabled, only logged-in admin users will see the Fast Checkout button.', 'fast' ),
+		)
+	);
+}
+
+/**
+ * Renders the Debug Mode field.
+ */
+function fastwc_debug_mode_content() {
+	$fastwc_debug_mode = get_option( FASTWC_SETTING_DEBUG_MODE, FASTWC_SETTING_DEBUG_MODE_NOT_SET );
+
+	if ( FASTWC_SETTING_DEBUG_MODE_NOT_SET === $fastwc_debug_mode ) {
+		// If the option is FASTWC_SETTING_DEBUG_MODE_NOT_SET, then it hasn't yet been set. In this case, we
+		// want to configure debug mode to be off.
+		$fastwc_debug_mode = 0;
+		update_option( FASTWC_SETTING_DEBUG_MODE, $fastwc_debug_mode );
+	}
+
+	fastwc_settings_field_checkbox(
+		array(
+			'name'        => FASTWC_SETTING_DEBUG_MODE,
+			'current'     => $fastwc_debug_mode,
+			'label'       => __( 'Enable debug mode', 'fast' ),
+			'description' => __( 'When debug mode is enabled, the Fast plugin will maintain an error log.', 'fast' ),
 		)
 	);
 }
