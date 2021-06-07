@@ -40,6 +40,8 @@ function fastwc_get_cart_data() {
 			}
 			$fastwc_cart_data[ $cart_item_key ] = $fastwc_cart_item_data;
 		}
+
+		fastwc_log_debug( 'Fetched cart data: ' . print_r( $fastwc_cart_data, true ) ); // phpcs:ignore
 	}
 
 	return $fastwc_cart_data;
@@ -59,6 +61,7 @@ function fastwc_maybe_render_checkout_button( $button_type, $template ) {
 		( 'pdp' === $button_type && fastwc_should_hide_pdp_checkout_button() ) ||
 		( 'cart' === $button_type && fastwc_should_hide_cart_checkout_button() )
 	) {
+		fastwc_log_info( 'Not rendering checkout button. Type: ' . $button_type . ', Template: ' . $template );
 		return;
 	}
 
@@ -105,12 +108,16 @@ add_action( 'woocommerce_before_checkout_form', 'fastwc_woocommerce_before_check
  */
 function fastwc_woocommerce_rest_pre_insert_shop_order_object( $order, $request ) {
 
+	fastwc_log_debug( 'fastwc_woocommerce_rest_pre_insert_shop_order_object ' . print_r( $order, true ) ); // phpcs:ignore
+
 	// For order updates with a coupon line item, make sure there is a cart object.
 	if (
 		empty( WC()->cart ) &&
 		isset( $request['coupon_lines'] ) &&
 		is_array( $request['coupon_lines'] )
 	) {
+		fastwc_log_info( 'Generating cart object on WC orders endpoint.' );
+
 		wc_load_cart();
 
 		$items = $order->get_items();
@@ -121,8 +128,12 @@ function fastwc_woocommerce_rest_pre_insert_shop_order_object( $order, $request 
 
 			if ( is_callable( array( $product, 'get_id' ) ) ) {
 				WC()->cart->add_to_cart( $product->get_id(), $quantity );
+
+				fastwc_log_debug( 'Product added to cart on pre-insert order hook. Product ID: ' . $product->get_id() . ', Quantity: ' . $quantity );
 			}
 		}
+
+		fastwc_log_debug( 'Cart generated on pre-insert order hook: ' . print_r( WC()->cart, true ) ); // phpcs:ignore
 	}
 
 	// Return the order object unchanged.
@@ -138,6 +149,8 @@ add_filter( 'woocommerce_rest_pre_insert_shop_order_object', 'fastwc_woocommerce
  */
 function fastwc_order_status_trash_to_on_hold( $order_id, $order ) {
 
+	fastwc_log_info( 'fastwc_order_status_trash_to_on_hold: ' . $order_id );
+
 	if ( ! empty( $order ) ) {
 		$meta_data = $order->get_meta_data();
 
@@ -146,7 +159,10 @@ function fastwc_order_status_trash_to_on_hold( $order_id, $order ) {
 			$key  = ! empty( $data['key'] ) ? $data['key'] : '';
 
 			if ( 'fast_order_id' === $key ) {
-				$order->add_order_note( __( 'Fast: Order status changed from pending to on-hold.', 'fast' ) );
+				$status_change_note = __( 'Fast: Order status changed from pending to on-hold.', 'fast' );
+				$order->add_order_note( $status_change_note );
+
+				fastwc_log_info( 'Added status change note: ' . $status_change_note );
 
 				// Init WC_Emails so emails exist.
 				$wc_emails = WC_Emails::instance();
@@ -154,6 +170,8 @@ function fastwc_order_status_trash_to_on_hold( $order_id, $order ) {
 				// Trigger the new order email.
 				if ( ! empty( $wc_emails->emails['WC_Email_New_Order'] ) ) {
 					$wc_emails->emails['WC_Email_New_Order']->trigger( $order_id, $order );
+
+					fastwc_log_info( 'Triggered new order email: ' . $order_id );
 				}
 
 				break;
@@ -174,6 +192,7 @@ function fastwc_maybe_clear_cart_and_redirect() {
 		! empty( WC()->cart ) &&
 		is_callable( array( WC()->cart, 'empty_cart' ) )
 	) {
+		fastwc_log_info( 'Clearing cart and redirecting after order created.' );
 		WC()->cart->empty_cart();
 		$cart_url = wc_get_cart_url();
 		wp_safe_redirect( $cart_url );
