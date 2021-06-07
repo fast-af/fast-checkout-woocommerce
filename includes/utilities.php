@@ -36,6 +36,7 @@ function fastwc_load_template( $template_name, $args = array() ) {
 			 * @param array  $args         Array of args to pass to the tepmlate. Requires WP 5.5+.
 			 */
 			load_template( $location, false, $args );
+			fastwc_log_info( 'Loaded template: ' . $location );
 			return;
 		}
 	}
@@ -70,6 +71,8 @@ function fastwc_get_products_to_hide_buttons() {
 		for ( $i = 0; $i < $fastwc_count_products; $i++ ) {
 			$fastwc_hidden_products[ $i ] = (int) $fastwc_hidden_products[ $i ];
 		}
+
+		fastwc_log_info( 'Products fetched to hide buttons: ' . print_r( $fastwc_hidden_products, true ) ); // phpcs:ignore
 	}
 
 	return $fastwc_hidden_products;
@@ -89,7 +92,11 @@ function fastwc_product_is_supported( $product_id ) {
 	 * @param bool $is_supported Flag to pass through the filters to set if the product is supported.
 	 * @param int  $product_id   The ID of the product to check.
 	 */
-	return apply_filters( 'fastwc_product_is_supported', true, $product_id );
+	$is_supported = apply_filters( 'fastwc_product_is_supported', true, $product_id );
+
+	fastwc_log_info( 'Product is' . ( $is_supported ? '' : ' not' ) . ' supported: ' . $product_id );
+
+	return $is_supported;
 }
 
 /**
@@ -104,6 +111,8 @@ function fastwc_product_is_supported_if_no_addons( $is_supported, $product_id ) 
 	if ( fastwc_product_has_addons( $product_id ) ) {
 		$is_supported = false;
 	}
+
+	fastwc_log_info( 'Product is' . ( $is_supported ? '' : ' not' ) . ' supported after addon check: ' . $product_id );
 
 	return $is_supported;
 }
@@ -122,6 +131,8 @@ function fastwc_product_is_supported_if_not_grouped( $is_supported, $product_id 
 		$is_supported = false;
 	}
 
+	fastwc_log_info( 'Product is' . ( $is_supported ? '' : ' not' ) . ' supported after grouped check: ' . $product_id );
+
 	return $is_supported;
 }
 add_filter( 'fastwc_product_is_supported', 'fastwc_product_is_supported_if_not_grouped', 10, 2 );
@@ -138,6 +149,8 @@ function fastwc_product_is_supported_if_not_subscription( $is_supported, $produc
 	if ( fastwc_product_is_subscription( $product_id ) ) {
 		$is_supported = false;
 	}
+
+	fastwc_log_info( 'Product is' . ( $is_supported ? '' : ' not' ) . ' supported after subscription check: ' . $product_id );
 
 	return $is_supported;
 }
@@ -163,6 +176,8 @@ function fastwc_product_has_addons( $product_id ) {
 		}
 	}
 
+	fastwc_log_info( 'Product does' . ( $has_addons ? '' : ' not' ) . ' have addons: ' . $product_id );
+
 	return $has_addons;
 }
 
@@ -185,6 +200,8 @@ function fastwc_product_is_grouped( $product_id ) {
 		$is_grouped = true;
 	}
 
+	fastwc_log_info( 'Product is' . ( $is_grouped ? '' : ' not' ) . ' grouped: ' . $product_id );
+
 	return $is_grouped;
 }
 
@@ -198,12 +215,16 @@ function fastwc_product_is_grouped( $product_id ) {
 function fastwc_product_is_subscription( $product_id ) {
 	$product = wc_get_product( $product_id );
 
+	$is_subscription = false;
+
 	if (
 		is_a( $product, WC_Product_Subscription::class ) ||
 		is_a( $product, WC_Product_Variable_Subscription::class )
 	) {
-		return true;
+		$is_subscription = true;
 	}
+
+	fastwc_log_info( 'Product is' . ( $is_subscription ? '' : ' not' ) . ' a subscription: ' . $product_id );
 
 	return false;
 }
