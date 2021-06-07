@@ -21,6 +21,7 @@ function fastwc_should_hide_pdp_checkout_button( $product_id = 0 ) {
 
 	// Never show a PDP button if there is no product or if the product is a string.
 	if ( empty( $product ) || is_string( $product ) ) {
+		fastwc_log_info( 'PDP button hidden because no product: ' . $product_id );
 		return true;
 	}
 
@@ -32,7 +33,11 @@ function fastwc_should_hide_pdp_checkout_button( $product_id = 0 ) {
 	 *
 	 * @return bool
 	 */
-	return apply_filters( 'fastwc_should_hide_pdp_checkout_button', false, $product );
+	$should_hide = apply_filters( 'fastwc_should_hide_pdp_checkout_button', false, $product );
+
+	fastwc_log_info( 'PDP button' . ( $should_hide ? '' : ' not' ) . ' hidden: ' . $product_id );
+
+	return $should_hide;
 }
 
 /**
@@ -48,7 +53,11 @@ function fastwc_should_hide_cart_checkout_button() {
 	 *
 	 * @return bool
 	 */
-	return apply_filters( 'fastwc_should_hide_cart_checkout_button', false );
+	$should_hide = apply_filters( 'fastwc_should_hide_cart_checkout_button', false );
+
+	fastwc_log_info( 'Cart button' . ( $should_hide ? '' : ' not' ) . ' hidden.' );
+
+	return $should_hide;
 }
 
 /**
@@ -66,7 +75,11 @@ function fastwc_should_hide_login_button() {
 	 *
 	 * @return bool
 	 */
-	return apply_filters( 'fastwc_should_hide_login_button', false );
+	$should_hide = apply_filters( 'fastwc_should_hide_login_button', false );
+
+	fastwc_log_info( 'Login button' . ( $should_hide ? '' : ' not' ) . ' hidden.' );
+
+	return $should_hide;
 }
 
 /**
@@ -92,8 +105,10 @@ function fastwc_is_hidden_for_test_mode( $should_hide ) {
 				$should_hide = true;
 			}
 		}
-	}
 
+		fastwc_log_info( 'Fast buttons' . ( $should_hide ? '' : ' not' ) . ' hidden for test mode.' );
+	}
+ 
 	return $should_hide;
 }
 add_filter( 'fastwc_should_hide_pdp_checkout_button', 'fastwc_is_hidden_for_test_mode', 1 );
@@ -115,6 +130,8 @@ function fastwc_is_app_id_empty( $should_hide ) {
 		if ( empty( $fastwc_app_id ) ) {
 			$should_hide = true;
 		}
+
+		fastwc_log_info( 'Fast buttons' . ( $should_hide ? '' : ' not' ) . ' hidden for no app ID.' );
 	}
 
 	return $should_hide;
@@ -141,6 +158,8 @@ function fastwc_should_hide_pdp_button_for_product( $should_hide, $product ) {
 			if ( ! empty( $product_id ) && in_array( $product_id, $fastwc_hidden_products, true ) ) {
 				$should_hide = true;
 			}
+
+			fastwc_log_info( 'PDP button' . ( $should_hide ? '' : ' not' ) . ' hidden for selected product: ' . $product_id );
 		}
 	}
 
@@ -165,6 +184,8 @@ function fastwc_should_hide_pdp_button_for_unsupported_product( $should_hide, $p
 		if ( ! fastwc_product_is_supported( $product_id ) ) {
 			$should_hide = true;
 		}
+
+		fastwc_log_info( 'PDP button' . ( $should_hide ? '' : ' not' ) . ' hidden for unsupported product: ' . $product_id );
 	}
 
 	return $should_hide;
@@ -188,6 +209,8 @@ function fastwc_should_hide_pdp_button_for_out_of_stock_product( $should_hide, $
 		if ( 'outofstock' === $stock_status ) {
 			$should_hide = true;
 		}
+
+		fastwc_log_info( 'PDP button' . ( $should_hide ? '' : ' not' ) . ' hidden for out of stock product: ' . $product_id );
 	}
 
 	return $should_hide;
@@ -208,6 +231,8 @@ function fastwc_should_hide_pdp_button_for_external_product( $should_hide, $prod
 		if ( is_a( $product, WC_Product_External::class ) ) {
 			$should_hide = true;
 		}
+
+		fastwc_log_info( 'PDP button' . ( $should_hide ? '' : ' not' ) . ' hidden for external product: ' . $product_id );
 	}
 
 	return $should_hide;
@@ -238,6 +263,8 @@ function fastwc_should_hide_cart_button_for_product( $should_hide ) {
 				}
 			}
 		}
+
+		fastwc_log_info( 'Cart button' . ( $should_hide ? '' : ' not' ) . ' hidden for selected product: ' . $product_id );
 	}
 
 	return $should_hide;
@@ -256,7 +283,8 @@ function fastwc_should_hide_cart_button_because_unsupported_products( $should_hi
 	if ( ! $should_hide ) {
 		$cart = WC()->cart;
 
-		$cart_items = method_exists( $cart, 'get_cart' ) ? $cart->get_cart() : array();
+		$cart_items          = method_exists( $cart, 'get_cart' ) ? $cart->get_cart() : array();
+		$unsupported_product = 0;
 
 		if ( empty( $cart_items ) ) {
 			$should_hide = true;
@@ -264,7 +292,8 @@ function fastwc_should_hide_cart_button_because_unsupported_products( $should_hi
 			// Check for products we don't support.
 			foreach ( $cart_items as $cart_item ) {
 				if ( ! fastwc_product_is_supported( $cart_item['product_id'] ) ) {
-					$should_hide = true;
+					$should_hide         = true;
+					$unsupported_product = $cart_item['product_id'];
 					break;
 				}
 
@@ -275,11 +304,14 @@ function fastwc_should_hide_cart_button_because_unsupported_products( $should_hi
 					// If the store is using "WooCommerce All Products For Subscriptions" plugin, then this field might be set.
 					// If it is anything other than false, then this is a product that has been converted to a subcription; hide the
 					// button.
-					$should_hide = true;
+					$should_hide         = true;
+					$unsupported_product = $cart_item['product_id'];
 					break;
 				}
 			}
 		}
+
+		fastwc_log_info( 'Cart button' . ( $should_hide ? '' : ' not' ) . ' hidden for unsupported_product product' . ( ! empty( $unsupported_product ) ? ': ' . $product_id : '.' ) );
 	}
 
 	return $should_hide;
@@ -303,6 +335,8 @@ function fastwc_should_hide_cart_checkout_button_because_too_many_coupons( $shou
 		if ( count( $applied_coupons ) > 1 ) {
 			$should_hide = true;
 		}
+
+		fastwc_log_info( 'Cart button' . ( $should_hide ? '' : ' not' ) . ' hidden for too many coupons.' );
 	}
 
 	return $should_hide;
@@ -317,6 +351,10 @@ add_filter( 'fastwc_should_hide_cart_checkout_button', 'fastwc_should_hide_cart_
  * @return bool
  */
 function fastwc_should_hide_login_button_for_logged_in_user( $should_hide ) {
-	return is_user_logged_in() ? true : $should_hide;
+	$should_hide = is_user_logged_in() ? true : $should_hide;
+
+	fastwc_log_info( 'Login button' . ( $should_hide ? '' : ' not' ) . ' hidden for logged in user.' );
+
+	return $should_hide;
 }
 add_filter( 'fastwc_should_hide_login_button', 'fastwc_should_hide_login_button_for_logged_in_user' );
