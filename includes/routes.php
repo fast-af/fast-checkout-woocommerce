@@ -72,6 +72,8 @@ function fastwc_rest_api_init() {
 		)
 	);
 
+	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/order' );
+
 	// Register a route to fetch an order.
 	register_rest_route(
 		FASTWC_ROUTES_BASE,
@@ -82,6 +84,8 @@ function fastwc_rest_api_init() {
 			'permission_callback' => 'fastwc_api_permission_callback',
 		)
 	);
+
+	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/order/<id>' );
 
 	// Register a route to test the Authorization header.
 	register_rest_route(
