@@ -19,6 +19,8 @@ function fastwc_add_shortcodes() {
 
 	// Add cart checktout button shortcode.
 	add_shortcode( 'fast_cart', 'fastwc_shortcode_cart_button' );
+
+	fastwc_log_info( 'Initialized Fast shortcodes: fast_product and fast_cart' );
 }
 add_action( 'init', 'fastwc_add_shortcodes' );
 
@@ -80,6 +82,8 @@ function fastwc_shortcode_cart_button( $atts ) {
  * @return string
  */
 function fastwc_shortcode_button_template( $template, $atts ) {
+
+	fastwc_log_info( 'Rendering shortcode template: ' . $template );
 
 	// Start the output buffer.
 	ob_start();
