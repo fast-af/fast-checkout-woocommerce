@@ -24,6 +24,8 @@ function fastwc_add_login_to_footer() {
 	}
 
 	fastwc_load_template( 'fast-login' );
+
+	fastwc_log_info( 'Loaded login template' );
 }
 add_action( 'get_footer', 'fastwc_add_login_to_footer' );
 
@@ -33,16 +35,19 @@ add_action( 'get_footer', 'fastwc_add_login_to_footer' );
 function fastwc_login_init() {
 	// If the "auth" query param isn't set, exit.
 	if ( ! isset( $_GET['auth'] ) ) {
+		fastwc_log_info( 'Auth query param not set. No login.' );
 		return;
 	}
 
 	// Verify the nonce.
 	if ( ! isset( $_GET[ FASTWC_PARAM_WP_NONCE ] ) ) {
+		fastwc_log_info( 'Nonce not set. No login.' );
 		return;
 	}
 
 	$nonce = sanitize_text_field( wp_unslash( $_GET[ FASTWC_PARAM_WP_NONCE ] ) );
 	if ( ! wp_verify_nonce( $nonce, 'fast-backend-login-auth' ) ) {
+		fastwc_log_error( '401 Unauthorized: Invalid nonce.' );
 		wp_die( '401 Unauthorized: Invalid nonce.', esc_attr( FASTWC_RESPONSE_401 ) );
 	}
 
@@ -52,22 +57,28 @@ function fastwc_login_init() {
 	try {
 		$claims = fastwc_backend_verify_jwt( $auth_token );
 	} catch ( Exception $e ) {
+		fastwc_log_error( '401 Unauthorized: Failed to login.' );
 		wp_die( '401 Unauthorized: Failed to login.', esc_attr( FASTWC_RESPONSE_401 ) );
 	}
 
 	$user_to_login = get_user_by( 'email', $claims->email );
 
 	if ( ! $user_to_login ) {
+		fastwc_log_error( '401 Unauthorized: Failed to get user.' );
 		wp_die( '401 Unauthorized: Failed to get user.', esc_attr( FASTWC_RESPONSE_401 ) );
 	}
 
 	// Some sanity checks before we use these variables.
 	if ( ! isset( $_SERVER['REQUEST_URI'] ) ) {
+		fastwc_log_error( '401 Unauthorized: Failed to get request URI.' );
 		wp_die( '401 Unauthorized: Failed to get request URI.', esc_attr( FASTWC_RESPONSE_401 ) );
 	}
 	if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
+		fastwc_log_error( '401 Unauthorized: Failed to get HTTP Host.' );
 		wp_die( '401 Unauthorized: Failed to get HTTP Host.', esc_attr( FASTWC_RESPONSE_401 ) );
 	}
+
+	fastwc_log_info( 'Initializing login' );
 
 	// Get the path and query of the page being requested.
 	$request_uri = esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
