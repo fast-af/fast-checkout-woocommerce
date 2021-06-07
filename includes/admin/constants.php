@@ -11,6 +11,8 @@ define( 'FASTWC_SETTING_TEST_MODE_NOT_SET', 'fast test mode not set' );
 define( 'FASTWC_SETTING_FAST_JS_URL', 'fast_fast_js_url' );
 define( 'FASTWC_SETTING_FAST_JWKS_URL', 'fast_fast_jwks_url' );
 define( 'FASTWC_SETTING_ONBOARDING_URL', 'fast_onboarding_url' );
+define( 'FASTWC_SETTING_DEBUG_MODE', 'fastwc_debug_mode' );
+define( 'FASTWC_SETTING_DEBUG_MODE_NOT_SET', 'fast debug mode not set' );
 define( 'FASTWC_SETTING_PDP_BUTTON_STYLES', 'fast_pdp_button_styles' );
 define( 'FASTWC_SETTING_CART_BUTTON_STYLES', 'fast_cart_button_styles' );
 define( 'FASTWC_SETTING_MINI_CART_BUTTON_STYLES', 'fast_mini_cart_button_styles' );
