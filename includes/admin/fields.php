@@ -231,6 +231,7 @@ function fastwc_settings_field_image_select( $args ) {
 			<label
 				for="<?php echo esc_attr( $id ); ?>"
 				class="fast-image-select--label"
+				aria-label="<?php echo esc_attr( $label ); ?>"
 			>
 				<span class="fast-image-select--label-text"><?php echo esc_html( $label ); ?></span>
 				<?php if ( ! empty( $image ) ) : ?>
