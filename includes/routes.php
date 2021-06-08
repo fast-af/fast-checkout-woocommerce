@@ -17,7 +17,8 @@ require_once FASTWC_PATH . 'includes/routes/class-shipping-zones.php';
 // Provides an API that exposes plugin info.
 require_once FASTWC_PATH . 'includes/routes/class-plugin-info.php';
 // Provides an API to add, edit, and fetch orders.
-require_once FASTWC_PATH . 'includes/routes/order.php';
+require_once FASTWC_PATH . 'includes/routes/class-order-post.php';
+require_once FASTWC_PATH . 'includes/routes/class-order-get.php';
 
 /**
  * Register Fast Woocommerce routes for the REST API.
@@ -37,29 +38,17 @@ function fastwc_rest_api_init() {
 	// FE -> OMS -> Blender -> (pID, variantID, Shipping info, CustomerID)Plugin.
 	new \FastWC\Routes\Shipping();
 
+	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/shipping' );
+
 	// Register a route to add/edit an order.
-	register_rest_route(
-		FASTWC_ROUTES_BASE,
-		'order',
-		array(
-			'methods'             => 'POST',
-			'callback'            => 'fastwc_update_order',
-			'permission_callback' => 'fastwc_api_permission_callback',
-		)
-	);
+	new \FastWC\Routes\Order_Post();
+
+	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/order' );
 
 	// Register a route to fetch an order.
-	register_rest_route(
-		FASTWC_ROUTES_BASE,
-		'order/(?P<id>[\d]+)',
-		array(
-			'methods'             => 'GET',
-			'callback'            => 'fastwc_fetch_order',
-			'permission_callback' => 'fastwc_api_permission_callback',
-		)
-	);
+	new \FastWC\Routes\Order_Get();
 
-	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/shipping' );
+	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/order/<id>' );
 
 	// Register a route to test the Authorization header.
 	register_rest_route(

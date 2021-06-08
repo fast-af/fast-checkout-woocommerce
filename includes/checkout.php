@@ -124,6 +124,8 @@ add_action( 'woocommerce_before_checkout_form', 'fastwc_woocommerce_before_check
  */
 function fastwc_woocommerce_rest_pre_insert_shop_order_object( $order, $request ) {
 
+	$order = fastwc_maybe_update_order_for_multicurrency( $order, $request );
+
 	fastwc_log_debug( 'fastwc_woocommerce_rest_pre_insert_shop_order_object ' . print_r( $order, true ) ); // phpcs:ignore
 
 	// For order updates with a coupon line item, make sure there is a cart object.
