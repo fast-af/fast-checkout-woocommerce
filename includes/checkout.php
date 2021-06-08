@@ -103,10 +103,14 @@ add_action( 'woocommerce_before_checkout_form', 'fastwc_woocommerce_before_check
 /**
  * Handle the order object before it is inserted via the REST API.
  *
- * @param WC_Data         $order    Object object.
- * @param WP_REST_Request $request  Request object.
+ * @param WC_Data         $order   Object object.
+ * @param WP_REST_Request $request Request object.
+ *
+ * @return WC_Data
  */
 function fastwc_woocommerce_rest_pre_insert_shop_order_object( $order, $request ) {
+
+	$order = fastwc_maybe_update_order_for_multicurrency( $order, $request );
 
 	fastwc_log_debug( 'fastwc_woocommerce_rest_pre_insert_shop_order_object ' . print_r( $order, true ) ); // phpcs:ignore
 
@@ -139,7 +143,7 @@ function fastwc_woocommerce_rest_pre_insert_shop_order_object( $order, $request 
 	// Return the order object unchanged.
 	return $order;
 }
-add_filter( 'woocommerce_rest_pre_insert_shop_order_object', 'fastwc_woocommerce_rest_pre_insert_shop_order_object', 10, 3 );
+add_filter( 'woocommerce_rest_pre_insert_shop_order_object', 'fastwc_woocommerce_rest_pre_insert_shop_order_object', 10, 2 );
 
 /**
  * Fast transition trash to on-hold.
