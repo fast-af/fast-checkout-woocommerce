@@ -227,19 +227,19 @@ function fastwc_pdp_button_hook() {
 	$fastwc_setting_pdp_button_hook = fastwc_get_option_or_set_default( FASTWC_SETTING_PDP_BUTTON_HOOK, FASTWC_DEFAULT_PDP_BUTTON_HOOK );
 
 	$options = array(
-		'woocommerce_before_add_to_cart_button'  => array(
+		'woocommerce_before_add_to_cart_quantity' => array(
 			'label' => __( 'Before Quantity Selection', 'fast' ),
 			'image' => FASTWC_URL . 'assets/img/before-quantity-selection.png',
 		),
-		'woocommerce_after_add_to_cart_quantity' => array(
+		'woocommerce_after_add_to_cart_quantity'  => array(
 			'label' => __( 'After Quantity Selection', 'fast' ),
 			'image' => FASTWC_URL . 'assets/img/after-quantity-selection.png',
 		),
-		'woocommerce_after_add_to_cart_button'   => array(
+		'woocommerce_after_add_to_cart_button'    => array(
 			'label' => __( 'After Add to Cart Button', 'fast' ),
 			'image' => FASTWC_URL . 'assets/img/after-atc-button.png',
 		),
-		'other'                                  => array(
+		'other'                                   => array(
 			'label' => __( 'Other (for advanced users only)', 'fast' ),
 			'image' => FASTWC_URL . 'assets/img/other.png',
 		),
