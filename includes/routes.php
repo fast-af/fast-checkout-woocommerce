@@ -87,7 +87,7 @@ function fastwc_api_permission_callback() {
 
 	$has_permission = current_user_can( 'manage_options' );
 
-	fastwc_log_info( 'API Permission Callback: ' ( $has_permission ? 'granted' : 'denied' ) );
+	fastwc_log_info( 'API Permission Callback: ' . ( $has_permission ? 'granted' : 'denied' ) );
 
 	return $has_permission;
 }
