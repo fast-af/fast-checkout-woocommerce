@@ -35,38 +35,13 @@ class Order_Post extends Base {
 	 */
 	public function callback( $request ) {
 		// 1. Get shipping lines and shipping_options if new order.
-		$shipping_route = new Shipping( false ); // Instantiate without registering the route.
-		$shipping       = $shipping_route->callback( $request );
+		$shipping = $this->get_shipping( $request );
 
 		// 2. Create/update order. (/wp-json/wc/v3/orders)
-		$wc_rest_orders_controller = new \WC_REST_Orders_Controller();
-		$wc_order_response         = $wc_rest_orders_controller->create_item( $request );
-
-		if ( ! \is_wp_error( $wc_order_response ) ) {
-			$wc_order = $wc_order_response->data;
-		} else {
-			$wc_order = $wc_order_response;
-		}
+		$wc_order = $this->create_order( $request );
 
 		// 3. Fetch product details for each product in the order. (/wp-json/wc/v3/products/87368)
-		$product_details = array();
-
-		if ( ! \is_wp_error( $wc_order_response ) ) {
-			$products = $wc_order['line_items'];
-
-			foreach ( $products as $product ) {
-				$product_id = $product['product_id'];
-				if ( ! empty( $product['variation_id'] ) && $product_id !== $product['variation_id'] ) {
-					$product_id = $product['variation_id'];
-				}
-
-				$product_request             = array( 'id' => $product_id );
-				$wc_rest_products_controller = new \WC_REST_Products_Controller();
-				$product_response            = $wc_rest_products_controller->get_item( $product_request );
-
-				$product_details[ "$product_id" ] = $product_response->data;
-			}
-		}
+		$product_details = $this->get_product_details( $request, $wc_order );
 
 		// 4. Return the merged response.
 		$response = new \WP_REST_Response(
@@ -80,5 +55,85 @@ class Order_Post extends Base {
 		$response = \rest_ensure_response( $response );
 
 		return $response;
+	}
+
+	/**
+	 * Get shipping options.
+	 *
+	 * @param WP_REST_Request $request JSON request for shipping endpoint.
+	 *
+	 * @return array|WP_Error|WP_REST_Response
+	 */
+	protected function get_shipping( $request ) {
+		$shipping_route = new Shipping( false ); // Instantiate without registering the route.
+		return $shipping_route->callback( $request );
+	}
+
+	/**
+	 * Create the order.
+	 *
+	 * @param WP_REST_Request $request JSON request for shipping endpoint.
+	 *
+	 * @return array|WP_Error|WP_REST_Response
+	 */
+	protected function create_order( $request ) {
+		$wc_rest_orders_controller = new \WC_REST_Orders_Controller();
+		$wc_order_response         = $wc_rest_orders_controller->create_item( $request );
+
+		if ( ! \is_wp_error( $wc_order_response ) ) {
+			$wc_order = $wc_order_response->data;
+		} else {
+			$wc_order = $wc_order_response;
+		}
+
+		return $wc_order;
+	}
+
+	/**
+	 * Fetch product details.
+	 *
+	 * @param WP_REST_Request           $request JSON request for shipping endpoint.
+	 * @param WP_REST_Response|WP_Error $wc_order The order object.
+	 *
+	 * @return array|WP_Error|WP_REST_Response
+	 */
+	protected function get_product_details( $request, $wc_order ) {
+		$product_details = array();
+
+		if ( ! \is_wp_error( $wc_order ) ) {
+			$products = $wc_order['line_items'];
+
+			foreach ( $products as $product ) {
+				$product_id = $product['product_id'];
+				if ( ! empty( $product['variation_id'] ) && $product_id !== $product['variation_id'] ) {
+					$product_id = $product['variation_id'];
+				}
+
+				$product_details[ "$product_id" ] = $this->get_single_product_details( $product_id );
+			}
+		}
+
+		return $product_details;
+	}
+
+	/**
+	 * Get details for a single product.
+	 *
+	 * @param int $product_id The ID of the product to fetch.
+	 *
+	 * @return array|WP_Error|WP_Rest_Response
+	 */
+	protected function get_single_product_details( $product_id ) {
+		$product_request             = array( 'id' => $product_id );
+		$wc_rest_products_controller = new \WC_REST_Products_Controller();
+		$product_response            = $wc_rest_products_controller->get_item( $product_request );
+
+		if ( ! \is_wp_error( $product_response ) ) {
+			$product_details = $product_response->data;
+		} else {
+			$product_details = $product_response;
+		}
+
+		return $product_details;
 	}
 }
