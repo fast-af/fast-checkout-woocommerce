@@ -36,7 +36,7 @@ function fastwc_get_field_args( $default_args, $args ) {
  *
  * @param string $description The field description.
  */
-function fastwc_maybe_render_feild_description( $description ) {
+function fastwc_maybe_render_field_description( $description ) {
 	if ( ! empty( $description ) ) :
 		?>
 	<p class="description"><?php echo wp_kses_post( $description ); ?></p>
@@ -75,7 +75,7 @@ function fastwc_settings_field_input( $args ) {
 		value="<?php echo esc_attr( $args['value'] ); ?>"
 	/>
 	<?php
-	fastwc_maybe_render_feild_description( $args['description'] );
+	fastwc_maybe_render_field_description( $args['description'] );
 }
 
 /**
@@ -104,7 +104,7 @@ function fastwc_settings_field_textarea( $args ) {
 	?>
 	<textarea name="<?php echo esc_attr( $args['name'] ); ?>" id="<?php echo esc_attr( $args['id'] ); ?>" rows="<?php echo esc_attr( $args['rows'] ); ?>" cols="<?php echo esc_attr( $args['cols'] ); ?>"><?php echo esc_textarea( $args['value'] ); ?></textarea>
 	<?php
-	fastwc_maybe_render_feild_description( $args['description'] );
+	fastwc_maybe_render_field_description( $args['description'] );
 }
 
 /**
@@ -142,7 +142,7 @@ function fastwc_settings_field_checkbox( $args ) {
 	/>
 	<label for="<?php echo esc_attr( $args['name'] ); ?>"><?php echo esc_html( $args['label'] ); ?></label>
 	<?php
-	fastwc_maybe_render_feild_description( $args['description'] );
+	fastwc_maybe_render_field_description( $args['description'] );
 }
 
 /**
@@ -182,7 +182,7 @@ function fastwc_settings_field_select( $args ) {
 	?>
 	</select>
 	<?php
-	fastwc_maybe_render_feild_description( $args['description'] );
+	fastwc_maybe_render_field_description( $args['description'] );
 }
 
 /**
@@ -208,7 +208,7 @@ function fastwc_settings_field_image_select( $args ) {
 		return;
 	}
 
-	fastwc_maybe_render_feild_description( $args['description'] );
+	fastwc_maybe_render_field_description( $args['description'] );
 	?>
 	<div class="fast-image-select" id="fast-image-select-<?php echo esc_attr( $args['name'] ); ?>">
 	<?php
@@ -291,5 +291,5 @@ function fastwc_settings_field_ajax_select( $args ) {
 	?>
 	</select>
 	<?php
-	fastwc_maybe_render_feild_description( $args['description'] );
+	fastwc_maybe_render_field_description( $args['description'] );
 }
