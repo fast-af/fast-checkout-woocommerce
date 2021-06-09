@@ -124,12 +124,6 @@ class Order_Post extends Base {
 		$wc_rest_products_controller = new \WC_REST_Products_Controller();
 		$product_response            = $wc_rest_products_controller->get_item( $product_request );
 
-		if ( ! \is_wp_error( $product_response ) ) {
-			$product_details = $product_response->data;
-		} else {
-			$product_details = $product_response;
-		}
-
-		return $product_details;
+		return is_wp_error( $product_response ) ? $product_response : $product_response->data;
 	}
 }
