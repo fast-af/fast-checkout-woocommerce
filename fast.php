@@ -40,6 +40,8 @@ if ( ! in_array( 'woocommerce/woocommerce.php', $active_plugins, true ) ) {
 	require_once FASTWC_PATH . 'includes/assets.php';
 	// Loads fast utilities.
 	require_once FASTWC_PATH . 'includes/utilities.php';
+	// Add suppot for multicurrency.
+	require_once FASTWC_PATH . 'includes/multicurrency.php';
 	// Adds Fast Checkout button to store.
 	require_once FASTWC_PATH . 'includes/checkout.php';
 	// Adds Fast Login button to store.
