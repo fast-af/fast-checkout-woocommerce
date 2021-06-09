@@ -51,6 +51,10 @@ class Order_Post extends Base {
 		// 3. Fetch product details for each product in the order. (/wp-json/wc/v3/products/87368)
 		$product_details = array( 'placeholder' );
 
+		if ( ! \is_wp_error( $wc_order_response ) ) {
+			$product_details = $wc_order['line_items'];
+		}
+
 		// 4. Return the merged response.
 		$response = new \WP_REST_Response(
 			array(
