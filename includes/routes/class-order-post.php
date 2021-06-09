@@ -40,16 +40,17 @@ class Order_Post extends Base {
 
 		// 2. Create/update order. (/wp-json/wc/v3/orders)
 		$wc_rest_orders_controller = new \WC_REST_Orders_Controller();
-		$wc_order                  = $wc_rest_orders_controller->save_object( $request, true );
+		$wc_order                  = $wc_rest_orders_controller->create_item( $request );
 
 		// 3. Fetch product details for each product in the order. (/wp-json/wc/v3/products/87368)
+		$product_details = array( 'placeholder' );
 
 		// 4. Return the merged response.
-
 		return new \WP_REST_Request(
 			array(
-				'order'    => $wc_order,
-				'shipping' => $shipping,
+				'order'            => $wc_order,
+				'shipping_options' => $shipping,
+				'product_details'  => $product_details,
 			),
 			200
 		);
