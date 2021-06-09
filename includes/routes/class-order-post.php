@@ -65,8 +65,10 @@ class Order_Post extends Base {
 	 * @return array|WP_Error|WP_REST_Response
 	 */
 	protected function get_shipping( $request ) {
-		$shipping_route = new Shipping( false ); // Instantiate without registering the route.
-		return $shipping_route->callback( $request );
+		$shipping_route   = new Shipping( false ); // Instantiate without registering the route.
+		$shipping_options = $shipping_route->callback( $request );
+
+		return is_wp_error( $shipping_options ) ? array() : $shipping_options;
 	}
 
 	/**
