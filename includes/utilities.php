@@ -43,6 +43,21 @@ function fastwc_load_template( $template_name, $args = array() ) {
 }
 
 /**
+ * Get the selected hook/location to render the PDP button.
+ *
+ * @return string
+ */
+function fastwc_get_pdp_button_hook() {
+	$fastwc_pdp_button_hook = get_option( FASTWC_SETTING_PDP_BUTTON_HOOK, FASTWC_DEFAULT_PDP_BUTTON_HOOK );
+
+	if ( 'other' === $fastwc_pdp_button_hook ) {
+		$fastwc_pdp_button_hook = get_option( FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER, FASTWC_DEFAULT_PDP_BUTTON_HOOK );
+	}
+
+	return ! empty( $fastwc_pdp_button_hook ) ? $fastwc_pdp_button_hook : FASTWC_DEFAULT_PDP_BUTTON_HOOK;
+}
+
+/**
  * Get the list of products for which the button should be hidden.
  *
  * @return array
