@@ -49,10 +49,23 @@ class Order_Post extends Base {
 		}
 
 		// 3. Fetch product details for each product in the order. (/wp-json/wc/v3/products/87368)
-		$product_details = array( 'placeholder' );
+		$product_details = array();
 
 		if ( ! \is_wp_error( $wc_order_response ) ) {
-			$product_details = $wc_order['line_items'];
+			$products = $wc_order['line_items'];
+
+			foreach ( $products as $product ) {
+				$product_id = $product['product_id'];
+				if ( ! empty( $product['variation_id'] ) && $product_id !== $product['variation_id'] ) {
+					$product_id = $product['variation_id'];
+				}
+
+				$product_request             = array( 'id' => $product_id );
+				$wc_rest_products_controller = new \WC_REST_Products_Controller();
+				$product_response            = $wc_rest_products_controller->get_item( $product_request );
+
+				$product_details[ "$product_id" ] = $product_response->data;
+			}
 		}
 
 		// 4. Return the merged response.
