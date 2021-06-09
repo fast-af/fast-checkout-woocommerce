@@ -23,6 +23,21 @@ function fastwc_settings_admin_notice_woocommerce_not_installed() {
 	);
 }
 
+/**
+ * Check that the WooCommerce version is greater than a particular version.
+ *
+ * @param string $version The version number to compare.
+ *
+ * @return bool
+ */
+function fastwc_woocommerce_version_is_at_least( $version ) {
+	if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, $version, '>=' ) ) {
+		return true;
+	}
+
+	return false;
+}
+
 // Check whether the woocommerce plugin is active.
 $active_plugins = get_option( 'active_plugins', array() );
 if ( ! in_array( 'woocommerce/woocommerce.php', $active_plugins, true ) ) {
