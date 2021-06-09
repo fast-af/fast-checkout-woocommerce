@@ -13,7 +13,7 @@
 function fastwc_debug_mode_enabled() {
 	$fastwc_debug_mode = get_option( FASTWC_SETTING_DEBUG_MODE, 0 );
 
-	return ! empty( $fastwc_debug_mode );
+	return fastwc_woocommerce_version_is_at_least( '3.2' ) && ! empty( $fastwc_debug_mode );
 }
 
 /**
@@ -47,7 +47,7 @@ function fastwc_log( $level, $message ) {
  * @param string $message Message to log.
  */
 function fastwc_log_emergency( $message ) {
-	fastwc_log( WC_Log_Levels::EMERGENCY, $message );
+	fastwc_log( 'emergency', $message );
 }
 
 /**
@@ -61,7 +61,7 @@ function fastwc_log_emergency( $message ) {
  * @param string $message Message to log.
  */
 function fastwc_log_alert( $message ) {
-	fastwc_log( WC_Log_Levels::ALERT, $message );
+	fastwc_log( 'alert', $message );
 }
 
 /**
@@ -75,7 +75,7 @@ function fastwc_log_alert( $message ) {
  * @param string $message Message to log.
  */
 function fastwc_log_critical( $message ) {
-	fastwc_log( WC_Log_Levels::CRITICAL, $message );
+	fastwc_log( 'critical', $message );
 }
 
 /**
@@ -89,7 +89,7 @@ function fastwc_log_critical( $message ) {
  * @param string $message Message to log.
  */
 function fastwc_log_error( $message ) {
-	fastwc_log( WC_Log_Levels::ERROR, $message );
+	fastwc_log( 'error', $message );
 }
 
 /**
@@ -105,7 +105,7 @@ function fastwc_log_error( $message ) {
  * @param string $message Message to log.
  */
 function fastwc_log_warning( $message ) {
-	fastwc_log( WC_Log_Levels::WARNING, $message );
+	fastwc_log( 'warning', $message );
 }
 
 /**
@@ -118,7 +118,7 @@ function fastwc_log_warning( $message ) {
  * @param string $message Message to log.
  */
 function fastwc_log_notice( $message ) {
-	fastwc_log( WC_Log_Levels::NOTICE, $message );
+	fastwc_log( 'notice', $message );
 }
 
 /**
@@ -132,7 +132,7 @@ function fastwc_log_notice( $message ) {
  * @param string $message Message to log.
  */
 function fastwc_log_info( $message ) {
-	fastwc_log( WC_Log_Levels::INFO, $message );
+	fastwc_log( 'info', $message );
 }
 
 /**
@@ -145,5 +145,5 @@ function fastwc_log_info( $message ) {
  * @param string $message Message to log.
  */
 function fastwc_log_debug( $message ) {
-	fastwc_log( WC_Log_Levels::DEBUG, $message );
+	fastwc_log( 'debug', $message );
 }
