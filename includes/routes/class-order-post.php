@@ -82,13 +82,7 @@ class Order_Post extends Base {
 		$wc_rest_orders_controller = new \WC_REST_Orders_Controller();
 		$wc_order_response         = $wc_rest_orders_controller->create_item( $request );
 
-		if ( ! \is_wp_error( $wc_order_response ) ) {
-			$wc_order = $wc_order_response->data;
-		} else {
-			$wc_order = $wc_order_response;
-		}
-
-		return $wc_order;
+		return is_wp_error( $wc_order_response ) ? $wc_order_response : $wc_order_response->data;
 	}
 
 	/**
