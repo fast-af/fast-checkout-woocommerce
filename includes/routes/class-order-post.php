@@ -105,7 +105,13 @@ class Order_Post extends Base {
 					$product_id = $product['variation_id'];
 				}
 
-				$product_details[ "$product_id" ] = $this->get_single_product_details( $product_id );
+				$single_product_details = $this->get_single_product_details( $product_id );
+
+				if ( is_wp_error( $single_product_details ) ) {
+					return $single_product_details;
+				}
+
+				$product_details[ "$product_id" ] = $single_product_details;
 			}
 		}
 
