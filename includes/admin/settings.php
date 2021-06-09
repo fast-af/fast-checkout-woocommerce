@@ -37,6 +37,8 @@ function fastwc_admin_create_menu() {
 	register_setting( 'fast', FASTWC_SETTING_MINI_CART_BUTTON_STYLES );
 	register_setting( 'fast', FASTWC_SETTING_CHECKOUT_BUTTON_STYLES );
 	register_setting( 'fast', FASTWC_SETTING_LOGIN_BUTTON_STYLES );
+	register_setting( 'fast', FASTWC_SETTING_PDP_BUTTON_HOOK );
+	register_setting( 'fast', FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER );
 	register_setting( 'fast', FASTWC_SETTING_HIDE_BUTTON_PRODUCTS );
 	register_setting( 'fast', FASTWC_SETTING_TEST_MODE );
 	register_setting( 'fast', FASTWC_SETTING_DISABLE_MULTICURRENCY );
@@ -116,6 +118,8 @@ function fastwc_admin_setup_fields() {
 
 	// Button options settings.
 	$settings_section = 'fast_options';
+	add_settings_field( FASTWC_SETTING_PDP_BUTTON_HOOK, __( 'Select Product Button Location', 'fast' ), 'fastwc_pdp_button_hook', $settings_page, $settings_section );
+	add_settings_field( FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER, __( 'Enter Alternate Product Button Location', 'fast' ), 'fastwc_pdp_button_hook_other', $settings_page, $settings_section );
 	add_settings_field( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS, __( 'Hide Buttons for these Products', 'fast' ), 'fastwc_hide_button_products', $settings_page, $settings_section );
 	add_settings_field( FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, __( 'Display Login in Footer', 'fast' ), 'fastwc_show_login_button_footer', $settings_page, $settings_section );
 
@@ -214,6 +218,56 @@ function fastwc_login_button_styles_content() {
 		array(
 			'name'  => 'fast_login_button_styles',
 			'value' => $fastwc_setting_login_button_styles,
+		)
+	);
+}
+
+/**
+ * Renders the PDP Button Hook field.
+ */
+function fastwc_pdp_button_hook() {
+	$fastwc_setting_pdp_button_hook = fastwc_get_option_or_set_default( FASTWC_SETTING_PDP_BUTTON_HOOK, FASTWC_DEFAULT_PDP_BUTTON_HOOK );
+
+	$options = array(
+		'woocommerce_before_add_to_cart_quantity' => array(
+			'label' => __( 'Before Quantity Selection', 'fast' ),
+			'image' => FASTWC_URL . 'assets/img/before-quantity-selection.png',
+		),
+		'woocommerce_after_add_to_cart_quantity'  => array(
+			'label' => __( 'After Quantity Selection', 'fast' ),
+			'image' => FASTWC_URL . 'assets/img/after-quantity-selection.png',
+		),
+		'woocommerce_after_add_to_cart_button'    => array(
+			'label' => __( 'After Add to Cart Button', 'fast' ),
+			'image' => FASTWC_URL . 'assets/img/after-atc-button.png',
+		),
+		'other'                                   => array(
+			'label' => __( 'Other (for advanced users only)', 'fast' ),
+			'image' => FASTWC_URL . 'assets/img/other.png',
+		),
+	);
+
+	fastwc_settings_field_image_select(
+		array(
+			'name'        => FASTWC_SETTING_PDP_BUTTON_HOOK,
+			'description' => __( 'Select a location within the Add to Cart form to display the Fast Product Checkout button.', 'fast' ),
+			'value'       => $fastwc_setting_pdp_button_hook,
+			'options'     => $options,
+		)
+	);
+}
+
+/**
+ * Renders the PDP Button Hook alternate field.
+ */
+function fastwc_pdp_button_hook_other() {
+	$fastwc_setting_pdp_button_hook_other = fastwc_get_option_or_set_default( FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER, '' );
+
+	fastwc_settings_field_input(
+		array(
+			'name'        => FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER,
+			'description' => __( 'Enter an alternative location for displaying the Fast Product Checkout button. For advanced users only.', 'fast' ),
+			'value'       => $fastwc_setting_pdp_button_hook_other,
 		)
 	);
 }
@@ -406,6 +460,37 @@ function fastwc_admin_styles() {
 			}
 			.fast-settings textarea {
 				resize: none;
+			}
+
+			.fast-image-select {
+				display: flex;
+				flex-wrap: wrap;
+				margin: 0 -10px;
+				padding-top: 10px;
+			}
+			.fast-image-select--item {
+				flex-basis: 50%;
+				padding: 0 10px;
+				margin: 0 0 20px;
+				box-sizing: border-box;
+			}
+			@media screen and (max-width: 480px) {
+				.fast-image-select--item {
+					flex-basis: 100%;
+				}
+			}
+			.fast-image-select--label-text {
+				display: block;
+				margin-bottom: 6px;
+			}
+			.fast-image-select--image {
+				max-width: 100%;
+				height: auto;
+				border: 1px solid #bdbdbd;
+			}
+			.fast-image-select--input:checked + label .fast-image-select--image {
+				border: 1px solid #666;
+				box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
 			}
 		</style>
 	<?php
