@@ -40,13 +40,19 @@ class Order_Post extends Base {
 
 		// 2. Create/update order. (/wp-json/wc/v3/orders)
 		$wc_rest_orders_controller = new \WC_REST_Orders_Controller();
-		$wc_order                  = $wc_rest_orders_controller->create_item( $request );
+		$wc_order_response         = $wc_rest_orders_controller->create_item( $request );
+
+		if ( ! \is_wp_error( $wc_order_response ) ) {
+			$wc_order = $wc_order_response->data;
+		} else {
+			$wc_order = $wc_order_response;
+		}
 
 		// 3. Fetch product details for each product in the order. (/wp-json/wc/v3/products/87368)
 		$product_details = array( 'placeholder' );
 
 		// 4. Return the merged response.
-		return new \WP_REST_Response(
+		$response = new \WP_REST_Response(
 			array(
 				'order'            => $wc_order,
 				'shipping_options' => $shipping,
@@ -54,5 +60,8 @@ class Order_Post extends Base {
 			),
 			200
 		);
+		$response = \rest_ensure_response( $response );
+
+		return $response;
 	}
 }
