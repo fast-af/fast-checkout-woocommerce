@@ -40,19 +40,31 @@ class Order_Post extends Base {
 		// 2. Create/update order. (/wp-json/wc/v3/orders)
 		$wc_order = $this->create_order( $request );
 
+		if ( \is_wp_error( $wc_order ) ) {
+			$response = \rest_ensure_response( $wc_order );
+		}
+
 		// 3. Fetch product details for each product in the order. (/wp-json/wc/v3/products/87368)
-		$product_details = $this->get_product_details( $request, $wc_order );
+		if ( empty( $response ) ) {
+			$product_details = $this->get_product_details( $request, $wc_order );
+
+			if ( \is_wp_error( $product_details ) ) {
+				$response = \rest_ensure_response( $product_details );
+			}
+		}
 
 		// 4. Return the merged response.
-		$response = new \WP_REST_Response(
-			array(
-				'order'            => $wc_order,
-				'shipping_options' => $shipping,
-				'product_details'  => $product_details,
-			),
-			200
-		);
-		$response = \rest_ensure_response( $response );
+		if ( empty( $response ) ) {
+			$response = new \WP_REST_Response(
+				array(
+					'order'            => $wc_order,
+					'shipping_options' => $shipping,
+					'product_details'  => $product_details,
+				),
+				200
+			);
+			$response = \rest_ensure_response( $response );
+		}
 
 		return $response;
 	}
@@ -68,7 +80,7 @@ class Order_Post extends Base {
 		$shipping_route   = new Shipping( false ); // Instantiate without registering the route.
 		$shipping_options = $shipping_route->callback( $request );
 
-		return is_wp_error( $shipping_options ) ? array() : $shipping_options;
+		return \is_wp_error( $shipping_options ) ? array() : $shipping_options;
 	}
 
 	/**
@@ -82,7 +94,7 @@ class Order_Post extends Base {
 		$wc_rest_orders_controller = new \WC_REST_Orders_Controller();
 		$wc_order_response         = $wc_rest_orders_controller->create_item( $request );
 
-		return is_wp_error( $wc_order_response ) ? $wc_order_response : $wc_order_response->data;
+		return \is_wp_error( $wc_order_response ) ? $wc_order_response : $wc_order_response->data;
 	}
 
 	/**
@@ -96,23 +108,21 @@ class Order_Post extends Base {
 	protected function get_product_details( $request, $wc_order ) {
 		$product_details = array();
 
-		if ( ! \is_wp_error( $wc_order ) ) {
-			$products = $wc_order['line_items'];
+		$products = $wc_order['line_items'];
 
-			foreach ( $products as $product ) {
-				$product_id = $product['product_id'];
-				if ( ! empty( $product['variation_id'] ) && $product_id !== $product['variation_id'] ) {
-					$product_id = $product['variation_id'];
-				}
-
-				$single_product_details = $this->get_single_product_details( $product_id );
-
-				if ( is_wp_error( $single_product_details ) ) {
-					return $single_product_details;
-				}
-
-				$product_details[ "$product_id" ] = $single_product_details;
+		foreach ( $products as $product ) {
+			$product_id = $product['product_id'];
+			if ( ! empty( $product['variation_id'] ) && $product_id !== $product['variation_id'] ) {
+				$product_id = $product['variation_id'];
 			}
+
+			$single_product_details = $this->get_single_product_details( $product_id );
+
+			if ( \is_wp_error( $single_product_details ) ) {
+				return $single_product_details;
+			}
+
+			$product_details[ "$product_id" ] = $single_product_details;
 		}
 
 		return $product_details;
@@ -130,6 +140,6 @@ class Order_Post extends Base {
 		$wc_rest_products_controller = new \WC_REST_Products_Controller();
 		$product_response            = $wc_rest_products_controller->get_item( $product_request );
 
-		return is_wp_error( $product_response ) ? $product_response : $product_response->data;
+		return \is_wp_error( $product_response ) ? $product_response : $product_response->data;
 	}
 }
