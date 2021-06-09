@@ -46,7 +46,7 @@ class Order_Post extends Base {
 		$product_details = array( 'placeholder' );
 
 		// 4. Return the merged response.
-		return new \WP_REST_Request(
+		return new \WP_REST_Response(
 			array(
 				'order'            => $wc_order,
 				'shipping_options' => $shipping,
