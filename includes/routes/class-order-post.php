@@ -42,7 +42,7 @@ class Order_Post extends Base {
 		add_filter(
 			'woocommerce_rest_pre_insert_shop_order_object',
 			array( $this, 'set_order_shipping' ),
-			1,
+			9,
 			2
 		);
 */
