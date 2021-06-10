@@ -38,13 +38,14 @@ class Order_Post extends Base {
 	 */
 	protected function init() {
 		parent::init();
-
+/*
 		add_filter(
 			'woocommerce_rest_pre_insert_shop_order_object',
 			array( $this, 'set_order_shipping' ),
 			1,
 			2
 		);
+*/
 	}
 
 	/**
@@ -59,15 +60,15 @@ class Order_Post extends Base {
 		$this->shipping_options = $this->get_shipping( $request );
 
 		// 2. Create/update order. (/wp-json/wc/v3/orders)
-		$wc_order = $this->create_order( $request );
+		$order = $this->create_order( $request );
 
-		if ( \is_wp_error( $wc_order ) ) {
-			$response = \rest_ensure_response( $wc_order );
+		if ( \is_wp_error( $order ) ) {
+			$response = \rest_ensure_response( $order );
 		}
 
 		// 3. Fetch product details for each product in the order. (/wp-json/wc/v3/products/87368)
 		if ( empty( $response ) ) {
-			$product_details = $this->get_product_details( $request, $wc_order );
+			$product_details = $this->get_product_details( $request, $order );
 
 			if ( \is_wp_error( $product_details ) ) {
 				$response = \rest_ensure_response( $product_details );
@@ -78,7 +79,7 @@ class Order_Post extends Base {
 		if ( empty( $response ) ) {
 			$response = new \WP_REST_Response(
 				array(
-					'order'            => $wc_order,
+					'order'            => $order,
 					'shipping_options' => $this->shipping_options,
 					'product_details'  => $product_details,
 				),
@@ -113,23 +114,23 @@ class Order_Post extends Base {
 	 */
 	protected function create_order( $request ) {
 		$wc_rest_orders_controller = new \WC_REST_Orders_Controller();
-		$wc_order_response         = $wc_rest_orders_controller->create_item( $request );
+		$order_response            = $wc_rest_orders_controller->create_item( $request );
 
-		return \is_wp_error( $wc_order_response ) ? $wc_order_response : $wc_order_response->data;
+		return \is_wp_error( $order_response ) ? $order_response : $order_response->data;
 	}
 
 	/**
 	 * Set the shipping line item on the order.
 	 *
-	 * @param WC_Data         $wc_order Object object.
-	 * @param WP_REST_Request $request  Request object.
+	 * @param WC_Data         $order   Object object.
+	 * @param WP_REST_Request $request Request object.
 	 *
 	 * @return WC_Data
 	 */
-	protected function set_order_shipping( $wc_order, $request ) {
+	protected function set_order_shipping( $order, $request ) {
 		// Do nothing if there are no shipping options or shipping rates.
 		if ( empty( $this->shipping_options ) || empty( $this->shipping_options['shipping_rates'] ) ) {
-			return $wc_order;
+			return $order;
 		}
 
 		$shipping_rates = $this->shipping_options['shipping_rates'];
@@ -138,22 +139,22 @@ class Order_Post extends Base {
 		if ( ! empty( $shipping_rate ) ) {
 
 			// Clear the existing shipping line items.
-			$items = $wc_order->get_items( 'shipping' );
+			$items = $order->get_items( 'shipping' );
 
 			if ( count( $items ) > 0 ) {
 				// Loop through shipping items.
 				foreach ( $items as $item_id => $item ) {
-					$wc_order->remove_item( $item_id );
+					$order->remove_item( $item_id );
 				}
-				$wc_order->calculate_totals();
+				$order->calculate_totals();
 			}
 
 			// Set the array for tax calculations.
 			$calculate_tax_for = array(
-				'country'  => $wc_order->get_shipping_country(),
-				'state'    => $wc_order->get_shipping_state(),
-				'postcode' => $wc_order->get_shipping_postcode(),
-				'city'     => $wc_order->get_shipping_city(),
+				'country'  => $order->get_shipping_country(),
+				'state'    => $order->get_shipping_state(),
+				'postcode' => $order->get_shipping_postcode(),
+				'city'     => $order->get_shipping_city(),
 			);
 
 			// Set a total shipping amount.
@@ -168,13 +169,13 @@ class Order_Post extends Base {
 			$item->calculate_taxes( $calculate_tax_for );
 
 			// Add the new shipping item to the order.
-			$wc_order->add_item( $item );
+			$order->add_item( $item );
 
 			// Recalculate the totals.
-			$wc_order->calculate_totals();
+			$order->calculate_totals();
 		}
 
-		return $wc_order;
+		return $order;
 	}
 
 	/**
@@ -219,15 +220,15 @@ class Order_Post extends Base {
 	/**
 	 * Fetch product details.
 	 *
-	 * @param WP_REST_Request           $request JSON request for shipping endpoint.
-	 * @param WP_REST_Response|WP_Error $wc_order The order object.
+	 * @param WP_REST_Request                 $request JSON request for shipping endpoint.
+	 * @param array|WP_REST_Response|WP_Error $order   The order object/array.
 	 *
 	 * @return array|WP_Error|WP_REST_Response
 	 */
-	protected function get_product_details( $request, $wc_order ) {
+	protected function get_product_details( $request, $order ) {
 		$product_details = array();
 
-		$products = $wc_order['line_items'];
+		$products = $order['line_items'];
 
 		foreach ( $products as $product ) {
 			$product_id = $product['product_id'];
