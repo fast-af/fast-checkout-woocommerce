@@ -41,6 +41,7 @@ class Order_Post extends Base {
 		$wc_order = $this->create_order( $request );
 
 		if ( \is_wp_error( $wc_order ) ) {
+			$wc_order = $this->set_order_shipping( $wc_order, $shipping );
 			$response = \rest_ensure_response( $wc_order );
 		}
 
@@ -95,6 +96,99 @@ class Order_Post extends Base {
 		$wc_order_response         = $wc_rest_orders_controller->create_item( $request );
 
 		return \is_wp_error( $wc_order_response ) ? $wc_order_response : $wc_order_response->data;
+	}
+
+	/**
+	 * Set the shipping line item on the order.
+	 *
+	 * @param WC_Order $wc_order         The order object.
+	 * @param array    $shipping_options The shipping options.
+	 *
+	 * @return array
+	 */
+	protected function set_order_shipping( $wc_order, $shipping_options ) {
+		$shipping_rates = $shipping_options['shipping_rates'];
+		$shipping_rate  = $this->get_best_shipping_rate( $shipping_rates );
+
+		if ( ! empty( $shipping_rate ) ) {
+
+			// Clear the existing shipping line items.
+			$items = $wc_order->get_items( 'shipping' );
+
+			if ( count( $items ) > 0 ) {
+				// Loop through shipping items.
+				foreach ( $items as $item_id => $item ) {
+					$wc_order->remove_item( $item_id );
+				}
+				$wc_order->calculate_totals();
+			}
+
+			// Set the array for tax calculations.
+			$calculate_tax_for = array(
+				'country'  => $wc_order->get_shipping_country(),
+				'state'    => $wc_order->get_shipping_state(),
+				'postcode' => $wc_order->get_shipping_postcode(),
+				'city'     => $wc_order->get_shipping_city(),
+			);
+
+			// Set a total shipping amount.
+			$new_ship_price = floatval( $shipping_rate['price'] );
+
+			// Get a new instance of the WC_Order_Item_Shipping Object.
+			$item = new \WC_Order_Item_Shipping();
+
+			$item->set_method_title( $shipping_rate['name'] );
+			$item->set_method_id( $shipping_rate['rate_id'] );
+			$item->set_total( $new_ship_price );
+			$item->calculate_taxes( $calculate_tax_for );
+
+			// Add the new shipping item to the order.
+			$wc_order->add_item( $item );
+
+			// Recalculate the totals.
+			$wc_order->calculate_totals();
+		}
+
+		return $wc_order;
+	}
+
+	/**
+	 * Get the best rate from the list of shipping rates.
+	 *
+	 * @param array $shipping_rates The list of shipping rates.
+	 *
+	 * @return array
+	 */
+	protected function get_best_shipping_rate( $shipping_rates ) {
+		if ( empty( $shipping_rates ) ) {
+			return array();
+		}
+
+		$best_rate            = PHP_INT_MAX;
+		$best_rate_index      = false;
+		$shipping_rates_count = count( $shipping_rates );
+
+		if ( 1 === $shipping_rates_count ) {
+			$best_rate_index = 0;
+		}
+
+		if ( false === $best_rate_index ) {
+			foreach ( $shipping_rates as $index => $shipping_rate ) {
+				// Do not choose the local pickup rate.
+				if ( 'local_pickup' === $shipping_rate['method_id'] ) {
+					continue;
+				}
+
+				$shipping_rate_price = floatval( $shipping_rate['price'] );
+
+				if ( $shipping_rate_price < $best_rate ) {
+					$best_rate       = $shipping_rate_price;
+					$best_rate_index = $index;
+				}
+			}
+		}
+
+		return $shipping_rates[ $best_rate_index ];
 	}
 
 	/**
