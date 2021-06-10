@@ -21,13 +21,22 @@ function fastwc_update_price_for_multicurrency_woocommerce_product_price_based_o
 
 	$country = fastwc_woocommerce_product_price_based_on_countries_get_country( $request );
 
+	fastwc_log_debug( 'Price Based on Country multicurrency plugin - Update price' );
+	fastwc_log_debug( 'Country: ' . $country );
+	fastwc_log_debug( 'Price Before Conversion: ' . $price );
+	fastwc_log_debug( print_r( $product, true ) ); // phpcs:ignore
+
 	if ( ! empty( $country ) ) {
 		$zone = wcpbc_get_zone_by_country( $country );
+		fastwc_log_debug( 'Zone: ' . print_r( $zone, true ) ); // phpcs:ignore
 
 		if ( ! empty( $zone ) ) {
+			fastwc_log_debug( 'Setting price for zone' );
 			$price = $zone->get_post_price( $product->get_id(), '_price' );
 		}
 	}
+
+	fastwc_log_debug( 'Price After Conversion: ' . $price );
 
 	return $price;
 }
@@ -46,8 +55,13 @@ function fastwc_update_shipping_rate_for_multicurrency_woocommerce_product_price
 
 	$country = fastwc_woocommerce_product_price_based_on_countries_get_country( $request );
 
+	fastwc_log_debug( 'Price Based on Country multicurrency plugin - Update shipping' );
+	fastwc_log_debug( 'Country: ' . $country );
+	fastwc_log_debug( 'Shipping Before Conversion: ' . print_r( $rate_info, true ) ); // phpcs:ignore
+
 	if ( ! empty( $country ) ) {
 		$zone = wcpbc_get_zone_by_country( $country );
+		fastwc_log_debug( 'Zone: ' . print_r( $zone, true ) ); // phpcs:ignore
 
 		if ( ! empty( $zone ) ) {
 			$rate_info['price'] = $zone->get_exchange_rate_price( $rate_info['price'] );
@@ -61,6 +75,8 @@ function fastwc_update_shipping_rate_for_multicurrency_woocommerce_product_price
 			}
 		}
 	}
+
+	fastwc_log_debug( 'Shipping After Conversion: ' . print_r( $rate_info, true ) ); // phpcs:ignore
 
 	return $rate_info;
 }
