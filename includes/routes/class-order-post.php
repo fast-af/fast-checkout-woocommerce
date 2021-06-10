@@ -27,6 +27,27 @@ class Order_Post extends Base {
 	protected $methods = 'POST';
 
 	/**
+	 * Shipping options.
+	 *
+	 * @var array
+	 */
+	protected $shipping_options = array();
+
+	/**
+	 * Initialize the route arguments.
+	 */
+	protected function init() {
+		parent::init();
+
+		add_filter(
+			'woocommerce_rest_pre_insert_shop_order_object',
+			array( $this, 'set_order_shipping' ),
+			1,
+			2
+		);
+	}
+
+	/**
 	 * Create an order from the payload passed from Fast.
 	 *
 	 * @param WP_REST_Request $request JSON request for shipping endpoint.
@@ -35,13 +56,12 @@ class Order_Post extends Base {
 	 */
 	public function callback( $request ) {
 		// 1. Get shipping lines and shipping_options if new order.
-		$shipping = $this->get_shipping( $request );
+		$this->shipping_options = $this->get_shipping( $request );
 
 		// 2. Create/update order. (/wp-json/wc/v3/orders)
 		$wc_order = $this->create_order( $request );
 
 		if ( \is_wp_error( $wc_order ) ) {
-			$wc_order = $this->set_order_shipping( $wc_order, $shipping );
 			$response = \rest_ensure_response( $wc_order );
 		}
 
@@ -59,7 +79,7 @@ class Order_Post extends Base {
 			$response = new \WP_REST_Response(
 				array(
 					'order'            => $wc_order,
-					'shipping_options' => $shipping,
+					'shipping_options' => $this->shipping_options,
 					'product_details'  => $product_details,
 				),
 				200
@@ -101,13 +121,18 @@ class Order_Post extends Base {
 	/**
 	 * Set the shipping line item on the order.
 	 *
-	 * @param WC_Order $wc_order         The order object.
-	 * @param array    $shipping_options The shipping options.
+	 * @param WC_Data         $wc_order Object object.
+	 * @param WP_REST_Request $request  Request object.
 	 *
-	 * @return array
+	 * @return WC_Data
 	 */
-	protected function set_order_shipping( $wc_order, $shipping_options ) {
-		$shipping_rates = $shipping_options['shipping_rates'];
+	protected function set_order_shipping( $wc_order, $request ) {
+		// Do nothing if there are no shipping options or shipping rates.
+		if ( empty( $this->shipping_options ) || empty( $this->shipping_options['shipping_rates'] ) ) {
+			return $wc_order;
+		}
+
+		$shipping_rates = $this->shipping_options['shipping_rates'];
 		$shipping_rate  = $this->get_best_shipping_rate( $shipping_rates );
 
 		if ( ! empty( $shipping_rate ) ) {
