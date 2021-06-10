@@ -126,7 +126,7 @@ class Order_Post extends Base {
 	 *
 	 * @return WC_Data
 	 */
-	protected function set_order_shipping( $order, $request ) {
+	public function set_order_shipping( $order, $request ) {
 		fastwc_log_debug( 'set_order_shipping sanity check: ' . print_r( $order, true ) );
 
 		return $order; // Sanity check.
