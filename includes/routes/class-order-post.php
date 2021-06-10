@@ -114,6 +114,17 @@ class Order_Post extends Base {
 		if ( 1 === $shipping_rates_count ) {
 			$best_rate_index = 0;
 		}
+
+		if ( false === $best_rate_index ) {
+			foreach ( $shipping_rates as $shipping_rate ) {
+				// Do not choose the local pickup rate.
+				if ( 'local_pickup' === $shipping_rate['method_id'] ) {
+					continue;
+				}
+
+				
+			}
+		}
 /*
 		"shipping_rates": [
             {
