@@ -85,13 +85,13 @@ function fastwc_woocommerce_product_price_based_on_countries_get_country( $reque
 	}
 
 	if ( is_array( $request ) ) {
-		if ( ! emtpy( $request[ $based_on ]['country'] ) ) {
+		if ( ! empty( $request[ $based_on ]['country'] ) ) {
 			$country = $request[ $based_on ]['country'];
 		}
 	} elseif ( is_a( $request, 'WP_REST_Request' ) ) {
 		$params = $request->get_params();
 
-		if ( ! emtpy( $params[ $based_on ]['country'] ) ) {
+		if ( ! empty( $params[ $based_on ]['country'] ) ) {
 			$country = $params[ $based_on ]['country'];
 		}
 	}
