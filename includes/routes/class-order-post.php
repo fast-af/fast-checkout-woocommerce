@@ -98,6 +98,52 @@ class Order_Post extends Base {
 	}
 
 	/**
+	 * Set the shipping line item on the order.
+	 *
+	 * @param WC_Order $wc_order         The order object.
+	 * @param array    $shipping_options The shipping options.
+	 *
+	 * @return array
+	 */
+	protected function set_order_shipping( $wc_order, $shipping_options ) {
+		$shipping_rates       = $shipping_options['shipping_rates'];
+		$best_rate            = PHP_INT_MAX;
+		$best_rate_index      = false;
+		$shipping_rates_count = count( $shipping_rates );
+
+		if ( 1 === $shipping_rates_count ) {
+			$best_rate_index = 0;
+		}
+/*
+		"shipping_rates": [
+            {
+                "rate_id": "local_pickup:10",
+                "name": "Local pickup",
+                "description": "",
+                "delivery_time": "",
+                "price": "0.00",
+                "taxes": [],
+                "instance_id": 10,
+                "method_id": "local_pickup",
+                "meta_data": [
+                    {
+                        "key": "Items",
+                        "value": "Beanie - Small &times; 1"
+                    }
+                ],
+                "currency_code": "USD",
+                "currency_symbol": "$",
+                "currency_minor_unit": 2,
+                "currency_decimal_separator": ".",
+                "currency_thousand_separator": ",",
+                "currency_prefix": "$",
+                "currency_suffix": ""
+            },
+*/
+		return $wc_order;
+	}
+
+	/**
 	 * Fetch product details.
 	 *
 	 * @param WP_REST_Request           $request JSON request for shipping endpoint.
