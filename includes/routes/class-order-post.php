@@ -127,10 +127,6 @@ class Order_Post extends Base {
 	 * @return WC_Data
 	 */
 	public function set_order_shipping( $order, $request ) {
-		fastwc_log_debug( 'set_order_shipping sanity check: ' . print_r( $order, true ) );
-
-		return $order; // Sanity check.
-
 		// Do nothing if there are no shipping options or shipping rates.
 		if ( empty( $this->shipping_options ) || empty( $this->shipping_options['shipping_rates'] ) ) {
 			return $order;
