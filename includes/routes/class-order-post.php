@@ -80,7 +80,7 @@ class Order_Post extends Base {
 		$shipping_route   = new Shipping( false ); // Instantiate without registering the route.
 		$shipping_options = $shipping_route->callback( $request );
 
-		return \is_wp_error( $shipping_options ) ? array() : $shipping_options;
+		return \is_wp_error( $shipping_options ) ? array() : $shipping_options->data;
 	}
 
 	/**
