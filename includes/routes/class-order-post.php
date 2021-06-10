@@ -112,6 +112,7 @@ class Order_Post extends Base {
 
 		if ( ! empty( $shipping_rate ) ) {
 
+			// Clear the existing shipping line items.
 			$items = $wc_order->get_items( 'shipping' );
 
 			if ( count( $items ) > 0 ) {
@@ -130,7 +131,7 @@ class Order_Post extends Base {
 				'city'     => $wc_order->get_shipping_city(),
 			);
 
-			// Optionally, set a total shipping amount.
+			// Set a total shipping amount.
 			$new_ship_price = floatval( $shipping_rate['price'] );
 
 			// Get a new instance of the WC_Order_Item_Shipping Object.
@@ -141,8 +142,10 @@ class Order_Post extends Base {
 			$item->set_total( $new_ship_price );
 			$item->calculate_taxes( $calculate_tax_for );
 
+			// Add the new shipping item to the order.
 			$wc_order->add_item( $item );
 
+			// Recalculate the totals.
 			$wc_order->calculate_totals();
 		}
 
