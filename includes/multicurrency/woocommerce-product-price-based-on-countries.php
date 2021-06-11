@@ -24,7 +24,6 @@ function fastwc_update_price_for_multicurrency_woocommerce_product_price_based_o
 	fastwc_log_debug( 'Price Based on Country multicurrency plugin - Update price' );
 	fastwc_log_debug( 'Country: ' . $country );
 	fastwc_log_debug( 'Price Before Conversion: ' . $price );
-	fastwc_log_debug( print_r( $product, true ) ); // phpcs:ignore
 
 	if ( ! empty( $country ) ) {
 		$zone = wcpbc_get_zone_by_country( $country );
