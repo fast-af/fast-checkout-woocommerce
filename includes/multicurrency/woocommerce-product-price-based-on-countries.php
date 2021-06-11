@@ -8,6 +8,15 @@
  */
 
 /**
+ * Check to see if the Price Based on Country plugin is active.
+ *
+ * @return bool
+ */
+function fastwc_product_price_based_on_countries_active() {
+	return class_exists( 'WC_Product_Price_Based_Country' );
+}
+
+/**
  * Update the product price for multicurrency.
  *
  * @param string     $price   Value of the price.
@@ -18,6 +27,10 @@
  * @return string
  */
 function fastwc_update_price_for_multicurrency_woocommerce_product_price_based_on_countries( $price, $product, $order, $request ) {
+
+	if ( ! fastwc_product_price_based_on_countries_active() ) {
+		return $price;
+	}
 
 	$country = fastwc_woocommerce_product_price_based_on_countries_get_country( $request );
 
@@ -39,7 +52,7 @@ function fastwc_update_price_for_multicurrency_woocommerce_product_price_based_o
 
 	return $price;
 }
-add_filter( 'fastwc_update_price_for_multicurrency_woocommerce_product_price_based_on_countries', 'fastwc_update_price_for_multicurrency_woocommerce_product_price_based_on_countries', 10, 4 );
+add_filter( 'fastwc_update_price_for_multicurrency', 'fastwc_update_price_for_multicurrency_woocommerce_product_price_based_on_countries', 10, 4 );
 
 /**
  * Update the shipping rate for multicurrency.
@@ -51,6 +64,10 @@ add_filter( 'fastwc_update_price_for_multicurrency_woocommerce_product_price_bas
  * @return array
  */
 function fastwc_update_shipping_rate_for_multicurrency_woocommerce_product_price_based_on_countries( $rate_info, $currency, $request ) {
+
+	if ( ! fastwc_product_price_based_on_countries_active() ) {
+		return $rate_info;
+	}
 
 	$country = fastwc_woocommerce_product_price_based_on_countries_get_country( $request );
 
@@ -79,7 +96,7 @@ function fastwc_update_shipping_rate_for_multicurrency_woocommerce_product_price
 
 	return $rate_info;
 }
-add_filter( 'fastwc_update_shipping_rate_for_multicurrency_woocommerce_product_price_based_on_countries', 'fastwc_update_shipping_rate_for_multicurrency_woocommerce_product_price_based_on_countries', 10, 3 );
+add_filter( 'fastwc_update_shipping_rate_for_multicurrency', 'fastwc_update_shipping_rate_for_multicurrency_woocommerce_product_price_based_on_countries', 10, 3 );
 
 /**
  * Get the billing address country from the request.
