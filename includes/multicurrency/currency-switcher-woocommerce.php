@@ -8,6 +8,15 @@
  */
 
 /**
+ * Check to see if the WooCommerce Currency Switcher plugin is active.
+ *
+ * @return bool
+ */
+function fastwc_currency_switcher_woocommerce_active() {
+	return class_exists( 'Alg_WC_Currency_Switcher' );
+}
+
+/**
  * Update the product price for multicurrency.
  *
  * @param string     $price   Value of the price.
@@ -19,16 +28,18 @@
  */
 function fastwc_update_price_for_multicurrency_currency_switcher_woocommerce( $price, $product, $order, $request ) {
 
-	$order_currency = fastwc_get_order_currency( $order );
-	$new_price      = alg_get_product_price_by_currency( $price, $order_currency, $product, true );
+	if ( fastwc_currency_switcher_woocommerce_active() ) {
+		$order_currency = fastwc_get_order_currency( $order );
+		$new_price      = alg_get_product_price_by_currency( $price, $order_currency, $product, true );
 
-	if ( ! empty( $new_price ) ) {
-		return $new_price;
+		if ( ! empty( $new_price ) ) {
+			return $new_price;
+		}
 	}
 
 	return $price;
 }
-add_filter( 'fastwc_update_price_for_multicurrency_currency_switcher_woocommerce', 'fastwc_update_price_for_multicurrency_currency_switcher_woocommerce', 10, 4 );
+add_filter( 'fastwc_update_price_for_multicurrency', 'fastwc_update_price_for_multicurrency_currency_switcher_woocommerce', 10, 4 );
 
 /**
  * Update the shipping rate for multicurrency.
@@ -41,15 +52,17 @@ add_filter( 'fastwc_update_price_for_multicurrency_currency_switcher_woocommerce
  */
 function fastwc_update_shipping_rate_for_multicurrency_currency_switcher_woocommerce( $rate_info, $currency, $request ) {
 
-	$rate_info['price'] = alg_get_product_price_by_currency_global( $rate_info['price'], $currency );
-	if ( ! empty( $rate_info['taxes'] ) ) {
-		$rate_taxes = $rate_info['taxes'];
+	if ( fastwc_currency_switcher_woocommerce_active() ) {
+		$rate_info['price'] = alg_get_product_price_by_currency_global( $rate_info['price'], $currency );
+		if ( ! empty( $rate_info['taxes'] ) ) {
+			$rate_taxes = $rate_info['taxes'];
 
-		foreach ( $rate_taxes as $rate_tax_id => $rate_tax ) {
-			$rate_info['taxes'][ $rate_tax_id ] = alg_get_product_price_by_currency_global( $rate_tax, $currency );
+			foreach ( $rate_taxes as $rate_tax_id => $rate_tax ) {
+				$rate_info['taxes'][ $rate_tax_id ] = alg_get_product_price_by_currency_global( $rate_tax, $currency );
+			}
 		}
 	}
 
 	return $rate_info;
 }
-add_filter( 'fastwc_update_shipping_rate_for_multicurrency_currency_switcher_woocommerce', 'fastwc_update_shipping_rate_for_multicurrency_currency_switcher_woocommerce', 10, 3 );
+add_filter( 'fastwc_update_shipping_rate_for_multicurrency', 'fastwc_update_shipping_rate_for_multicurrency_currency_switcher_woocommerce', 10, 3 );

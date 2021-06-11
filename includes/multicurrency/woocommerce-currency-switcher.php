@@ -8,6 +8,15 @@
  */
 
 /**
+ * Check to see if the WooCommerce Currency Switcher plugin is active.
+ *
+ * @return bool
+ */
+function fastwc_woocommerce_currency_switcher_active() {
+	return class_exists( 'WOOCS_STARTER' );
+}
+
+/**
  * Update the product price for multicurrency.
  *
  * @param string     $price   Value of the price.
@@ -18,6 +27,11 @@
  * @return string
  */
 function fastwc_update_price_for_multicurrency_woocommerce_currency_switcher( $price, $product, $order, $request ) {
+
+	if ( ! fastwc_woocommerce_currency_switcher_active() ) {
+		return $price;
+	}
+
 	global $WOOCS; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase
 
 	$order_currency = fastwc_get_order_currency( $order );
@@ -26,7 +40,7 @@ function fastwc_update_price_for_multicurrency_woocommerce_currency_switcher( $p
 
 	return $WOOCS->raw_woocommerce_price( $price, $product ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase
 }
-add_filter( 'fastwc_update_price_for_multicurrency_woocommerce_currency_switcher', 'fastwc_update_price_for_multicurrency_woocommerce_currency_switcher', 10, 4 );
+add_filter( 'fastwc_update_price_for_multicurrency', 'fastwc_update_price_for_multicurrency_woocommerce_currency_switcher', 10, 4 );
 
 /**
  * Update the shipping rate for multicurrency.
@@ -38,6 +52,11 @@ add_filter( 'fastwc_update_price_for_multicurrency_woocommerce_currency_switcher
  * @return array
  */
 function fastwc_update_shipping_rate_for_multicurrency_woocommerce_currency_switcher( $rate_info, $currency, $request ) {
+
+	if ( ! fastwc_woocommerce_currency_switcher_active() ) {
+		return $rate_info;
+	}
+
 	global $WOOCS; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase
 
 	$_REQUEST['woocs_raw_woocommerce_price_currency'] = $currency;
@@ -53,4 +72,4 @@ function fastwc_update_shipping_rate_for_multicurrency_woocommerce_currency_swit
 
 	return $rate_info;
 }
-add_filter( 'fastwc_update_shipping_rate_for_multicurrency_woocommerce_currency_switcher', 'fastwc_update_shipping_rate_for_multicurrency_woocommerce_currency_switcher', 10, 3 );
+add_filter( 'fastwc_update_shipping_rate_for_multicurrency', 'fastwc_update_shipping_rate_for_multicurrency_woocommerce_currency_switcher', 10, 3 );
