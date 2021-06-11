@@ -46,6 +46,8 @@ function fastwc_update_price_for_multicurrency_woocommerce_product_price_based_o
 			fastwc_log_debug( 'Setting price for zone' );
 			$price = $zone->get_post_price( $product->get_id(), '_price' );
 		}
+	} else {
+		fastwc_log_debug( 'No country. Request: ' . print_r( $request, true ) ); // phpcs:ignore
 	}
 
 	fastwc_log_debug( 'Price After Conversion: ' . $price );
