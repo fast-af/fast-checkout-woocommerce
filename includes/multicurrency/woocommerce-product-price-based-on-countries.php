@@ -135,14 +135,17 @@ function fastwc_woocommerce_product_price_based_on_countries_get_zone( $request 
 
 	fastwc_log_debug( 'Country: ' . $country );
 
-	$zone = false;
+	$zone           = false;
+	$order_currency = fastwc_get_order_currency( $order );
 
 	if ( ! empty( $country ) ) {
 		$zone = wcpbc_get_zone_by_country( $country );
 		fastwc_log_debug( 'Zone by country: ' . print_r( $zone, true ) ); // phpcs:ignore
-	} else {
-		$zones          = WCPBC_Pricing_Zones::get_zone_by_country();
-		$order_currency = fastwc_get_order_currency( $order );
+	}
+
+	// Make sure the zone's currency matches the order currency.
+	if ( empty( $zone ) || $order_currency !== $zone->get_currency() ) {
+		$zones = WCPBC_Pricing_Zones::get_zones();
 
 		// Loop through the zones and get a zone by the currency.
 		foreach ( $zones as $_zone ) {
