@@ -145,9 +145,8 @@ function fastwc_woocommerce_product_price_based_on_countries_get_zone( $request 
 		$order_currency = fastwc_get_order_currency( $order );
 
 		// Loop through the zones and get a zone by the currency.
-		foreach ( $zones as $_zone ) {
-			if ( $order_currency === $_zone->get_currency() ) {
-				$zone = $_zone;
+		foreach ( $zones as $zone ) {
+			if ( $order_currency === $zone->get_currency() ) {
 				fastwc_log_debug( 'Zone by currency: ' . print_r( $zone, true ) ); // phpcs:ignore
 
 				return $zone;
