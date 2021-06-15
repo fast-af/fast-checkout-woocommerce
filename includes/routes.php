@@ -19,7 +19,6 @@ require_once FASTWC_PATH . 'includes/routes/class-plugin-info.php';
 // Provides an API to add, edit, and fetch orders.
 require_once FASTWC_PATH . 'includes/routes/class-order-post.php';
 require_once FASTWC_PATH . 'includes/routes/class-order-get.php';
-require_once FASTWC_PATH . 'includes/routes/plugin-info.php';
 // Provides an API that exposes orders with refunds.
 require_once FASTWC_PATH . 'includes/routes/refunds.php';
 
