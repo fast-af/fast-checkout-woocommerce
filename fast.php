@@ -13,39 +13,11 @@
 define( 'FASTWC_PATH', plugin_dir_path( __FILE__ ) );
 define( 'FASTWC_URL', plugin_dir_url( __FILE__ ) );
 
-/**
- * Prints the error message when woocommerce isn't installed.
- */
-function fastwc_settings_admin_notice_woocommerce_not_installed() {
-	printf(
-		'<div class="notice notice-error"><p>%s</p></div>',
-		esc_html__( "Your Fast plugin won't work without an active WooCommerce installation.", 'fast' )
-	);
-}
-
-/**
- * Check that the WooCommerce version is greater than a particular version.
- *
- * @param string $version The version number to compare.
- *
- * @return bool
- */
-function fastwc_woocommerce_version_is_at_least( $version ) {
-	if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, $version, '>=' ) ) {
-		return true;
-	}
-
-	return false;
-}
+// WooCommerce version utilities.
+require_once FASTWC_PATH . 'includes/version.php';
 
 // Check whether the woocommerce plugin is active.
-$active_plugins = get_option( 'active_plugins', array() );
-if ( ! in_array( 'woocommerce/woocommerce.php', $active_plugins, true ) ) {
-	add_action(
-		'admin_notices',
-		'fastwc_settings_admin_notice_woocommerce_not_installed'
-	);
-} else {
+if ( fastwc_woocommerce_is_active() ) {
 	// Fast debug functions.
 	require_once FASTWC_PATH . 'includes/debug.php';
 	// WP Admin plugin settings.
