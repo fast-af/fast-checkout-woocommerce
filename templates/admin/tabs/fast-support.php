@@ -112,7 +112,7 @@ $image_urls = array(
 		<p>Debug Mode logs a lot of information, so it should only be used for debugging issues and only for short durations.</p>
 	</div>
 
-	<h3>Disablee Multicurrency Support</h3>
+	<h3>Disable Multicurrency Support</h3>
 
 	<p>This option can be used to disable multicurrency support. This is only necessary if the store uses a third-party multicurrency plugin to handle multicurrency in WooCommerce, but multicurrency support is not needed in the Fast Checkout process.</p>
 
