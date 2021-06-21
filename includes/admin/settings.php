@@ -499,6 +499,23 @@ function fastwc_admin_styles() {
 			.fast-notice-success {
 				border-left-color: #00a32a;
 			}
+			.fast-notice-warning {
+				border-left-color: #dba617;
+			}
+			.fast-notice-error {
+				border-left-color: #d63638;
+			}
+
+			.fast-support-docs {
+				clear: both;
+				border: 1px solid #c3c4c7;
+				padding: 2px 20px 20px;
+				background-color: #fff;
+			}
+			.fast-support-docs img {
+				max-width: 500px;
+				height:  auto;
+			}
 
 			.fast-image-select {
 				display: flex;
