@@ -59,62 +59,34 @@ function fastwc_should_show_advanced_settings() {
 }
 
 /**
- * Renders content of Fast settings page.
+ * Get the list of tabs for the Fast settings page.
+ *
+ * @return array
  */
-function fastwc_settings_page_content() {
-	$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'fast_app_info'; // phpcs:ignore
-
-	$tabs = array(
+function fastwc_get_settings_tabs() {
+	return array(
 		'fast_app_info'  => __( 'App Info', 'fast' ),
 		'fast_styles'    => __( 'Styles', 'fast' ),
 		'fast_options'   => __( 'Options', 'fast' ),
 		'fast_test_mode' => __( 'Test Mode', 'fast' ),
+		'fast_support'   => __( 'Support', 'fast' ),
 	);
-	?>
-		<div class="wrap fast-settings">
-			<h2><?php esc_html_e( 'Fast Settings', 'fast' ); ?></h2>
+}
 
-			<nav class="nav-tab-wrapper">
-				<?php
-				foreach ( $tabs as $tab_name => $tab_label ) :
-					$tab_url   = sprintf( 'admin.php?page=fast&tab=%s', $tab_name );
-					$tab_class = array( 'nav-tab' );
-					if ( $active_tab === $tab_name ) {
-						$tab_class[] = 'nav-tab-active';
-					}
-					$tab_class = implode( ' ', $tab_class );
-					?>
-				<a href="<?php echo esc_url( $tab_url ); ?>" class="<?php echo esc_attr( $tab_class ); ?>"><?php echo esc_html( $tab_label ); ?></a>
-				<?php endforeach; ?>
+/**
+ * Get the active tab in the Fast settings page.
+ *
+ * @return string
+ */
+function fastwc_get_active_tab() {
+	return isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'fast_app_info'; // phpcs:ignore
+}
 
-				<?php
-				if ( fastwc_should_show_advanced_settings() ) :
-					$tab_url   = 'admin.php?page=fast&tab=fast_advanced';
-					$tab_class = array( 'nav-tab' );
-					if ( 'fast_advanced' === $active_tab ) {
-						$tab_class[] = 'nav-tab-active';
-					}
-					$tab_class = implode( ' ', $tab_class );
-					$tab_label = __( 'Advanced', 'fast' );
-					?>
-				<a href="<?php echo esc_url( $tab_url ); ?>" class="<?php echo esc_attr( $tab_class ); ?>"><?php echo esc_html( $tab_label ); ?></a>
-				<?php endif; ?>
-			</nav>
-
-			<form method="post" action="options.php">
-				<?php
-				$valid_tab_contents   = array_keys( $tabs );
-				$valid_tab_contents[] = 'fast_advanced';
-				if ( ! in_array( $active_tab, $valid_tab_contents, true ) ) {
-					$active_tab = 'fast_app_info';
-				}
-				settings_fields( $active_tab );
-				do_settings_sections( $active_tab );
-				submit_button();
-				?>
-			</form>
-		</div>
-	<?php
+/**
+ * Renders content of Fast settings page.
+ */
+function fastwc_settings_page_content() {
+	fastwc_load_template( 'admin/fast-settings' );
 }
 
 /**
@@ -198,11 +170,21 @@ function fastwc_app_id_content() {
 	$fastwc_setting_app_id              = fastwc_get_app_id();
 	$fastwc_setting_fast_onboarding_url = fastwc_get_option_or_set_default( FASTWC_SETTING_ONBOARDING_URL, FASTWC_ONBOARDING_URL );
 
+	$description = '';
+	if ( empty( $fastwc_setting_app_id ) ) {
+		$description = sprintf(
+			'%1$s <a href="%2$s" target="_blank" rel="noopener">%3$s</a>',
+			esc_html__( "Don't have an app yet?", 'fast' ),
+			esc_url( $fastwc_setting_fast_onboarding_url ),
+			esc_html__( 'Become a seller on Fast.co to get an App ID and enter it here.', 'fast' )
+		);
+	}
+
 	fastwc_settings_field_input(
 		array(
 			'name'        => 'fast_app_id',
 			'value'       => $fastwc_setting_app_id,
-			'description' => 'Don\'t have an app yet? Click <a href="' . esc_url( $fastwc_setting_fast_onboarding_url ) . '" target="_blank" rel="noopener">here</a> to create one.',
+			'description' => $description,
 		)
 	);
 }
@@ -492,6 +474,21 @@ function fastwc_admin_styles() {
 			}
 			.fast-settings textarea {
 				resize: none;
+			}
+
+			.fast-notice {
+				margin: 5px 0 15px;
+				border: 1px solid #c3c4c7;
+				border-left-width: 4px;
+				box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+				padding: 1px 12px;
+				background-color: #fff;
+			}
+			.fast-notice:first-child {
+				margin-top: 15px;
+			}
+			.fast-notice-success {
+				border-left-color: #00a32a;
 			}
 
 			.fast-image-select {
