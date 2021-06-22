@@ -36,7 +36,7 @@ class Woocommerce_Currency_Switcher extends Base {
 	protected function do_update_price( $price, $product, $order, $request ) {
 		global $WOOCS; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase
 
-		$order_currency = fastwc_get_order_currency( $order );
+		$order_currency = \fastwc_get_order_currency( $order );
 
 		$_REQUEST['woocs_raw_woocommerce_price_currency'] = $order_currency;
 
