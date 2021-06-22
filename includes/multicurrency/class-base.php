@@ -18,6 +18,7 @@ class Base {
 	public function __construct() {
 		add_filter( 'fastwc_update_price_for_multicurrency', array( $this, 'update_price' ), 10, 4 );
 		add_filter( 'fastwc_update_shipping_rate_for_multicurrency', array( $this, 'update_shipping' ), 10, 3 );
+		add_filter( 'fastwc_update_order_for_multicurrency', array( $this, 'update_order' ), 10, 2 );
 	}
 
 	/**
@@ -91,5 +92,30 @@ class Base {
 	 */
 	protected function do_update_shipping( $rate_info, $currency, $request ) {
 		return $rate_info;
+	}
+
+	/**
+	 * Filter handler for updating the order for multicurrency.
+	 *
+	 * @param WC_Data         $order                The order to check.
+	 * @param WP_REST_Request $request              Request object.
+	 */
+	public function update_order( $order, $request ) {
+
+		if ( $this->is_active() ) {
+			return $this->do_update_order( $order, $request );
+		}
+
+		return $order;
+	}
+
+	/**
+	 * Update the order for multicurrency.
+	 *
+	 * @param WC_Data         $order                The order to check.
+	 * @param WP_REST_Request $request              Request object.
+	 */
+	protected function do_update_order( $order, $request ) {
+		return $order;
 	}
 }
