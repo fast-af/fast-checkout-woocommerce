@@ -5,12 +5,14 @@
  * @package fast
  */
 
+// Add base multicurrency class.
+require_once FASTWC_PATH . 'includes/multicurrency/class-base.php';
 // Add support for Currency Switcher for WooCommerce plugin.
-require_once FASTWC_PATH . 'includes/multicurrency/currency-switcher-woocommerce.php';
+require_once FASTWC_PATH . 'includes/multicurrency/class-currency-switcher-woocommerce.php';
 // Add support for WooCommerce Currency Switcher plugin.
-require_once FASTWC_PATH . 'includes/multicurrency/woocommerce-currency-switcher.php';
+require_once FASTWC_PATH . 'includes/multicurrency/class-woocommerce-currency-switcher.php';
 // Add support for Price Based on Country for WooCommerce plugin.
-require_once FASTWC_PATH . 'includes/multicurrency/woocommerce-product-price-based-on-countries.php';
+require_once FASTWC_PATH . 'includes/multicurrency/class-woocommerce-product-price-based-on-countries.php';
 
 /**
  * Checks if multicurrency support is disabled.
