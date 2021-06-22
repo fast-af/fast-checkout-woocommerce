@@ -86,6 +86,30 @@ class Woocommerce_Product_Price_Based_On_Countries extends Base {
 	}
 
 	/**
+	 * Update the order for multicurrency.
+	 *
+	 * @param WC_Data         $order                The order to check.
+	 * @param WP_REST_Request $request              Request object.
+	 */
+	protected function do_update_order( $order, $request ) {
+		// Make sure the order currency is correct for the billing address zone.
+		$country = $this->get_country( $request );
+
+		if ( ! empty( $country ) ) {
+			$zone           = $this->get_zone( $request, false );
+			$order_currency = \fastwc_get_order_currency( $order );
+			$zone_currency  = $zone->get_currency();
+
+			// Change the order currency if it does not match the zone currenncy.
+			if ( ! empty( $zone ) && $order_currency !== $zone_currency ) {
+				$order->set_currency( $zone_currency );
+			}
+		}
+
+		return $order;
+	}
+
+	/**
 	 * Get the billing address country from the request.
 	 *
 	 * @param mixed $request The request object.
@@ -121,25 +145,31 @@ class Woocommerce_Product_Price_Based_On_Countries extends Base {
 	/**
 	 * Get the pricing zone from the request.
 	 *
-	 * @param mixed $request The request object.
+	 * @param mixed $request              The request object.
+	 * @param bool  $get_zone_by_currency Optional. Flag to get zone by currency.
 	 *
 	 * @return WCPBC_Pricing_Zone|WCPBC_Pricing_Zone_Pro
 	 */
-	protected function get_zone( $request ) {
+	protected function get_zone( $request, $get_zone_by_currency = true ) {
 		$country = $this->get_country( $request );
 
 		\fastwc_log_debug( 'Country: ' . $country );
 
-		$zone           = false;
-		$order_currency = \fastwc_get_order_currency( $order );
+		$zone = false;
 
 		if ( ! empty( $country ) ) {
 			$zone = \wcpbc_get_zone_by_country( $country );
 			\fastwc_log_debug( 'Zone by country: ' . print_r( $zone, true ) ); // phpcs:ignore
 		}
 
-		// Make sure the zone's currency matches the order currency.
-		if ( empty( $zone ) || $order_currency !== $zone->get_currency() ) {
+		// Maybe get the zone by currency.
+		if (
+			$get_zone_by_currency &&
+			(
+				empty( $zone ) ||
+				$order_currency !== $zone->get_currency()
+			)
+		) {
 			$zones = \WCPBC_Pricing_Zones::get_zones();
 
 			// Loop through the zones and get a zone by the currency.
