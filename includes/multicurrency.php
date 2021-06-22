@@ -80,6 +80,18 @@ function fastwc_get_order_currency( $order ) {
  */
 function fastwc_update_order_for_multicurrency( $order, $request ) {
 
+	/**
+	 * Maybe update the order from the multicurrency plugin.
+	 *
+	 * @param WC_Data         $order                The order to check.
+	 * @param WP_REST_Request $request              Request object.
+	 */
+	$order = apply_filters(
+		'fastwc_update_order_for_multicurrency',
+		$order,
+		$request
+	);
+
 	foreach ( $order->get_items() as $item_id => $item ) {
 		$product  = method_exists( $item, 'get_product' ) ? $item->get_product() : null;
 		$quantity = method_exists( $item, 'get_quantity' ) ? (int) $item->get_quantity() : 0;
