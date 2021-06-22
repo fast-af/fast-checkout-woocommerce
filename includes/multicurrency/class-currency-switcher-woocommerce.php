@@ -35,8 +35,8 @@ class Currency_Switcher_Woocommerce extends Base {
 	 */
 	protected function do_update_price( $price, $product, $order, $request ) {
 
-		$order_currency = fastwc_get_order_currency( $order );
-		$new_price      = alg_get_product_price_by_currency( $price, $order_currency, $product, true );
+		$order_currency = \fastwc_get_order_currency( $order );
+		$new_price      = \alg_get_product_price_by_currency( $price, $order_currency, $product, true );
 
 		if ( ! empty( $new_price ) ) {
 			return $new_price;
@@ -56,12 +56,12 @@ class Currency_Switcher_Woocommerce extends Base {
 	 */
 	protected function do_update_shipping( $rate_info, $currency, $request ) {
 
-		$rate_info['price'] = alg_get_product_price_by_currency_global( $rate_info['price'], $currency );
+		$rate_info['price'] = \alg_get_product_price_by_currency_global( $rate_info['price'], $currency );
 		if ( ! empty( $rate_info['taxes'] ) ) {
 			$rate_taxes = $rate_info['taxes'];
 
 			foreach ( $rate_taxes as $rate_tax_id => $rate_tax ) {
-				$rate_info['taxes'][ $rate_tax_id ] = alg_get_product_price_by_currency_global( $rate_tax, $currency );
+				$rate_info['taxes'][ $rate_tax_id ] = \alg_get_product_price_by_currency_global( $rate_tax, $currency );
 			}
 		}
 
