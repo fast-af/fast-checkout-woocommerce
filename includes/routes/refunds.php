@@ -28,7 +28,7 @@ function fastwc_get_orders_with_refunds() {
 		$order = wc_get_order( $order_id );
 
 		if ( ! empty( $order ) ) {
-			$orders[] = $order;
+			$orders[] = $order->get_data();
 		}
 	}
 
