@@ -5,12 +5,14 @@
  * @package fast
  */
 
+// Add base multicurrency class.
+require_once FASTWC_PATH . 'includes/multicurrency/class-base.php';
 // Add support for Currency Switcher for WooCommerce plugin.
-require_once FASTWC_PATH . 'includes/multicurrency/currency-switcher-woocommerce.php';
+require_once FASTWC_PATH . 'includes/multicurrency/class-currency-switcher-woocommerce.php';
 // Add support for WooCommerce Currency Switcher plugin.
-require_once FASTWC_PATH . 'includes/multicurrency/woocommerce-currency-switcher.php';
+require_once FASTWC_PATH . 'includes/multicurrency/class-woocommerce-currency-switcher.php';
 // Add support for Price Based on Country for WooCommerce plugin.
-require_once FASTWC_PATH . 'includes/multicurrency/woocommerce-product-price-based-on-countries.php';
+require_once FASTWC_PATH . 'includes/multicurrency/class-woocommerce-product-price-based-on-countries.php';
 
 /**
  * Checks if multicurrency support is disabled.
@@ -77,6 +79,18 @@ function fastwc_get_order_currency( $order ) {
  * @return WC_Data
  */
 function fastwc_update_order_for_multicurrency( $order, $request ) {
+
+	/**
+	 * Maybe update the order from the multicurrency plugin.
+	 *
+	 * @param WC_Data         $order                The order to check.
+	 * @param WP_REST_Request $request              Request object.
+	 */
+	$order = apply_filters(
+		'fastwc_update_order_for_multicurrency',
+		$order,
+		$request
+	);
 
 	foreach ( $order->get_items() as $item_id => $item ) {
 		$product  = method_exists( $item, 'get_product' ) ? $item->get_product() : null;
