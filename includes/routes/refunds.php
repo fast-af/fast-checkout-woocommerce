@@ -21,7 +21,16 @@ function fastwc_get_orders_with_refunds() {
 
 	$refunds = get_posts( $query_args );
 
-	$orders = array_values( array_unique( $refunds ) );
+	$order_ids = array_values( array_unique( $refunds ) );
+	$orders    = array();
+
+	foreach ( $order_ids as $order_id ) {
+		$order = wc_get_order( $order_id );
+
+		if ( ! empty( $order ) ) {
+			$orders[] = $order;
+		}
+	}
 
 	return new WP_REST_Response( $orders );
 }
