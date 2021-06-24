@@ -208,8 +208,18 @@ function fastwc_maybe_clear_cart_and_redirect() {
 	) {
 		fastwc_log_info( 'Clearing cart and redirecting after order created.' );
 		WC()->cart->empty_cart();
-		$cart_url = wc_get_cart_url();
-		wp_safe_redirect( $cart_url );
+
+		$redirect_page = absint( get_option( FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE, 0 ) );
+		$redirect_url  = wc_get_cart_url();
+
+		if ( ! empty( $redirect_page ) ) {
+			$redirect_page_url = get_permalink( $redirect_page );
+
+			// Only change the redirect URL of the redirect page URL is valid.
+			$redirect_url = ! empty( $redirect_page_url ) ? $redirect_page_url : $redirect_url;
+		}
+
+		wp_safe_redirect( $redirect_url );
 	}
 }
 add_action( 'init', 'fastwc_maybe_clear_cart_and_redirect' );
