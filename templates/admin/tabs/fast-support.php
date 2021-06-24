@@ -54,7 +54,7 @@ $image_urls = array(
 
 	<h2 id="edit-appearance">Edit the appearance of the button</h2>
 
-	<p>You can edit the default CSS of the Fast button in <a href="<?php echo esc_url( admin_url( 'admin.php?page=fast&tab=fast_styles' ) ); ?>">Styles tab</a>.</p>
+	<p>Edit the default CSS of the Fast button in the <a href="<?php echo esc_url( admin_url( 'admin.php?page=fast&tab=fast_styles' ) ); ?>">Styles tab</a>.</p>
 
 	<p>
 		<img src="<?php echo esc_url( $image_urls['styles'] ); ?>" alt="Styles Tab" />
@@ -64,7 +64,7 @@ $image_urls = array(
 
 	<h2 id="button-options">Button Options</h2>
 
-	<p>You can set additional options to customize the functionality of your Fast buttons in the <a href="<?php echo esc_url( admin_url( 'admin.php?page=fast&tab=fast_options' ) ); ?>">Options tab</a>.</p>
+	<p>Set additional options to customize the functionality of the Fast buttons in the <a href="<?php echo esc_url( admin_url( 'admin.php?page=fast&tab=fast_options' ) ); ?>">Options tab</a>.</p>
 
 	<p>
 		<img src="<?php echo esc_url( $image_urls['options'] ); ?>" alt="Options Tab" />
@@ -77,10 +77,10 @@ $image_urls = array(
 	<ul class="ul-disc">
 		<li><strong>Before Quantity Selection:</strong> This option places the button just above the quantity selection field in the Add to Cart form.</li>
 		<li><strong>After Quantity Selection:</strong> This option places the button between the quantity selection field and the Add to Cart button.</li>
-		<li><strong>After Add to Cart Button:</strong> This option places the button ust below the Add to Cart button.</li>
+		<li><strong>After Add to Cart Button:</strong> This option places the button just below the Add to Cart button.</li>
 	</ul>
 
-	<p>A fourth option, Other, is available for users with advanced understanding of <a href="https://developer.wordpress.org/plugins/hooks/" target="_blank" rel="noopener">WordPress hooks</a>. If you select Other, you must enter a valid WordPress action hook in the following field, <strong>Enter Alternate Product Button Location</strong>.</p>
+	<p>A fourth option, <strong>Other</strong> , is available for users with advanced understanding of <a href="https://developer.wordpress.org/plugins/hooks/" target="_blank" rel="noopener">WordPress hooks</a>. If <strong>Other</strong> is selected, a valid WordPress action hook must be entered in the next field, <strong>Enter Alternate Product Button Location</strong>.</p>
 
 	<h3>Hide Buttons for these Products</h3>
 
@@ -94,7 +94,7 @@ $image_urls = array(
 
 	<h2 id="test-debug">Test and Debug</h2>
 
-	<p>The <a href="<?php echo esc_url( admin_url( 'admin.php?page=fast&tab=fast_test_mode' ) ); ?>">Test Mode tab</a> provides options to enable testing and debugging of your Fast installation.</p>
+	<p>The <a href="<?php echo esc_url( admin_url( 'admin.php?page=fast&tab=fast_test_mode' ) ); ?>">Test Mode tab</a> provides options to enable testing and debugging your Fast installation.</p>
 
 	<p>
 		<img src="<?php echo esc_url( $image_urls['test'] ); ?>" alt="Test Mode Tab" />
@@ -106,7 +106,7 @@ $image_urls = array(
 
 	<h3>Debug Mode</h3>
 
-	<p>Select the Debug Mode option to enable logging in the Fast plugin. The Fast plugin will log info, debug, and error messages to the <a href="<?php echo esc_url( admin_url( 'admin.php?page=wc-status&tab=logs' ) ); ?>">WooCommerce logs</a> while Debug Mode is enabled.</p>
+	<p>Select the Debug Mode option to enable logging in the Fast plugin. The Fast plugin will log messages to the <a href="<?php echo esc_url( admin_url( 'admin.php?page=wc-status&tab=logs' ) ); ?>">WooCommerce logs</a> while Debug Mode is enabled.</p>
 
 	<div class="fast-notice fast-notice-warning">
 		<p>Debug Mode logs a lot of information, so it should only be used for debugging issues and only for short durations.</p>
