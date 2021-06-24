@@ -22,6 +22,7 @@ define( 'FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER', 'fastwc_show_login_button_foo
 define( 'FASTWC_SETTING_LOGIN_FOOTER_NOT_SET', 'fast login in footer not set' );
 define( 'FASTWC_SETTING_DISABLE_MULTICURRENCY', 'fastwc_disable_multicurrency' );
 define( 'FASTWC_SETTING_HIDE_BUTTON_PRODUCTS', 'fast_hide_button_products' );
+define( 'FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE', 'fastwc_checkout_redirect_page' );
 define( 'FASTWC_SETTING_PDP_BUTTON_HOOK', 'fast_pdp_button_hook' );
 define( 'FASTWC_DEFAULT_PDP_BUTTON_HOOK', 'woocommerce_after_add_to_cart_quantity' );
 define( 'FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER', 'fast_pdp_button_hook_other' );

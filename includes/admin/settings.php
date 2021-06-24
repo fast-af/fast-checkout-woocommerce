@@ -95,6 +95,7 @@ function fastwc_admin_setup_sections() {
 	register_setting( $section_name, FASTWC_SETTING_PDP_BUTTON_HOOK );
 	register_setting( $section_name, FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER );
 	register_setting( $section_name, FASTWC_SETTING_HIDE_BUTTON_PRODUCTS );
+	register_setting( $section_name, FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE );
 	register_setting( $section_name, FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER );
 
 	$section_name = 'fast_test_mode';
@@ -134,6 +135,7 @@ function fastwc_admin_setup_fields() {
 	add_settings_field( FASTWC_SETTING_PDP_BUTTON_HOOK, __( 'Select Product Button Location', 'fast' ), 'fastwc_pdp_button_hook', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER, __( 'Enter Alternate Product Button Location', 'fast' ), 'fastwc_pdp_button_hook_other', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS, __( 'Hide Buttons for these Products', 'fast' ), 'fastwc_hide_button_products', $settings_section, $settings_section );
+	add_settings_field( FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE, __( 'Chekout Redirect Page', 'fast' ), 'fastwc_checkout_redirect_page', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, __( 'Display Login in Footer', 'fast' ), 'fastwc_show_login_button_footer', $settings_section, $settings_section );
 
 	// Test Mode settings.
@@ -325,6 +327,33 @@ function fastwc_hide_button_products() {
 			'class'       => 'fast-select fast-select--hide-button-products',
 			'description' => __( 'Select products for which the Fast checkout button should be hidden', 'fast' ),
 			'nonce'       => 'search-products',
+		)
+	);
+}
+
+/**
+ * Renders the Checkout Redirect Page field.
+ */
+function fastwc_checkout_redirect_page() {
+	$fastwc_setting_checkout_redirect_page = fastwc_get_option_or_set_default( FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE, 0 );
+
+	$selected = array();
+	if ( ! empty( $fastwc_setting_checkout_redirect_page ) ) {
+		$fastwc_checkout_redirect_page = get_post( $fastwc_setting_checkout_redirect_page );
+
+		if ( ! empty( $fastwc_checkout_redirect_page ) ) {
+			$selected[ $fastwc_checkout_redirect_page->ID ] = $fastwc_checkout_redirect_page->post_title;
+		}
+	}
+
+	fastwc_settings_field_ajax_select(
+		array(
+			'name'        => FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE,
+			'selected'    => $selected,
+			'class'       => 'fast-select fast-select--checkout-redirect-page',
+			'description' => __( 'Select a page to redirect to after a successful cart checkout. Leave blank to redirect to the cart.', 'fast' ),
+			'nonce'       => 'search-pages',
+			'multiple'    => false,
 		)
 	);
 }
@@ -578,3 +607,41 @@ function fastwc_get_option_or_set_default( $option, $default ) {
 function fastwc_get_app_id() {
 	return get_option( FASTWC_SETTING_APP_ID );
 }
+
+/**
+ * Search pages to return for the page select Ajax.
+ */
+function fastwc_ajax_search_pages() {
+	check_ajax_referer( 'search-pages', 'security' );
+
+	$return = array();
+
+	if ( isset( $_GET['term'] ) ) {
+		$q_term = (string) sanitize_text_field( wp_unslash( $_GET['term'] ) );
+	}
+
+	if ( empty( $q_term ) ) {
+		wp_die();
+	}
+
+	$search_results = new WP_Query(
+		array(
+			's'              => $q_term,
+			'post_status'    => 'publish',
+			'post_type'      => 'page',
+			'posts_per_page' => -1,
+		)
+	);
+
+	if ( $search_results->have_posts() ) {
+		while ( $search_results->have_posts() ) {
+			$search_results->the_post();
+
+			$return[ get_the_ID() ] = get_the_title();
+		}
+		wp_reset_postdata();
+	}
+
+	wp_send_json( $return );
+}
+add_action( 'wp_ajax_fastwc_search_pages', 'fastwc_ajax_search_pages' );
