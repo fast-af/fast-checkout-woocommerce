@@ -48,28 +48,8 @@ function fastwc_get_refund_type( WP_REST_Request $request ) {
  * @return array
  */
 function fastwc_get_all_orders_with_refunds( $request, $refund_type ) {
-	$query_args = fastwc_get_refunds_query_args( $request );
-
-	$refunds = get_posts( $query_args );
-
-	$order_ids = array_values( array_unique( $refunds ) );
-	$orders    = array();
-
-	foreach ( $order_ids as $order_id ) {
-		$order = wc_get_order( $order_id );
-
-		if ( ! empty( $order ) ) {
-			$status = $order->get_status();
-
-			if (
-				( 'wc-refunded' === $status && 'full' === $refund_type ) ||
-				( 'wc-refunded' !== $status && 'partial' === $refund_type ) ||
-				'all' === $refund_type
-			) {
-				$orders[] = $order->get_data();
-			}
-		}
-	}
+	$refunds = fastwc_get_refunds( $request );
+	$orders  = fastwc_parse_refunds( $refunds, $refund_type );
 
 	return $orders;
 }
@@ -77,7 +57,7 @@ function fastwc_get_all_orders_with_refunds( $request, $refund_type ) {
 /**
  * Get the query args to use for fetching refunds.
  *
- * @param WP_REST_Request $request     JSON request for shipping endpoint.
+ * @param WP_REST_Request $request JSON request for shipping endpoint.
  *
  * @return array
  */
@@ -119,4 +99,79 @@ function fastwc_get_refunds_query_args( $request ) {
 	}
 
 	return $query_args;
+}
+
+/**
+ * Get the list of refunds.
+ *
+ * @param WP_REST_Request $request JSON request for shipping endpoint.
+ *
+ * @return WP_Query
+ */
+function fastwc_get_refunds( $request ) {
+	$query_args = fastwc_get_refunds_query_args( $request );
+
+	add_filter( 'posts_distinct', 'fastwc_refunds_distinct' );
+	add_filter( 'posts_fields', 'fastwc_refunds_fields' );
+
+	$refunds = new WP_Query( $query_args );
+
+	remove_filter( 'posts_distinct', 'fastwc_refunds_distinct' );
+	remove_filter( 'posts_fields', 'fastwc_refunds_fields' );
+
+	return $refunds;
+}
+
+/**
+ * Parse the list of refunds and return a list of orders.
+ *
+ * @param WP_Query $refunds     The list of refunds.
+ * @param string   $refund_type Flag to get partial, full, or all refunds.
+ *
+ * @return array
+ */
+function fastwc_parse_refunds( $refunds, $refund_type ) {
+	$orders = array();
+
+	if ( ! empty( $refunds->posts ) ) {
+		foreach ( $refunds->posts as $refund ) {
+			$order = wc_get_order( $refund->post_parent );
+
+			if ( ! empty( $order ) ) {
+				$status = $order->get_status();
+
+				if (
+					( 'wc-refunded' === $status && 'full' === $refund_type ) ||
+					( 'wc-refunded' !== $status && 'partial' === $refund_type ) ||
+					'all' === $refund_type
+				) {
+					$orders[] = $order->get_data();
+				}
+			}
+		}
+	}
+
+	return $orders;
+}
+
+/**
+ * Make sure to return distinct values on the refunds.
+ *
+ * @return string
+ */
+function fastwc_refunds_distinct() {
+	return 'DISTINCT';
+}
+
+/**
+ * Swap the order of the fields in the query.
+ *
+ * @param string $fields The fields string from the query.
+ *
+ * @return string
+ */
+function fastwc_refunds_fields( $fields ) {
+	$fields_arr = array_reverse( explode( ', ', $fields ) );
+
+	return $fields_arr[0];
 }
