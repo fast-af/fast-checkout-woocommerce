@@ -31,22 +31,6 @@ function fastwc_admin_create_menu() {
 	$position   = 100;
 
 	add_menu_page( $page_title, $menu_title, $capability, $slug, $callback, $icon, $position );
-
-	// Check whether the woocommerce plugin is active.
-	$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
-	if ( ! in_array( 'woocommerce/woocommerce.php', $active_plugins, true ) ) {
-		add_action( 'admin_notices', 'fastwc_settings_admin_notice_woocommerce_not_installed' );
-	}
-}
-
-/**
- * Prints the error message when woocommerce isn't installed.
- */
-function fastwc_settings_admin_notice_woocommerce_not_installed() {
-	printf(
-		'<div class="notice notice-error"><p>%s</p></div>',
-		esc_html__( "Your Fast plugin won't work without an active WooCommerce installation.", 'fast' )
-	);
 }
 
 /**
