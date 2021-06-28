@@ -16,7 +16,11 @@
 function fastwc_get_orders_with_refunds( WP_REST_Request $request ) {
 	$refund_type = fastwc_get_refund_type( $request );
 
-	$orders = fastwc_get_all_orders_with_refunds( $request, $refund_type );
+	if ( 'full' === $refund_type ) {
+		$orders = fastwc_get_orders_with_full_refunds( $request );
+	} else {
+		$orders = fastwc_get_all_orders_with_refunds( $request, $refund_type );
+	}
 
 	return new WP_REST_Response( $orders );
 }
@@ -40,6 +44,51 @@ function fastwc_get_refund_type( WP_REST_Request $request ) {
 	}
 
 	return $refund_type;
+}
+
+/**
+ * Get orders with full refunds.
+ *
+ * @param WP_REST_Request $request JSON request for shipping endpoint.
+ * @param bool            $get_ids Flag to fetch IDs.
+ *
+ * @return array
+ */
+function fastwc_get_orders_with_full_refunds( $request, $get_ids = false ) {
+	$args = fastwc_get_orders_query_args( $request, $get_ids );
+
+	$orders = wc_get_orders( $args );
+
+	return $orders;
+}
+
+/**
+ * Get the query args for orders with full refunds.
+ *
+ * @param WP_REST_Request $request JSON request for shipping endpoint.
+ * @param bool            $get_ids Flag to fetch IDs.
+ *
+ * @return array
+ */
+function fastwc_get_orders_query_args( $request, $get_ids = fasle ) {
+	// Set the default query args.
+	$args = array(
+		'limit'    => isset( $request['per_page'] ) ? $request['per_page'] : -1,
+		'order'    => isset( $request['order'] ) ? $request['order'] : 'DESC',
+		'orderby'  => isset( $request['orderby'] ) ? $request['orderby'] : 'date',
+		'paged'    => isset( $request['page'] ) ? $request['page'] : '',
+		'exclude'  => isset( $request['exclude'] ) ? $request['exclude'] : array(),
+		'paginate' => isset( $request['paginate'] ) ? $request['paginate'] : false,
+	);
+
+	$args['return'] = $get_ids ? 'ids' : 'objects';
+	$args['status'] = array( 'wc-refunded' );
+
+	if ( 'id' === $query_args['orderby'] ) {
+		$query_args['orderby'] = 'ID'; // ID must be capitalized.
+	}
+
+	return $args;
 }
 
 /**
@@ -78,6 +127,24 @@ function fastwc_get_refunds_query_args( $request ) {
 		'post_parent__not_in' => isset( $request['exclude'] ) ? $request['exclude'] : '',
 		'date_query'          => array(),
 	);
+
+	// For partial refunds, exclude full refunded orders from the list.
+	$refund_type = fastwc_get_refund_type( $request );
+	if ( 'partial' === $refund_type ) {
+		// Get ID's of orders with full refunds.
+		$full_refund_orders = fastwc_get_orders_with_full_refunds( $request, true );
+
+		if ( ! empty( $full_refund_orders ) ) {
+			if ( empty( $query_args['post_parent__not_in'] ) ) {
+				$query_args['post_parent__not_in'] = $full_refund_orders;
+			} else {
+				$query_args['post_parent__not_in'] = array_merge(
+					$query_args['post_parent__not_in'],
+					$full_refund_orders
+				);
+			}
+		}
+	}
 
 	if ( 'date' === $query_args['orderby'] ) {
 		$query_args['orderby'] = 'date ID';
@@ -144,7 +211,6 @@ function fastwc_parse_refunds( $refunds, $refund_type ) {
 				$status = $order->get_status();
 
 				if (
-					( 'wc-refunded' === $status && 'full' === $refund_type ) ||
 					( 'wc-refunded' !== $status && 'partial' === $refund_type ) ||
 					'all' === $refund_type
 				) {
