@@ -30,9 +30,12 @@ function fastwc_get_orders_with_refunds( WP_REST_Request $request ) {
  */
 function fastwc_get_refund_type( WP_REST_Request $request ) {
 	$refund_types = array( 'partial', 'full', 'all' );
-	$refund_type  = 'partial';
+	$refund_type  = 'all';
 
-	if ( ! empty( $request['refund_type'] ) && in_array( $refund_type, $refund_types, true ) ) {
+	if (
+		! empty( $request['refund_type'] ) &&
+		in_array( $request['refund_type'], $refund_types, true )
+	) {
 		$refund_type = $request['refund_type'];
 	}
 
