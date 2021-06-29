@@ -91,6 +91,14 @@ function fastwc_get_orders_query_args( $request, $get_ids = fasle ) {
 		'paginate' => isset( $request['paginate'] ) ? $request['paginate'] : false,
 	);
 
+	if ( isset( $request['date'] ) ) {
+		$args['date_created'] = $request['date'];
+	} elseif ( isset( $request['after'] ) ) {
+		$args['date_created'] = '>' . strtotime( $request['after'] );
+	} elseif ( isset( $request['before'] ) ) {
+		$args['date_created'] = '<' . strtotime( $request['before'] );
+	}
+
 	$args['return'] = $get_ids ? 'ids' : 'objects';
 	$args['status'] = array( 'wc-refunded' );
 
