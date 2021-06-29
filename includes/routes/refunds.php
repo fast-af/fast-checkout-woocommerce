@@ -55,9 +55,19 @@ function fastwc_get_refund_type( WP_REST_Request $request ) {
  * @return array
  */
 function fastwc_get_orders_with_full_refunds( $request, $get_ids = false ) {
-	$args = fastwc_get_orders_query_args( $request, $get_ids );
-
+	$args   = fastwc_get_orders_query_args( $request, $get_ids );
 	$orders = wc_get_orders( $args );
+
+	// Convert objects to their data.
+	if ( ! empty( $orders ) && false === $get_ids ) {
+		$orders_data = array();
+
+		foreach ( $orders as $order ) {
+			$orders_data[] = $order->get_data();
+		}
+
+		$orders = $orders_data;
+	}
 
 	return $orders;
 }
