@@ -114,6 +114,6 @@ $image_urls = array(
 
 	<h3>Disable Multicurrency Support</h3>
 
-	<p>This option can be used to disable multicurrency support. This is only necessary if the store uses a third-party multicurrency plugin to handle multicurrency in WooCommerce, but multicurrency support is not needed in the Fast Checkout process.</p>
+	<p>This option can be used to disable multicurrency support. This is only necessary if you do not need to support multicurrency in the Fast checkout process and the store uses a third-party multicurrency plugin to handle multicurrency in WooCommerce.</p>
 
 </div>
