@@ -94,8 +94,8 @@ function fastwc_get_orders_query_args( $request, $get_ids = fasle ) {
 	$args['return'] = $get_ids ? 'ids' : 'objects';
 	$args['status'] = array( 'wc-refunded' );
 
-	if ( 'id' === $query_args['orderby'] ) {
-		$query_args['orderby'] = 'ID'; // ID must be capitalized.
+	if ( 'id' === $args['orderby'] ) {
+		$args['orderby'] = 'ID'; // ID must be capitalized.
 	}
 
 	return $args;
