@@ -215,7 +215,7 @@ function fastwc_maybe_clear_cart_and_redirect() {
 		if ( ! empty( $redirect_page ) ) {
 			$redirect_page_url = get_permalink( $redirect_page );
 
-			// Only change the redirect URL of the redirect page URL is valid.
+			// Only change the redirect URL if the redirect page URL is valid.
 			$redirect_url = ! empty( $redirect_page_url ) ? $redirect_page_url : $redirect_url;
 		}
 
