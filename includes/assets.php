@@ -41,7 +41,7 @@ function fastwc_admin_enqueue_scripts() {
 		$select2_version
 	);
 
-	$fast_js_version = '1.0.0';
+	$fast_js_version = '1.0.8';
 	wp_enqueue_script(
 		'fastwc-admin-js',
 		FASTWC_URL . 'assets/dist/scripts.min.js',
