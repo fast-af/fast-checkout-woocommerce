@@ -1,5 +1,5 @@
 === Fast Checkout for WooCommerce ===
-Contributors: fastaf, tessak22, corywebb
+Contributors: fastaf, corywebb
 Tags: fast, fast checkout, checkout, woocommerce, woocommerce payment, woocommerce checkout, quick checkout, 1 click checkout, one click checkout
 Requires at least: 5.1
 Tested up to: 5.7
