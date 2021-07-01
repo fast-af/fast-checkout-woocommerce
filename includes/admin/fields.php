@@ -262,6 +262,7 @@ function fastwc_settings_field_ajax_select( $args ) {
 			'nonce'       => '',
 			'selected'    => array(),
 			'style'       => 'width: 400px;',
+			'multiple'    => true,
 		),
 		$args
 	);
@@ -271,12 +272,18 @@ function fastwc_settings_field_ajax_select( $args ) {
 	if ( empty( $args['name'] ) || empty( $args['nonce'] ) ) {
 		return;
 	}
+	$multiple = '';
+	$el_name  = $args['name'];
+	if ( true === $args['multiple'] ) {
+		$multiple = 'multiple';
+		$el_name .= '[]';
+	}
 	?>
 	<select
 		data-security="<?php echo esc_attr( wp_create_nonce( $args['nonce'] ) ); ?>"
-		multiple
+		<?php echo esc_attr( $multiple ); ?>
 		class="<?php echo esc_attr( $args['class'] ); ?>"
-		name="<?php echo esc_attr( $args['name'] ); ?>[]"
+		name="<?php echo esc_attr( $el_name ); ?>"
 		id="<?php echo esc_attr( $args['id'] ); ?>"
 		style="<?php echo esc_attr( $args['style'] ); ?>"
 	>
