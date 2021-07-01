@@ -1,10 +1,10 @@
 === Fast Checkout for WooCommerce ===
-Contributors: fastaf, tessak22, corywebb
+Contributors: fastaf, corywebb
 Tags: fast, fast checkout, checkout, woocommerce, woocommerce payment, woocommerce checkout, quick checkout, 1 click checkout, one click checkout
 Requires at least: 5.1
 Tested up to: 5.7
 Requires PHP: 7.2
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
@@ -34,6 +34,13 @@ Fast replaces your current payment processor. You can see our fee schedule, simi
 
  
 == Changelog ==
+
+= 1.0.8 =
+* Require an active WooCommerce plugin before loading Fast and add notification indicating that WooCommerce is required.
+* Add ability to check for specific WooCommerce versions before loading certain features.
+* Add an option under Fast settings to allow the admin to choose where the store redirects after successful checkout.
+* Update the Fast settings page to use templates.
+* Add a support tab to include documentation and support ticket link.
 
 = 1.0.7 =
 * Add tabs to the Fast settings page in the WordPress admin.

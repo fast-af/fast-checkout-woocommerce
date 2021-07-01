@@ -43,62 +43,34 @@ function fastwc_should_show_advanced_settings() {
 }
 
 /**
- * Renders content of Fast settings page.
+ * Get the list of tabs for the Fast settings page.
+ *
+ * @return array
  */
-function fastwc_settings_page_content() {
-	$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'fast_app_info'; // phpcs:ignore
-
-	$tabs = array(
+function fastwc_get_settings_tabs() {
+	return array(
 		'fast_app_info'  => __( 'App Info', 'fast' ),
 		'fast_styles'    => __( 'Styles', 'fast' ),
 		'fast_options'   => __( 'Options', 'fast' ),
 		'fast_test_mode' => __( 'Test Mode', 'fast' ),
+		'fast_support'   => __( 'Support', 'fast' ),
 	);
-	?>
-		<div class="wrap fast-settings">
-			<h2><?php esc_html_e( 'Fast Settings', 'fast' ); ?></h2>
+}
 
-			<nav class="nav-tab-wrapper">
-				<?php
-				foreach ( $tabs as $tab_name => $tab_label ) :
-					$tab_url   = sprintf( 'admin.php?page=fast&tab=%s', $tab_name );
-					$tab_class = array( 'nav-tab' );
-					if ( $active_tab === $tab_name ) {
-						$tab_class[] = 'nav-tab-active';
-					}
-					$tab_class = implode( ' ', $tab_class );
-					?>
-				<a href="<?php echo esc_url( $tab_url ); ?>" class="<?php echo esc_attr( $tab_class ); ?>"><?php echo esc_html( $tab_label ); ?></a>
-				<?php endforeach; ?>
+/**
+ * Get the active tab in the Fast settings page.
+ *
+ * @return string
+ */
+function fastwc_get_active_tab() {
+	return isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'fast_app_info'; // phpcs:ignore
+}
 
-				<?php
-				if ( fastwc_should_show_advanced_settings() ) :
-					$tab_url   = 'admin.php?page=fast&tab=fast_advanced';
-					$tab_class = array( 'nav-tab' );
-					if ( 'fast_advanced' === $active_tab ) {
-						$tab_class[] = 'nav-tab-active';
-					}
-					$tab_class = implode( ' ', $tab_class );
-					$tab_label = __( 'Advanced', 'fast' );
-					?>
-				<a href="<?php echo esc_url( $tab_url ); ?>" class="<?php echo esc_attr( $tab_class ); ?>"><?php echo esc_html( $tab_label ); ?></a>
-				<?php endif; ?>
-			</nav>
-
-			<form method="post" action="options.php">
-				<?php
-				$valid_tab_contents   = array_keys( $tabs );
-				$valid_tab_contents[] = 'fast_advanced';
-				if ( ! in_array( $active_tab, $valid_tab_contents, true ) ) {
-					$active_tab = 'fast_app_info';
-				}
-				settings_fields( $active_tab );
-				do_settings_sections( $active_tab );
-				submit_button();
-				?>
-			</form>
-		</div>
-	<?php
+/**
+ * Renders content of Fast settings page.
+ */
+function fastwc_settings_page_content() {
+	fastwc_load_template( 'admin/fast-settings' );
 }
 
 /**
@@ -123,6 +95,7 @@ function fastwc_admin_setup_sections() {
 	register_setting( $section_name, FASTWC_SETTING_PDP_BUTTON_HOOK );
 	register_setting( $section_name, FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER );
 	register_setting( $section_name, FASTWC_SETTING_HIDE_BUTTON_PRODUCTS );
+	register_setting( $section_name, FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE );
 	register_setting( $section_name, FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER );
 
 	$section_name = 'fast_test_mode';
@@ -162,6 +135,7 @@ function fastwc_admin_setup_fields() {
 	add_settings_field( FASTWC_SETTING_PDP_BUTTON_HOOK, __( 'Select Product Button Location', 'fast' ), 'fastwc_pdp_button_hook', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER, __( 'Enter Alternate Product Button Location', 'fast' ), 'fastwc_pdp_button_hook_other', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS, __( 'Hide Buttons for these Products', 'fast' ), 'fastwc_hide_button_products', $settings_section, $settings_section );
+	add_settings_field( FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE, __( 'Checkout Redirect Page', 'fast' ), 'fastwc_checkout_redirect_page', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, __( 'Display Login in Footer', 'fast' ), 'fastwc_show_login_button_footer', $settings_section, $settings_section );
 
 	// Test Mode settings.
@@ -184,11 +158,21 @@ function fastwc_app_id_content() {
 	$fastwc_setting_app_id              = fastwc_get_app_id();
 	$fastwc_setting_fast_onboarding_url = fastwc_get_option_or_set_default( FASTWC_SETTING_ONBOARDING_URL, FASTWC_ONBOARDING_URL );
 
+	$description = '';
+	if ( empty( $fastwc_setting_app_id ) ) {
+		$description = sprintf(
+			'%1$s <a href="%2$s" target="_blank" rel="noopener">%3$s</a>',
+			esc_html__( "Don't have an app yet?", 'fast' ),
+			esc_url( $fastwc_setting_fast_onboarding_url ),
+			esc_html__( 'Become a seller on Fast.co to get an App ID and enter it here.', 'fast' )
+		);
+	}
+
 	fastwc_settings_field_input(
 		array(
 			'name'        => 'fast_app_id',
 			'value'       => $fastwc_setting_app_id,
-			'description' => 'Don\'t have an app yet? Click <a href="' . esc_url( $fastwc_setting_fast_onboarding_url ) . '" target="_blank" rel="noopener">here</a> to create one.',
+			'description' => $description,
 		)
 	);
 }
@@ -343,6 +327,33 @@ function fastwc_hide_button_products() {
 			'class'       => 'fast-select fast-select--hide-button-products',
 			'description' => __( 'Select products for which the Fast checkout button should be hidden', 'fast' ),
 			'nonce'       => 'search-products',
+		)
+	);
+}
+
+/**
+ * Renders the Checkout Redirect Page field.
+ */
+function fastwc_checkout_redirect_page() {
+	$fastwc_setting_checkout_redirect_page = fastwc_get_option_or_set_default( FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE, 0 );
+
+	$selected = array();
+	if ( ! empty( $fastwc_setting_checkout_redirect_page ) ) {
+		$fastwc_checkout_redirect_page = get_post( $fastwc_setting_checkout_redirect_page );
+
+		if ( ! empty( $fastwc_checkout_redirect_page ) ) {
+			$selected[ $fastwc_checkout_redirect_page->ID ] = $fastwc_checkout_redirect_page->post_title;
+		}
+	}
+
+	fastwc_settings_field_ajax_select(
+		array(
+			'name'        => FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE,
+			'selected'    => $selected,
+			'class'       => 'fast-select fast-select--checkout-redirect-page',
+			'description' => __( 'Select a page to redirect to after a successful cart checkout. Leave blank to redirect to the cart.', 'fast' ),
+			'nonce'       => 'search-pages',
+			'multiple'    => false,
 		)
 	);
 }
@@ -503,6 +514,38 @@ function fastwc_admin_styles() {
 				resize: none;
 			}
 
+			.fast-notice {
+				margin: 5px 0 15px;
+				border: 1px solid #c3c4c7;
+				border-left-width: 4px;
+				box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+				padding: 1px 12px;
+				background-color: #fff;
+			}
+			.fast-notice:first-child {
+				margin-top: 15px;
+			}
+			.fast-notice-success {
+				border-left-color: #00a32a;
+			}
+			.fast-notice-warning {
+				border-left-color: #dba617;
+			}
+			.fast-notice-error {
+				border-left-color: #d63638;
+			}
+
+			.fast-support-docs {
+				clear: both;
+				border: 1px solid #c3c4c7;
+				padding: 2px 20px 20px;
+				background-color: #fff;
+			}
+			.fast-support-docs img {
+				max-width: 500px;
+				height:  auto;
+			}
+
 			.fast-image-select {
 				display: flex;
 				flex-wrap: wrap;
@@ -564,3 +607,41 @@ function fastwc_get_option_or_set_default( $option, $default ) {
 function fastwc_get_app_id() {
 	return get_option( FASTWC_SETTING_APP_ID );
 }
+
+/**
+ * Search pages to return for the page select Ajax.
+ */
+function fastwc_ajax_search_pages() {
+	check_ajax_referer( 'search-pages', 'security' );
+
+	$return = array();
+
+	if ( isset( $_GET['term'] ) ) {
+		$q_term = (string) sanitize_text_field( wp_unslash( $_GET['term'] ) );
+	}
+
+	if ( empty( $q_term ) ) {
+		wp_die();
+	}
+
+	$search_results = new WP_Query(
+		array(
+			's'              => $q_term,
+			'post_status'    => 'publish',
+			'post_type'      => 'page',
+			'posts_per_page' => -1,
+		)
+	);
+
+	if ( $search_results->have_posts() ) {
+		while ( $search_results->have_posts() ) {
+			$search_results->the_post();
+
+			$return[ get_the_ID() ] = get_the_title();
+		}
+		wp_reset_postdata();
+	}
+
+	wp_send_json( $return );
+}
+add_action( 'wp_ajax_fastwc_search_pages', 'fastwc_ajax_search_pages' );
