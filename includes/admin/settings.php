@@ -551,6 +551,25 @@ function fastwc_admin_styles() {
 				border: 1px solid #666;
 				box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
 			}
+			.fast-footer {
+				text-align: center;
+			}
+			.fast-footer-links {
+				padding: 10px;
+				border-top: 1px solid #c3c4c7;
+				list-style: none;
+			}
+			.fast-footer-link {
+				display: inline-block;
+				margin: 4px 8px;
+			}
+			.fast-footer-link a {
+				color: #000;
+				text-decoration: none;
+			}
+			.fast-footer-link a:hover {
+				text-decoration: underline;
+			}
 		</style>
 	<?php
 }
