@@ -24,5 +24,8 @@ $fastwc_active_tab = fastwc_get_active_tab();
 	}
 	$fastwc_tab_template = 'admin/tabs/' . str_replace( '_', '-', $fastwc_active_tab );
 	fastwc_load_template( $fastwc_tab_template );
+
+	// Load the Fast settings footer.
+	fastwc_load_template( 'admin/fast-settings-footer' );
 	?>
 </div>
