@@ -7,6 +7,8 @@
  * @package Fast
  */
 
+// Load admin notices.
+require_once FASTWC_PATH . 'includes/admin/notices.php';
 // Load admin constants.
 require_once FASTWC_PATH . 'includes/admin/constants.php';
 // Load admin fields.
