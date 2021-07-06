@@ -14,7 +14,6 @@ require_once FASTWC_PATH . 'includes/admin/constants.php';
 // Load admin fields.
 require_once FASTWC_PATH . 'includes/admin/fields.php';
 
-add_action( 'admin_head', 'fastwc_admin_styles' );
 add_action( 'admin_menu', 'fastwc_admin_create_menu' );
 add_action( 'admin_init', 'fastwc_admin_setup_sections' );
 add_action( 'admin_init', 'fastwc_admin_setup_fields' );
@@ -485,120 +484,6 @@ function fastwc_onboarding_url_content() {
 			'value' => $url,
 		)
 	);
-}
-
-/**
- * Custom styles for Fast settings page.
- */
-function fastwc_admin_styles() {
-	$current_screen = get_current_screen();
-
-	if ( ! empty( $current_screen ) && isset( $current_screen->id ) && 'toplevel_page_fast' !== $current_screen->id ) {
-		return;
-	}
-	?>
-		<style>
-			.fast-settings,
-			.fast-settings td,
-			.fast-settings textarea,
-			.fast-settings input,
-			.fast-settings select {
-				font-family: "Lucida Grande";
-				font-size: 12px;
-			}
-			@media screen and (min-width: 783px) {
-				.fast-settings .input-field {
-					min-height: 40px;
-					width: 400px;
-				}
-			}
-			.fast-settings textarea {
-				resize: none;
-			}
-
-			.fast-notice {
-				margin: 5px 0 15px;
-				border: 1px solid #c3c4c7;
-				border-left-width: 4px;
-				box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-				padding: 1px 12px;
-				background-color: #fff;
-			}
-			.fast-notice:first-child {
-				margin-top: 15px;
-			}
-			.fast-notice-success {
-				border-left-color: #00a32a;
-			}
-			.fast-notice-warning {
-				border-left-color: #dba617;
-			}
-			.fast-notice-error {
-				border-left-color: #d63638;
-			}
-
-			.fast-support-docs {
-				clear: both;
-				border: 1px solid #c3c4c7;
-				padding: 2px 20px 20px;
-				background-color: #fff;
-			}
-			.fast-support-docs img {
-				max-width: 500px;
-				height:  auto;
-			}
-
-			.fast-image-select {
-				display: flex;
-				flex-wrap: wrap;
-				margin: 0 -10px;
-				padding-top: 10px;
-			}
-			.fast-image-select--item {
-				flex-basis: 50%;
-				padding: 0 10px;
-				margin: 0 0 20px;
-				box-sizing: border-box;
-			}
-			@media screen and (max-width: 480px) {
-				.fast-image-select--item {
-					flex-basis: 100%;
-				}
-			}
-			.fast-image-select--label-text {
-				display: block;
-				margin-bottom: 6px;
-			}
-			.fast-image-select--image {
-				max-width: 100%;
-				height: auto;
-				border: 1px solid #bdbdbd;
-			}
-			.fast-image-select--input:checked + label .fast-image-select--image {
-				border: 1px solid #666;
-				box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
-			}
-			.fast-footer {
-				text-align: center;
-			}
-			.fast-footer-links {
-				padding: 10px;
-				border-top: 1px solid #c3c4c7;
-				list-style: none;
-			}
-			.fast-footer-link {
-				display: inline-block;
-				margin: 4px 8px;
-			}
-			.fast-footer-link a {
-				color: #000;
-				text-decoration: none;
-			}
-			.fast-footer-link a:hover {
-				text-decoration: underline;
-			}
-		</style>
-	<?php
 }
 
 /**

@@ -48,6 +48,18 @@ function fastwc_admin_enqueue_scripts() {
 		FASTWC_VERSION,
 		true
 	);
+
+	$current_screen = get_current_screen();
+
+	if ( ! empty( $current_screen ) && isset( $current_screen->id ) && 'toplevel_page_fast' !== $current_screen->id ) {
+		return;
+	}
+	wp_enqueue_style(
+		'fast-admin-css',
+		FASTWC_URL . 'assets/dist/styles.css',
+		array(),
+		$fast_js_version
+	);
 }
 add_action( 'admin_enqueue_scripts', 'fastwc_admin_enqueue_scripts' );
 
