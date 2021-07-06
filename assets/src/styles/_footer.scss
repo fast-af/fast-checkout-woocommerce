@@ -7,7 +7,7 @@
 
 	&-links {
 		padding: 10px;
-		border-top: 1px solid #c3c4c7;
+		border-top: 1px solid $fast-color-border;
 		list-style: none;
 	}
 	&-link {
@@ -15,7 +15,7 @@
 		margin: 4px 8px;
 
 		a {
-			color: #000;
+			color: $fast-color-black;
 			text-decoration: none;
 
 			&:hover {
