@@ -41,12 +41,11 @@ function fastwc_admin_enqueue_scripts() {
 		$select2_version
 	);
 
-	$fast_js_version = '1.0.8';
 	wp_enqueue_script(
 		'fastwc-admin-js',
 		FASTWC_URL . 'assets/dist/scripts.min.js',
 		array( 'jquery', 'select2' ),
-		$fast_js_version,
+		FASTWC_VERSION,
 		true
 	);
 
@@ -59,7 +58,7 @@ function fastwc_admin_enqueue_scripts() {
 		'fast-admin-css',
 		FASTWC_URL . 'assets/dist/styles.css',
 		array(),
-		$fast_js_version
+		FASTWC_VERSION
 	);
 }
 add_action( 'admin_enqueue_scripts', 'fastwc_admin_enqueue_scripts' );
