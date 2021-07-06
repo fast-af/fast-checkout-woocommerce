@@ -35,4 +35,6 @@ if ( fastwc_woocommerce_is_active() ) {
 	require_once FASTWC_PATH . 'includes/routes.php';
 	// Add Fast button shortcodes.
 	require_once FASTWC_PATH . 'includes/shortcodes.php';
+	// Add Fast button widgets.
+	require_once FASTWC_PATH . 'includes/widgets.php';
 }
