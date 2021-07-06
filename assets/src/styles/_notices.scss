@@ -1,0 +1,26 @@
+/**
+ * Styles for Fast notices.
+ */
+
+.fast-notice {
+	margin: 5px 0 15px;
+	border: 1px solid $fast-color-border;
+	border-left-width: 4px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+	padding: 1px 12px;
+	background-color: $fast-color-white;
+
+	&:first-child {
+		margin-top: 15px;
+	}
+
+	&-success {
+		border-left-color: $fast-color-notice-success;
+	}
+	&-warning {
+		border-left-color: $fast-color-notice-warning;
+	}
+	&-error {
+		border-left-color: $fast-color-notice-error;
+	}
+}
