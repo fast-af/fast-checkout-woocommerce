@@ -1,0 +1,26 @@
+/**
+ * Fast Checkout for WooCommerce footer styles.
+ */
+
+.fast-footer {
+	text-align: center;
+
+	&-links {
+		padding: 10px;
+		border-top: 1px solid #c3c4c7;
+		list-style: none;
+	}
+	&-link {
+		display: inline-block;
+		margin: 4px 8px;
+
+		a {
+			color: #000;
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+}

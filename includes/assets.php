@@ -58,7 +58,7 @@ function fastwc_admin_enqueue_scripts() {
 		'fast-admin-css',
 		FASTWC_URL . 'assets/dist/styles.css',
 		array(),
-		$fast_js_version
+		FASTWC_VERSION
 	);
 }
 add_action( 'admin_enqueue_scripts', 'fastwc_admin_enqueue_scripts' );
