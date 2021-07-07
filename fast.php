@@ -12,7 +12,7 @@
 
 define( 'FASTWC_PATH', plugin_dir_path( __FILE__ ) );
 define( 'FASTWC_URL', plugin_dir_url( __FILE__ ) );
-define( 'FASTWC_VERSION', '1.0.2' );
+define( 'FASTWC_VERSION', '1.0.8' );
 
 // WooCommerce version utilities.
 require_once FASTWC_PATH . 'includes/version.php';
