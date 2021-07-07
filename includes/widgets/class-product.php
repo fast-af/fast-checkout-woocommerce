@@ -51,6 +51,8 @@ class Product extends Widget {
 		parent::form( $instance );
 
 		$product_id = isset( $instance['product_id'] ) && is_numeric( $instance['product_id'] ) ? $instance['product_id'] : 0;
+		$variant_id = isset( $instance['variant_id'] ) && is_numeric( $instance['variant_id'] ) ? $instance['variant_id'] : 0;
+		$quantity   = isset( $instance['quantity'] ) && is_numeric( $instance['quantity'] ) ? $instance['quantity'] : 1;
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_name( 'product_id' ) ); ?>"><?php esc_html_e( 'Product ID:', 'fast' ); ?></label>
@@ -60,6 +62,27 @@ class Product extends Widget {
 				name="<?php echo esc_attr( $this->get_field_name( 'product_id' ) ); ?>"
 				type="text"
 				value="<?php echo esc_attr( $product_id ); ?>"
+			/>
+		</p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_name( 'variant_id' ) ); ?>"><?php esc_html_e( 'Variation ID:', 'fast' ); ?></label>
+			<input
+				class="widefat"
+				id="<?php echo esc_attr( $this->get_field_id( 'variant_id' ) ); ?>"
+				name="<?php echo esc_attr( $this->get_field_name( 'variant_id' ) ); ?>"
+				type="text"
+				value="<?php echo esc_attr( $variant_id ); ?>"
+			/>
+		</p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_name( 'quantity' ) ); ?>"><?php esc_html_e( 'Quantity:', 'fast' ); ?></label>
+			<input
+				class="widefat"
+				id="<?php echo esc_attr( $this->get_field_id( 'quantity' ) ); ?>"
+				name="<?php echo esc_attr( $this->get_field_name( 'quantity' ) ); ?>"
+				type="number"
+				min="1"
+				value="<?php echo esc_attr( $quantity ); ?>"
 			/>
 		</p>
 		<?php
@@ -75,6 +98,8 @@ class Product extends Widget {
 		$instance = parent::update( $new_instance, $old_instance );
 
 		$instance['product_id'] = isset( $new_instance['product_id'] ) && is_numeric( $new_instance['product_id'] ) ? $new_instance['product_id'] : 0;
+		$instance['variant_id'] = isset( $new_instance['variant_id'] ) && is_numeric( $new_instance['variant_id'] ) ? $new_instance['variant_id'] : 0;
+		$instance['quantity']   = isset( $new_instance['quantity'] ) && is_numeric( $new_instance['quantity'] ) ? $new_instance['quantity'] : 1;
 
 		return $instance;
 	}
