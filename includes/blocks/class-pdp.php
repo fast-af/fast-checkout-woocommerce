@@ -38,6 +38,14 @@ class Pdp extends Block {
 					'type'    => 'integer',
 					'default' => 0,
 				),
+				'variant_id' => array(
+					'type'    => 'integer',
+					'default' => 0,
+				),
+				'quantity' => array(
+					'type'    => 'integer',
+					'default' => 1,
+				),
 			),
 		);
 	}
