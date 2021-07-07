@@ -35,7 +35,15 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 		product_id: {
 			type: 'integer',
 			default: 0,
-		}
+		},
+		variant_id: {
+			type: 'integer',
+			default: 0,
+		},
+		quantity: {
+			type: 'integer',
+			default: 1,
+		},
 	},
 
 	edit: ( props ) => {
@@ -43,28 +51,56 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 			attributes,
 			setAttributes,
 		} = props;
-		const { product_id } = attributes;
+		const {
+			product_id,
+			variant_id,
+			quantity,
+		} = attributes;
 
 		return (
 			<>
 				<InspectorControls key="fast-pdp-inspector-controls">
 					<Panel>
-						<PanelBody title={ __( 'Product ID' )}>
-							<PanelRow>
-								<TextControl
-									label={ __( 'Product ID' ) }
-									type="number"
-									onChange={ (value ) => {
-										const int = parseInt( value, 10 );
+						<PanelBody title={ __( 'Product Details' )}>
+							<TextControl
+								label={ __( 'Product ID' ) }
+								type="number"
+								onChange={ ( value ) => {
+									const int = parseInt( value, 10 );
 
-										setAttributes( {
-											product_id: isNaN( int ) ? undefined : int,
-										} );
-									} }
-									value={ Number.isInteger( product_id ) ? product_id.toString( 10 ) : '0' }
-									step="1"
-								/>
-							</PanelRow>
+									setAttributes( {
+										product_id: isNaN( int ) ? undefined : int,
+									} );
+								} }
+								value={ Number.isInteger( product_id ) ? product_id.toString( 10 ) : '0' }
+								step="1"
+							/>
+							<TextControl
+								label={ __( 'Variation ID' ) }
+								type="number"
+								onChange={ ( value ) => {
+									const int = parseInt( value, 10 );
+
+									setAttributes( {
+										variant_id: isNaN( int ) ? undefined : int,
+									} );
+								} }
+								value={ Number.isInteger( variant_id ) ? variant_id.toString( 10 ) : '0' }
+								step="1"
+							/>
+							<TextControl
+								label={ __( 'Quantity' ) }
+								type="number"
+								onChange={ ( value ) => {
+									const int = parseInt( value, 10 );
+
+									setAttributes( {
+										quantity: isNaN( int ) ? undefined : int,
+									} );
+								} }
+								value={ Number.isInteger( quantity ) ? quantity.toString( 10 ) : '1' }
+								step="1"
+							/>
 						</PanelBody>
 					</Panel>
 				</InspectorControls>
