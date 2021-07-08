@@ -1,0 +1,37 @@
+/**
+ * Styles for image select feature in Fast settings.
+ */
+
+.fast-image-select {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0 -10px;
+	padding-top: 10px;
+
+	&--item {
+		flex-basis: 50%;
+		padding: 0 10px;
+		margin: 0 0 20px;
+		box-sizing: border-box;
+
+		@media screen and (max-width: 480px) {
+			flex-basis: 100%;
+		}
+	}
+
+	&--label-text {
+		display: block;
+		margin-bottom: 6px;
+	}
+
+	&--image {
+		max-width: 100%;
+		height: auto;
+		border: 1px solid $fast-color-border;
+	}
+}
+
+.fast-image-select--input:checked + label .fast-image-select--image {
+	border: 1px solid $fast-color-border-dark;
+	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+}
