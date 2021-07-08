@@ -3,11 +3,13 @@
  */
 
 .fast-footer {
+	padding: 10px 0;
 	border-top: 1px solid $fast-color-border;
+	border-bottom: 1px solid $fast-color-border;
 
 	&-links {
 		margin: 0 -8px;
-		padding: 10px 0;
+		padding: 0;
 		list-style: none;
 	}
 	&-link {
@@ -20,6 +22,12 @@
 
 			&:hover {
 				text-decoration: underline;
+			}
+		}
+
+		@media (max-width: 782px) {
+			&.alignright {
+				float: none;
 			}
 		}
 	}
