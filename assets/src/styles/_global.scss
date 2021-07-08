@@ -1,0 +1,25 @@
+/**
+ * Global styles for the Fast plugin.
+ */
+
+.fast-settings {
+
+	td,
+	textarea,
+	input,
+	select {
+		font-family: "Lucida Grande";
+		font-size: 12px;
+	}
+
+	@media screen and (min-width: 783px) {
+		.input-field {
+			min-height: 40px;
+			width: 400px;
+		}
+	}
+
+	textarea {
+		resize: none;
+	}
+}
