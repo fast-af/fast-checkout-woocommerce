@@ -7,12 +7,13 @@
  * @package Fast
  */
 
+// Load admin notices.
+require_once FASTWC_PATH . 'includes/admin/notices.php';
 // Load admin constants.
 require_once FASTWC_PATH . 'includes/admin/constants.php';
 // Load admin fields.
 require_once FASTWC_PATH . 'includes/admin/fields.php';
 
-add_action( 'admin_head', 'fastwc_admin_styles' );
 add_action( 'admin_menu', 'fastwc_admin_create_menu' );
 add_action( 'admin_init', 'fastwc_admin_setup_sections' );
 add_action( 'admin_init', 'fastwc_admin_setup_fields' );
@@ -96,6 +97,7 @@ function fastwc_admin_setup_sections() {
 	register_setting( $section_name, FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER );
 	register_setting( $section_name, FASTWC_SETTING_HIDE_BUTTON_PRODUCTS );
 	register_setting( $section_name, FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE );
+	register_setting( $section_name, FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER );
 
 	$section_name = 'fast_test_mode';
 	add_settings_section( $section_name, '', false, $section_name );
@@ -135,6 +137,7 @@ function fastwc_admin_setup_fields() {
 	add_settings_field( FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER, __( 'Enter Alternate Product Button Location', 'fast' ), 'fastwc_pdp_button_hook_other', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS, __( 'Hide Buttons for these Products', 'fast' ), 'fastwc_hide_button_products', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE, __( 'Checkout Redirect Page', 'fast' ), 'fastwc_checkout_redirect_page', $settings_section, $settings_section );
+	add_settings_field( FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, __( 'Display Login in Footer', 'fast' ), 'fastwc_show_login_button_footer', $settings_section, $settings_section );
 
 	// Test Mode settings.
 	$settings_section = 'fast_test_mode';
@@ -357,6 +360,29 @@ function fastwc_checkout_redirect_page() {
 }
 
 /**
+ * Renders the show login in footer field.
+ */
+function fastwc_show_login_button_footer() {
+	$fastwc_show_login_button_footer = get_option( FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, FASTWC_SETTING_LOGIN_FOOTER_NOT_SET );
+
+	if ( FASTWC_SETTING_LOGIN_FOOTER_NOT_SET === $fastwc_show_login_button_footer ) {
+		// If the option is FASTWC_SETTING_LOGIN_FOOTER_NOT_SET, then it hasn't yet been set. In this case, we
+		// want to configure it to true.
+		$fastwc_show_login_button_footer = '1';
+		update_option( FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, $fastwc_show_login_button_footer );
+	}
+
+	fastwc_settings_field_checkbox(
+		array(
+			'name'        => FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER,
+			'current'     => $fastwc_show_login_button_footer,
+			'label'       => __( 'Display Fast Login Button in Footer', 'fast' ),
+			'description' => __( 'The Fast Login button displays in the footer by default for non-logged in users. Uncheck this option to prevent the Fast Login button from displaying in the footer.', 'fast' ),
+		)
+	);
+}
+
+/**
  * Renders the Test Mode field.
  */
 function fastwc_test_mode_content() {
@@ -458,101 +484,6 @@ function fastwc_onboarding_url_content() {
 			'value' => $url,
 		)
 	);
-}
-
-/**
- * Custom styles for Fast settings page.
- */
-function fastwc_admin_styles() {
-	$current_screen = get_current_screen();
-
-	if ( ! empty( $current_screen ) && isset( $current_screen->id ) && 'toplevel_page_fast' !== $current_screen->id ) {
-		return;
-	}
-	?>
-		<style>
-			.fast-settings,
-			.fast-settings td,
-			.fast-settings textarea,
-			.fast-settings input,
-			.fast-settings select {
-				font-family: "Lucida Grande";
-				font-size: 12px;
-			}
-			@media screen and (min-width: 783px) {
-				.fast-settings .input-field {
-					min-height: 40px;
-					width: 400px;
-				}
-			}
-			.fast-settings textarea {
-				resize: none;
-			}
-
-			.fast-notice {
-				margin: 5px 0 15px;
-				border: 1px solid #c3c4c7;
-				border-left-width: 4px;
-				box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-				padding: 1px 12px;
-				background-color: #fff;
-			}
-			.fast-notice:first-child {
-				margin-top: 15px;
-			}
-			.fast-notice-success {
-				border-left-color: #00a32a;
-			}
-			.fast-notice-warning {
-				border-left-color: #dba617;
-			}
-			.fast-notice-error {
-				border-left-color: #d63638;
-			}
-
-			.fast-support-docs {
-				clear: both;
-				border: 1px solid #c3c4c7;
-				padding: 2px 20px 20px;
-				background-color: #fff;
-			}
-			.fast-support-docs img {
-				max-width: 500px;
-				height:  auto;
-			}
-
-			.fast-image-select {
-				display: flex;
-				flex-wrap: wrap;
-				margin: 0 -10px;
-				padding-top: 10px;
-			}
-			.fast-image-select--item {
-				flex-basis: 50%;
-				padding: 0 10px;
-				margin: 0 0 20px;
-				box-sizing: border-box;
-			}
-			@media screen and (max-width: 480px) {
-				.fast-image-select--item {
-					flex-basis: 100%;
-				}
-			}
-			.fast-image-select--label-text {
-				display: block;
-				margin-bottom: 6px;
-			}
-			.fast-image-select--image {
-				max-width: 100%;
-				height: auto;
-				border: 1px solid #bdbdbd;
-			}
-			.fast-image-select--input:checked + label .fast-image-select--image {
-				border: 1px solid #666;
-				box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
-			}
-		</style>
-	<?php
 }
 
 /**
