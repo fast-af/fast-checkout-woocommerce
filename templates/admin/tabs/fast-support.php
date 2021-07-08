@@ -86,6 +86,10 @@ $image_urls = array(
 
 	<p>This option provides a way to select products for which the Fast Checkout button will not be displayed. To select a product, begin typing the name of the product in the field and then select the product from the list that appears. This will hide the Fast Checkout button from the selected product pages as well as the cart and checkout pages if a selected product is added to the cart.</p>
 
+	<h3>Display Login in Footer</h3>
+
+	<p>The Fast Login button displays in the footer by default for non-logged in users. Uncheck this option to prevent the Fast Login button from displaying in the footer.</p>
+
 	<hr />
 
 	<h2 id="test-debug">Test and Debug</h2>
