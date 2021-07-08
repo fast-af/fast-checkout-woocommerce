@@ -12,6 +12,7 @@
 
 define( 'FASTWC_PATH', plugin_dir_path( __FILE__ ) );
 define( 'FASTWC_URL', plugin_dir_url( __FILE__ ) );
+define( 'FASTWC_VERSION', '1.0.8' );
 
 // WooCommerce version utilities.
 require_once FASTWC_PATH . 'includes/version.php';
@@ -34,4 +35,8 @@ if ( fastwc_woocommerce_is_active() ) {
 	require_once FASTWC_PATH . 'includes/routes.php';
 	// Add Fast button shortcodes.
 	require_once FASTWC_PATH . 'includes/shortcodes.php';
+	// Add Fast button widgets.
+	require_once FASTWC_PATH . 'includes/widgets.php';
+	// Add Fast button blocks.
+	require_once FASTWC_PATH . 'includes/blocks.php';
 }

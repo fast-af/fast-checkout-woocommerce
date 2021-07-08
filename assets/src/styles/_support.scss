@@ -1,0 +1,15 @@
+/**
+ * Fast support tab styles.
+ */
+
+.fast-support-docs {
+	clear: both;
+	border: 1px solid $fast-color-border;
+	padding: 2px 20px 20px;
+	background-color: $fast-color-white;
+
+	img {
+		max-width: 500px;
+		height:  auto;
+	}
+}
