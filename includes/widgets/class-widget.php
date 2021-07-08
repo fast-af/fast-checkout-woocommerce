@@ -73,7 +73,7 @@ class Widget extends \WP_Widget {
 				class="widefat"
 				id="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"
 				name="<?php echo esc_attr( $this->get_field_name( 'description' ) ); ?>"
-				><?php echo esc_html( $description ); ?></textarea>
+				><?php echo esc_textarea( $description ); ?></textarea>
 		</p>
 		<?php
 	}
