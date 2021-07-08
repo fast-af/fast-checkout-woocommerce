@@ -28,9 +28,9 @@ function fastwc_add_login_to_footer() {
 
 	if ( ! empty( $show_in_footer ) ) {
 		fastwc_load_template( 'fast-login' );
-	}
 
-	fastwc_log_info( 'Loaded login template' );
+		fastwc_log_info( 'Loaded login template' );
+	}
 }
 add_action( 'get_footer', 'fastwc_add_login_to_footer' );
 

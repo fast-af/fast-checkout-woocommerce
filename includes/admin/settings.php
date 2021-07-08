@@ -377,7 +377,7 @@ function fastwc_show_login_button_footer() {
 			'name'        => FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER,
 			'current'     => $fastwc_show_login_button_footer,
 			'label'       => __( 'Display Fast Login Button in Footer', 'fast' ),
-			'description' => __( 'Disable the Fast Login button in the footer automatically.', 'fast' ),
+			'description' => __( 'The Fast Login button displays in the footer by default for non-logged in users. Uncheck this option to prevent the Fast Login button from displaying in the footer.', 'fast' ),
 		)
 	);
 }
