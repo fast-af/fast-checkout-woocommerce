@@ -3,11 +3,11 @@
  */
 
 .fast-footer {
-	text-align: center;
+	border-top: 1px solid $fast-color-border;
 
 	&-links {
-		padding: 10px;
-		border-top: 1px solid $fast-color-border;
+		margin: 0 -8px;
+		padding: 10px 0;
 		list-style: none;
 	}
 	&-link {

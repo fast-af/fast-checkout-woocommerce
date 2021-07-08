@@ -12,13 +12,16 @@ $fastwc_setting_fast_onboarding_url = fastwc_get_option_or_set_default( FASTWC_S
 	<ul class="fast-footer-links">
 		<li class="fast-footer-link">
 			<a href="https://www.wordpress.org/plugins/fast-checkout-for-woocommerce" target="_blank" rel="noopener">
-				<?php
-				printf(
-					'%1$s: %2$s',
-					esc_html__( 'Fast Checkout for WooCommerce version', 'fast' ),
-					esc_html( FASTWC_VERSION )
-				);
-				?>
+				<strong>
+					<?php
+					printf(
+						'%1$s - %2$s: %3$s',
+						esc_html__( 'Fast Checkout for WooCommerce', 'fast' ),
+						esc_html__( 'Version', 'fast' ),
+						esc_html( FASTWC_VERSION )
+					);
+					?>
+				</strong>
 			</a>
 		</li>
 		<li class="fast-footer-link">
