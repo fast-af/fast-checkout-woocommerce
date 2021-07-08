@@ -19,13 +19,6 @@ add_action( 'login_enqueue_scripts', 'fastwc_enqueue_script' );
  * Enqueue admin assets.
  */
 function fastwc_admin_enqueue_scripts() {
-	$current_screen = get_current_screen();
-
-	// Only enqueue these assets on the Fast settings page.
-	if ( ! empty( $current_screen ) && isset( $current_screen->id ) && 'toplevel_page_fast' !== $current_screen->id ) {
-		return;
-	}
-
 	/**
 	 * Load the Select2 library.
 	 *
@@ -55,11 +48,41 @@ function fastwc_admin_enqueue_scripts() {
 		FASTWC_VERSION,
 		true
 	);
+
+	$current_screen = get_current_screen();
+
+	if ( ! empty( $current_screen ) && isset( $current_screen->id ) && 'toplevel_page_fast' !== $current_screen->id ) {
+		return;
+	}
 	wp_enqueue_style(
 		'fast-admin-css',
 		FASTWC_URL . 'assets/dist/styles.css',
 		array(),
-		FASTWC_VERSION
+		$fast_js_version
 	);
 }
 add_action( 'admin_enqueue_scripts', 'fastwc_admin_enqueue_scripts' );
+
+/**
+ * Enqueue block editor assets for the Gutenberg blocks.
+ */
+function fastwc_enqueue_block_editor_assets() {
+
+	// Enqueue the script.
+	wp_enqueue_script(
+		'fastwc-block-editor-js',
+		FASTWC_URL . 'assets/dist/blocks/index.js',
+		array( 'wp-blocks', 'wp-i18n', 'wp-components', 'wp-element' ),
+		FASTWC_VERSION,
+		true
+	);
+
+	// Enqueue the stylesheet.
+	wp_enqueue_style(
+		'fastwc-block-editor-css',
+		FASTWC_URL . 'assets/dist/blocks/index.css',
+		array(),
+		FASTWC_VERSION
+	);
+}
+add_action( 'enqueue_block_editor_assets', 'fastwc_enqueue_block_editor_assets' );

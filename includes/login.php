@@ -23,9 +23,14 @@ function fastwc_add_login_to_footer() {
 		return;
 	}
 
-	fastwc_load_template( 'fast-login' );
+	// The admin might want to disable this in favor of using a widget.
+	$show_in_footer = get_option( FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, 1 );
 
-	fastwc_log_info( 'Loaded login template' );
+	if ( ! empty( $show_in_footer ) ) {
+		fastwc_load_template( 'fast-login' );
+
+		fastwc_log_info( 'Loaded login template' );
+	}
 }
 add_action( 'get_footer', 'fastwc_add_login_to_footer' );
 
