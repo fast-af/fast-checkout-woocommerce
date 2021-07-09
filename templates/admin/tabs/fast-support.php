@@ -23,7 +23,7 @@ $image_urls = array(
 	<li><a href="#edit-appearance">Edit Appearance</a> | </li>
 	<li><a href="#button-options">Button Options</a> | </li>
 	<li><a href="#test-debug">Test and Debug</a> | </li>
-	<li><a href="https://help.fast.co/hc/en-us" target="_blank" rel="noopener">Get Help</a></li>
+	<li><a href="https://help.fast.co/" target="_blank" rel="noopener">Get Help</a></li>
 </ul>
 
 <div class="fast-support-docs">
