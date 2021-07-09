@@ -108,7 +108,7 @@ function fastwc_is_hidden_for_test_mode( $should_hide ) {
 
 		fastwc_log_info( 'Fast buttons' . ( $should_hide ? '' : ' not' ) . ' hidden for test mode.' );
 	}
- 
+
 	return $should_hide;
 }
 add_filter( 'fastwc_should_hide_pdp_checkout_button', 'fastwc_is_hidden_for_test_mode', 1 );
