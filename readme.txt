@@ -4,7 +4,7 @@ Tags: fast, fast checkout, checkout, woocommerce, woocommerce payment, woocommer
 Requires at least: 5.1
 Tested up to: 5.7
 Requires PHP: 7.2
-Stable tag: 1.0.8
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
@@ -34,6 +34,14 @@ Fast replaces your current payment processor. You can see our fee schedule, simi
 
  
 == Changelog ==
+
+= 1.1.0 =
+* Add widgets to display the Fast Checkout and Fast Login buttons.
+* Add Gutenberg block types to display the Fast checkout and Fast Login buttons.
+* Add an option to prevent the Fast Login button from being displayed in the footer.
+* Display admin notices whenever the Fast plugin is in Test Mode or Debug Mode.
+* Add a footer to the Fast settings page that includes useful links and the latest version number of the plugin.
+* Replace inline admin CSS with enqueued CSS file.
 
 = 1.0.8 =
 * Require an active WooCommerce plugin before loading Fast and add notification indicating that WooCommerce is required.
