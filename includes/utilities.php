@@ -228,3 +228,19 @@ function fastwc_product_is_subscription( $product_id ) {
 
 	return false;
 }
+
+/**
+ * Check if a string is valid JSON.
+ *
+ * @param string $string The string to check.
+ *
+ * @return bool
+ */
+function fastwc_is_json( $string ) {
+	if ( ! defined( 'JSON_ERROR_NONE' ) ) {
+		define( 'JSON_ERROR_NONE', 0 );
+	}
+
+	json_decode( $string );
+	return json_last_error() === JSON_ERROR_NONE;
+}
