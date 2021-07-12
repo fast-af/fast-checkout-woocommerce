@@ -35,11 +35,19 @@ add_action( 'init', 'fastwc_add_shortcodes' );
 function fastwc_shortcode_product_button( $atts ) {
 	$atts = shortcode_atts(
 		array(
-			'product_id' => 0,
+			'product_id'      => 0,
+			'variation_id'    => 0,
+			'variant_id'      => 0,
+			'quantity'        => 1,
+			'product_options' => false,
 		),
 		$atts,
 		'fast_product'
 	);
+
+	if ( empty( $atts['variant_id'] ) && ! empty( $atts['variation_id'] ) ) {
+		$atts['variant_id'] = $atts['variation_id'];
+	}
 
 	if ( fastwc_should_hide_pdp_checkout_button( $atts['product_id'] ) ) {
 		$shortcode_output = '';
