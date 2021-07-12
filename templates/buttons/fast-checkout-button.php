@@ -5,10 +5,11 @@
  * @package Fast
  */
 
-$fastwc_app_id = fastwc_get_app_id();
-$product_id    = ! empty( $args['product_id'] ) ? absint( $args['product_id'] ) : 0;
-$variant_id    = ! empty( $args['variant_id'] ) ? absint( $args['variant_id'] ) : 0;
-$quantity      = ! empty( $args['quantity'] ) ? absint( $args['quantity'] ) : 0;
+$fastwc_app_id   = fastwc_get_app_id();
+$product_id      = ! empty( $args['product_id'] ) ? absint( $args['product_id'] ) : 0;
+$variant_id      = ! empty( $args['variant_id'] ) ? absint( $args['variant_id'] ) : 0;
+$quantity        = ! empty( $args['quantity'] ) ? absint( $args['quantity'] ) : 0;
+$product_options = ! empty( $args['product_options'] ) && fastwc_is_json( $args['product_options'] ) ? $args['product_options'] : '';
 ?>
 	<fast-checkout-button
 		app_id="<?php echo esc_attr( $fastwc_app_id ); ?>"
@@ -19,6 +20,9 @@ $quantity      = ! empty( $args['quantity'] ) ? absint( $args['quantity'] ) : 0;
 			<?php endif; ?>
 			<?php if ( ! empty( $quantity ) ) : ?>
 		quantity="<?php echo esc_attr( $quantity ); ?>"
+			<?php endif; ?>
+			<?php if ( ! empty( $product_options ) ) : ?>
+		product_options="<?php echo esc_attr( $product_options ); ?>"
 			<?php endif; ?>
 		<?php endif; ?>
 	></fast-checkout-button>
