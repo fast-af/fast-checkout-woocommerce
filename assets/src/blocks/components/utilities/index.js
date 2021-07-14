@@ -14,13 +14,11 @@ const productsBase = '/wc/store/products';
  * Get the number of products in the WooCommerce store from the global wcSettings object.
  */
 const getProductCount = () => {
-	const wcSettings = wcSettings || {
-		wcBlocksConfig: {
-			productCount: 100,
-		},
-	};
+	const wcSettings = wcSettings || {};
+	const blocksConfig = wcSettings.hasOwnProperty( 'wcBlocksConfig' ) ? wcSettings.wcBlocksConfig : {};
+	const productCount = blocksConfig.hasOwnProperty( 'productCount' ) ? blocksConfig.productCount : 100;
 
-	return wcSettings.wcBlocksConfig.productCount;
+	return productCount;
 };
 
 /**
