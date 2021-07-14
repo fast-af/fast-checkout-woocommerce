@@ -92,7 +92,7 @@ export const getProduct = ( productId ) => {
  *
  * @param {number} productId Product ID.
  */
-export const getProductAttributes = ( productId ) => {
+export const getProductAttributes = async ( productId ) => {
 	let attributes = [];
 
 	getProduct( productId )
@@ -106,7 +106,7 @@ export const getProductAttributes = ( productId ) => {
 /**
  * Get a promise that resolves to a list of variation objects from the WooCommerce Store API.
  *
- * @param {number} product Product ID.
+ * @param {number} productId Product ID.
  */
 export const getProductVariations = ( productId ) => {
 	return apiFetch( {
