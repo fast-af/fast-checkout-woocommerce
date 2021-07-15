@@ -32,6 +32,7 @@
     "sass": "^1.35.1"
   },
   "dependencies": {
+    "@wordpress/api-fetch": "^5.1.1",
     "react-select": "^4.3.1"
   }
 }
