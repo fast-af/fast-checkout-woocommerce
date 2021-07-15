@@ -12,31 +12,24 @@ const { useState, useEffect } = wp.element;
 const FastWCProductSearch = ( {
 	onChange,
 	selected,
-	products,
-	isLoading,
-	isCompact,
-	isSingle,
 } ) => {
+	const defaultProducts = [];
+	const defaultLoading = true;
 
-	const [products, setProducts] = useState([]);
-	const [isLoading, setLoading] = useState(true);
+	const [products, setProducts] = useState( defaultProducts );
 
 	useEffect( () => {
 		getProducts( { selected } )
 			.then( ( list ) => {
 				setProducts( list );
-				setLoading( false );
 			} );
 		// TODO: Maybe add error handling.
 	} );
 
 	const onSearch = ( search ) => {
-		setLoading( true );
-
 		getProducts( { selected, search } )
 			.then( ( list ) => {
 				setProducts( list );
-				setLoading( false );
 			} );
 		// TODO: Maybe add error handling.
 	};
@@ -45,10 +38,7 @@ const FastWCProductSearch = ( {
 		<SearchListControl
 			className="woocommerce-products fast-wc-product-search"
 			list={ products }
-			isCompact={ isCompact }
-			isLoading={ isLoading }
-			onSearch={ onSearch }
-			onChange={ onChange }
+			onChange={ onSearch }
 		/>
 	);
 };
@@ -56,18 +46,10 @@ const FastWCProductSearch = ( {
 FastWCProductSearch.propTypes = {
 	onChange: PropTypes.func.isRequired,
 	selected: PropTypes.array,
-	products: PropTypes.array,
-	isLoading: PropTypes.bool,
-	isCompact: PropTypes.bool,
-	isSingle: PropTypes.bool,
 };
 
 FastWCProductSearch.defaultProps = {
 	selected: [],
-	products: [],
-	isLoading: true,
-	isCompact: true,
-	isSingle: true,
 }
 
 export default FastWCProductSearch;

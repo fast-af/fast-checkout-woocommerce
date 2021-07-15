@@ -28,10 +28,12 @@ const getProductCount = () => {
  * @param {Array}  request.selected Currently selected products.
  * @param {string} request.search   Search string.
  */
-export const getProducts = ( {
-	selected: [],
-	search: '',
-} ) => {
+export const getProducts = (
+	{
+		selected = [],
+		search = '',
+	}
+) => {
 	const productCount = getProductCount();
 	const isLargeCatalog = productCount > 100;
 

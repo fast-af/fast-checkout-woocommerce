@@ -4,6 +4,7 @@
 
 import icons from '../components/icons';
 import FastButton from '../components/button';
+import FastWCProductSearch from '../components/product';
 
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
