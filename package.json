@@ -4,7 +4,8 @@
   "description": "Fast Checkout for WooCommerce",
   "main": "gulpfile.js",
   "scripts": {
-    "build": "wp-scripts build assets/src/blocks/index.js --output-path=assets/dist/blocks --webpack-no-externals"
+    "build": "wp-scripts build assets/src/blocks/index.js --output-path=assets/dist/blocks --webpack-no-externals",
+    "start": "wp-scripts start assets/src/blocks/index.js --output-path=assets/dist/blocks --webpack-no-externals"
   },
   "repository": {
     "type": "git",
@@ -29,10 +30,7 @@
     "gulp-sass": "^5.0.0",
     "gulp-uglify": "^3.0.2",
     "prop-types": "^15.7.2",
+    "react-select": "^4.3.1",
     "sass": "^1.35.1"
-  },
-  "dependencies": {
-    "@wordpress/api-fetch": "^5.1.1",
-    "react-select": "^4.3.1"
   }
 }

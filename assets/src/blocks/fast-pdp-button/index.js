@@ -102,6 +102,10 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 								value={ Number.isInteger( quantity ) ? quantity.toString( 10 ) : '1' }
 								step="1"
 							/>
+							<FastWCProductSearch
+								onChange={ ( product ) => { console.log('changed', product); } }
+								selected={[]}
+							/>
 						</PanelBody>
 					</Panel>
 				</InspectorControls>

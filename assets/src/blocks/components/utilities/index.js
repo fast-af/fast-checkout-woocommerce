@@ -3,9 +3,9 @@
  * Fast button block utilities.
  */
 
-import apiFetch from '@wordpress/api-fetch';
 import { flatten, uniqBy } from 'lodash';
 
+const apiFetch = wp.apiFetch;
 const { addQueryArgs } = wp.url;
 
 const productsBase = '/wc/store/products';
@@ -14,7 +14,7 @@ const productsBase = '/wc/store/products';
  * Get the number of products in the WooCommerce store from the global wcSettings object.
  */
 const getProductCount = () => {
-	const wcSettings = wcSettings || {};
+	const wcSettings = window.wcSettings || {};
 	const blocksConfig = wcSettings.hasOwnProperty( 'wcBlocksConfig' ) ? wcSettings.wcBlocksConfig : {};
 	const productCount = blocksConfig.hasOwnProperty( 'productCount' ) ? blocksConfig.productCount : 100;
 
@@ -67,7 +67,8 @@ export const getProducts = (
 			const products = uniqBy( flatten( data ), 'id' );
 			const list = products.map( ( product ) => ( {
 				...product,
-				parent: 0,
+				label: product.name,
+				value: product.id,
 			} ) );
 			return list;
 		} )
@@ -93,14 +94,9 @@ export const getProduct = ( productId ) => {
  * @param {number} productId Product ID.
  */
 export const getProductAttributes = async ( productId ) => {
-	let attributes = [];
+	const product = await getProduct( productId );
 
-	getProduct( productId )
-		.then( ( product ) => {
-			attributes = product.attributes.filter( ( attribute ) => ! attribute.has_variations );
-		} );
-
-	return attributes;
+	return product.attributes.filter( ( attribute ) => ! attribute.has_variations );
 };
 
 /**
