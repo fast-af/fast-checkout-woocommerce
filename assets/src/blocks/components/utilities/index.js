@@ -30,7 +30,7 @@ const getProductCount = () => {
  */
 export const getProducts = (
 	{
-		selected = [],
+		selected = 0,
 		search = '',
 	}
 ) => {
@@ -45,28 +45,28 @@ export const getProducts = (
 		order: 'asc',
 	};
 
-	const requests = [
-		addQueryArgs( productsBase, queryArgs ),
-	];
+	const requests = []
 
-	// If the catalog is large, add a query to make sure all selected products are included in the response.
-	if ( isLargeCatalog && selected.length ) {
+	// Add a query to make sure all selected products are included in the response.
+	if ( selected ) {
+		const include = [ selected ];
 		requests.push(
 			addQueryArgs(
 				productsBase,
 				{
 					catalog_visibility: 'any',
-					include: selected,
+					include,
 				}
 			)
 		);
 	}
 
+	requests.push( addQueryArgs( productsBase, queryArgs ) );
+
 	return Promise.all( requests.map( ( path ) => apiFetch( { path } ) ) )
 		.then( ( data ) => {
 			const products = uniqBy( flatten( data ), 'id' );
 			const list = products.map( ( product ) => ( {
-				...product,
 				label: product.name,
 				value: product.id,
 			} ) );
