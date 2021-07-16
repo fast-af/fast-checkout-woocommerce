@@ -103,8 +103,14 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 								step="1"
 							/>
 							<FastWCProductSearch
-								onChange={ ( product ) => { console.log('changed', product); } }
-								selected={[]}
+								onChange={ ( value ) => {
+									const int = parseInt( value, 10 );
+
+									setAttributes( {
+										product_id: isNaN( int ) ? undefined : int,
+									} );
+								} }
+								selected={ product_id }
 							/>
 						</PanelBody>
 					</Panel>
