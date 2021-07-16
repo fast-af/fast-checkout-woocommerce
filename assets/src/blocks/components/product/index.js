@@ -2,79 +2,83 @@
  * Product search component.
  */
 
-import { getProducts, getProductAttributes } from '../utilities';
+import './index.scss';
+
+import { getProducts } from '../utilities';
 
 import PropTypes from 'prop-types';
-import Select from 'react-select';
 
 const { __ } = wp.i18n;
 const { useState, useEffect } = wp.element;
+const {
+	TextControl,
+	RadioControl,
+} = wp.components;
 
 const FastWCProductSearch = ( {
 	onChange,
 	selected,
 } ) => {
 	const defaultProducts = [];
-	const defaultLoading = true;
 
 	const [products, setProducts] = useState( defaultProducts );
 	const [isLoading, setIsLoading] = useState( true );
-	const [initialized, setInitialized] = useState( false );
+	const [product, setProduct] = useState( selected );
 
-	useEffect( () => {
-		init();
-	} );
+	useEffect(
+		() => {
+			fetchProducts( { selected } );
+		},
+		[] // Dependencies. Leave blank to avoid running more than once.
+	);
 
-	const init = () => {
-		if ( ! initialized ) {
-			setInitialized( true );
-			setIsLoading( true );
-			getProducts( { selected } )
-				.then( ( list ) => {
-					setProducts( list );
-					setIsLoading( false );
-				} );
-		}
+	const onSearch = ( search ) => {
+		setIsLoading( true );
+		fetchProducts( { selected: product, search } );
 	};
 
-	const onSearch = ( search, action ) => {
-		console.log( 'action', action );
-		setIsLoading( true );
+	const fetchProducts = ( {
+		selected,
+		search = '',
+	} ) => {
 		getProducts( { selected, search } )
 			.then( ( list ) => {
 				setProducts( list );
 				setIsLoading( false );
 			} );
-		// TODO: Maybe add error handling.
-	};
-
-	const onSelectChange = ( product ) => {
-		console.log( 'onSelectChange', product );
 	};
 
 	return (
 		<div>
-			<div>Test</div>
-			<Select
-				isClearable
-				placeholder={ __( 'Select a product...' ) }
-				onChange={ onSelectChange }
-				options={ products }
-				noOptionsMessage={ __( 'No products found' ) }
-				isLoading={isLoading}
-				onInputChange={onSearch}
+			<TextControl
+				label={ __( 'Search for a product' ) }
+				onChange={ onSearch }
 			/>
+			{ isLoading
+				? <div>{ __( 'Loading...' ) }</div>
+				: <div className="product-search--products-wrapper">
+					<RadioControl
+						selected={ product }
+						options={ products }
+						onChange={ ( value ) => {
+							const productId = parseInt( value, 10 );
+							onChange( productId );
+							setProduct( productId );
+						} }
+					/>
+				</div>
+			}
 		</div>
 	);
 };
 
 FastWCProductSearch.propTypes = {
 	onChange: PropTypes.func.isRequired,
-	selected: PropTypes.array,
+	selected: PropTypes.number,
 };
 
 FastWCProductSearch.defaultProps = {
-	selected: [],
+	selected: 0,
 }
 
 export default FastWCProductSearch;
