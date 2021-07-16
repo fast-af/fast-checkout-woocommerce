@@ -1,1 +1,2 @@
 .fastwc-button{background-color:#000;color:#fff;width:100%;height:50px;border-radius:8px;font-weight:700;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;border:1px solid #000;outline-color:transparent;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",sans-serif}.fastwc-button img{margin-right:8px;width:15px;height:15px;position:relative;bottom:1px}
+.product-search--products-wrapper{width:100%;height:auto;max-height:140px;overflow-y:scroll}
