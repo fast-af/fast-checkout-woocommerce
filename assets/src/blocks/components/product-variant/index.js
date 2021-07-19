@@ -39,7 +39,7 @@ const FastWCProductVariant = ( {
 			getProductVariations( product )
 				.then( ( list ) => {
 					let options = [];
-					console.log( list );
+
 					if ( list.length ) {
 						options = list.map( ( variant ) => ( {
 							label: variant.variation,
@@ -50,6 +50,7 @@ const FastWCProductVariant = ( {
 						options = [ noVariantsOption ];
 						onChange( '' );
 					}
+
 					setOptions( options );
 				} );
 		},
