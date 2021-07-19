@@ -5,6 +5,7 @@
 import icons from '../components/icons';
 import FastButton from '../components/button';
 import FastWCProductSearch from '../components/product';
+import FastWCProductVariant from '../components/variant';
 
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
@@ -73,9 +74,7 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 								} }
 								selected={ product_id }
 							/>
-							<TextControl
-								label={ __( 'Variation ID' ) }
-								type="number"
+							<FastWCProductVariant
 								onChange={ ( value ) => {
 									const int = parseInt( value, 10 );
 
@@ -83,8 +82,8 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 										variant_id: isNaN( int ) ? undefined : int,
 									} );
 								} }
-								value={ Number.isInteger( variant_id ) ? variant_id.toString( 10 ) : '0' }
-								step="1"
+								product={ product_id }
+								variant={ variant_id }
 							/>
 							<TextControl
 								label={ __( 'Quantity' ) }
