@@ -1,0 +1,5 @@
+/**
+ * Single product attribute.
+ */
+
+

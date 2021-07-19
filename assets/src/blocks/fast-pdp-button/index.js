@@ -6,6 +6,7 @@ import icons from '../components/icons';
 import FastButton from '../components/button';
 import FastWCProductSearch from '../components/product';
 import FastWCProductVariant from '../components/product-variant';
+import FastWCProductAttributes from '../components/product-attributes';
 
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
@@ -46,6 +47,10 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 			type: 'integer',
 			default: 1,
 		},
+		product_attributes: {
+			type: 'array',
+			default: [],
+		},
 	},
 
 	edit: ( props ) => {
@@ -57,6 +62,7 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 			product_id,
 			variant_id,
 			quantity,
+			product_attributes,
 		} = attributes;
 
 		return (
@@ -97,6 +103,17 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 								} }
 								value={ Number.isInteger( quantity ) ? quantity.toString( 10 ) : '1' }
 								step="1"
+							/>
+							<FastWCProductAttributes
+								onChange={ ( atts ) => {
+									console.log( atts );
+
+									setAttributes( {
+										product_attributes: atts,
+									} );
+								} }
+								product={ product_id }
+								selected={ product_attributes }
 							/>
 						</PanelBody>
 					</Panel>
