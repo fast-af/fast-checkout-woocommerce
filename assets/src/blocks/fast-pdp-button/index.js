@@ -63,9 +63,7 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 				<InspectorControls key="fast-pdp-inspector-controls">
 					<Panel>
 						<PanelBody title={ __( 'Product Details' )}>
-							<TextControl
-								label={ __( 'Product ID' ) }
-								type="number"
+							<FastWCProductSearch
 								onChange={ ( value ) => {
 									const int = parseInt( value, 10 );
 
@@ -73,8 +71,7 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 										product_id: isNaN( int ) ? undefined : int,
 									} );
 								} }
-								value={ Number.isInteger( product_id ) ? product_id.toString( 10 ) : '0' }
-								step="1"
+								selected={ product_id }
 							/>
 							<TextControl
 								label={ __( 'Variation ID' ) }
@@ -101,16 +98,6 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 								} }
 								value={ Number.isInteger( quantity ) ? quantity.toString( 10 ) : '1' }
 								step="1"
-							/>
-							<FastWCProductSearch
-								onChange={ ( value ) => {
-									const int = parseInt( value, 10 );
-
-									setAttributes( {
-										product_id: isNaN( int ) ? undefined : int,
-									} );
-								} }
-								selected={ product_id }
 							/>
 						</PanelBody>
 					</Panel>
