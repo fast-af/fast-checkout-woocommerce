@@ -4,8 +4,8 @@
   "description": "Fast Checkout for WooCommerce",
   "main": "gulpfile.js",
   "scripts": {
-    "build": "wp-scripts build assets/src/blocks/index.js --output-path=assets/dist/blocks --webpack-no-externals",
-    "start": "wp-scripts start assets/src/blocks/index.js --output-path=assets/dist/blocks --webpack-no-externals"
+    "build": "wp-scripts build assets/src/blocks/index.js --output-path=assets/dist/blocks",
+    "start": "wp-scripts start assets/src/blocks/index.js --output-path=assets/dist/blocks"
   },
   "repository": {
     "type": "git",
