@@ -58,7 +58,7 @@ const FastWCProductSearch = ( {
 			/>
 			<div className="fastwc-product-search--products-wrapper">
 				{ isLoading
-					? <div>{ __( 'Loading...' ) }</div>
+					? <div className="fastwc-product-search--loading">{ __( 'Loading...' ) }</div>
 					: <RadioControl
 						selected={ product }
 						options={ products }
