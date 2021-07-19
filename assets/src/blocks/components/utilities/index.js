@@ -94,9 +94,13 @@ export const getProduct = ( productId ) => {
  * @param {number} productId Product ID.
  */
 export const getProductAttributes = async ( productId ) => {
-	const product = await getProduct( productId );
+	const attributes = await apiFetch( {
+		path: `/wc/fast/v1/product/attributes/${ productId }`,
+	} );
 
-	return product.attributes.filter( ( attribute ) => ! attribute.has_variations );
+	console.log( 'attributes', attributes );
+
+	return attributes;
 };
 
 /**
