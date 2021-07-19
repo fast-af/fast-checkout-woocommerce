@@ -51,13 +51,15 @@ const FastWCProductSearch = ( {
 	return (
 		<div>
 			<TextControl
-				label={ __( 'Search for a product' ) }
+				label={ __( 'Product' ) }
 				onChange={ onSearch }
+				className="fastwc-product-search"
+				placeholder={ __( 'Search for product...' ) }
 			/>
-			{ isLoading
-				? <div>{ __( 'Loading...' ) }</div>
-				: <div className="product-search--products-wrapper">
-					<RadioControl
+			<div className="fastwc-product-search--products-wrapper">
+				{ isLoading
+					? <div>{ __( 'Loading...' ) }</div>
+					: <RadioControl
 						selected={ product }
 						options={ products }
 						onChange={ ( value ) => {
@@ -66,8 +68,8 @@ const FastWCProductSearch = ( {
 							setProduct( productId );
 						} }
 					/>
-				</div>
-			}
+				}
+			</div>
 		</div>
 	);
 };

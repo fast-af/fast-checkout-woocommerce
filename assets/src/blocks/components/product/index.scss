@@ -2,9 +2,27 @@
  * Product search control styles.
  */
 
-.product-search--products-wrapper {
+.fastwc-product-search[class] {
+	margin-bottom: 0;
+
+	> div[class] {
+		margin-bottom: 0;
+	}
+}
+
+.fastwc-product-search--products-wrapper {
 	width: 100%;
 	height: auto;
 	max-height: 140px;
 	overflow-y: scroll;
+	margin-bottom: 10px;
+	padding: 6px;
+	border: 1px solid #c3c4c7;
+	border-top: 0;
+	position: relative;
+	left: 1px;
+
+	> div[class] {
+		margin-bottom: 0;
+	}
 }
