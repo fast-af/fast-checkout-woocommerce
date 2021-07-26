@@ -28,6 +28,20 @@ const FastWCProductAttributes = ( {
 					const newOptions = {};
 					const newAttributes = {};
 
+					Object.keys( selected ).map( ( selectedKey ) => {
+						let availableValues = [];
+
+						if ( list.options[ selectedKey ].length ) {
+							availableValues = list.options[ selectedKey ].map( ( option ) => {
+								return option.value;
+							} );
+						}
+
+						if ( list.attKeys.includes( selectedKey ) && availableValues.includes( selected[ selectedKey ] ) ) {
+							newAttributes[ selectedKey ] = selected[ selectedKey ];
+						}
+					} );
+
 					if ( list.attKeys && list.attKeys.length ) {
 						list.attKeys.map( ( attKey ) => {
 							if ( list.values[ attKey ] ) {
@@ -47,12 +61,13 @@ const FastWCProductAttributes = ( {
 							}
 						} );
 
-						onChange( newAttributes );
+
 
 						setAttKeys( list.attKeys );
 						setLabels( list.labels );
 					}
 
+					onChange( newAttributes );
 					setOptions( newOptions );
 				} );
 		},
