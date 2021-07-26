@@ -4,7 +4,6 @@
 
 import PropTypes from 'prop-types';
 
-const { useState, useEffect } = wp.element;
 const {
 	SelectControl
 } = wp.components;
