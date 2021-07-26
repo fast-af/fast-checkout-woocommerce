@@ -110,7 +110,7 @@ class Product extends Widget {
 		$instance['product_id']      = isset( $new_instance['product_id'] ) && is_numeric( $new_instance['product_id'] ) ? $new_instance['product_id'] : 0;
 		$instance['variant_id']      = isset( $new_instance['variant_id'] ) && is_numeric( $new_instance['variant_id'] ) ? $new_instance['variant_id'] : 0;
 		$instance['quantity']        = isset( $new_instance['quantity'] ) && is_numeric( $new_instance['quantity'] ) ? $new_instance['quantity'] : 1;
-		$instance['product_options'] = isset( $new_instance['product_options'] ) && \fastwc_is_json( $new_instance['product_options'] ) ? $new_instance['product_options'] : '';
+		$instance['product_options'] = isset( $new_instance['product_options'] ) ? fastwc_get_normalized_product_options( $new_instance['product_options'] ) : '';
 
 		return $instance;
 	}

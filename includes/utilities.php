@@ -244,3 +244,18 @@ function fastwc_is_json( $string ) {
 	json_decode( $string );
 	return json_last_error() === JSON_ERROR_NONE;
 }
+
+/**
+ * Get the Fast product options string.
+ *
+ * @param mixed|string|array $product_options The product options value.
+ *
+ * @return string
+ */
+function fastwc_get_normalized_product_options( $product_options ) {
+	if ( is_array( $product_options ) ) {
+		$product_options = json_encode( $product_options );
+	}
+
+	return fastwc_is_json( $product_options ) ? $product_options : '';
+}
