@@ -39,15 +39,20 @@ const FastWCProductVariant = ( {
 			getProductVariations( product )
 				.then( ( list ) => {
 					let options = [];
+					let variant_ids = [];
 
 					if ( list.length ) {
 						options = list.map( ( variant ) => ( {
 							label: variant.variation,
 							value: variant.id,
 						} ) );
+						variant_ids = list.map( ( variant ) => variant.id );
 						options.unshift( selectVariationOption );
 					} else {
 						options = [ noVariantsOption ];
+					}
+
+					if ( ! variant || ! variant_ids.includes( variant ) ) {
 						onChange( '' );
 					}
 
@@ -71,7 +76,7 @@ const FastWCProductVariant = ( {
 			/>
 		</div>
 	)
-}
+};
 
 FastWCProductVariant.propTypes = {
 	onChange: PropTypes.func.isRequired,
