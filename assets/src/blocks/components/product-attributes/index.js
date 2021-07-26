@@ -4,48 +4,111 @@
 
 
 import { getProductAttributes } from '../utilities';
+import FastWCProductAttribute from './attribute'
 
 import PropTypes from 'prop-types';
 
 const { __ } = wp.i18n;
 const { useState, useEffect } = wp.element;
-const {
-	SelectControl,
-} = wp.components;
 
 const FastWCProductAttributes = ( {
 	onChange,
 	product,
+	variant,
 	selected,
 } ) => {
-	const [attributes, setAttributes] = useState([]);
+	const [attKeys, setAttKeys] = useState([]);
+	const [labels, setLabels] = useState([]);
+	const [options, setOptions] = useState([]);
 
 	useEffect(
 		() => {
-			getProductAttributes( product )
+			getProductAttributes( product, variant )
 				.then( ( list ) => {
-					console.log( 'attributes', list );
+					const newOptions = {};
+					const newAttributes = {};
+
+					if ( list.attKeys && list.attKeys.length ) {
+						list.attKeys.map( ( attKey ) => {
+							if ( list.values[ attKey ] ) {
+								newAttributes[ attKey ] = list.values[ attKey ];
+								newOptions[ attKey ] = [
+									{
+										value: list.values[ attKey ],
+										label: list.values[ attKey ],
+									},
+								];
+							} else {
+								newOptions[ attKey ] = list.options[ attKey ];
+								if ( ! newAttributes[ attKey ] && list.options[ attKey ].length ) {
+									const option = list.options[ attKey ][0];
+									newAttributes[ attKey ] = option.value;
+								}
+							}
+						} );
+
+						onChange( newAttributes );
+
+						setAttKeys( list.attKeys );
+						setLabels( list.labels );
+					}
+
+					setOptions( newOptions );
 				} );
 		},
-		[ product ]
+		[
+			product,
+			variant,
+		]
 	);
+
+	const onAttributeChange = ( attKey, value ) => {
+		const newAttributes = { ...selected };
+		newAttributes[ attKey ] = value;
+		onChange( newAttributes );
+	};
+
+	let message = '';
+
+	if ( ! product ) {
+		message = __( 'Please select a product and a product variation to see the available options.' );
+	} else if ( ! variant ) {
+		message = __( 'Please select a product variation to see the available options.' );
+	}
 
 	return (
 		<div>
-			Attributes control
+			<h3>
+				{ __( 'Product Options:' ) }
+			</h3>
+			{ message &&
+				<div>{ message }</div>
+			}
+			{ attKeys && attKeys.map( ( attKey ) => (
+				<FastWCProductAttribute
+					key={ attKey }
+					attKey={ attKey }
+					label={ labels[ attKey ] }
+					options={ options[ attKey ] }
+					onChange={ onAttributeChange }
+					selected={ selected[ attKey ] ? selected[ attKey ] : '' }
+				/>
+			) ) }
 		</div>
-	)
-}
+	);
+};
 
 FastWCProductAttributes.propTypes = {
 	onChange: PropTypes.func.isRequired,
 	product: PropTypes.number,
-	selected: PropTypes.array,
+	variant: PropTypes.number,
+	selected: PropTypes.object,
 };
 
 FastWCProductAttributes.defaultProps = {
 	product: 0,
-	selected: [],
+	variant: 0,
+	selected: {},
 }
 
 export default FastWCProductAttributes;
