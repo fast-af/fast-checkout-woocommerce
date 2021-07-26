@@ -48,8 +48,8 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 			default: 1,
 		},
 		product_attributes: {
-			type: 'array',
-			default: [],
+			type: 'object',
+			default: {},
 		},
 	},
 
@@ -106,13 +106,12 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 							/>
 							<FastWCProductAttributes
 								onChange={ ( atts ) => {
-									console.log( atts );
-
 									setAttributes( {
 										product_attributes: atts,
 									} );
 								} }
 								product={ product_id }
+								variant={variant_id}
 								selected={ product_attributes }
 							/>
 						</PanelBody>
