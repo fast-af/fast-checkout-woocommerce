@@ -31,13 +31,11 @@ const FastWCProductAttributes = ( {
 					Object.keys( selected ).map( ( selectedKey ) => {
 						let availableValues = [];
 
-						if ( list.options[ selectedKey ].length ) {
-							availableValues = list.options[ selectedKey ].map( ( option ) => {
-								return option.value;
-							} );
+						if ( list.options && list.options[ selectedKey ] && list.options[ selectedKey ].length ) {
+							availableValues = list.options[ selectedKey ].map( ( option ) => option.value );
 						}
 
-						if ( list.attKeys.includes( selectedKey ) && availableValues.includes( selected[ selectedKey ] ) ) {
+						if ( list.attKeys && list.attKeys.includes( selectedKey ) && availableValues.includes( selected[ selectedKey ] ) ) {
 							newAttributes[ selectedKey ] = selected[ selectedKey ];
 						}
 					} );
