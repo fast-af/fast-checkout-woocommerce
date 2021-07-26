@@ -47,7 +47,7 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 			type: 'integer',
 			default: 1,
 		},
-		product_attributes: {
+		product_options: {
 			type: 'object',
 			default: {},
 		},
@@ -62,7 +62,7 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 			product_id,
 			variant_id,
 			quantity,
-			product_attributes,
+			product_options,
 		} = attributes;
 
 		return (
@@ -107,12 +107,12 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 							<FastWCProductAttributes
 								onChange={ ( atts ) => {
 									setAttributes( {
-										product_attributes: atts,
+										product_options: atts,
 									} );
 								} }
 								product={ product_id }
-								variant={variant_id}
-								selected={ product_attributes }
+								variant={ variant_id }
+								selected={ product_options }
 							/>
 						</PanelBody>
 					</Panel>

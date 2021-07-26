@@ -46,7 +46,7 @@ class Pdp extends Block {
 					'type'    => 'integer',
 					'default' => 1,
 				),
-				'product_attributes' => array(
+				'product_options' => array(
 					'type'    => 'object',
 					'default' => null,
 				),
