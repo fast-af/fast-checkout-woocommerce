@@ -2,9 +2,9 @@
  * Fast button backend component.
  */
 
-import './button.scss';
+import './index.scss';
 
-import icons from './icons.js';
+import icons from '../icons';
 
 const { __ } = wp.i18n;
 const { Icon } = wp.components;
