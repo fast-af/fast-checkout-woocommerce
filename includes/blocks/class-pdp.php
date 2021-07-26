@@ -46,6 +46,10 @@ class Pdp extends Block {
 					'type'    => 'integer',
 					'default' => 1,
 				),
+				'product_attributes' => array(
+					'type'    => 'object',
+					'default' => null,
+				),
 			),
 		);
 	}
