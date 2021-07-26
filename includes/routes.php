@@ -64,7 +64,7 @@ function fastwc_rest_api_init() {
 	// Register a route to load product attributes.
 	register_rest_route(
 		FASTWC_ROUTES_BASE,
-		'product/attributes/(?P<id>\d+)',
+		'product/attributes',
 		array(
 			'methods'             => 'GET',
 			'callback'            => 'fastwc_get_product_attributes',
