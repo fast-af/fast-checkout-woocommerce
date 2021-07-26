@@ -16,6 +16,8 @@ require_once FASTWC_PATH . 'includes/routes/shipping-zones.php';
 require_once FASTWC_PATH . 'includes/routes/plugin-info.php';
 // Provides an API that exposes product attributes.
 require_once FASTWC_PATH . 'includes/routes/product-attributes.php';
+// Provides an API that exposes orders with refunds.
+require_once FASTWC_PATH . 'includes/routes/refunds.php';
 
 /**
  * Register Fast Woocommerce routes for the REST API.
@@ -73,6 +75,19 @@ function fastwc_rest_api_init() {
 	);
 
 	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/shipping' );
+
+	// Register a route to get all orders with refunds.
+	register_rest_route(
+		FASTWC_ROUTES_BASE,
+		'refunds',
+		array(
+			'methods'             => 'GET',
+			'callback'            => 'fastwc_get_orders_with_refunds',
+			'permission_callback' => 'fastwc_api_permission_callback',
+		)
+	);
+
+	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/refunds' );
 
 	// Register a route to test the Authorization header.
 	register_rest_route(
