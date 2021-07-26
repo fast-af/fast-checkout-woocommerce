@@ -21,7 +21,6 @@ require_once FASTWC_PATH . 'includes/routes/class-order-post.php';
 require_once FASTWC_PATH . 'includes/routes/class-order-get.php';
 // Provides an API that exposes orders with refunds.
 require_once FASTWC_PATH . 'includes/routes/refunds.php';
-require_once FASTWC_PATH . 'includes/routes/plugin-info.php';
 // Provides an API that exposes product attributes.
 require_once FASTWC_PATH . 'includes/routes/product-attributes.php';
 
