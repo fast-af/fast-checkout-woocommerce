@@ -92,13 +92,17 @@ export const getProduct = ( productId ) => {
  * Get the list of non-variation attributes from a product retrieved using the WooCommerce Store API.
  *
  * @param {number} productId Product ID.
+ * @param {number} variantId Variant ID.
  */
-export const getProductAttributes = async ( productId ) => {
-	const attributes = await apiFetch( {
-		path: `/wc/fast/v1/product/attributes/${ productId }`,
-	} );
-
-	console.log( 'attributes', attributes );
+export const getProductAttributes = async ( productId, variantId ) => {
+	const path = addQueryArgs(
+		'/wc/fast/v1/product/attributes',
+		{
+			productId: productId,
+			variantId: variantId,
+		}
+	);
+	const attributes = await apiFetch( { path } );
 
 	return attributes;
 };
