@@ -64,6 +64,35 @@ function fastwc_admin_enqueue_scripts() {
 add_action( 'admin_enqueue_scripts', 'fastwc_admin_enqueue_scripts' );
 
 /**
+ * Load the styles in the head.
+ */
+function fastwc_wp_head() {
+	$fastwc_load_button_styles = get_option( FASTWC_SETTING_LOAD_BUTTON_STYLES, false );
+
+	if ( empty( $fastwc_load_button_styles ) ) {
+		return;
+	}
+
+	$button_styles = array(
+		'pdp'       => get_option( FASTWC_SETTING_PDP_BUTTON_STYLES, '' ),
+		'mini_cart' => get_option( FASTWC_SETTING_MINI_CART_BUTTON_STYLES, '' ),
+		'login'     => get_option( FASTWC_SETTING_LOGIN_BUTTON_STYLES, '' ),
+		'checkout'  => get_option( FASTWC_SETTING_CHECKOUT_BUTTON_STYLES, '' ),
+		'cart'      => get_option( FASTWC_SETTING_CART_BUTTON_STYLES, '' ),
+	);
+	?>
+<style>
+	<?php
+	foreach ( $button_styles as $button_style ) {
+		echo esc_html( $button_style ) . "\n";
+	}
+	?>
+</style>
+	<?php
+}
+add_action( 'wp_head', 'fastwc_wp_head' );
+
+/**
  * Enqueue block editor assets for the Gutenberg blocks.
  */
 function fastwc_enqueue_block_editor_assets() {
