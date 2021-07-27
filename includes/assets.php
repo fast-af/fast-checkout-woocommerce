@@ -73,20 +73,14 @@ function fastwc_wp_head() {
 		return;
 	}
 
-	$button_styles = array(
-		'pdp'       => get_option( FASTWC_SETTING_PDP_BUTTON_STYLES, '' ),
-		'mini_cart' => get_option( FASTWC_SETTING_MINI_CART_BUTTON_STYLES, '' ),
-		'login'     => get_option( FASTWC_SETTING_LOGIN_BUTTON_STYLES, '' ),
-		'checkout'  => get_option( FASTWC_SETTING_CHECKOUT_BUTTON_STYLES, '' ),
-		'cart'      => get_option( FASTWC_SETTING_CART_BUTTON_STYLES, '' ),
-	);
-	?>
-<style>
-	<?php
-	foreach ( $button_styles as $button_style ) {
-		echo esc_html( $button_style ) . "\n";
+	$button_styles = fastwc_get_button_styles();
+
+	if ( empty( $button_styles ) ) {
+		return;
 	}
 	?>
+<style>
+	<?php echo esc_html( $button_styles ); ?>
 </style>
 	<?php
 }
