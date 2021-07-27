@@ -85,6 +85,7 @@ function fastwc_admin_setup_sections() {
 
 	$section_name = 'fast_styles';
 	add_settings_section( $section_name, '', false, $section_name );
+	register_setting( $section_name, FASTWC_SETTING_LOAD_BUTTON_STYLES );
 	register_setting( $section_name, FASTWC_SETTING_PDP_BUTTON_STYLES );
 	register_setting( $section_name, FASTWC_SETTING_CART_BUTTON_STYLES );
 	register_setting( $section_name, FASTWC_SETTING_MINI_CART_BUTTON_STYLES );
@@ -125,6 +126,7 @@ function fastwc_admin_setup_fields() {
 
 	// Button style settings.
 	$settings_section = 'fast_styles';
+	add_settings_field( FASTWC_SETTING_LOAD_BUTTON_STYLES, __( 'Load Button Styles', 'fast' ), 'fastwc_load_button_styles', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_PDP_BUTTON_STYLES, __( 'Product page button styles', 'fast' ), 'fastwc_pdp_button_styles_content', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_CART_BUTTON_STYLES, __( 'Cart page button styles', 'fast' ), 'fastwc_cart_button_styles_content', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_MINI_CART_BUTTON_STYLES, __( 'Mini cart widget button styles', 'fast' ), 'fastwc_mini_cart_button_styles_content', $settings_section, $settings_section );
@@ -174,6 +176,29 @@ function fastwc_app_id_content() {
 			'name'        => 'fast_app_id',
 			'value'       => $fastwc_setting_app_id,
 			'description' => $description,
+		)
+	);
+}
+
+/**
+ * Renders a checkbox to set whether or not to load the button styles.
+ */
+function fastwc_load_button_styles() {
+	$fastwc_load_button_styles = get_option( FASTWC_SETTING_LOAD_BUTTON_STYLES, FASTWC_SETTING_LOAD_BUTTON_STYLES_NOT_SET );
+
+	if ( FASTWC_SETTING_LOAD_BUTTON_STYLES_NOT_SET === $fastwc_load_button_styles ) {
+		// If the option is FASTWC_SETTING_LOAD_BUTTON_STYLES_NOT_SET, then it hasn't yet been set. In this case, we
+		// want to configure it to true.
+		$fastwc_load_button_styles = '1';
+		update_option( FASTWC_SETTING_LOAD_BUTTON_STYLES, $fastwc_load_button_styles );
+	}
+
+	fastwc_settings_field_checkbox(
+		array(
+			'name'        => FASTWC_SETTING_LOAD_BUTTON_STYLES,
+			'current'     => $fastwc_load_button_styles,
+			'label'       => __( 'Load the button styles as configured in the settings.', 'fast' ),
+			'description' => __( 'When this box is checked, the styles configured below will be loaded to provide additional styling to the loading of the Fast buttons.', 'fast' ),
 		)
 	);
 }
@@ -498,7 +523,7 @@ function fastwc_onboarding_url_content() {
  */
 function fastwc_get_option_or_set_default( $option, $default ) {
 	$val = get_option( $option );
-	if ( $val ) {
+	if ( false === $val ) {
 		return $val;
 	}
 	update_option( $option, $default );
