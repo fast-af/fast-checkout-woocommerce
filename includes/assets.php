@@ -67,7 +67,7 @@ add_action( 'admin_enqueue_scripts', 'fastwc_admin_enqueue_scripts' );
  * Load the styles in the head.
  */
 function fastwc_wp_head() {
-	$fastwc_load_button_styles = get_option( FASTWC_SETTING_LOAD_BUTTON_STYLES, false );
+	$fastwc_load_button_styles = get_option( FASTWC_SETTING_LOAD_BUTTON_STYLES, true );
 
 	if ( empty( $fastwc_load_button_styles ) ) {
 		return;
