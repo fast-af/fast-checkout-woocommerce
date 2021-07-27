@@ -67,6 +67,12 @@ add_action( 'admin_enqueue_scripts', 'fastwc_admin_enqueue_scripts' );
  * Load the styles in the head.
  */
 function fastwc_wp_head() {
+	$fastwc_load_button_styles = get_option( FASTWC_SETTING_LOAD_BUTTON_STYLES, false );
+
+	if ( empty( $fastwc_load_button_styles ) ) {
+		return;
+	}
+
 	$button_styles = array(
 		'pdp'       => get_option( FASTWC_SETTING_PDP_BUTTON_STYLES, '' ),
 		'mini_cart' => get_option( FASTWC_SETTING_MINI_CART_BUTTON_STYLES, '' ),
