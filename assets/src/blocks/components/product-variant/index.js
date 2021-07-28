@@ -62,7 +62,7 @@ const FastWCProductVariant = ( {
 		[ product ]
 	);
 
-	const onSelect = ( variant ) => {
+	const handleSelect = ( variant ) => {
 		onChange( variant );
 	};
 
@@ -71,7 +71,7 @@ const FastWCProductVariant = ( {
 			<SelectControl
 				label={ __( 'Variation' ) }
 				options={ options }
-				onChange={ onSelect }
+				onChange={ handleSelect }
 				value={ variant }
 			/>
 		</div>
