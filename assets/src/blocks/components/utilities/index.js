@@ -12,6 +12,8 @@ const productsBase = '/wc/store/products';
 
 /**
  * Get the number of products in the WooCommerce store from the global wcSettings object.
+ *
+ * @returns {number}
  */
 const getProductCount = () => {
 	const wcSettings = window.wcSettings || {};
