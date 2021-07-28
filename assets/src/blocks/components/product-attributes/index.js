@@ -21,53 +21,56 @@ const FastWCProductAttributes = ( {
 	const [labels, setLabels] = useState([]);
 	const [options, setOptions] = useState([]);
 
+	const getAttributes = async () => {
+		const list = await getProductAttributes( product, variant );
+
+		const newOptions = {};
+		const newAttributes = {};
+
+		Object.keys( selected ).map( ( selectedKey ) => {
+			let availableValues = [];
+
+			if ( list.options?.[ selectedKey ]?.length ) {
+				availableValues = list.options[ selectedKey ].map( ( option ) => option.value );
+			}
+
+			if ( list.attKeys?.includes( selectedKey ) && availableValues.includes( selected[ selectedKey ] ) ) {
+				newAttributes[ selectedKey ] = selected[ selectedKey ];
+			}
+		} );
+
+		if ( list.attKeys?.length ) {
+			list.attKeys.map( ( attKey ) => {
+				if ( list.values[ attKey ] ) {
+					newAttributes[ attKey ] = list.values[ attKey ];
+					newOptions[ attKey ] = [
+						{
+							value: list.values[ attKey ],
+							label: list.values[ attKey ],
+						},
+					];
+				} else {
+					newOptions[ attKey ] = list.options[ attKey ];
+					if ( ! newAttributes[ attKey ] && list.options[ attKey ].length ) {
+						const option = list.options[ attKey ][0];
+						newAttributes[ attKey ] = option.value;
+					}
+				}
+			} );
+
+
+
+			setAttKeys( list.attKeys );
+			setLabels( list.labels );
+		}
+
+		onChange( newAttributes );
+		setOptions( newOptions );
+	};
+
 	useEffect(
 		() => {
-			getProductAttributes( product, variant )
-				.then( ( list ) => {
-					const newOptions = {};
-					const newAttributes = {};
-
-					Object.keys( selected ).map( ( selectedKey ) => {
-						let availableValues = [];
-
-						if ( list.options?.[ selectedKey ]?.length ) {
-							availableValues = list.options[ selectedKey ].map( ( option ) => option.value );
-						}
-
-						if ( list.attKeys?.includes( selectedKey ) && availableValues.includes( selected[ selectedKey ] ) ) {
-							newAttributes[ selectedKey ] = selected[ selectedKey ];
-						}
-					} );
-
-					if ( list.attKeys?.length ) {
-						list.attKeys.map( ( attKey ) => {
-							if ( list.values[ attKey ] ) {
-								newAttributes[ attKey ] = list.values[ attKey ];
-								newOptions[ attKey ] = [
-									{
-										value: list.values[ attKey ],
-										label: list.values[ attKey ],
-									},
-								];
-							} else {
-								newOptions[ attKey ] = list.options[ attKey ];
-								if ( ! newAttributes[ attKey ] && list.options[ attKey ].length ) {
-									const option = list.options[ attKey ][0];
-									newAttributes[ attKey ] = option.value;
-								}
-							}
-						} );
-
-
-
-						setAttKeys( list.attKeys );
-						setLabels( list.labels );
-					}
-
-					onChange( newAttributes );
-					setOptions( newOptions );
-				} );
+			getAttributes();
 		},
 		[
 			product,
