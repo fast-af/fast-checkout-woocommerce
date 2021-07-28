@@ -74,7 +74,7 @@ function fastwc_rest_api_init() {
 		)
 	);
 
-	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/shipping' );
+	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/product/attributes' );
 
 	// Register a route to get all orders with refunds.
 	register_rest_route(
