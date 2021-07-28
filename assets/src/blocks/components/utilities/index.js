@@ -27,6 +27,8 @@ const getProductCount = () => {
  * @param {Object} request          A query object with the list of selected products and search term.
  * @param {Array}  request.selected Currently selected products.
  * @param {string} request.search   Search string.
+ *
+ * @returns {Promise} Promise object resolves to a products formatted for use as options in a SelectControl component.
  */
 export const getProducts = (
 	{
@@ -81,6 +83,8 @@ export const getProducts = (
  * Get a promise that resolves to a product object from the WooCommerce Store API.
  *
  * @param {number} productId Id of the product to retrieve.
+ *
+ * @returns {Promise} Promise object resolves to a WooCommerce product object.
  */
 export const getProduct = ( productId ) => {
 	return apiFetch( {
@@ -93,6 +97,8 @@ export const getProduct = ( productId ) => {
  *
  * @param {number} productId Product ID.
  * @param {number} variantId Variant ID.
+ *
+ * @returns {Promise} Promise object resolves to a list of product attributes.
  */
 export const getProductAttributes = async ( productId, variantId ) => {
 	const path = addQueryArgs(
@@ -111,6 +117,8 @@ export const getProductAttributes = async ( productId, variantId ) => {
  * Get a promise that resolves to a list of variation objects from the WooCommerce Store API.
  *
  * @param {number} productId Product ID.
+ *
+ * @returns {Promise} Promise object resolves to a list of product variations.
  */
 export const getProductVariations = ( productId ) => {
 	return apiFetch( {
