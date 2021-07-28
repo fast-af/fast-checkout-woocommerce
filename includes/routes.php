@@ -70,7 +70,7 @@ function fastwc_rest_api_init() {
 		array(
 			'methods'             => 'GET',
 			'callback'            => 'fastwc_get_product_attributes',
-			'permission_callback' => 'fastwc_api_product_attributes_permission_callback',
+			'permission_callback' => 'fastwc_api_managewc_permission_callback',
 		)
 	);
 
@@ -127,7 +127,7 @@ function fastwc_api_permission_callback() {
  *
  * @return bool
  */
-function fastwc_api_product_attributes_permission_callback() {
+function fastwc_api_managewc_permission_callback() {
 	// Make sure an instance of WooCommerce is loaded.
 	// This will load the `WC_REST_Authentication` class, which
 	// handles the API consumer key and secret.
