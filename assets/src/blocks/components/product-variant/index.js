@@ -34,30 +34,33 @@ const FastWCProductVariant = ( {
 
 	const [options, setOptions] = useState( defaultOptions );
 
+	const getVariations = async () => {
+		const list = await getProductVariations( product );
+
+		let options = [];
+		let variantIds = [];
+
+		if ( list.length ) {
+			options = list.map( ( variant ) => ( {
+				label: variant.variation,
+				value: variant.id,
+			} ) );
+			variantIds = list.map( ( variant ) => variant.id );
+			options.unshift( selectVariationOption );
+		} else {
+			options = [ noVariantsOption ];
+		}
+
+		if ( ! variant || ! variantIds.includes( variant ) ) {
+			onChange( '' );
+		}
+
+		setOptions( options );
+	};
+
 	useEffect(
 		() => {
-			getProductVariations( product )
-				.then( ( list ) => {
-					let options = [];
-					let variantIds = [];
-
-					if ( list.length ) {
-						options = list.map( ( variant ) => ( {
-							label: variant.variation,
-							value: variant.id,
-						} ) );
-						variantIds = list.map( ( variant ) => variant.id );
-						options.unshift( selectVariationOption );
-					} else {
-						options = [ noVariantsOption ];
-					}
-
-					if ( ! variant || ! variantIds.includes( variant ) ) {
-						onChange( '' );
-					}
-
-					setOptions( options );
-				} );
+			getVariations();
 		},
 		[ product ]
 	);
