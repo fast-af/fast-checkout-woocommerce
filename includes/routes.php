@@ -54,6 +54,31 @@ function fastwc_rest_api_init() {
 
 	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/order/<id>' );
 
+	register_rest_route(
+		FASTWC_ROUTES_BASE,
+		'shipping',
+		array(
+			'methods'             => 'POST',
+			'callback'            => 'fastwc_calculate_shipping',
+			'permission_callback' => 'fastwc_api_permission_callback',
+		)
+	);
+
+	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/shipping' );
+
+	// Register a route to load product attributes.
+	register_rest_route(
+		FASTWC_ROUTES_BASE,
+		'product/attributes',
+		array(
+			'methods'             => 'GET',
+			'callback'            => 'fastwc_get_product_attributes',
+			'permission_callback' => 'fastwc_api_managewc_permission_callback',
+		)
+	);
+
+	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/shipping' );
+
 	// Register a route to get all orders with refunds.
 	register_rest_route(
 		FASTWC_ROUTES_BASE,
@@ -66,19 +91,6 @@ function fastwc_rest_api_init() {
 	);
 
 	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/refunds' );
-
-	// Register a route to load product attributes.
-	register_rest_route(
-		FASTWC_ROUTES_BASE,
-		'product/attributes',
-		array(
-			'methods'             => 'GET',
-			'callback'            => 'fastwc_get_product_attributes',
-			'permission_callback' => 'fastwc_api_product_attributes_permission_callback',
-		)
-	);
-
-	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/shipping' );
 
 	// Register a route to test the Authorization header.
 	register_rest_route(
@@ -118,7 +130,7 @@ function fastwc_api_permission_callback() {
  *
  * @return bool
  */
-function fastwc_api_product_attributes_permission_callback() {
+function fastwc_api_managewc_permission_callback() {
 	// Make sure an instance of WooCommerce is loaded.
 	// This will load the `WC_REST_Authentication` class, which
 	// handles the API consumer key and secret.

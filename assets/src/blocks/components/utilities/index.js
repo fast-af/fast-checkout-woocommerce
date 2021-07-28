@@ -3,7 +3,7 @@
  * Fast button block utilities.
  */
 
-import { flatten, uniqBy } from 'lodash';
+import { uniqBy } from 'lodash';
 
 const apiFetch = wp.apiFetch;
 const { addQueryArgs } = wp.url;
@@ -12,6 +12,8 @@ const productsBase = '/wc/store/products';
 
 /**
  * Get the number of products in the WooCommerce store from the global wcSettings object.
+ *
+ * @returns {number}
  */
 const getProductCount = () => {
 	const wcSettings = window.wcSettings || {};
@@ -27,8 +29,10 @@ const getProductCount = () => {
  * @param {Object} request          A query object with the list of selected products and search term.
  * @param {Array}  request.selected Currently selected products.
  * @param {string} request.search   Search string.
+ *
+ * @returns {Promise} Promise object resolves to a products formatted for use as options in a SelectControl component.
  */
-export const getProducts = (
+export const getProducts = async (
 	{
 		selected = 0,
 		search = '',
@@ -63,24 +67,23 @@ export const getProducts = (
 
 	requests.push( addQueryArgs( productsBase, queryArgs ) );
 
-	return Promise.all( requests.map( ( path ) => apiFetch( { path } ) ) )
-		.then( ( data ) => {
-			const products = uniqBy( flatten( data ), 'id' );
-			const list = products.map( ( product ) => ( {
-				label: product.name,
-				value: product.id,
-			} ) );
-			return list;
-		} )
-		.catch ( ( e ) => {
-			throw e;
-		} );
+	const data = await Promise.all( requests.map( ( path ) => apiFetch( { path } ) ) );
+
+	const products = uniqBy( data.flat(), 'id' );
+	const list = products.map( ( product ) => ( {
+		label: product.name,
+		value: product.id,
+	} ) );
+
+	return list;
 };
 
 /**
  * Get a promise that resolves to a product object from the WooCommerce Store API.
  *
  * @param {number} productId Id of the product to retrieve.
+ *
+ * @returns {Promise} Promise object resolves to a WooCommerce product object.
  */
 export const getProduct = ( productId ) => {
 	return apiFetch( {
@@ -93,6 +96,8 @@ export const getProduct = ( productId ) => {
  *
  * @param {number} productId Product ID.
  * @param {number} variantId Variant ID.
+ *
+ * @returns {Promise} Promise object resolves to a list of product attributes.
  */
 export const getProductAttributes = async ( productId, variantId ) => {
 	const path = addQueryArgs(
@@ -111,6 +116,8 @@ export const getProductAttributes = async ( productId, variantId ) => {
  * Get a promise that resolves to a list of variation objects from the WooCommerce Store API.
  *
  * @param {number} productId Product ID.
+ *
+ * @returns {Promise} Promise object resolves to a list of product variations.
  */
 export const getProductVariations = ( productId ) => {
 	return apiFetch( {

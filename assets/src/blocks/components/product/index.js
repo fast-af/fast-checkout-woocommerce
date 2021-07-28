@@ -32,27 +32,26 @@ const FastWCProductSearch = ( {
 		[] // Dependencies. Leave blank to avoid running more than once.
 	);
 
-	const onSearch = ( search ) => {
+	const handleSearch = ( search ) => {
 		setIsLoading( true );
 		fetchProducts( { selected: product, search } );
 	};
 
-	const fetchProducts = ( {
+	const fetchProducts = async ( {
 		selected,
 		search = '',
 	} ) => {
-		getProducts( { selected, search } )
-			.then( ( list ) => {
-				setProducts( list );
-				setIsLoading( false );
-			} );
+		const list = await getProducts( { selected, search } );
+
+		setProducts( list );
+		setIsLoading( false );
 	};
 
 	return (
 		<div>
 			<TextControl
 				label={ __( 'Product' ) }
-				onChange={ onSearch }
+				onChange={ handleSearch }
 				className="fastwc-product-search"
 				placeholder={ __( 'Search for product...' ) }
 			/>

@@ -34,35 +34,38 @@ const FastWCProductVariant = ( {
 
 	const [options, setOptions] = useState( defaultOptions );
 
+	const getVariations = async () => {
+		const list = await getProductVariations( product );
+
+		let options = [];
+		let variantIds = [];
+
+		if ( list.length ) {
+			options = list.map( ( variant ) => ( {
+				label: variant.variation,
+				value: variant.id,
+			} ) );
+			variantIds = list.map( ( variant ) => variant.id );
+			options.unshift( selectVariationOption );
+		} else {
+			options = [ noVariantsOption ];
+		}
+
+		if ( ! variant || ! variantIds.includes( variant ) ) {
+			onChange( '' );
+		}
+
+		setOptions( options );
+	};
+
 	useEffect(
 		() => {
-			getProductVariations( product )
-				.then( ( list ) => {
-					let options = [];
-					let variant_ids = [];
-
-					if ( list.length ) {
-						options = list.map( ( variant ) => ( {
-							label: variant.variation,
-							value: variant.id,
-						} ) );
-						variant_ids = list.map( ( variant ) => variant.id );
-						options.unshift( selectVariationOption );
-					} else {
-						options = [ noVariantsOption ];
-					}
-
-					if ( ! variant || ! variant_ids.includes( variant ) ) {
-						onChange( '' );
-					}
-
-					setOptions( options );
-				} );
+			getVariations();
 		},
 		[ product ]
 	);
 
-	const onSelect = ( variant ) => {
+	const handleSelect = ( variant ) => {
 		onChange( variant );
 	};
 
@@ -71,7 +74,7 @@ const FastWCProductVariant = ( {
 			<SelectControl
 				label={ __( 'Variation' ) }
 				options={ options }
-				onChange={ onSelect }
+				onChange={ handleSelect }
 				value={ variant }
 			/>
 		</div>
