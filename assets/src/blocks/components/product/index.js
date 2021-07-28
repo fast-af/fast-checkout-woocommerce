@@ -32,7 +32,7 @@ const FastWCProductSearch = ( {
 		[] // Dependencies. Leave blank to avoid running more than once.
 	);
 
-	const onSearch = ( search ) => {
+	const handleSearch = ( search ) => {
 		setIsLoading( true );
 		fetchProducts( { selected: product, search } );
 	};
@@ -52,7 +52,7 @@ const FastWCProductSearch = ( {
 		<div>
 			<TextControl
 				label={ __( 'Product' ) }
-				onChange={ onSearch }
+				onChange={ handleSearch }
 				className="fastwc-product-search"
 				placeholder={ __( 'Search for product...' ) }
 			/>
