@@ -75,7 +75,7 @@ const FastWCProductAttributes = ( {
 		]
 	);
 
-	const onAttributeChange = ( attKey, value ) => {
+	const handleAttributeChange = ( attKey, value ) => {
 		const newAttributes = { ...selected };
 		newAttributes[ attKey ] = value;
 		onChange( newAttributes );
@@ -103,7 +103,7 @@ const FastWCProductAttributes = ( {
 					attKey={ attKey }
 					label={ labels[ attKey ] }
 					options={ options[ attKey ] }
-					onChange={ onAttributeChange }
+					onChange={ handleAttributeChange }
 					selected={ selected[ attKey ] ? selected[ attKey ] : '' }
 				/>
 			) ) }
