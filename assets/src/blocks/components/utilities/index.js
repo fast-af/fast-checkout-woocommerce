@@ -32,7 +32,7 @@ const getProductCount = () => {
  *
  * @returns {Promise} Promise object resolves to a products formatted for use as options in a SelectControl component.
  */
-export const getProducts = (
+export const getProducts = async (
 	{
 		selected = 0,
 		search = '',
@@ -67,18 +67,15 @@ export const getProducts = (
 
 	requests.push( addQueryArgs( productsBase, queryArgs ) );
 
-	return Promise.all( requests.map( ( path ) => apiFetch( { path } ) ) )
-		.then( ( data ) => {
-			const products = uniqBy( data.flat(), 'id' );
-			const list = products.map( ( product ) => ( {
-				label: product.name,
-				value: product.id,
-			} ) );
-			return list;
-		} )
-		.catch ( ( e ) => {
-			throw e;
-		} );
+	const data = await Promise.all( requests.map( ( path ) => apiFetch( { path } ) ) );
+
+	const products = uniqBy( data.flat(), 'id' );
+	const list = products.map( ( product ) => ( {
+		label: product.name,
+		value: product.id,
+	} ) );
+
+	return list;
 };
 
 /**
