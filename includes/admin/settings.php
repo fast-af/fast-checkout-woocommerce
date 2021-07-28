@@ -523,7 +523,7 @@ function fastwc_onboarding_url_content() {
  */
 function fastwc_get_option_or_set_default( $option, $default ) {
 	$val = get_option( $option );
-	if ( false === $val ) {
+	if ( false !== $val ) {
 		return $val;
 	}
 	update_option( $option, $default );
