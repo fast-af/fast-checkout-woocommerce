@@ -37,15 +37,14 @@ const FastWCProductSearch = ( {
 		fetchProducts( { selected: product, search } );
 	};
 
-	const fetchProducts = ( {
+	const fetchProducts = async ( {
 		selected,
 		search = '',
 	} ) => {
-		getProducts( { selected, search } )
-			.then( ( list ) => {
-				setProducts( list );
-				setIsLoading( false );
-			} );
+		const list = await getProducts( { selected, search } );
+
+		setProducts( list );
+		setIsLoading( false );
 	};
 
 	return (
