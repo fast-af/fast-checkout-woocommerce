@@ -3,7 +3,7 @@
  * Fast button block utilities.
  */
 
-import { flatten, uniqBy } from 'lodash';
+import { uniqBy } from 'lodash';
 
 const apiFetch = wp.apiFetch;
 const { addQueryArgs } = wp.url;
@@ -65,7 +65,7 @@ export const getProducts = (
 
 	return Promise.all( requests.map( ( path ) => apiFetch( { path } ) ) )
 		.then( ( data ) => {
-			const products = uniqBy( flatten( data ), 'id' );
+			const products = uniqBy( data.flat(), 'id' );
 			const list = products.map( ( product ) => ( {
 				label: product.name,
 				value: product.id,
