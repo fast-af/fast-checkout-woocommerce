@@ -23,8 +23,8 @@ add_action( 'admin_init', 'fastwc_admin_setup_fields' );
  */
 function fastwc_admin_create_menu() {
 	// Add the menu item and page.
-	$page_title = 'Fast Settings';
-	$menu_title = 'Fast';
+	$page_title = __( 'Fast Settings', 'fast' );
+	$menu_title = __( 'Fast', 'fast' );
 	$capability = 'manage_options';
 	$slug       = 'fast';
 	$callback   = 'fastwc_settings_page_content';
@@ -32,6 +32,14 @@ function fastwc_admin_create_menu() {
 	$position   = 100;
 
 	add_menu_page( $page_title, $menu_title, $capability, $slug, $callback, $icon, $position );
+	add_submenu_page( $slug, $page_title, __( 'Settings', 'fast' ), $capability, $slug );
+	add_submenu_page(
+		$slug,
+		__( 'Fast Headless Checkout Links', 'fast' ), // Page title.
+		__( 'Headless Checkout', 'fast' ), // Menu title.
+		$capability, // Capability.
+		'edit.php?post_type=page' // Slug.
+	);
 }
 
 /**
