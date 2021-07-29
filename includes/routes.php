@@ -123,7 +123,7 @@ function fastwc_api_permission_callback() {
 }
 
 /**
- * REST API permissions callback for product attributes
+ * REST API permissions callback for product attributes.
  *
  * @return bool
  */
