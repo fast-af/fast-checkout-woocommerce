@@ -32,14 +32,20 @@ function fastwc_admin_create_menu() {
 	$position   = 100;
 
 	add_menu_page( $page_title, $menu_title, $capability, $slug, $callback, $icon, $position );
-	add_submenu_page( $slug, $page_title, __( 'Settings', 'fast' ), $capability, $slug );
-	add_submenu_page(
-		$slug,
-		__( 'Fast Headless Checkout Links', 'fast' ), // Page title.
-		__( 'Headless Checkout', 'fast' ), // Menu title.
-		$capability, // Capability.
-		'edit.php?post_type=page' // Slug.
-	);
+
+	if ( fastwc_gutenberg_is_active() ) {
+		// Add "Settings" submenu that points to the top-level menu item.
+		add_submenu_page( $slug, $page_title, __( 'Settings', 'fast' ), $capability, $slug );
+
+		// Add submenu that  points to the fastwc-headless-link post type.
+		add_submenu_page(
+			$slug,
+			__( 'Fast Headless Checkout Links', 'fast' ), // Page title.
+			__( 'Headless Checkout', 'fast' ), // Menu title.
+			$capability, // Capability.
+			'edit.php?post_type=page' // Slug.
+		);
+	}
 }
 
 /**
