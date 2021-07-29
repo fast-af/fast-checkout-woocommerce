@@ -2,8 +2,8 @@
  * Fast Checkout Cart Button.
  */
 
-import icons from '../components/icons.js';
-import FastButton from '../components/button.js';
+import icons from '../components/icons';
+import FastButton from '../components/button';
 
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;

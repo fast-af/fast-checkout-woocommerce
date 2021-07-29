@@ -50,9 +50,10 @@ class Product extends Widget {
 	public function form( $instance ) {
 		parent::form( $instance );
 
-		$product_id = isset( $instance['product_id'] ) && is_numeric( $instance['product_id'] ) ? $instance['product_id'] : 0;
-		$variant_id = isset( $instance['variant_id'] ) && is_numeric( $instance['variant_id'] ) ? $instance['variant_id'] : 0;
-		$quantity   = isset( $instance['quantity'] ) && is_numeric( $instance['quantity'] ) ? $instance['quantity'] : 1;
+		$product_id      = isset( $instance['product_id'] ) && is_numeric( $instance['product_id'] ) ? $instance['product_id'] : 0;
+		$variant_id      = isset( $instance['variant_id'] ) && is_numeric( $instance['variant_id'] ) ? $instance['variant_id'] : 0;
+		$quantity        = isset( $instance['quantity'] ) && is_numeric( $instance['quantity'] ) ? $instance['quantity'] : 1;
+		$product_options = isset( $instance['product_options'] ) ? $instance['product_options'] : '';
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_name( 'product_id' ) ); ?>"><?php esc_html_e( 'Product ID:', 'fast' ); ?></label>
@@ -85,6 +86,15 @@ class Product extends Widget {
 				value="<?php echo esc_attr( $quantity ); ?>"
 			/>
 		</p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_name( 'product_options' ) ); ?>"><?php esc_html_e( 'Product Options:', 'fast' ); ?></label>
+			<textarea
+				class="widefat"
+				id="<?php echo esc_attr( $this->get_field_id( 'product_options' ) ); ?>"
+				name="<?php echo esc_attr( $this->get_field_name( 'product_options' ) ); ?>"
+				><?php echo esc_textarea( $product_options ); ?></textarea>
+			<span class="description"><?php esc_html_e( 'The product options must be formatted as valid JSON.', 'fast' ); ?></span>
+		</p>
 		<?php
 	}
 
@@ -97,9 +107,10 @@ class Product extends Widget {
 	public function update( $new_instance, $old_instance ) {
 		$instance = parent::update( $new_instance, $old_instance );
 
-		$instance['product_id'] = isset( $new_instance['product_id'] ) && is_numeric( $new_instance['product_id'] ) ? $new_instance['product_id'] : 0;
-		$instance['variant_id'] = isset( $new_instance['variant_id'] ) && is_numeric( $new_instance['variant_id'] ) ? $new_instance['variant_id'] : 0;
-		$instance['quantity']   = isset( $new_instance['quantity'] ) && is_numeric( $new_instance['quantity'] ) ? $new_instance['quantity'] : 1;
+		$instance['product_id']      = isset( $new_instance['product_id'] ) && is_numeric( $new_instance['product_id'] ) ? $new_instance['product_id'] : 0;
+		$instance['variant_id']      = isset( $new_instance['variant_id'] ) && is_numeric( $new_instance['variant_id'] ) ? $new_instance['variant_id'] : 0;
+		$instance['quantity']        = isset( $new_instance['quantity'] ) && is_numeric( $new_instance['quantity'] ) ? $new_instance['quantity'] : 1;
+		$instance['product_options'] = isset( $new_instance['product_options'] ) ? fastwc_get_normalized_product_options( $new_instance['product_options'] ) : '';
 
 		return $instance;
 	}

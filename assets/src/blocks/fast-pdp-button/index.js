@@ -2,8 +2,11 @@
  * Fast Checkout PDP Button.
  */
 
-import icons from '../components/icons.js';
-import FastButton from '../components/button.js';
+import icons from '../components/icons';
+import FastButton from '../components/button';
+import FastWCProductSearch from '../components/product';
+import FastWCProductVariant from '../components/product-variant';
+import FastWCProductAttributes from '../components/product-attributes';
 
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
@@ -44,6 +47,10 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 			type: 'integer',
 			default: 1,
 		},
+		product_options: {
+			type: 'object',
+			default: {},
+		},
 	},
 
 	edit: ( props ) => {
@@ -55,6 +62,7 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 			product_id,
 			variant_id,
 			quantity,
+			product_options,
 		} = attributes;
 
 		return (
@@ -62,9 +70,7 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 				<InspectorControls key="fast-pdp-inspector-controls">
 					<Panel>
 						<PanelBody title={ __( 'Product Details' )}>
-							<TextControl
-								label={ __( 'Product ID' ) }
-								type="number"
+							<FastWCProductSearch
 								onChange={ ( value ) => {
 									const int = parseInt( value, 10 );
 
@@ -72,12 +78,9 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 										product_id: isNaN( int ) ? undefined : int,
 									} );
 								} }
-								value={ Number.isInteger( product_id ) ? product_id.toString( 10 ) : '0' }
-								step="1"
+								selected={ product_id }
 							/>
-							<TextControl
-								label={ __( 'Variation ID' ) }
-								type="number"
+							<FastWCProductVariant
 								onChange={ ( value ) => {
 									const int = parseInt( value, 10 );
 
@@ -85,8 +88,8 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 										variant_id: isNaN( int ) ? undefined : int,
 									} );
 								} }
-								value={ Number.isInteger( variant_id ) ? variant_id.toString( 10 ) : '0' }
-								step="1"
+								product={ product_id }
+								variant={ variant_id }
 							/>
 							<TextControl
 								label={ __( 'Quantity' ) }
@@ -100,6 +103,16 @@ registerBlockType( 'fastwc/fast-pdp-button', {
 								} }
 								value={ Number.isInteger( quantity ) ? quantity.toString( 10 ) : '1' }
 								step="1"
+							/>
+							<FastWCProductAttributes
+								onChange={ ( atts ) => {
+									setAttributes( {
+										product_options: atts,
+									} );
+								} }
+								product={ product_id }
+								variant={ variant_id }
+								selected={ product_options }
 							/>
 						</PanelBody>
 					</Panel>
