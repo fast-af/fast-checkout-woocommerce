@@ -5,6 +5,11 @@
  * @package fast
  */
 
+// Load the base post type class.
+require_once FASTWC_PATH . 'includes/post-types/class-post-type.php';
+//Load the headless checkout link post type.
+require_once FASTWC_PATH . 'includes/post-types/class-headless-checkout-link.php';
+
 /**
  * Register custom post types.
  */
