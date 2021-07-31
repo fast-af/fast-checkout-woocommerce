@@ -41,9 +41,9 @@ function fastwc_admin_create_menu() {
 		add_submenu_page(
 			$slug,
 			__( 'Fast Headless Checkout Links', 'fast' ), // Page title.
-			__( 'Headless Checkout', 'fast' ), // Menu title.
+			__( 'Headless Checkout Links', 'fast' ), // Menu title.
 			$capability, // Capability.
-			'edit.php?post_type=page' // Slug.
+			'edit.php?post_type=fastwc_headless_link' // Slug.
 		);
 	}
 }
