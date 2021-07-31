@@ -42,6 +42,29 @@ class Headless_Checkout_Link extends Post_Type {
 				// Flush the URL rewrite rules to account for the updated slug.
 				flush_rewrite_rules( false );
 			}
+
+			// Set it so that 
+			$fastwc_headless_post_type = \get_post_type_object( $this->name );
+			$fastwc_headless_post_type->template_lock = 'all';
+
+			// Register meta fields.
+			$meta_fields = array(
+				'fastwc_product_id'      => 'integer',
+				'fastwc_variant_id'      => 'integer',
+				'fastwc_quantity'        => 'integer',
+				'fastwc_product_options' => 'array',
+			);
+			foreach ( $meta_fields as $meta_field_key => $meta_field_type ) {
+				register_post_meta(
+					$this->name,
+					$meta_field_key,
+					array(
+						'show_in_rest' => true,
+						'single'       => true,
+						'type'         => $meta_field_type,
+					)
+				);
+			}
 		}
 	}
 
@@ -78,25 +101,29 @@ class Headless_Checkout_Link extends Post_Type {
 	protected function set_args() {
 		$this->slug = get_option( FASTWC_SETTING_HEADLESS_LINK_SLUG, FASTWC_DEFAULT_HEADLESS_LINK_SLUG );
 
+		// Add rewrite rules for the headless link URL's. The 'slug' is the part of the URL
+		// that preceeds the link slug. The link slug is unique to each checkout link.
+		// A link will be structured like this: https://www.example.com/{slug}/{link-slug}
 		$rewrite = array(
-			'slug'       => $headless_link_slug,
+			'slug'       => $this->slug,
 			'with_front' => true,
 			'pages'      => false,
 			'feeds'      => false,
 		);
-		$capabilities = array(
-			'edit_post'          => 'manage_woocommerce',
-			'read_post'          => 'read_post',
-			'delete_post'        => 'manage_woocommerce',
-			'edit_posts'         => 'manage_woocommerce',
-			'edit_others_posts'  => 'manage_woocommerce',
-			'publish_posts'      => 'manage_woocommerce',
-			'read_private_posts' => 'read_private_posts',
+
+		// Set the block template for the post type.
+		$template = array(
+			array(
+				'fastwc/fast-headless', // Block type name.
+				array(), // Default block attributes.
+			),
 		);
+
+		// Set the args for this post type.
 		$args = array(
 			'label'               => __( 'Fast Headless Checkout Link', 'fast' ),
 			'description'         => __( 'Headless checkout links for Fast Checkout for WooCommerce.', 'fast' ),
-			'supports'            => array( 'title', 'editor' ),
+			'supports'            => array( 'title', 'editor', 'custom-fields' ),
 			'taxonomies'          => array( 'product_cat', ' product_tag' ),
 			'show_in_menu'        => false,
 			'menu_icon'           => 'dashicons-admin-links',
@@ -105,11 +132,11 @@ class Headless_Checkout_Link extends Post_Type {
 			'exclude_from_search' => true,
 			'publicly_queryable'  => true,
 			'rewrite'             => $rewrite,
-			'capability_type'     => '',
-			'capabilities'        => $capabilities,
 			'show_in_rest'        => true,
+			'template'            => $template,
 		);
 
+		// Merge the args with the default args.
 		$this->args = wp_parse_args( $args, $this->args );
 	}
 
