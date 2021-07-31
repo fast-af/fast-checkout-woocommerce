@@ -93,7 +93,7 @@ const FastWCProductAttributes = ( {
 	}
 
 	return (
-		<div>
+		<div className="fastwc-product-attributes">
 			<h3>
 				{ __( 'Product Options:' ) }
 			</h3>
