@@ -16,3 +16,8 @@ import './fast-cart-button';
 // Fast Login Button
 // =================
 import './fast-login-button';
+
+// ============================
+// Fast Headless Link Generator
+// ============================
+import './fast-headless';
