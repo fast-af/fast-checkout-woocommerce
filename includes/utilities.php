@@ -230,6 +230,36 @@ function fastwc_product_is_subscription( $product_id ) {
 }
 
 /**
+ * Get Fast button styles.
+ *
+ * @param mixed|string|array $button_type Type of styles to get. Default to empty string for all.
+ *
+ * @return string
+ */
+function fastwc_get_button_styles( $button_type = '' ) {
+	$types = array(
+		'pdp'       => FASTWC_SETTING_PDP_BUTTON_STYLES,
+		'mini_cart' => FASTWC_SETTING_MINI_CART_BUTTON_STYLES,
+		'login'     => FASTWC_SETTING_LOGIN_BUTTON_STYLES,
+		'checkout'  => FASTWC_SETTING_CHECKOUT_BUTTON_STYLES,
+		'cart'      => FASTWC_SETTING_CART_BUTTON_STYLES,
+	);
+
+	// If $button_type is empty, use all button types.
+	$button_type = '' === $button_type ? array_keys( $types ) : $button_type;
+	$button_type = is_array( $button_type ) ? $button_type : array( $button_type );
+
+	$button_styles = array();
+	foreach ( $button_type as $type ) {
+		if ( in_array( $type, array_keys( $types ), true ) ) {
+			$button_styles[] = get_option( $types[ $type ], '' );
+		}
+	}
+
+	return implode( "\n", $button_styles );
+}
+
+/**
  * Check if a string is valid JSON.
  *
  * @param string $string The string to check.
@@ -258,34 +288,4 @@ function fastwc_get_normalized_product_options( $product_options ) {
 	}
 
 	return fastwc_is_json( $product_options ) ? $product_options : '';
-}
-
-/**
- * Get Fast button styles.
- *
- * @param mixed|string|array $button_type Type of styles to get. Default to empty string for all.
- *
- * @return string
- */
-function fastwc_get_button_styles( $button_type = '' ) {
-	$types = array(
-		'pdp'       => FASTWC_SETTING_PDP_BUTTON_STYLES,
-		'mini_cart' => FASTWC_SETTING_MINI_CART_BUTTON_STYLES,
-		'login'     => FASTWC_SETTING_LOGIN_BUTTON_STYLES,
-		'checkout'  => FASTWC_SETTING_CHECKOUT_BUTTON_STYLES,
-		'cart'      => FASTWC_SETTING_CART_BUTTON_STYLES,
-	);
-
-	// If $button_type is empty, use all button types.
-	$button_type = '' === $button_type ? array_keys( $types ) : $button_type;
-	$button_type = is_array( $button_type ) ? $button_type : array( $button_type );
-
-	$button_styles = array();
-	foreach ( $button_type as $type ) {
-		if ( in_array( $type, array_keys( $types ), true ) ) {
-			$button_styles[] = get_option( $types[ $type ], '' );
-		}
-	}
-
-	return implode( "\n", $button_styles );
 }
