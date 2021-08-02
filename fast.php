@@ -3,7 +3,7 @@
  * Plugin Name: Fast Checkout for WooCommerce
  * Plugin URI: https://fast.co
  * Description: Install the Checkout button that increases conversion, boosts sales and delights customers.
- * Version: 1.1.0
+ * Version: 1.1.1
  * License: GPLv2
  * License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  *
@@ -12,7 +12,7 @@
 
 define( 'FASTWC_PATH', plugin_dir_path( __FILE__ ) );
 define( 'FASTWC_URL', plugin_dir_url( __FILE__ ) );
-define( 'FASTWC_VERSION', '1.1.0' );
+define( 'FASTWC_VERSION', '1.1.1' );
 
 // WooCommerce version utilities.
 require_once FASTWC_PATH . 'includes/version.php';
