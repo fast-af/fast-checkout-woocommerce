@@ -2,9 +2,9 @@
 Contributors: fastaf, corywebb
 Tags: fast, fast checkout, checkout, woocommerce, woocommerce payment, woocommerce checkout, quick checkout, 1 click checkout, one click checkout
 Requires at least: 5.1
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 7.2
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
@@ -34,6 +34,12 @@ Fast replaces your current payment processor. You can see our fee schedule, simi
 
  
 == Changelog ==
+
+= 1.1.1 =
+* Add API endpoint to support partial order refunds.
+* Update how button styles are loaded.
+* Add ability to include product options attribute on Fast Checkout product buttons.
+* Add improvements to Fast Checkout product button Gutenberg block UI.
 
 = 1.1.0 =
 * Add widgets to display the Fast Checkout and Fast Login buttons.
