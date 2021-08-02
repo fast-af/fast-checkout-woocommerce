@@ -64,6 +64,29 @@ function fastwc_admin_enqueue_scripts() {
 add_action( 'admin_enqueue_scripts', 'fastwc_admin_enqueue_scripts' );
 
 /**
+ * Load the styles in the head.
+ */
+function fastwc_wp_head() {
+	$fastwc_load_button_styles = get_option( FASTWC_SETTING_LOAD_BUTTON_STYLES, true );
+
+	if ( empty( $fastwc_load_button_styles ) ) {
+		return;
+	}
+
+	$button_styles = fastwc_get_button_styles();
+
+	if ( empty( $button_styles ) ) {
+		return;
+	}
+	?>
+<style>
+	<?php echo esc_html( $button_styles ); ?>
+</style>
+	<?php
+}
+add_action( 'wp_head', 'fastwc_wp_head' );
+
+/**
  * Enqueue block editor assets for the Gutenberg blocks.
  */
 function fastwc_enqueue_block_editor_assets() {
