@@ -1,0 +1,41 @@
+/**
+ * Product search control styles.
+ */
+
+.fastwc-product-search[class] {
+	margin-bottom: 0;
+
+	> div[class] {
+		margin-bottom: 0;
+	}
+}
+
+.fastwc-product-search--products-wrapper {
+	width: 100%;
+	height: auto;
+	max-height: 140px;
+	overflow-y: scroll;
+	margin-bottom: 10px;
+	border: 1px solid #c3c4c7;
+	border-top: 0;
+	position: relative;
+	left: 1px;
+
+	> div[class]:last-child {
+		margin-bottom: 0;
+	}
+
+	.components-radio-control__option[class] {
+		padding: 6px;
+		margin: 0;
+		border-bottom: 1px solid #c3c4c7;
+
+		&:last-child {
+			border-bottom: 0;
+		}
+	}
+}
+
+.fastwc-product-search--loading {
+	padding: 6px;
+}
