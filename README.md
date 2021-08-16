@@ -1,5 +1,5 @@
 # Fast Checkout for WooCommerce
-Official Fast GitHub repository for Fast Checkout for WooCommerce WordPress plugin. Our plugin is currently being prepared for submission to the WordPress plugin directory. Upon approval, you will be able to directly install and update our plugin from within the WordPress admin dashboard. This is the preferred manner to ensure easy future updates.
+Official GitHub repository for Fast Checkout for WooCommerce WordPress plugin. Our plugin is available in the WordPress plugin directory, which enables you to directly install and update the plugin from within your WordPress admin dashboard. This is the preferred manner to ensure easy future updates.
 
 ## Navigation
 * [Getting Started](#getting-started-with-fast-checkout-for-woocommerce)
@@ -14,7 +14,6 @@ Official Fast GitHub repository for Fast Checkout for WooCommerce WordPress plug
 
 * [About Fast Checkout](#-about-fast-checkout)
 * [Common Questions](#common-questions)
-* [Subscribe to Plugin Update Notifications](#%EF%B8%8F-subscribe-to-email-updates)
 * [Share Your Feedback](#-share-your-feedback)
 * [Engage in Discussions](#-engage-in-discussions)
 
@@ -30,11 +29,6 @@ In addition to skyrocketing conversion, Fast delights your customers by letting 
 ### ❓Common Questions
 **How much does Fast cost?** 
 Fast replaces your current payment gateway. [View our current pricing](https://www.fast.co/pricing)
-
-### ✉️ Subscribe to Email Updates
-[Subscribe to Fast Devs substack](https://fastdevs.substack.com/) to be notified via email of updates to our plugin. No spam, just important product updates from Fast. 
-
-You can also follow us on Twitter for updates, [@Fast_Devs](https://twitter.com/fast_devs).
 
 ### 📣 Share Your Feedback
 If you feel there is something missing from our documentation, please help us by [creating an issue](https://github.com/fast-af/fast-checkout-woocommerce/issues/new) here in GitHub. We would love to hear how we can make our documentation and product better.
