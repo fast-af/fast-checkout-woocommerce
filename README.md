@@ -1,5 +1,5 @@
 # Fast Checkout for WooCommerce
-Official GitHub repository for Fast Checkout for WooCommerce WordPress plugin. Our plugin is currently being prepared for submission to the WordPress plugin directory. Upon approval, you will be able to directly install and update our plugin from within the WordPress admin dashboard. This is the preferred manner to ensure easy future updates.
+Official Fast GitHub repository for Fast Checkout for WooCommerce WordPress plugin. Our plugin is currently being prepared for submission to the WordPress plugin directory. Upon approval, you will be able to directly install and update our plugin from within the WordPress admin dashboard. This is the preferred manner to ensure easy future updates.
 
 ## Navigation
 * [Getting Started](#getting-started-with-fast-checkout-for-woocommerce)
