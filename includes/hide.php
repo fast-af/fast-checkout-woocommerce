@@ -204,13 +204,13 @@ add_filter( 'fastwc_should_hide_pdp_checkout_button', 'fastwc_should_hide_pdp_bu
 function fastwc_should_hide_pdp_button_for_out_of_stock_product( $should_hide, $product ) {
 
 	if ( ! $should_hide ) {
-		$stock_status = method_exists( $product, 'get_stock_status' ) ? $product->get_stock_status : '';
+		$stock_status = method_exists( $product, 'get_stock_status' ) ? $product->get_stock_status() : '';
 
 		if ( 'outofstock' === $stock_status ) {
 			$should_hide = true;
 		}
 
-		fastwc_log_info( 'PDP button' . ( $should_hide ? '' : ' not' ) . ' hidden for out of stock product: ' . $product_id );
+		fastwc_log_info( 'PDP button' . ( $should_hide ? '' : ' not' ) . ' hidden for out of stock product: ' . $product->get_id() );
 	}
 
 	return $should_hide;
