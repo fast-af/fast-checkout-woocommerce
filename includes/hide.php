@@ -204,7 +204,8 @@ add_filter( 'fastwc_should_hide_pdp_checkout_button', 'fastwc_should_hide_pdp_bu
 function fastwc_should_hide_pdp_button_for_out_of_stock_product( $should_hide, $product ) {
 
 	if ( ! $should_hide ) {
-		$stock_status = method_exists( $product, 'get_stock_status' ) ? $product->get_stock_status : '';
+		$stock_status = method_exists( $product, 'get_stock_status' ) ? $product->get_stock_status() : '';
+		$product_id   = method_exists( $product, 'get_id' ) ? $product->get_id() : 0;
 
 		if ( 'outofstock' === $stock_status ) {
 			$should_hide = true;
@@ -232,6 +233,8 @@ function fastwc_should_hide_pdp_button_for_external_product( $should_hide, $prod
 			$should_hide = true;
 		}
 
+		$product_id = method_exists( $product, 'get_id' ) ? $product->get_id() : 0;
+
 		fastwc_log_info( 'PDP button' . ( $should_hide ? '' : ' not' ) . ' hidden for external product: ' . $product_id );
 	}
 
@@ -250,6 +253,7 @@ function fastwc_should_hide_cart_button_for_product( $should_hide ) {
 
 	if ( ! $should_hide ) {
 		$fastwc_hidden_products = fastwc_get_products_to_hide_buttons();
+		$product_id             = 0;
 
 		if ( ! empty( WC()->cart ) ) {
 			$cart = WC()->cart->get_cart();
@@ -311,7 +315,7 @@ function fastwc_should_hide_cart_button_because_unsupported_products( $should_hi
 			}
 		}
 
-		fastwc_log_info( 'Cart button' . ( $should_hide ? '' : ' not' ) . ' hidden for unsupported_product product' . ( ! empty( $unsupported_product ) ? ': ' . $product_id : '.' ) );
+		fastwc_log_info( 'Cart button' . ( $should_hide ? '' : ' not' ) . ' hidden for unsupported product' . ( ! empty( $unsupported_product ) ? ': ' . $unsupported_product : '.' ) );
 	}
 
 	return $should_hide;
