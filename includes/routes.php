@@ -16,7 +16,6 @@ require_once FASTWC_PATH . 'includes/routes/class-shipping.php';
 require_once FASTWC_PATH . 'includes/routes/class-shipping-zones.php';
 // Provides an API that exposes plugin info.
 require_once FASTWC_PATH . 'includes/routes/class-plugin-info.php';
-require_once FASTWC_PATH . 'includes/routes/plugin-info.php';
 // Provides an API that exposes product attributes.
 require_once FASTWC_PATH . 'includes/routes/product-attributes.php';
 // Provides an API that exposes orders with refunds.
