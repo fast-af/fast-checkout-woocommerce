@@ -11,8 +11,11 @@
  * @return bool
  */
 function fastwc_woocommerce_is_active() {
-	$active_plugins = get_option( 'active_plugins', array() );
-	$wc_is_active   = in_array( 'woocommerce/woocommerce.php', $active_plugins, true );
+	if ( ! function_exists( 'is_plugin_active' ) ) {
+		require_once ABSPATH . '/wp-admin/includes/plugin.php';
+	}
+
+	$wc_is_active = is_plugin_active( 'woocommerce/woocommerce.php' );
 
 	if ( ! $wc_is_active ) {
 		// Add an admin notice that WooCommerce must be active in order for Fast to work.
