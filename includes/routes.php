@@ -16,6 +16,11 @@ require_once FASTWC_PATH . 'includes/routes/class-shipping.php';
 require_once FASTWC_PATH . 'includes/routes/class-shipping-zones.php';
 // Provides an API that exposes plugin info.
 require_once FASTWC_PATH . 'includes/routes/class-plugin-info.php';
+require_once FASTWC_PATH . 'includes/routes/plugin-info.php';
+// Provides an API that exposes product attributes.
+require_once FASTWC_PATH . 'includes/routes/product-attributes.php';
+// Provides an API that exposes orders with refunds.
+require_once FASTWC_PATH . 'includes/routes/refunds.php';
 
 /**
  * Register Fast Woocommerce routes for the REST API.
@@ -36,6 +41,32 @@ function fastwc_rest_api_init() {
 	new \FastWC\Routes\Shipping();
 
 	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/shipping' );
+
+	// Register a route to load product attributes.
+	register_rest_route(
+		FASTWC_ROUTES_BASE,
+		'product/attributes',
+		array(
+			'methods'             => 'GET',
+			'callback'            => 'fastwc_get_product_attributes',
+			'permission_callback' => 'fastwc_api_managewc_permission_callback',
+		)
+	);
+
+	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/product/attributes' );
+
+	// Register a route to get all orders with refunds.
+	register_rest_route(
+		FASTWC_ROUTES_BASE,
+		'refunds',
+		array(
+			'methods'             => 'GET',
+			'callback'            => 'fastwc_get_orders_with_refunds',
+			'permission_callback' => 'fastwc_api_permission_callback',
+		)
+	);
+
+	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/refunds' );
 
 	// Register a route to test the Authorization header.
 	register_rest_route(
@@ -66,6 +97,24 @@ function fastwc_api_permission_callback() {
 	$has_permission = current_user_can( 'manage_options' );
 
 	fastwc_log_info( 'API Permission Callback: ' . ( $has_permission ? 'granted' : 'denied' ) );
+
+	return $has_permission;
+}
+
+/**
+ * REST API permissions callback for product attributes
+ *
+ * @return bool
+ */
+function fastwc_api_managewc_permission_callback() {
+	// Make sure an instance of WooCommerce is loaded.
+	// This will load the `WC_REST_Authentication` class, which
+	// handles the API consumer key and secret.
+	WC();
+
+	$has_permission = current_user_can( 'manage_woocommerce' );
+
+	fastwc_log_info( 'API Product Attributes Permission Callback: ' . ( $has_permission ? 'granted' : 'denied' ) );
 
 	return $has_permission;
 }
