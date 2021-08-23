@@ -13,6 +13,38 @@ define( 'FASTWC_OPTION_DISABLED_WEBHOOKS', 'fastwc_disabled_webhooks' );
  * @param int $webhook_id The ID of the webhook that was disabled.
  */
 function fastwc_woocommerce_webhook_disabled_due_delivery_failures( $webhook_id ) {
+	$webhook = wc_get_webhook( $webhook_id );
+
+	if ( fastwc_is_fast_webhook( $webhook ) ) {
+		fastwc_log_disabled_webhook( $webhook );
+	}
+}
+add_action( 'woocommerce_webhook_disabled_due_delivery_failures', 'fastwc_woocommerce_webhook_disabled_due_delivery_failures' );
+
+/**
+ * Handle the action when a webhook is saved to see if the webook was disabled.
+ *
+ * @param int $webhook_id The ID of the webhook that was saved.
+ */
+function fastwc_woocommerce_webhook_options_save( $webhook_id ) {
+	$webhook = wc_get_webhook( $webhook_id );
+
+	// If the webhook is a Fast webhook and disabled, log it.
+	if ( fastwc_is_fast_webhook( $webhook ) && 'disabled' === $webhook->get_status() ) {
+		fastwc_log_disabled_webhook( $webhook );
+	}
+
+	// Get the list of disabled webhooks, and remove active webhooks from that list.
+	fastwc_get_disabled_webhooks();
+}
+add_action( 'woocommerce_webhook_options_save', 'fastwc_woocommerce_webhook_options_save' );
+
+/**
+ * Check if the webhook is a fast webhook.
+ *
+ * @param WC_Webhook $webhook The webhook to check.
+ */
+function fastwc_is_fast_webhook( $webhook ) {
 	$fast_app_id   = fastwc_get_app_id();
 	$fast_webhooks = array(
 		'order.deleted',
@@ -23,18 +55,17 @@ function fastwc_woocommerce_webhook_disabled_due_delivery_failures( $webhook_id 
 		'product.created',
 	);
 
-	$webhook = wc_get_webhook( $webhook_id );
-
 	// First, make sure that the webhook is a Fast webhook.
 	if (
 		! empty( $webhook )
 		&& in_array( $webhook->get_topic(), $fast_webhooks, true )
 		&& strpos( $webhook->get_delivery_url(), $fast_app_id )
 	) {
-		fastwc_log_disabled_webhook( $webhook );
+		return true;
 	}
+
+	return false;
 }
-add_action( 'woocommerce_webhook_disabled_due_delivery_failures', 'fastwc_woocommerce_webhook_disabled_due_delivery_failures' );
 
 /**
  * Fetch the list of disabled webhooks.
