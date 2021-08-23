@@ -8,7 +8,7 @@
 /**
  * 
  */
-function fastwc_route_get_webhooks_status() {
+function fastwc_route_get_disabled_webhooks() {
     $webhook_ids = fastwc_get_disabled_webhooks();
     $webhooks    = array();
 
