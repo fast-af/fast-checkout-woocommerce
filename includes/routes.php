@@ -23,6 +23,8 @@ require_once FASTWC_PATH . 'includes/routes/class-order-get.php';
 require_once FASTWC_PATH . 'includes/routes/refunds.php';
 // Provides an API that exposes product attributes.
 require_once FASTWC_PATH . 'includes/routes/product-attributes.php';
+// Provides an API that exposes a list of disabled Fast webhooks.
+require_once FASTWC_PATH . 'includes/routes/webhooks.php';
 
 /**
  * Register Fast Woocommerce routes for the REST API.
@@ -74,6 +76,19 @@ function fastwc_rest_api_init() {
 		array(
 			'methods'             => 'GET',
 			'callback'            => 'fastwc_get_orders_with_refunds',
+			'permission_callback' => 'fastwc_api_permission_callback',
+		)
+	);
+
+	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/refunds' );
+
+	// Register a route to get all disabled Fast webhooks.
+	register_rest_route(
+		FASTWC_ROUTES_BASE,
+		'webhooks',
+		array(
+			'methods'             => 'GET',
+			'callback'            => 'fastwc_route_get_disabled_webhooks',
 			'permission_callback' => 'fastwc_api_permission_callback',
 		)
 	);
