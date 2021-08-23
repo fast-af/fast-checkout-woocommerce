@@ -6,7 +6,7 @@
  */
 
 /**
- * 
+ * Route handler to return a list of disabled webhooks.
  */
 function fastwc_route_get_disabled_webhooks() {
     $webhook_ids = fastwc_get_disabled_webhooks();
