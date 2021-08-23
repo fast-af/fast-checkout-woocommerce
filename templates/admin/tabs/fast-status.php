@@ -39,11 +39,12 @@ $fastwc_test_mode_status  = empty( $fastwc_test_mode ) ? $status_disabled : $sta
 	<?php if ( empty( $fastwc_disabled_webhooks ) ) : ?>
 		<p><?php esc_html_e( 'All Fast webhooks are enabled.', 'fast' ); ?></p>
 	<?php else : ?>
-		<p><?php esc_html_e( 'The following Fast webhooks are disabled', 'fast' ); ?>:</p>
+		<p><?php esc_html_e( 'The following Fast WooCommerce webhooks are disabled', 'fast' ); ?>:</p>
 		<ul class="ul-disc">
 		<?php foreach ( $fastwc_disabled_webhooks as $webhook_topic => $webhook_id ) : ?>
 			<li><?php echo esc_html( $webhook_topic ); ?></li>
 		<?php endforeach ?>
 		</ul>
 	<?php endif; ?>
+	<p><a href="<?php echo esc_url( admin_url( 'admin.php?page=wc-settings&tab=advanced&section=webhooks' ) ); ?>"><?php esc_html_e( 'View all WooCommerce webhooks', 'fast' ); ?></a></p>
 </div>
