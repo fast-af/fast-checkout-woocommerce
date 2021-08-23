@@ -40,7 +40,7 @@ $fastwc_test_mode_status  = empty( $fastwc_test_mode ) ? $status_disabled : $sta
 		<p><?php esc_html_e( 'All Fast webhooks are enabled.', 'fast' ); ?></p>
 	<?php else : ?>
 		<p><?php esc_html_e( 'The following Fast webhooks are disabled', 'fast' ); ?>:</p>
-		<ul>
+		<ul class="ul-disc">
 		<?php foreach ( $fastwc_disabled_webhooks as $webhook_topic => $webhook_id ) : ?>
 			<li><?php echo esc_html( $webhook_topic ); ?></li>
 		<?php endforeach ?>
