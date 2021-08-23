@@ -55,6 +55,7 @@ function fastwc_get_settings_tabs() {
 		'fast_options'   => __( 'Options', 'fast' ),
 		'fast_test_mode' => __( 'Test Mode', 'fast' ),
 		'fast_support'   => __( 'Support', 'fast' ),
+		'fast_status'    => __( 'Status', 'fast' ),
 	);
 }
 
