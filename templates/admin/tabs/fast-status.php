@@ -13,10 +13,10 @@ $fastwc_disabled_webhooks = fastwc_get_disabled_webhooks();
 $status_enabled  = __( 'enabled', 'fast' );
 $status_disabled = __( 'disabled', 'fast' );
 
-$fastwc_debug_mode_status = empty( $fastwc_debug_mode ) ? $status_enabled : $status_disabled;
-$fastwc_debug_mode_class  = empty( $fastwc_debug_mode ) ? 'yes-alt' : 'dismiss';
-$fastwc_test_mode_status  = empty( $fastwc_test_mode ) ? $status_enabled : $status_disabled;
-$fastwc_test_mode_class   = empty( $fastwc_test_mode ) ? 'yes-alt' : 'dismiss';
+$fastwc_debug_mode_status = empty( $fastwc_debug_mode ) ? $status_disabled : $status_enabled;
+$fastwc_debug_mode_class  = empty( $fastwc_debug_mode ) ? 'dismiss' : 'yes-alt';
+$fastwc_test_mode_status  = empty( $fastwc_test_mode ) ? $status_disabled : $status_enabled;
+$fastwc_test_mode_class   = empty( $fastwc_test_mode ) ? 'dismiss' : 'yes-alt';
 ?>
 
 <div class="fast-status">
