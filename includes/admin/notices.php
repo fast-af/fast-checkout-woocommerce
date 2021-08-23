@@ -63,5 +63,5 @@ function fastwc_settings_admin_notice_debug_mode() {
 function fastwc_settings_admin_notice_disabled_webhooks() {
 	$fastwc_disabled_webhooks = fastwc_get_disabled_webhooks();
 
-	fastwc_admin_notice( __( 'Some WooCommerce webhooks used by Fast Checkout for WooCommerce are disabled.', 'fast' ) );
+	fastwc_admin_notice( __( 'One or more WooCommerce webhooks used by Fast Checkout for WooCommerce are disabled.', 'fast' ) );
 }
