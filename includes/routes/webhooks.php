@@ -16,7 +16,7 @@ function fastwc_route_get_disabled_webhooks() {
         $webhook = wc_get_webhook( $webhook_id );
 
         if ( ! empty( $webhook ) ) {
-            $webhooks[] = $webhook;
+            $webhooks[] = $webhook->get_data();
         }
     }
 
