@@ -22,7 +22,7 @@ function fastwc_woocommerce_webhook_disabled_due_delivery_failures( $webhook_id 
 add_action( 'woocommerce_webhook_disabled_due_delivery_failures', 'fastwc_woocommerce_webhook_disabled_due_delivery_failures' );
 
 /**
- * Handle the action when a webhook is saved to see if the webook was disabled.
+ * Handle the action when a webhook is saved to see if the webhook was disabled.
  *
  * @param int $webhook_id The ID of the webhook that was saved.
  */
@@ -77,11 +77,11 @@ function fastwc_get_disabled_webhooks() {
 
 	if ( ! empty( $disabled_webhooks ) ) {
 		// Make sure that each webhook is still disabled.
-		foreach ( $disabled_webhooks as $webook_topic => $webhook_id ) {
+		foreach ( $disabled_webhooks as $webhook_topic => $webhook_id ) {
 			$webhook = wc_get_webhook( $webhook_id );
 
 			if ( ! empty( $webhook ) && 'disabled' !== $webhook->get_status() ) {
-				unset( $disabled_webhooks[ $webook_topic ] );
+				unset( $disabled_webhooks[ $webhook_topic ] );
 			}
 		}
 	}
