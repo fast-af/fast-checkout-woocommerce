@@ -60,7 +60,7 @@ function fastwc_settings_admin_notice_debug_mode() {
 /**
  * Print the Disabled Webhooks admin notice.
  */
-function fastwc_settings_admin_notice_debug_mode() {
+function fastwc_settings_admin_notice_disabled_webhooks() {
 	$fastwc_disabled_webhooks = fastwc_get_disabled_webhooks();
 
 	fastwc_admin_notice( __( 'Fast Checkout for WooCommerce has disabled webhooks.', 'fast' ) );

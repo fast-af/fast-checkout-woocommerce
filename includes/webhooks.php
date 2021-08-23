@@ -30,7 +30,7 @@ function fastwc_woocommerce_webhook_disabled_due_delivery_failures( $webhook_id 
 		! empty( $webhook )
 		&& in_array( $webhook->get_topic(), $fast_webhooks, true )
 		&& strpos( $webhook->get_delivery_url(), $fast_app_id )
-	} {
+	) {
 		fastwc_log_disabled_webhook( $webhook );
 	}
 }
@@ -44,7 +44,7 @@ add_action( 'woocommerce_webhook_disabled_due_delivery_failures', 'fastwc_woocom
 function fastwc_get_disabled_webhooks() {
 	$disabled_webhooks = get_option( FASTWC_OPTION_DISABLED_WEBHOOKS, array() );
 
-	if ( ! emtpy( $disabled_webhooks ) ) {
+	if ( ! empty( $disabled_webhooks ) ) {
 		// Make sure that each webhook is still disabled.
 		foreach ( $disabled_webhooks as $webook_topic => $webhook_id ) {
 			$webhook = wc_get_webhook( $webhook_id );
