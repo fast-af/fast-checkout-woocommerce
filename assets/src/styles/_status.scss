@@ -4,4 +4,12 @@
 
 .fast-status {
 	padding-bottom: 40px;
+
+    .dashicons-dismiss:before {
+        color: $fast-color-notice-error;
+    }
+
+    .dashicons-yes-alt:before {
+        color: $fast-color-notice-success;
+    }
 }
