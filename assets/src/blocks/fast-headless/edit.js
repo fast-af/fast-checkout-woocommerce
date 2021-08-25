@@ -81,7 +81,7 @@ const edit = ( props ) => {
 			productId: getMeta( metaKeys.productId, defaultValues.productId ),
 			variantId: getMeta( metaKeys.variantId, defaultValues.variantId ),
 			quantity: getMeta( metaKeys.quantity, defaultValues.quantity ),
-			productOptions: getMeta( metaKeys.productOptions, defaultValues.productOptions ),
+			productOptions: JSON.parse( getMeta( metaKeys.productOptions, defaultValues.productOptions ) ),
 		};
 
 		generateFastLink( newAttributes );
@@ -171,7 +171,7 @@ const edit = ( props ) => {
 			/>
 			<FastWCProductAttributes
 				onChange={ ( atts ) => {
-					setMeta( metaKeys.productOptions, atts );
+					setMeta( metaKeys.productOptions, JSON.stringify( atts ) );
 					setAttributes( { productOptions: atts } );
 				} }
 				product={ productId }
