@@ -22,6 +22,13 @@ class Product_Attributes extends Base {
 	protected $route = 'product/attributes';
 
 	/**
+	 * Permission callback.
+	 *
+	 * @var callable
+	 */
+	protected $permission_callback = 'fastwc_api_managewc_permission_callback';
+
+	/**
 	 * Utility to get information on installed plugins.
 	 *
 	 * @param WP_REST_Request $request JSON request for shipping endpoint.
