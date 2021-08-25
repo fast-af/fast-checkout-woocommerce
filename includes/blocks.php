@@ -18,6 +18,11 @@ require_once FASTWC_PATH . 'includes/blocks/class-pdp.php';
  * Register the block types.
  */
 function fastwc_register_block_types() {
+	// Skip this if Gutenberg is not active on the site.
+	if ( ! fastwc_gutenberg_is_active() ) {
+		return;
+	}
+
 	$blocks = array(
 		new FastWC\Blocks\Cart(),
 		new FastWC\Blocks\Pdp(),

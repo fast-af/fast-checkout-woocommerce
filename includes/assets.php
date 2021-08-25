@@ -92,12 +92,22 @@ add_action( 'wp_head', 'fastwc_wp_head' );
 function fastwc_enqueue_block_editor_assets() {
 
 	// Enqueue the script.
+	$fastwc_block_editor_js = 'fastwc-block-editor-js';
 	wp_enqueue_script(
-		'fastwc-block-editor-js',
+		$fastwc_block_editor_js,
 		FASTWC_URL . 'assets/dist/blocks/index.js',
 		array( 'wp-blocks', 'wp-i18n', 'wp-components', 'wp-element' ),
 		FASTWC_VERSION,
 		true
+	);
+
+	$fastwc_app_id = fastwc_get_app_id();
+	wp_localize_script(
+		$fastwc_block_editor_js,
+		'fastwcHeadless',
+		array(
+			'appId' => $fastwc_app_id,
+		)
 	);
 
 	// Enqueue the stylesheet.

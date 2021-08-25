@@ -23,8 +23,8 @@ add_action( 'admin_init', 'fastwc_admin_setup_fields' );
  */
 function fastwc_admin_create_menu() {
 	// Add the menu item and page.
-	$page_title = 'Fast Settings';
-	$menu_title = 'Fast';
+	$page_title = __( 'Fast Settings', 'fast' );
+	$menu_title = __( 'Fast', 'fast' );
 	$capability = 'manage_options';
 	$slug       = 'fast';
 	$callback   = 'fastwc_settings_page_content';
@@ -32,6 +32,20 @@ function fastwc_admin_create_menu() {
 	$position   = 100;
 
 	add_menu_page( $page_title, $menu_title, $capability, $slug, $callback, $icon, $position );
+
+	if ( fastwc_gutenberg_is_active() ) {
+		// Add "Settings" submenu that points to the top-level menu item.
+		add_submenu_page( $slug, $page_title, __( 'Settings', 'fast' ), $capability, $slug );
+
+		// Add submenu that  points to the fastwc-headless-link post type.
+		add_submenu_page(
+			$slug,
+			__( 'Fast Headless Checkout Links', 'fast' ), // Page title.
+			__( 'Headless Checkout Links', 'fast' ), // Menu title.
+			$capability, // Capability.
+			'edit.php?post_type=fastwc_headless_link' // Slug.
+		);
+	}
 }
 
 /**
@@ -99,6 +113,7 @@ function fastwc_admin_setup_sections() {
 	register_setting( $section_name, FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER );
 	register_setting( $section_name, FASTWC_SETTING_HIDE_BUTTON_PRODUCTS );
 	register_setting( $section_name, FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE );
+	register_setting( $section_name, FASTWC_SETTING_HEADLESS_LINK_SLUG );
 	register_setting( $section_name, FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER );
 
 	$section_name = 'fast_test_mode';
@@ -140,6 +155,7 @@ function fastwc_admin_setup_fields() {
 	add_settings_field( FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER, __( 'Enter Alternate Product Button Location', 'fast' ), 'fastwc_pdp_button_hook_other', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS, __( 'Hide Buttons for these Products', 'fast' ), 'fastwc_hide_button_products', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE, __( 'Checkout Redirect Page', 'fast' ), 'fastwc_checkout_redirect_page', $settings_section, $settings_section );
+	add_settings_field( FASTWC_SETTING_HEADLESS_LINK_SLUG, __( 'Headless Checkout Link Path', 'fast' ), 'fastwc_headless_link_slug', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, __( 'Display Login in Footer', 'fast' ), 'fastwc_show_login_button_footer', $settings_section, $settings_section );
 
 	// Test Mode settings.
@@ -381,6 +397,21 @@ function fastwc_checkout_redirect_page() {
 			'description' => __( 'Select a page to redirect to after a successful cart checkout. Leave blank to redirect to the cart.', 'fast' ),
 			'nonce'       => 'search-pages',
 			'multiple'    => false,
+		)
+	);
+}
+
+/**
+ * Renders the Headless Checkout Link Path field.
+ */
+function fastwc_headless_link_slug() {
+	$fastwc_headless_link_slug = fastwc_get_option_or_set_default( FASTWC_SETTING_HEADLESS_LINK_SLUG, FASTWC_DEFAULT_HEADLESS_LINK_SLUG );
+
+	fastwc_settings_field_input(
+		array(
+			'name'        => FASTWC_SETTING_HEADLESS_LINK_SLUG,
+			'description' => __( 'Enter the path prefix to use for headless checkout links.', 'fast' ),
+			'value'       => $fastwc_headless_link_slug,
 		)
 	);
 }

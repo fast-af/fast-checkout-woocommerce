@@ -55,3 +55,12 @@ function fastwc_woocommerce_version_is_at_least( $version ) {
 
 	return false;
 }
+
+/**
+ * Check that Gutenberg is active.
+ *
+ * @return bool
+ */
+function fastwc_gutenberg_is_active() {
+	return function_exists( 'register_block_type' );
+}
