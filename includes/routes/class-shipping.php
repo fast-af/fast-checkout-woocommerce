@@ -61,17 +61,17 @@ class Shipping extends Base {
 		// This is needed for session to work.
 		\WC()->frontend_includes();
 
-		$this->shipping_init_wc_session();
-		$this->shipping_init_wc_customer();
-		$this->shipping_init_wc_cart();
-		$return = $this->shipping_add_line_items_to_cart( $params );
+		$this->init_wc_session();
+		$this->init_wc_customer();
+		$this->init_wc_cart();
+		$return = $this->add_line_items_to_cart( $params );
 
 		if ( false === $return ) {
-			$return = $this->shipping_update_customer_information( $params );
+			$return = $this->update_customer_information( $params );
 		}
 
 		if ( false === $return ) {
-			$return = $this->shipping_calculate_packages();
+			$return = $this->calculate_packages();
 		}
 
 		// Cleanup cart.
@@ -111,7 +111,7 @@ class Shipping extends Base {
 	/**
 	 * Initialize the WC session.
 	 */
-	protected function shipping_init_wc_session() {
+	protected function init_wc_session() {
 		if ( null === \WC()->session ) {
 			$session_class = \apply_filters( 'woocommerce_session_handler', 'WC_Session_Handler' );
 			\WC()->session = new $session_class();
@@ -122,7 +122,7 @@ class Shipping extends Base {
 	/**
 	 * Initialize the WC customer.
 	 */
-	protected function shipping_init_wc_customer() {
+	protected function init_wc_customer() {
 		if ( null === \WC()->customer ) {
 			\WC()->customer = new \WC_Customer( get_current_user_id(), false );
 		}
@@ -131,7 +131,7 @@ class Shipping extends Base {
 	/**
 	 * Initialize the WC cart.
 	 */
-	protected function shipping_init_wc_cart() {
+	protected function init_wc_cart() {
 		if ( null === \WC()->cart ) {
 			\WC()->cart = new \WC_Cart();
 			// We need to force a refresh of the cart contents
@@ -152,7 +152,7 @@ class Shipping extends Base {
 	 *
 	 * @return mixed
 	 */
-	protected function shipping_add_line_items_to_cart( $params ) {
+	protected function add_line_items_to_cart( $params ) {
 		// Add body line items to cart.
 		foreach ( $params['line_items'] as $line_item ) {
 			$variation_id = ! empty( $line_item['variation_id'] ) ? $line_item['variation_id'] : 0;
@@ -183,7 +183,7 @@ class Shipping extends Base {
 	 *
 	 * @return mixed
 	 */
-	protected function shipping_update_customer_information( $params ) {
+	protected function update_customer_information( $params ) {
 		$customer_props = array(
 			'shipping_country'   => $params['shipping']['country'],
 			'shipping_state'     => $params['shipping']['state'],
@@ -225,7 +225,7 @@ class Shipping extends Base {
 	 *
 	 * @return mixed
 	 */
-	protected function shipping_calculate_packages() {
+	protected function calculate_packages() {
 		// Get packages for the cart.
 		$packages = \WC()->cart->get_shipping_packages();
 
