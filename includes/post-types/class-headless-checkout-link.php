@@ -52,7 +52,7 @@ class Headless_Checkout_Link extends Post_Type {
 				'fastwc_product_id'      => 'integer',
 				'fastwc_variant_id'      => 'integer',
 				'fastwc_quantity'        => 'integer',
-				'fastwc_product_options' => 'array',
+				'fastwc_product_options' => 'string',
 			);
 			foreach ( $meta_fields as $meta_field_key => $meta_field_type ) {
 				register_post_meta(
@@ -66,6 +66,8 @@ class Headless_Checkout_Link extends Post_Type {
 				);
 			}
 		}
+
+		\add_action( 'template_redirect', array( $this, 'maybe_redirect' ) );
 	}
 
 	/**
@@ -141,9 +143,49 @@ class Headless_Checkout_Link extends Post_Type {
 	}
 
 	/**
-	 * Maybe redirect to the Fast headless checkout link.
+	 * Get headless link meta fields.
+	 *
+	 * @return array
 	 */
-	public function maybe_redirect() {
-		// TODO: Handle the redirect.
+	function get_meta_fields() {
+		$link_id           = \get_the_ID();
+		$meta_field_values = array();
+		$meta_field_keys   = array(
+			'product_id'      => 'fastwc_product_id',
+			'variant_id'      => 'fastwc_variant_id',
+			'quantity'        => 'fastwc_quantity',
+			'product_options' => 'fastwc_product_options',
+		);
+
+		foreach ( $meta_field_keys as $query_arg_key => $meta_field_key ) {
+			$meta_field_value = \get_post_meta( $link_id, $meta_field_key, true );
+
+			if ( ! empty( $meta_field_value ) ) {
+				$meta_field_values[ $query_arg_key ] = $meta_field_value;
+			}
+		}
+
+		return $meta_field_values;
+	}
+
+	/**
+	 * Maybe handle the redirect.
+	 */
+	function maybe_redirect() {
+		// Do not redirect from the WP admin.
+		if ( \is_admin()) {
+			return;
+		}
+
+		// Do the redirect if the current URL is a checkout link URL.
+		if ( \is_singular( $this->name ) ) {
+			$meta_fields = $this->get_meta_fields();
+
+			$redirect_link_base = 'https://fast.co';
+			$redirect_link      = \add_query_arg( $meta_fields, $redirect_link_base );
+
+			\wp_redirect( $redirect_link, 301 );
+			exit;
+		}
 	}
 }
