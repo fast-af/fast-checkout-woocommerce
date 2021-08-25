@@ -49,21 +49,33 @@ function fastwc_rest_api_init() {
 add_action( 'rest_api_init', 'fastwc_rest_api_init' );
 
 /**
- * REST API permissions callback.
+ * Abstract REST API permissions callback.
+ *
+ * @param string $capability Capability name to check.
+ * @param string $log_string Initial string for the permission check log.
  *
  * @return bool
  */
-function fastwc_api_permission_callback() {
+function fastwc_api_general_permission_callback( $capability, $log_string ) {
 	// Make sure an instance of WooCommerce is loaded.
 	// This will load the `WC_REST_Authentication` class, which
 	// handles the API consumer key and secret.
 	WC();
 
-	$has_permission = current_user_can( 'manage_options' );
+	$has_permission = current_user_can( $capability );
 
-	fastwc_log_info( 'API Permission Callback: ' . ( $has_permission ? 'granted' : 'denied' ) );
+	fastwc_log_info( $log_string . ': ' . ( $has_permission ? 'granted' : 'denied' ) );
 
 	return $has_permission;
+}
+
+/**
+ * REST API permissions callback.
+ *
+ * @return bool
+ */
+function fastwc_api_permission_callback() {
+	return fastwc_api_general_permission_callback( 'manage_options', 'API Manage Options Permission Callback' );
 }
 
 /**
@@ -72,14 +84,5 @@ function fastwc_api_permission_callback() {
  * @return bool
  */
 function fastwc_api_managewc_permission_callback() {
-	// Make sure an instance of WooCommerce is loaded.
-	// This will load the `WC_REST_Authentication` class, which
-	// handles the API consumer key and secret.
-	WC();
-
-	$has_permission = current_user_can( 'manage_woocommerce' );
-
-	fastwc_log_info( 'API Product Attributes Permission Callback: ' . ( $has_permission ? 'granted' : 'denied' ) );
-
-	return $has_permission;
+	return fastwc_api_general_permission_callback( 'manage_woocommerce', 'API Manage WooCommerce Permission Callback' );
 }
