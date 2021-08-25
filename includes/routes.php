@@ -8,99 +8,43 @@
 // Define the API route base path.
 define( 'FASTWC_ROUTES_BASE', 'wc/fast/v1' );
 
+// Load route base class.
+require_once FASTWC_PATH . 'includes/routes/class-base.php';
 // Provides an API for polling shipping options.
-require_once FASTWC_PATH . 'includes/routes/shipping.php';
+require_once FASTWC_PATH . 'includes/routes/class-shipping.php';
 // Provides an API that exposes shipping zones.
-require_once FASTWC_PATH . 'includes/routes/shipping-zones.php';
+require_once FASTWC_PATH . 'includes/routes/class-shipping-zones.php';
 // Provides an API that exposes plugin info.
-require_once FASTWC_PATH . 'includes/routes/plugin-info.php';
+require_once FASTWC_PATH . 'includes/routes/class-plugin-info.php';
 // Provides an API that exposes product attributes.
-require_once FASTWC_PATH . 'includes/routes/product-attributes.php';
+require_once FASTWC_PATH . 'includes/routes/class-product-attributes.php';
 // Provides an API that exposes orders with refunds.
-require_once FASTWC_PATH . 'includes/routes/refunds.php';
+require_once FASTWC_PATH . 'includes/routes/class-refunds.php';
+// Provides an API that exposes a test authorization header.
+require_once FASTWC_PATH . 'includes/routes/class-auth-test.php';
 
 /**
  * Register Fast Woocommerce routes for the REST API.
  */
 function fastwc_rest_api_init() {
 	// Register a utility route to get information on installed plugins.
-	register_rest_route(
-		FASTWC_ROUTES_BASE . '/store',
-		'plugins',
-		array(
-			'methods'             => 'GET',
-			'callback'            => 'fastwc_get_plugin_info',
-			'permission_callback' => 'fastwc_api_permission_callback',
-		)
-	);
-
-	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/store/plugins' );
+	new \FastWC\Routes\Plugin_Info();
 
 	// Register a route to collect all possible shipping locations.
-	register_rest_route(
-		FASTWC_ROUTES_BASE,
-		'shipping_zones',
-		array(
-			'methods'             => 'GET',
-			'callback'            => 'fastwc_get_zones',
-			'permission_callback' => 'fastwc_api_permission_callback',
-		)
-	);
-
-	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/shipping_zones' );
+	new \FastWC\Routes\Shipping_Zones();
 
 	// Register a route to calculate available shipping rates.
 	// FE -> OMS -> Blender -> (pID, variantID, Shipping info, CustomerID)Plugin.
-	register_rest_route(
-		FASTWC_ROUTES_BASE,
-		'shipping',
-		array(
-			'methods'             => 'POST',
-			'callback'            => 'fastwc_calculate_shipping',
-			'permission_callback' => 'fastwc_api_permission_callback',
-		)
-	);
-
-	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/shipping' );
+	new \FastWC\Routes\Shipping();
 
 	// Register a route to load product attributes.
-	register_rest_route(
-		FASTWC_ROUTES_BASE,
-		'product/attributes',
-		array(
-			'methods'             => 'GET',
-			'callback'            => 'fastwc_get_product_attributes',
-			'permission_callback' => 'fastwc_api_managewc_permission_callback',
-		)
-	);
-
-	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/product/attributes' );
+	new \FastWC\Routes\Product_Attributes();
 
 	// Register a route to get all orders with refunds.
-	register_rest_route(
-		FASTWC_ROUTES_BASE,
-		'refunds',
-		array(
-			'methods'             => 'GET',
-			'callback'            => 'fastwc_get_orders_with_refunds',
-			'permission_callback' => 'fastwc_api_permission_callback',
-		)
-	);
-
-	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/refunds' );
+	new \FastWC\Routes\Refunds();
 
 	// Register a route to test the Authorization header.
-	register_rest_route(
-		FASTWC_ROUTES_BASE,
-		'authecho',
-		array(
-			'methods'             => 'GET',
-			'callback'            => 'fastwc_test_authorization_header',
-			'permission_callback' => '__return_true',
-		)
-	);
-
-	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/authecho' );
+	new \FastWC\Routes\Auth_Test();
 }
 add_action( 'rest_api_init', 'fastwc_rest_api_init' );
 
@@ -138,31 +82,4 @@ function fastwc_api_managewc_permission_callback() {
 	fastwc_log_info( 'API Product Attributes Permission Callback: ' . ( $has_permission ? 'granted' : 'denied' ) );
 
 	return $has_permission;
-}
-
-/**
- * Test the Authorization header.
- *
- * @param WP_REST_Request $request JSON request for shipping endpoint.
- *
- * @return array|WP_Error|WP_REST_Response
- */
-function fastwc_test_authorization_header( $request ) {
-	$auth_header = 'No Authorization Header';
-
-	$headers = $request->get_headers();
-
-	if ( ! empty( $headers['authorization'] ) ) {
-		$header_count = count( $headers['authorization'] );
-
-		if ( is_array( $headers['authorization'] ) && $header_count > 0 ) {
-			$auth_header = $headers['authorization'][0];
-		} elseif ( is_string( $headers['authorization'] ) ) {
-			$auth_header = $headers['authorization'];
-		}
-	}
-
-	fastwc_log_info( 'Authorization header endpoint called: ' . $auth_header );
-
-	return new WP_REST_Response( $auth_header, 200 );
 }
