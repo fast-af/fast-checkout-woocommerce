@@ -147,10 +147,13 @@ class Headless_Checkout_Link extends Post_Type {
 	 *
 	 * @return array
 	 */
-	function get_meta_fields() {
-		$link_id           = \get_the_ID();
-		$meta_field_values = array();
-		$meta_field_keys   = array(
+	function get_query_args() {
+		$link_id         = \get_the_ID();
+		$fast_app_id     = \fastwc_get_app_id();
+		$query_args      = array(
+			'app_id' => $fast_app_id,
+		);
+		$meta_field_keys = array(
 			'product_id'      => 'fastwc_product_id',
 			'variant_id'      => 'fastwc_variant_id',
 			'quantity'        => 'fastwc_quantity',
@@ -161,11 +164,11 @@ class Headless_Checkout_Link extends Post_Type {
 			$meta_field_value = \get_post_meta( $link_id, $meta_field_key, true );
 
 			if ( ! empty( $meta_field_value ) ) {
-				$meta_field_values[ $query_arg_key ] = $meta_field_value;
+				$query_args[ $query_arg_key ] = $meta_field_value;
 			}
 		}
 
-		return $meta_field_values;
+		return $query_args;
 	}
 
 	/**
@@ -179,10 +182,10 @@ class Headless_Checkout_Link extends Post_Type {
 
 		// Do the redirect if the current URL is a checkout link URL.
 		if ( \is_singular( $this->name ) ) {
-			$meta_fields = $this->get_meta_fields();
+			$query_args = $this->get_query_args();
 
-			$redirect_link_base = 'https://fast.co';
-			$redirect_link      = \add_query_arg( $meta_fields, $redirect_link_base );
+			$redirect_link_base = 'https://go.fast.co';
+			$redirect_link      = \add_query_arg( $query_args, $redirect_link_base );
 
 			\wp_redirect( $redirect_link, 301 );
 			exit;
