@@ -10,7 +10,7 @@ namespace FastWC\Routes;
 /**
  * Order post route object.
  */
-class Order_Post extends Base {
+class Order_Post extends Route {
 
 	/**
 	 * Route name.

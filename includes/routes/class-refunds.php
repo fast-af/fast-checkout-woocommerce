@@ -11,7 +11,7 @@ namespace FastWC\Routes;
 /**
  * Fast WooCommerce refunds route.
  */
-class Refunds extends Base {
+class Refunds extends Route {
 
 	/**
 	 * Route name.

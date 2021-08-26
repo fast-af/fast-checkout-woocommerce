@@ -10,7 +10,7 @@ namespace FastWC\Routes;
 /**
  * Fast route base class.
  */
-abstract class Base {
+abstract class Route {
 
 	/**
 	 * Route namespace.

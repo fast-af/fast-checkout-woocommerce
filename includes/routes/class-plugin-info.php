@@ -12,7 +12,7 @@ namespace FastWC\Routes;
 /**
  * Fast plugin info route object.
  */
-class Plugin_Info extends Base {
+class Plugin_Info extends Route {
 
 	/**
 	 * Route namespace.
