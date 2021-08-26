@@ -255,7 +255,7 @@ function fastwc_should_hide_cart_button_for_product( $should_hide ) {
 		$fastwc_hidden_products = fastwc_get_products_to_hide_buttons();
 		$product_id             = 0;
 
-		if ( ! empty( WC()->cart ) ) {
+		if ( ! empty( $fastwc_hidden_products ) && ! empty( WC()->cart ) ) {
 			$cart = WC()->cart->get_cart();
 
 			foreach ( $cart as $cart_item ) {
