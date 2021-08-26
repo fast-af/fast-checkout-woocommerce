@@ -35,7 +35,7 @@ class Product_Attributes extends Base {
 	 *
 	 * @return array|WP_Error|WP_REST_Response
 	 */
-	public function callback( WP_REST_Request $request ) {
+	public function callback( $request ) {
 		$this->request = $request;
 
 		$product_id = $this->request->get_param( 'productId' );

@@ -27,7 +27,7 @@ class Refunds extends Base {
 	 *
 	 * @return array|WP_Error|WP_REST_Response
 	 */
-	public function callback( WP_REST_Request $request ) {
+	public function callback( $request ) {
 		$this->request = $request;
 
 		$refund_type = $this->get_refund_type();
