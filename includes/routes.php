@@ -9,7 +9,7 @@
 define( 'FASTWC_ROUTES_BASE', 'wc/fast/v1' );
 
 // Load route base class.
-require_once FASTWC_PATH . 'includes/routes/class-base.php';
+require_once FASTWC_PATH . 'includes/routes/class-route.php';
 // Provides an API for polling shipping options.
 require_once FASTWC_PATH . 'includes/routes/class-shipping.php';
 // Provides an API that exposes shipping zones.
@@ -45,12 +45,8 @@ function fastwc_rest_api_init() {
 	// Register a route to add/edit an order.
 	new \FastWC\Routes\Order_Post();
 
-	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/order' );
-
 	// Register a route to fetch an order.
 	new \FastWC\Routes\Order_Get();
-
-	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/order/<id>' );
 
 	// Register a route to load product attributes.
 	new \FastWC\Routes\Product_Attributes();

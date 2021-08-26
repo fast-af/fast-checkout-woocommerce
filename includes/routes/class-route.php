@@ -10,7 +10,7 @@ namespace FastWC\Routes;
 /**
  * Fast route base class.
  */
-abstract class Base {
+abstract class Route {
 
 	/**
 	 * Route namespace.
@@ -56,6 +56,9 @@ abstract class Base {
 
 	/**
 	 * Route constructor, protected to prevent multiple instances.
+	 *
+	 *
+	 * @param bool $do_register Optional. Flag to register the route or not.
 	 */
 	public function __construct( $do_register = true ) {
 		$this->init();

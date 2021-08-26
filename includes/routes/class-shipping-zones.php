@@ -10,7 +10,7 @@ namespace FastWC\Routes;
 /**
  * Fast shipping zone route object.
  */
-class Shipping_Zones extends Base {
+class Shipping_Zones extends Route {
 
 	/**
 	 * Route name.

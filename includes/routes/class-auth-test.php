@@ -12,7 +12,7 @@ namespace FastWC\Routes;
 /**
  * Fast plugin info route object.
  */
-class Auth_Test extends Base {
+class Auth_Test extends Route {
 
 	/**
 	 * Route name.

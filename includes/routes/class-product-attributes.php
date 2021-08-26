@@ -12,7 +12,7 @@ namespace FastWC\Routes;
 /**
  * Fast WooCommerce product attributes route object.
  */
-class Product_Attributes extends Base {
+class Product_Attributes extends Route {
 
 	/**
 	 * Route name.

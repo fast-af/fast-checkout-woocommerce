@@ -10,7 +10,7 @@ namespace FastWC\Routes;
 /**
  * Fast shipping route object.
  */
-class Webhooks extends Base {
+class Webhooks extends Route {
 
     /**
      * Route name.
