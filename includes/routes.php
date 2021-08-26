@@ -9,7 +9,7 @@
 define( 'FASTWC_ROUTES_BASE', 'wc/fast/v1' );
 
 // Load route base class.
-require_once FASTWC_PATH . 'includes/routes/class-base.php';
+require_once FASTWC_PATH . 'includes/routes/class-route.php';
 // Provides an API for polling shipping options.
 require_once FASTWC_PATH . 'includes/routes/class-shipping.php';
 // Provides an API that exposes shipping zones.
