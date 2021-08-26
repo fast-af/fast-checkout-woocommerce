@@ -55,8 +55,6 @@ class Plugin_Info extends Base {
 	 * }
 	 */
 	public function callback( $request ) {
-		$this->request = $request;
-
 		// Get all plugins.
 		include_once 'wp-admin/includes/plugin.php';
 		$all_plugins = \get_plugins();

@@ -56,15 +56,10 @@ abstract class Base {
 
 	/**
 	 * Route constructor, protected to prevent multiple instances.
-	 *
-	 * @param bool $do_register Optional. Flag to register the route or not.
 	 */
-	public function __construct( $do_register = true ) {
+	public function __construct() {
 		$this->init();
-
-		if ( $do_register ) {
-			$this->register();
-		}
+		$this->register();
 	}
 
 	/**
@@ -89,6 +84,8 @@ abstract class Base {
 				'permission_callback' => $this->permission_callback,
 			)
 		);
+
+		\fastwc_log_info( 'Registered route: ' . $this->namespace . $this->route );
 	}
 
 	/**
