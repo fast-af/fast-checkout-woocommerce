@@ -16,6 +16,9 @@ require_once FASTWC_PATH . 'includes/routes/class-shipping.php';
 require_once FASTWC_PATH . 'includes/routes/class-shipping-zones.php';
 // Provides an API that exposes plugin info.
 require_once FASTWC_PATH . 'includes/routes/class-plugin-info.php';
+// Provides an API to add, edit, and fetch orders.
+require_once FASTWC_PATH . 'includes/routes/class-order-post.php';
+require_once FASTWC_PATH . 'includes/routes/class-order-get.php';
 // Provides an API that exposes product attributes.
 require_once FASTWC_PATH . 'includes/routes/class-product-attributes.php';
 // Provides an API that exposes orders with refunds.
@@ -38,6 +41,12 @@ function fastwc_rest_api_init() {
 	// Register a route to calculate available shipping rates.
 	// FE -> OMS -> Blender -> (pID, variantID, Shipping info, CustomerID)Plugin.
 	new \FastWC\Routes\Shipping();
+
+	// Register a route to add/edit an order.
+	new \FastWC\Routes\Order_Post();
+
+	// Register a route to fetch an order.
+	new \FastWC\Routes\Order_Get();
 
 	// Register a route to load product attributes.
 	new \FastWC\Routes\Product_Attributes();
