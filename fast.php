@@ -39,4 +39,6 @@ if ( fastwc_woocommerce_is_active() ) {
 	require_once FASTWC_PATH . 'includes/widgets.php';
 	// Add Fast button blocks.
 	require_once FASTWC_PATH . 'includes/blocks.php';
+	// Add Fast failed/disabled webhook handler.
+	require_once FASTWC_PATH . 'includes/webhooks.php';
 }
