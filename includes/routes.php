@@ -19,14 +19,14 @@ require_once FASTWC_PATH . 'includes/routes/class-plugin-info.php';
 // Provides an API to add, edit, and fetch orders.
 require_once FASTWC_PATH . 'includes/routes/class-order-post.php';
 require_once FASTWC_PATH . 'includes/routes/class-order-get.php';
-// Provides an API that exposes orders with refunds.
-require_once FASTWC_PATH . 'includes/routes/class-refunds.php';
-// Provides an API that exposes a test authorization header.
-require_once FASTWC_PATH . 'includes/routes/class-auth-test.php';
 // Provides an API that exposes product attributes.
 require_once FASTWC_PATH . 'includes/routes/class-product-attributes.php';
+// Provides an API that exposes orders with refunds.
+require_once FASTWC_PATH . 'includes/routes/class-refunds.php';
 // Provides an API that exposes a list of disabled Fast webhooks.
-require_once FASTWC_PATH . 'includes/routes/webhooks.php';
+require_once FASTWC_PATH . 'includes/routes/class-webhooks.php';
+// Provides an API that exposes a test authorization header.
+require_once FASTWC_PATH . 'includes/routes/class-auth-test.php';
 
 /**
  * Register Fast Woocommerce routes for the REST API.
@@ -59,17 +59,7 @@ function fastwc_rest_api_init() {
 	new \FastWC\Routes\Refunds();
 
 	// Register a route to get all disabled Fast webhooks.
-	register_rest_route(
-		FASTWC_ROUTES_BASE,
-		'webhooks',
-		array(
-			'methods'             => 'GET',
-			'callback'            => 'fastwc_route_get_disabled_webhooks',
-			'permission_callback' => 'fastwc_api_permission_callback',
-		)
-	);
-
-	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/refunds' );
+	new \FastWC\Routes\Webhooks();
 
 	// Register a route to test the Authorization header.
 	new \FastWC\Routes\Auth_Test();
