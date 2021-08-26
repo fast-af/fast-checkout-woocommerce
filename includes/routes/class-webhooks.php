@@ -22,8 +22,12 @@ class Webhooks extends Base {
 
     /**
      * Route handler to return a list of disabled webhooks.
+     *
+     * @param WP_REST_Request $request JSON request for shipping endpoint.
+     *
+     * @return array|WP_Error|WP_REST_Response
      */
-    public function callback() {
+    public function callback( $request ) {
         $webhook_ids = \fastwc_get_disabled_webhooks();
         $webhooks    = array();
 
