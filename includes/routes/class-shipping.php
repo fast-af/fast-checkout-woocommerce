@@ -99,7 +99,7 @@ class Shipping extends Base {
 		$order_id = ! empty( $params['order_id'] ) ? $params['order_id'] : 0;
 
 		if ( empty( $order_id ) ) {
-			$this->currency = $this->wc_currency;
+			$this->currency = ! empty( $params['currency'] ) ? $params['currency'] : $this->wc_currency;
 		} else {
 			$order          = new \WC_Order( $order_id );
 			$this->currency = \fastwc_get_order_currency( $order );
