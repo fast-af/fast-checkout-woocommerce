@@ -57,9 +57,12 @@ abstract class Base {
 	/**
 	 * Route constructor, protected to prevent multiple instances.
 	 */
-	public function __construct() {
+	public function __construct( $do_register = true ) {
 		$this->init();
-		$this->register();
+
+		if ( $do_register ) {
+			$this->register();
+		}
 	}
 
 	/**

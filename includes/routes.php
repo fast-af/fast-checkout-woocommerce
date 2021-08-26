@@ -23,7 +23,6 @@ require_once FASTWC_PATH . 'includes/routes/class-order-get.php';
 require_once FASTWC_PATH . 'includes/routes/class-refunds.php';
 // Provides an API that exposes a test authorization header.
 require_once FASTWC_PATH . 'includes/routes/class-auth-test.php';
-require_once FASTWC_PATH . 'includes/routes/refunds.php';
 // Provides an API that exposes product attributes.
 require_once FASTWC_PATH . 'includes/routes/product-attributes.php';
 // Provides an API that exposes a list of disabled Fast webhooks.
