@@ -8,12 +8,14 @@
 // Define the API route base path.
 define( 'FASTWC_ROUTES_BASE', 'wc/fast/v1' );
 
+// Load route base class.
+require_once FASTWC_PATH . 'includes/routes/class-base.php';
 // Provides an API for polling shipping options.
-require_once FASTWC_PATH . 'includes/routes/shipping.php';
+require_once FASTWC_PATH . 'includes/routes/class-shipping.php';
 // Provides an API that exposes shipping zones.
-require_once FASTWC_PATH . 'includes/routes/shipping-zones.php';
+require_once FASTWC_PATH . 'includes/routes/class-shipping-zones.php';
 // Provides an API that exposes plugin info.
-require_once FASTWC_PATH . 'includes/routes/plugin-info.php';
+require_once FASTWC_PATH . 'includes/routes/class-plugin-info.php';
 // Provides an API that exposes product attributes.
 require_once FASTWC_PATH . 'includes/routes/product-attributes.php';
 // Provides an API that exposes orders with refunds.
@@ -26,42 +28,18 @@ require_once FASTWC_PATH . 'includes/routes/webhooks.php';
  */
 function fastwc_rest_api_init() {
 	// Register a utility route to get information on installed plugins.
-	register_rest_route(
-		FASTWC_ROUTES_BASE . '/store',
-		'plugins',
-		array(
-			'methods'             => 'GET',
-			'callback'            => 'fastwc_get_plugin_info',
-			'permission_callback' => 'fastwc_api_permission_callback',
-		)
-	);
+	new \FastWC\Routes\Plugin_Info();
 
 	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/store/plugins' );
 
 	// Register a route to collect all possible shipping locations.
-	register_rest_route(
-		FASTWC_ROUTES_BASE,
-		'shipping_zones',
-		array(
-			'methods'             => 'GET',
-			'callback'            => 'fastwc_get_zones',
-			'permission_callback' => 'fastwc_api_permission_callback',
-		)
-	);
+	new \FastWC\Routes\Shipping_Zones();
 
 	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/shipping_zones' );
 
 	// Register a route to calculate available shipping rates.
 	// FE -> OMS -> Blender -> (pID, variantID, Shipping info, CustomerID)Plugin.
-	register_rest_route(
-		FASTWC_ROUTES_BASE,
-		'shipping',
-		array(
-			'methods'             => 'POST',
-			'callback'            => 'fastwc_calculate_shipping',
-			'permission_callback' => 'fastwc_api_permission_callback',
-		)
-	);
+	new \FastWC\Routes\Shipping();
 
 	fastwc_log_info( 'Registered route: ' . FASTWC_ROUTES_BASE . '/shipping' );
 
