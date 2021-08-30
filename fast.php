@@ -41,4 +41,6 @@ if ( fastwc_woocommerce_is_active() ) {
 	require_once FASTWC_PATH . 'includes/blocks.php';
 	// Add Fast post types.
 	require_once FASTWC_PATH . 'includes/post-types.php';
+	// Add Fast failed/disabled webhook handler.
+	require_once FASTWC_PATH . 'includes/webhooks.php';
 }
