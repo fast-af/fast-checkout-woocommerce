@@ -24,6 +24,7 @@ const FastWCProductSearch = ( {
 	const [products, setProducts] = useState( defaultProducts );
 	const [isLoading, setIsLoading] = useState( true );
 	const [product, setProduct] = useState( selected );
+	const [isInitializing, setIsInitializing] = useState( true );
 
 	useEffect(
 		() => {
@@ -45,6 +46,7 @@ const FastWCProductSearch = ( {
 
 		setProducts( list );
 		setIsLoading( false );
+		setIsInitializing( false );
 	};
 
 	return (
@@ -63,8 +65,10 @@ const FastWCProductSearch = ( {
 						options={ products }
 						onChange={ ( value ) => {
 							const productId = parseInt( value, 10 );
-							onChange( productId );
 							setProduct( productId );
+							if ( ! isInitializing ) {
+								onChange( productId );
+							}
 						} }
 					/>
 				}

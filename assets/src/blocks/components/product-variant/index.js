@@ -32,6 +32,7 @@ const FastWCProductVariant = ( {
 		},
 	];
 
+	const [isInitializing, setIsInitializing] = useState( true );
 	const [options, setOptions] = useState( defaultOptions );
 
 	const getVariations = async () => {
@@ -51,11 +52,12 @@ const FastWCProductVariant = ( {
 			options = [ noVariantsOption ];
 		}
 
-		if ( ! variant || ! variantIds.includes( variant ) ) {
+		if ( ! isInitializing && ( ! variant || ! variantIds.includes( variant ) ) ) {
 			onChange( '' );
 		}
 
 		setOptions( options );
+		setIsInitializing( false );
 	};
 
 	useEffect(
@@ -66,7 +68,9 @@ const FastWCProductVariant = ( {
 	);
 
 	const handleSelect = ( variant ) => {
-		onChange( variant );
+		if ( ! isInitializing ) {
+			onChange( variant );
+		}
 	};
 
 	return (
