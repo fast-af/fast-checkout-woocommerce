@@ -51,6 +51,10 @@ const edit = ( props ) => {
 		productOptions: {},
 	};
 
+	const [hasCopiedPermalink, setHasCopiedPermalink] = useState( false );
+	const [hasCopiedFastLink, setHasCopiedFastLink] = useState( false );
+	const [fastLink, setFastLink] = useState( '' );
+
 	const setMeta = ( metaKey, value ) => {
 		const meta = select( 'core/editor' ).getEditedPostAttribute( 'meta' );
 
@@ -74,25 +78,7 @@ const edit = ( props ) => {
 		return defaultValue;
 	};
 
-	const getMetaKeys = async () => {
-		await isEditorReady();
-
-		const newAttributes = {
-			productId: getMeta( metaKeys.productId, defaultValues.productId ),
-			variantId: getMeta( metaKeys.variantId, defaultValues.variantId ),
-			quantity: getMeta( metaKeys.quantity, defaultValues.quantity ),
-			productOptions: JSON.parse( getMeta( metaKeys.productOptions, defaultValues.productOptions ) ),
-		};
-
-		generateFastLink( newAttributes );
-		setAttributes( newAttributes );
-	};
-
 	const permalink = select( 'core/editor' ).getPermalink();
-
-	const [hasCopiedPermalink, setHasCopiedPermalink] = useState( false );
-	const [hasCopiedFastLink, setHasCopiedFastLink] = useState( false );
-	const [fastLink, setFastLink] = useState( '' );
 
 	const generateFastLink = ( newAttributes = {} ) => {
 		const linkAttributes = { ...attributes, ...newAttributes };
@@ -123,13 +109,6 @@ const edit = ( props ) => {
 
 		setFastLink( newFastLink );
 	};
-
-	useEffect(
-		() => {
-			getMetaKeys();
-		},
-		[] // Dependencies. Leave blank to avoid running more than once.
-	);
 
 	return (
 		<div className="fastwc-headless-link-generator">

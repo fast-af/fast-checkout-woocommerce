@@ -20,6 +20,7 @@ const FastWCProductAttributes = ( {
 	const [attKeys, setAttKeys] = useState([]);
 	const [labels, setLabels] = useState([]);
 	const [options, setOptions] = useState([]);
+	const [isInitializing, setIsInitializing] = useState( true );
 
 	const getAttributes = async () => {
 		const list = await getProductAttributes( product, variant );
@@ -64,8 +65,12 @@ const FastWCProductAttributes = ( {
 			setLabels( list.labels );
 		}
 
-		onChange( newAttributes );
+		if ( ! isInitializing ) {
+			onChange( newAttributes );
+		}
 		setOptions( newOptions );
+
+		setIsInitializing( false );
 	};
 
 	useEffect(
@@ -81,7 +86,10 @@ const FastWCProductAttributes = ( {
 	const handleAttributeChange = ( attKey, value ) => {
 		const newAttributes = { ...selected };
 		newAttributes[ attKey ] = value;
-		onChange( newAttributes );
+
+		if ( ! isInitializing ) {
+			onChange( newAttributes );
+		}
 	};
 
 	let message = '';
