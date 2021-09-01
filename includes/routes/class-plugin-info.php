@@ -12,7 +12,7 @@ namespace FastWC\Routes;
 /**
  * Fast plugin info route object.
  */
-class Plugin_Info extends Base {
+class Plugin_Info extends Route {
 
 	/**
 	 * Route namespace.
@@ -55,8 +55,6 @@ class Plugin_Info extends Base {
 	 * }
 	 */
 	public function callback( $request ) {
-		$this->request = $request;
-
 		// Get all plugins.
 		include_once 'wp-admin/includes/plugin.php';
 		$all_plugins = \get_plugins();

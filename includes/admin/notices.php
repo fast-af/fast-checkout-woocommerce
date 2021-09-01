@@ -9,8 +9,9 @@
  * Check for conditions to display admin notices.
  */
 function fastwc_maybe_display_admin_notices() {
-	$fastwc_debug_mode = get_option( FASTWC_SETTING_DEBUG_MODE, 0 );
-	$fastwc_test_mode  = get_option( FASTWC_SETTING_TEST_MODE, '1' );
+	$fastwc_debug_mode        = get_option( FASTWC_SETTING_DEBUG_MODE, 0 );
+	$fastwc_test_mode         = get_option( FASTWC_SETTING_TEST_MODE, '1' );
+	$fastwc_disabled_webhooks = fastwc_get_disabled_webhooks();
 
 	if ( ! empty( $fastwc_debug_mode ) ) {
 		add_action( 'admin_notices', 'fastwc_settings_admin_notice_debug_mode' );
@@ -20,6 +21,9 @@ function fastwc_maybe_display_admin_notices() {
 		add_action( 'admin_notices', 'fastwc_settings_admin_notice_test_mode' );
 	}
 
+	if ( ! empty( $fastwc_disabled_webhooks ) ) {
+		add_action( 'admin_notices', 'fastwc_settings_admin_notice_disabled_webhooks' );
+	}
 }
 add_action( 'admin_init', 'fastwc_maybe_display_admin_notices' );
 
@@ -51,4 +55,11 @@ function fastwc_settings_admin_notice_test_mode() {
  */
 function fastwc_settings_admin_notice_debug_mode() {
 	fastwc_admin_notice( __( 'Fast Checkout for WooCommerce is currently in Debug Mode.', 'fast' ) );
+}
+
+/**
+ * Print the Disabled Webhooks admin notice.
+ */
+function fastwc_settings_admin_notice_disabled_webhooks() {
+	fastwc_admin_notice( __( 'One or more WooCommerce webhooks used by Fast Checkout for WooCommerce are disabled.', 'fast' ) );
 }
