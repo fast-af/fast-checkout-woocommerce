@@ -184,7 +184,7 @@ class Headless_Checkout_Link extends Post_Type {
 		if ( \is_singular( $this->name ) ) {
 			$query_args = $this->get_query_args();
 
-			$redirect_link_base = 'https://go.fast.co';
+			$redirect_link_base = \get_option( FASTWC_SETTING_HEADLESS_LINK_BASE, FASTWC_HEADLESS_LINK_BASE );
 			$redirect_link      = \add_query_arg( $query_args, $redirect_link_base );
 
 			\wp_redirect( $redirect_link, 301 );

@@ -129,6 +129,7 @@ function fastwc_admin_setup_sections() {
 		register_setting( $section_name, FASTWC_SETTING_FAST_JS_URL );
 		register_setting( $section_name, FASTWC_SETTING_FAST_JWKS_URL );
 		register_setting( $section_name, FASTWC_SETTING_ONBOARDING_URL );
+		register_setting( $section_name, FASTWC_SETTING_HEADLESS_LINK_BASE );
 	}
 }
 
@@ -169,6 +170,7 @@ function fastwc_admin_setup_fields() {
 	add_settings_field( FASTWC_SETTING_FAST_JS_URL, __( 'Fast JS URL', 'fast' ), 'fastwc_fastwc_js_content', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_FAST_JWKS_URL, __( 'Fast JWKS URL', 'fast' ), 'fastwc_fastwc_jwks_content', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_ONBOARDING_URL, __( 'Fast Onboarding URL', 'fast' ), 'fastwc_onboarding_url_content', $settings_section, $settings_section );
+	add_settings_field( FASTWC_SETTING_HEADLESS_LINK_BASE, __( 'Headless Checkout Link Base', 'fast' ), 'fastwc_headless_link_base', $settings_section, $settings_section );
 }
 
 /**
@@ -493,7 +495,7 @@ function fastwc_disable_multicurrency_content() {
 
 	fastwc_settings_field_checkbox(
 		array(
-			'name'        => 'fastwc_disable_multicurrency',
+			'name'        => FASTWC_SETTING_DISABLE_MULTICURRENCY,
 			'current'     => $fastwc_disable_multicurrency,
 			'label'       => __( 'Disable Multicurrency Support', 'fast' ),
 			'description' => __( 'Disable multicurrency support in Fast Checkout.', 'fast' ),
@@ -509,7 +511,7 @@ function fastwc_fastwc_js_content() {
 
 	fastwc_settings_field_input(
 		array(
-			'name'  => 'fast_fast_js_url',
+			'name'  => FASTWC_SETTING_FAST_JS_URL,
 			'value' => $fastwc_setting_fast_js_url,
 		)
 	);
@@ -523,7 +525,7 @@ function fastwc_fastwc_jwks_content() {
 
 	fastwc_settings_field_input(
 		array(
-			'name'  => 'fast_fast_jwks_url',
+			'name'  => FASTWC_SETTING_FAST_JWKS_URL,
 			'value' => $fastwc_setting_fast_jwks_url,
 		)
 	);
@@ -537,7 +539,21 @@ function fastwc_onboarding_url_content() {
 
 	fastwc_settings_field_input(
 		array(
-			'name'  => 'fast_onboarding_url',
+			'name'  => FASTWC_SETTING_ONBOARDING_URL,
+			'value' => $url,
+		)
+	);
+}
+
+/**
+ * Renders the headless link base field.
+ */
+function fastwc_headless_link_base() {
+	$url = fastwc_get_option_or_set_default( FASTWC_SETTING_HEADLESS_LINK_BASE, FASTWC_HEADLESS_LINK_BASE );
+
+	fastwc_settings_field_input(
+		array(
+			'name'  => FASTWC_SETTING_HEADLESS_LINK_BASE,
 			'value' => $url,
 		)
 	);
