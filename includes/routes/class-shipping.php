@@ -140,13 +140,26 @@ class Shipping extends Route {
 	 * @return mixed
 	 */
 	protected function update_customer_information( $params ) {
+		$shipping_param = ! empty( $params['shipping'] ) ? $params['shipping'] : array();
+		$shipping_param = wp_parse_args(
+			$shipping_param,
+			array(
+				'country'   => '',
+				'state'     => '',
+				'postcode'  => '',
+				'city'      => '',
+				'address_1' => '',
+				'address_2' => '',
+			)
+		);
+
 		$customer_props = array(
-			'shipping_country'   => $params['shipping']['country'],
-			'shipping_state'     => $params['shipping']['state'],
-			'shipping_postcode'  => $params['shipping']['postcode'],
-			'shipping_city'      => $params['shipping']['city'],
-			'shipping_address_1' => $params['shipping']['address_1'],
-			'shipping_address_2' => $params['shipping']['address_2'],
+			'shipping_country'   => $shipping_param['country'],
+			'shipping_state'     => $shipping_param['state'],
+			'shipping_postcode'  => $shipping_param['postcode'],
+			'shipping_city'      => $shipping_param['city'],
+			'shipping_address_1' => $shipping_param['address_1'],
+			'shipping_address_2' => $shipping_param['address_2'],
 		);
 
 		// Add billing address info if it is part of the request.
