@@ -154,17 +154,21 @@ class Headless_Checkout_Link extends Post_Type {
 			'app_id' => $fast_app_id,
 		);
 		$meta_field_keys = array(
-			'product_id'      => 'fastwc_product_id',
-			'variant_id'      => 'fastwc_variant_id',
-			'quantity'        => 'fastwc_quantity',
-			'product_options' => 'fastwc_product_options',
+			'product_id'    => 'fastwc_product_id',
+			'variant_id'    => 'fastwc_variant_id',
+			'quantity'      => 'fastwc_quantity',
+			'option_values' => 'fastwc_product_options',
 		);
 
 		foreach ( $meta_field_keys as $query_arg_key => $meta_field_key ) {
 			$meta_field_value = \get_post_meta( $link_id, $meta_field_key, true );
 
 			if ( ! empty( $meta_field_value ) ) {
-				$query_args[ $query_arg_key ] = $meta_field_value;
+				if ( 'option_values' === $query_arg_key ) {
+					$query_args[ $query_arg_key ] = json_decode( $meta_field_value );
+				} else {
+					$query_args[ $query_arg_key ] = $meta_field_value;
+				}
 			}
 		}
 
