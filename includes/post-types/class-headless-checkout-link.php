@@ -165,7 +165,7 @@ class Headless_Checkout_Link extends Post_Type {
 
 			if ( ! empty( $meta_field_value ) ) {
 				if ( 'option_values' === $query_arg_key ) {
-					$query_args[ $query_arg_key ] = json_decode( $meta_field_value );
+					$query_args[ $query_arg_key ] = $this->get_converted_json_string( $meta_field_value );
 				} else {
 					$query_args[ $query_arg_key ] = $meta_field_value;
 				}
@@ -173,6 +173,32 @@ class Headless_Checkout_Link extends Post_Type {
 		}
 
 		return $query_args;
+	}
+
+	/**
+	 * Convert JSON string to a url encoded string with the following format:
+	 * KEY_1,VALUE_1,KEY_2,VALUE_2,...,KEY_N,VALUE_N
+	 *
+	 * @param string $json_string The json string.
+	 *
+	 * @return string
+	 */
+	private function get_converted_json_string( $json_string ) {
+		$json_object = json_decode( $json_string );
+
+		$new_string       = '';
+		$new_string_parts = array();
+
+		foreach ( $json_object as $key => $value ) {
+			$new_string_parts[] = $key;
+			$new_string_parts[] = $value;
+		}
+
+		if ( ! empty( $new_string_parts ) ) {
+			$new_string = implode( ',', $new_string_parts );
+		}
+
+		return urlencode( $new_string );
 	}
 
 	/**
