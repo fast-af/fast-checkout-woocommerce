@@ -8,12 +8,24 @@ import isEditorReady from '../components/editor-ready';
 import FastWCProductSearch from '../components/product';
 import FastWCProductVariant from '../components/product-variant';
 import FastWCProductAttributes from '../components/product-attributes';
+import CopyButton from './copy-button';
 
 const { __ } = wp.i18n;
-const { select, dispatch } = wp.data;
-const { TextControl, ClipboardButton } = wp.components;
+const {
+	select,
+	dispatch,
+	subscribe,
+} = wp.data;
+const {
+	TextControl,
+	TextareaControl,
+} = wp.components;
 const { useState, useEffect } = wp.element;
 const { addQueryArgs } = wp.url;
+
+const getPostStatus = () => select( 'core/editor' ).getEditedPostAttribute( 'status' );
+const getPostMeta = () => select( 'core/editor' ).getEditedPostAttribute( 'meta' );
+const getPermalink = () => select( 'core/editor' ).getPermalink();
 
 /**
  * Edit component for the Fast Headless block.
@@ -51,12 +63,46 @@ const edit = ( props ) => {
 		productOptions: {},
 	};
 
+	const getHeadlessButton = ( newAttributes = { ...attributes } ) => {
+
+		const {
+			productId,
+			variantId,
+			quantity,
+			productOptions,
+		} = newAttributes;
+
+		const appId = window?.fastwcHeadless?.appId;
+		const fastJs = window?.fastwcHeadless?.fastJs;
+
+		const fastCheckoutButton = `<fast-checkout-button app_id="${ appId }" product_id="${ productId }" variant_id="${ variantId }" product_options="${ JSON.stringify( productOptions ).replace( /"/g, '&quot;' ) }"></fast-checkout-button>
+<script src="${ fastJs }" />`;
+
+		return fastCheckoutButton;
+	};
+
+	const postStatus = getPostStatus();
+	const initialPermalink = getPermalink();
+	const initialButton = getHeadlessButton();
+
 	const [hasCopiedPermalink, setHasCopiedPermalink] = useState( false );
-	const [hasCopiedFastLink, setHasCopiedFastLink] = useState( false );
-	const [fastLink, setFastLink] = useState( '' );
+	const [permalink, setPermalink] = useState( initialPermalink );
+	const [hasCopiedButton, setHasCopiedButton] = useState( false );
+	const [headlessButton, setHeadlessButton] = useState( initialButton );
+	const [isPublished, setIsPublished] = useState( 'publish' === postStatus );
+
+	subscribe( () => {
+
+		const newPostStatus = getPostStatus();
+		setIsPublished( 'publish' === newPostStatus );
+
+		const newPermalink = getPermalink();
+		setPermalink( newPermalink );
+
+	} );
 
 	const setMeta = ( metaKey, value ) => {
-		const meta = select( 'core/editor' ).getEditedPostAttribute( 'meta' );
+		const meta = getPostMeta();
 
 		const newMeta = { ...meta };
 		newMeta[ metaKey ] = value;
@@ -67,7 +113,7 @@ const edit = ( props ) => {
 	};
 
 	const getMeta = ( metaKey, defaultValue ) => {
-		const meta = select( 'core/editor' ).getEditedPostAttribute( 'meta' );
+		const meta = getPostMeta();
 
 		if ( meta && meta[ metaKey ] ) {
 			return meta[ metaKey ];
@@ -76,38 +122,6 @@ const edit = ( props ) => {
 		setMeta( metaKey, defaultValue );
 
 		return defaultValue;
-	};
-
-	const permalink = select( 'core/editor' ).getPermalink();
-
-	const generateFastLink = ( newAttributes = {} ) => {
-		const linkAttributes = { ...attributes, ...newAttributes };
-
-
-		const fastwcHeadless = window.fastwcHeadless || {};
-		const appId = fastwcHeadless.hasOwnProperty( 'appId' ) ? wcSettings.appId : '';
-
-		let newFastLink = '';
-
-		if ( appId && productId ) {
-			const baseUrl = 'https://go.fast.co/';
-			const queryArgs = {
-				app_id: appId,
-				product_id: linkAttributes.productId,
-				quantity: linkAttributes.quantity,
-			};
-
-			if ( variantId ) {
-				queryArgs.variant_id = variantId;
-			}
-
-			newFastLink = addQueryArgs(
-				baseUrl,
-				{}
-			);
-		}
-
-		setFastLink( newFastLink );
 	};
 
 	return (
@@ -121,6 +135,7 @@ const edit = ( props ) => {
 
 					setMeta( metaKeys.productId, newProductId );
 					setAttributes( { productId: newProductId } );
+					setHeadlessButton( { ...attributes, productId: newProductId } );
 				} }
 				selected={ productId }
 			/>
@@ -131,6 +146,7 @@ const edit = ( props ) => {
 
 					setMeta( metaKeys.variantId, newVariantId );
 					setAttributes( { variantId: newVariantId } );
+					setHeadlessButton( { ...attributes, variantId: newVariantId } );
 				} }
 				product={ productId }
 				variant={ variantId }
@@ -144,6 +160,7 @@ const edit = ( props ) => {
 
 					setMeta( metaKeys.quantity, newQuantity );
 					setAttributes( { quantity: newQuantity } );
+					setHeadlessButton( { ...attributes, quantity: newQuantity } );
 				} }
 				value={ Number.isInteger( quantity ) ? quantity.toString( 10 ) : defaultValues.quantity.toString( 10 ) }
 				step="1"
@@ -152,42 +169,50 @@ const edit = ( props ) => {
 				onChange={ ( atts ) => {
 					setMeta( metaKeys.productOptions, JSON.stringify( atts ) );
 					setAttributes( { productOptions: atts } );
+					setHeadlessButton( { ...attributes, productOptions: atts } );
 				} }
 				product={ productId }
 				variant={ variantId }
 				selected={ productOptions }
 			/>
-			{ productId && (
+			{ productId ? (
 				<div className="fastwc-headless-link-generator--link-urls">
-					<h3>{ __( 'Headless Checkout Link URL\'s') }</h3>
-					<div className="fastwc-headless-link-generator--description">
-						<strong>{ __( 'WordPress Permalink' ) }</strong>
-					</div>
-					<ClipboardButton
-						className="button-link fastwc-headless-link-generator--button"
-						text={ permalink }
-						onCopy={ () => setHasCopiedPermalink( true ) }
-						onFinishCopy={ () => setHasCopiedPermalink( false ) }
-					>
-						{ `${ permalink } - ${ hasCopiedPermalink ? __( 'Copied!' ) : __( 'Click to Copy' ) }` }
-					</ClipboardButton>
-					{ fastLink && (
+					{ isPublished ? (
 						<>
+							<h3>{ __( 'Headless Checkout Link URL' ) }</h3>
 							<div className="fastwc-headless-link-generator--description">
-								<strong>{ __( 'Fast Headless Link' ) }</strong>
+								<div>
+									<strong>{ __( 'WordPress Permalink' ) }</strong>
+								</div>
+								<TextControl
+									disabled
+									value={ permalink }
+								/>
+								<CopyButton
+									copyText={ permalink }
+									onSuccess={ () => setHasCopiedPermalink( true ) }
+								>
+									{ hasCopiedPermalink ? __( 'Copied!' ) : __( 'Click to Copy' ) }
+								</CopyButton>
 							</div>
-							<ClipboardButton
-								className="button-link fastwc-headless-link-generator--button"
-								text={ fastLink }
-								onCopy={ () => setHasCopiedFastLink( true ) }
-								onFinishCopy={ () => setHasCopiedFastLink( false ) }
-							>
-								{ `${ fastLink } - ${ hasCopiedFastLink ? __( 'Copied!' ) : __( 'Click to Copy' ) }` }
-							</ClipboardButton>
+							<hr />
 						</>
-					) }
+					) : '' }
+					<h3>{ __( 'Headless Checkout Button' ) }</h3>
+					<div className="fastwc-headless-link-generator--description">
+						<TextareaControl
+							disabled
+							value={ headlessButton }
+						/>
+						<CopyButton
+							copyText={ headlessButton }
+							onSuccess={ () => setHasCopiedButton( true ) }
+						>
+							{ hasCopiedButton ? __( 'Copied!' ) : __( 'Click to Copy' ) }
+						</CopyButton>
+					</div>
 				</div>
-			) }
+			) : '' }
 		</div>
 	);
 };

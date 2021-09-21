@@ -130,6 +130,7 @@ function fastwc_admin_setup_sections() {
 		register_setting( $section_name, FASTWC_SETTING_FAST_JWKS_URL );
 		register_setting( $section_name, FASTWC_SETTING_ONBOARDING_URL );
 		register_setting( $section_name, FASTWC_SETTING_HEADLESS_LINK_BASE );
+		register_setting( $section_name, FASTWC_SETTING_HEADLESS_FAST_JS_URL );
 	}
 }
 
@@ -171,6 +172,7 @@ function fastwc_admin_setup_fields() {
 	add_settings_field( FASTWC_SETTING_FAST_JWKS_URL, __( 'Fast JWKS URL', 'fast' ), 'fastwc_fastwc_jwks_content', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_ONBOARDING_URL, __( 'Fast Onboarding URL', 'fast' ), 'fastwc_onboarding_url_content', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_HEADLESS_LINK_BASE, __( 'Headless Checkout Link Base', 'fast' ), 'fastwc_headless_link_base', $settings_section, $settings_section );
+	add_settings_field( FASTWC_SETTING_HEADLESS_FAST_JS_URL, __( 'Headless Fast JS URL', 'fast' ), 'fastwc_headless_fast_js_url', $settings_section, $settings_section );
 }
 
 /**
@@ -555,6 +557,20 @@ function fastwc_headless_link_base() {
 		array(
 			'name'  => FASTWC_SETTING_HEADLESS_LINK_BASE,
 			'value' => $url,
+		)
+	);
+}
+
+/**
+ * Renders the headless fast.js URL field.
+ */
+function fastwc_headless_fast_js_url() {
+	$fastwc_headless_fast_js_url = fastwc_get_option_or_set_default( FASTWC_SETTING_HEADLESS_FAST_JS_URL, FASTWC_HEADLESS_FAST_JS_URL );
+
+	fastwc_settings_field_input(
+		array(
+			'name'  => FASTWC_SETTING_HEADLESS_FAST_JS_URL,
+			'value' => $fastwc_headless_fast_js_url,
 		)
 	);
 }

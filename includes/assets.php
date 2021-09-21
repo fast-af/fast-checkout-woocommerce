@@ -101,12 +101,14 @@ function fastwc_enqueue_block_editor_assets() {
 		true
 	);
 
-	$fastwc_app_id = fastwc_get_app_id();
+	$fastwc_app_id          = fastwc_get_app_id();
+	$fastwc_headless_js_url = get_option( FASTWC_SETTING_HEADLESS_FAST_JS_URL, FASTWC_HEADLESS_FAST_JS_URL );
 	wp_localize_script(
 		$fastwc_block_editor_js,
 		'fastwcHeadless',
 		array(
-			'appId' => $fastwc_app_id,
+			'appId'  => $fastwc_app_id,
+			'fastJs' => $fastwc_headless_js_url,
 		)
 	);
 
