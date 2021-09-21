@@ -63,12 +63,32 @@ const edit = ( props ) => {
 		productOptions: {},
 	};
 
+	const getHeadlessButton = ( newAttributes = { ...attributes } ) => {
+
+		const {
+			productId,
+			variantId,
+			quantity,
+			productOptions,
+		} = newAttributes;
+
+		const appId = window?.fastwcHeadless?.appId;
+		const fastJs = window?.fastwcHeadless?.fastJs;
+
+		const fastCheckoutButton = `<fast-checkout-button app_id="${ appId }" product_id="${ productId }" variant_id="${ variantId }" product_options="${ JSON.stringify( productOptions ).replace( /"/g, '&quot;' ) }"></fast-checkout-button>
+<script src="${ fastJs }" />`;
+
+		return fastCheckoutButton;
+	};
+
 	const postStatus = getPostStatus();
 	const initialPermalink = getPermalink();
+	const initialButton = getHeadlessButton();
 
 	const [hasCopiedPermalink, setHasCopiedPermalink] = useState( false );
 	const [permalink, setPermalink] = useState( initialPermalink );
 	const [hasCopiedButton, setHasCopiedButton] = useState( false );
+	const [headlessButton, setHeadlessButton] = useState( initialButton );
 	const [isPublished, setIsPublished] = useState( 'publish' === postStatus );
 
 	subscribe( () => {
@@ -115,6 +135,7 @@ const edit = ( props ) => {
 
 					setMeta( metaKeys.productId, newProductId );
 					setAttributes( { productId: newProductId } );
+					setHeadlessButton( { ...attributes, productId: newProductId } );
 				} }
 				selected={ productId }
 			/>
@@ -125,6 +146,7 @@ const edit = ( props ) => {
 
 					setMeta( metaKeys.variantId, newVariantId );
 					setAttributes( { variantId: newVariantId } );
+					setHeadlessButton( { ...attributes, variantId: newVariantId } );
 				} }
 				product={ productId }
 				variant={ variantId }
@@ -138,6 +160,7 @@ const edit = ( props ) => {
 
 					setMeta( metaKeys.quantity, newQuantity );
 					setAttributes( { quantity: newQuantity } );
+					setHeadlessButton( { ...attributes, quantity: newQuantity } );
 				} }
 				value={ Number.isInteger( quantity ) ? quantity.toString( 10 ) : defaultValues.quantity.toString( 10 ) }
 				step="1"
@@ -146,6 +169,7 @@ const edit = ( props ) => {
 				onChange={ ( atts ) => {
 					setMeta( metaKeys.productOptions, JSON.stringify( atts ) );
 					setAttributes( { productOptions: atts } );
+					setHeadlessButton( { ...attributes, productOptions: atts } );
 				} }
 				product={ productId }
 				variant={ variantId }
@@ -178,10 +202,10 @@ const edit = ( props ) => {
 					<div className="fastwc-headless-link-generator--description">
 						<TextareaControl
 							disabled
-							value="This is the button string."
+							value={ headlessButton }
 						/>
 						<CopyButton
-							copyText="This is the button string."
+							copyText={ headlessButton }
 							onSuccess={ () => setHasCopiedButton( true ) }
 						>
 							{ hasCopiedButton ? __( 'Copied!' ) : __( 'Click to Copy' ) }
