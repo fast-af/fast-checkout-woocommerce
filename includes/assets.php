@@ -95,7 +95,7 @@ function fastwc_enqueue_block_editor_assets() {
 		$block_asset_meta = require FASTWC_PATH . 'assets/dist/blocks/index.asset.php';
 	}
 
-	$block_asset_version = ! empty( $block_asset_meta['version'] ) ? $block_asset_meta['version'] : FASTWC_VERSION;
+	$block_asset_version = ! empty( $block_asset_meta['version'] ) ? esc_attr( $block_asset_meta['version'] ) : esc_attr( FASTWC_VERSION );
 
 	// Enqueue the script.
 	$fastwc_block_editor_js = 'fastwc-block-editor-js';
