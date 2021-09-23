@@ -192,7 +192,7 @@ function fastwc_get_fast_webhooks() {
 		$query    = fastwc_build_webhook_query();
 		$webhooks = wp_parse_id_list( $wpdb->get_col( $query ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
-		wp_cache_set( $cache_key, $webhooks, $cache_group, DAY_IN_SECONDS );
+		wp_cache_set( $cache_key, $webhooks, $cache_group, HOUR_IN_SECONDS );
 	}
 
 	if ( ! empty( $webhooks ) ) {
