@@ -190,6 +190,7 @@ const edit = ( props ) => {
 								/>
 								<ClipboardButton
 									variant="primary"
+									isPrimary
 									text={ permalink }
 									onCopy={ () => setHasCopiedPermalink( true ) }
 									onFinishCopy={ () => setHasCopiedPermalink( false ) }
@@ -208,6 +209,7 @@ const edit = ( props ) => {
 						/>
 						<ClipboardButton
 							variant="primary"
+							isPrimary
 							text={ headlessButton }
 							onCopy={ () => setHasCopiedButton( true ) }
 							onFinishCopy={ () => setHasCopiedButton( false ) }
