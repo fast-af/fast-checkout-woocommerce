@@ -107,7 +107,6 @@ function fastwc_enqueue_block_editor_assets() {
 			'wp-block-editor',
 			'wp-blocks',
 			'wp-components',
-			'wp-compose',
 			'wp-data',
 			'wp-element',
 			'wp-i18n',
