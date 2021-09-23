@@ -90,6 +90,12 @@ add_action( 'wp_head', 'fastwc_wp_head' );
  * Enqueue block editor assets for the Gutenberg blocks.
  */
 function fastwc_enqueue_block_editor_assets() {
+	$block_asset_meta = array();
+	if ( file_exists( FASTWC_PATH . 'assets/dist/blocks/index.asset.php' ) ) {
+		$block_asset_meta = require FASTWC_PATH . 'assets/dist/blocks/index.asset.php';
+	}
+
+	$block_asset_version = ! empty( $block_asset_meta['version'] ) ? $block_asset_meta['version'] : FASTWC_VERSION;
 
 	// Enqueue the script.
 	$fastwc_block_editor_js = 'fastwc-block-editor-js';
@@ -97,7 +103,7 @@ function fastwc_enqueue_block_editor_assets() {
 		$fastwc_block_editor_js,
 		FASTWC_URL . 'assets/dist/blocks/index.js',
 		array( 'wp-blocks', 'wp-i18n', 'wp-components', 'wp-element' ),
-		FASTWC_VERSION,
+		$block_asset_version,
 		true
 	);
 
@@ -117,7 +123,7 @@ function fastwc_enqueue_block_editor_assets() {
 		'fastwc-block-editor-css',
 		FASTWC_URL . 'assets/dist/blocks/index.css',
 		array(),
-		FASTWC_VERSION
+		$block_asset_version
 	);
 }
 add_action( 'enqueue_block_editor_assets', 'fastwc_enqueue_block_editor_assets' );
