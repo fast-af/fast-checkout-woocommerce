@@ -67,6 +67,7 @@ $fastwc_test_mode_class   = empty( $fastwc_test_mode ) ? 'dismiss' : 'yes-alt';
 				</td>
 			</tr>
 
+			<?php if ( ! empty( $fastwc_setting_app_id ) ) : ?>
 			<tr>
 				<td style="vertical-align: top;">
 					<p><strong><?php esc_html_e( 'Webhooks', 'fast' ); ?></strong></p>
@@ -91,6 +92,7 @@ $fastwc_test_mode_class   = empty( $fastwc_test_mode ) ? 'dismiss' : 'yes-alt';
 					<p><a href="<?php echo esc_url( admin_url( 'admin.php?page=wc-settings&tab=advanced&section=webhooks' ) ); ?>"><?php esc_html_e( 'View all WooCommerce webhooks', 'fast' ); ?></a></p>
 				</td>
 			</tr>
+			<?php endif; ?>
 		</tbody>
 	</table>
 </div>

@@ -9,6 +9,7 @@
  * Check for conditions to display admin notices.
  */
 function fastwc_maybe_display_admin_notices() {
+	$fast_app_id              = fastwc_get_app_id();
 	$fastwc_debug_mode        = get_option( FASTWC_SETTING_DEBUG_MODE, 0 );
 	$fastwc_test_mode         = get_option( FASTWC_SETTING_TEST_MODE, '1' );
 	$fastwc_has_webhooks      = fastwc_woocommerce_has_fast_webhooks();
@@ -22,11 +23,11 @@ function fastwc_maybe_display_admin_notices() {
 		add_action( 'admin_notices', 'fastwc_settings_admin_notice_test_mode' );
 	}
 
-	if ( ! $fastwc_has_webhooks ) {
+	if ( ! empty( $fast_app_id ) && ! $fastwc_has_webhooks ) {
 		add_action( 'admin_notices', 'fastwc_settings_admin_notice_missing_webhooks' );
 	}
 
-	if ( ! empty( $fastwc_disabled_webhooks ) ) {
+	if ( ! empty( $fast_app_id ) && ! empty( $fastwc_disabled_webhooks ) ) {
 		add_action( 'admin_notices', 'fastwc_settings_admin_notice_disabled_webhooks' );
 	}
 }
