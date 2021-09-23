@@ -75,10 +75,10 @@ class Headless_Checkout_Link extends Post_Type {
 	 */
 	protected function set_labels() {
 		$labels = array(
-			'name'                  => _x( 'Fast Headless Checkout Links', 'Post Type General Name', 'fast' ),
-			'singular_name'         => _x( 'Fast Headless Checkout Link', 'Post Type Singular Name', 'fast' ),
-			'menu_name'             => __( 'Headless Checkout Links', 'fast' ),
-			'name_admin_bar'        => __( 'Headless Checkout Link', 'fast' ),
+			'name'                  => _x( 'Fast Headless Checkout', 'Post Type General Name', 'fast' ),
+			'singular_name'         => _x( 'Fast Headless Checkout', 'Post Type Singular Name', 'fast' ),
+			'menu_name'             => __( 'Headless Checkout', 'fast' ),
+			'name_admin_bar'        => __( 'Headless Checkout', 'fast' ),
 			'all_items'             => __( 'All Links', 'fast' ),
 			'add_new_item'          => __( 'Add New Link', 'fast' ),
 			'add_new'               => __( 'Add New', 'fast' ),
@@ -124,7 +124,7 @@ class Headless_Checkout_Link extends Post_Type {
 		// Set the args for this post type.
 		$args = array(
 			'label'               => __( 'Fast Headless Checkout Link', 'fast' ),
-			'description'         => __( 'Headless checkout links for Fast Checkout for WooCommerce.', 'fast' ),
+			'description'         => __( 'Headless checkout for Fast Checkout for WooCommerce.', 'fast' ),
 			'supports'            => array( 'title', 'editor', 'custom-fields' ),
 			'taxonomies'          => array( 'product_cat', ' product_tag' ),
 			'show_in_menu'        => false,
