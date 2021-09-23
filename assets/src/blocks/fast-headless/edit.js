@@ -8,7 +8,6 @@ import isEditorReady from '../components/editor-ready';
 import FastWCProductSearch from '../components/product';
 import FastWCProductVariant from '../components/product-variant';
 import FastWCProductAttributes from '../components/product-attributes';
-import CopyButton from './copy-button';
 
 const { __ } = wp.i18n;
 const {
@@ -17,6 +16,7 @@ const {
 	subscribe,
 } = wp.data;
 const {
+	ClipboardButton,
 	TextControl,
 	TextareaControl,
 } = wp.components;
@@ -188,12 +188,14 @@ const edit = ( props ) => {
 									disabled
 									value={ permalink }
 								/>
-								<CopyButton
-									copyText={ permalink }
-									onSuccess={ () => setHasCopiedPermalink( true ) }
+								<ClipboardButton
+									variant="primary"
+									text={ permalink }
+									onCopy={ () => setHasCopiedPermalink( true ) }
+									onFinishCopy={ () => setHasCopiedPermalink( false ) }
 								>
 									{ hasCopiedPermalink ? __( 'Copied!' ) : __( 'Click to Copy' ) }
-								</CopyButton>
+								</ClipboardButton>
 							</div>
 							<hr />
 						</>
@@ -204,12 +206,14 @@ const edit = ( props ) => {
 							disabled
 							value={ headlessButton }
 						/>
-						<CopyButton
-							copyText={ headlessButton }
-							onSuccess={ () => setHasCopiedButton( true ) }
+						<ClipboardButton
+							variant="primary"
+							text={ headlessButton }
+							onCopy={ () => setHasCopiedButton( true ) }
+							onFinishCopy={ () => setHasCopiedButton( false ) }
 						>
 							{ hasCopiedButton ? __( 'Copied!' ) : __( 'Click to Copy' ) }
-						</CopyButton>
+						</ClipboardButton>
 					</div>
 				</div>
 			) : '' }
