@@ -8,6 +8,22 @@
 define( 'FASTWC_OPTION_DISABLED_WEBHOOKS', 'fastwc_disabled_webhooks' );
 
 /**
+ * Get a list of webhook topics used by Fast.
+ *
+ * @return array
+ */
+function fastwc_get_fast_webhook_topics() {
+	return array(
+		'order.deleted',
+		'order.updated',
+		'order.created',
+		'product.deleted',
+		'product.updated',
+		'product.created',
+	);
+}
+
+/**
  * Handle action when a webhook is disabled due to delivery failures.
  *
  * @param int $webhook_id The ID of the webhook that was disabled.
@@ -46,14 +62,13 @@ add_action( 'woocommerce_webhook_options_save', 'fastwc_woocommerce_webhook_opti
  */
 function fastwc_is_fast_webhook( $webhook ) {
 	$fast_app_id   = fastwc_get_app_id();
-	$fast_webhooks = array(
-		'order.deleted',
-		'order.updated',
-		'order.created',
-		'product.deleted',
-		'product.updated',
-		'product.created',
-	);
+
+	// If there is no Fast App ID, then the webhook is not a Fast webhook.
+	if ( emtpy( $fast_app_id ) ) {
+		return false;
+	}
+
+	$fast_webhooks = fastwc_get_fast_webhook_topics();
 
 	// First, make sure that the webhook is a Fast webhook.
 	if (
@@ -87,6 +102,34 @@ function fastwc_get_disabled_webhooks() {
 	}
 
 	return $disabled_webhooks;
+}
+
+/**
+ * Check to see if all Fast webhooks are installed and active.
+ *
+ * @return bool
+ */
+function fastwc_woocommerce_has_fast_webhooks() {
+	// First, make sure the WC_Webhook_Data_Store class exists.
+	if ( ! class_exists( 'WC_Webhook_Data_Store' ) ) {
+		return false;
+	}
+
+	$fast_app_id = fastwc_get_app_id();
+
+	// If there is no Fast App ID, there is no way to check for valid webhooks.
+	if ( empty( $fast_app_id ) ) {
+		return false;
+	}
+
+	gloal $wpdb;
+
+	$webhooks_topics = fastwc_get_fast_webhook_topics();
+
+	// Create the WHERE clause of the query.
+	$where_topic        = 'AND topic IN (' . implode( ',', $webhooks_topics ) . ')';
+	$where_delivery_url = $wpdb->prepare( 'AND delivery_url LIKE %s', '%' . $wpdb->esc_like( sanitize_text_field( $fast_app_id ) )  '%' );
+
 }
 
 /**
