@@ -65,6 +65,8 @@ class Headless_Checkout_Link extends Post_Type {
 					)
 				);
 			}
+
+			add_filter( 'views_edit-fastwc_headless_link', array( $this, 'views_filter' ) );
 		}
 
 		\add_action( 'template_redirect', array( $this, 'maybe_redirect' ) );
@@ -75,10 +77,10 @@ class Headless_Checkout_Link extends Post_Type {
 	 */
 	protected function set_labels() {
 		$labels = array(
-			'name'                  => _x( 'Fast Headless Checkout Links', 'Post Type General Name', 'fast' ),
-			'singular_name'         => _x( 'Fast Headless Checkout Link', 'Post Type Singular Name', 'fast' ),
-			'menu_name'             => __( 'Headless Checkout Links', 'fast' ),
-			'name_admin_bar'        => __( 'Headless Checkout Link', 'fast' ),
+			'name'                  => _x( 'Fast Headless Checkout', 'Post Type General Name', 'fast' ),
+			'singular_name'         => _x( 'Fast Headless Checkout', 'Post Type Singular Name', 'fast' ),
+			'menu_name'             => __( 'Headless Checkout', 'fast' ),
+			'name_admin_bar'        => __( 'Headless Checkout', 'fast' ),
 			'all_items'             => __( 'All Links', 'fast' ),
 			'add_new_item'          => __( 'Add New Link', 'fast' ),
 			'add_new'               => __( 'Add New', 'fast' ),
@@ -124,7 +126,7 @@ class Headless_Checkout_Link extends Post_Type {
 		// Set the args for this post type.
 		$args = array(
 			'label'               => __( 'Fast Headless Checkout Link', 'fast' ),
-			'description'         => __( 'Headless checkout links for Fast Checkout for WooCommerce.', 'fast' ),
+			'description'         => __( 'Headless checkout for Fast Checkout for WooCommerce.', 'fast' ),
 			'supports'            => array( 'title', 'editor', 'custom-fields' ),
 			'taxonomies'          => array( 'product_cat', ' product_tag' ),
 			'show_in_menu'        => false,
@@ -147,7 +149,7 @@ class Headless_Checkout_Link extends Post_Type {
 	 *
 	 * @return array
 	 */
-	function get_query_args() {
+	protected function get_query_args() {
 		$link_id         = \get_the_ID();
 		$fast_app_id     = \fastwc_get_app_id();
 		$query_args      = array(
@@ -183,7 +185,7 @@ class Headless_Checkout_Link extends Post_Type {
 	 *
 	 * @return string
 	 */
-	private function get_converted_json_string( $json_string ) {
+	protected function get_converted_json_string( $json_string ) {
 		$json_object = json_decode( $json_string );
 
 		$new_string       = '';
@@ -204,7 +206,7 @@ class Headless_Checkout_Link extends Post_Type {
 	/**
 	 * Maybe handle the redirect.
 	 */
-	function maybe_redirect() {
+	public function maybe_redirect() {
 		// Do not redirect from the WP admin.
 		if ( \is_admin()) {
 			return;
@@ -220,5 +222,19 @@ class Headless_Checkout_Link extends Post_Type {
 			\wp_redirect( $redirect_link, 301 );
 			exit;
 		}
+	}
+
+	/**
+	 * Filter for the views output on the Fast Headless Checkout page in the admin.
+	 *
+	 * @param array $views An array of available list table views.
+	 */
+	public function views_filter( $views ) {
+		printf(
+			'<p>%s</p>',
+			esc_html__( 'Generate a Fast headless checkout URL and button by selecting a product to sell along with the product variation, quantity, and product options.', 'fast' )
+		);
+
+		return $views;
 	}
 }

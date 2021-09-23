@@ -40,8 +40,8 @@ function fastwc_admin_create_menu() {
 		// Add submenu that  points to the fastwc-headless-link post type.
 		add_submenu_page(
 			$slug,
-			__( 'Fast Headless Checkout Links', 'fast' ), // Page title.
-			__( 'Headless Checkout Links', 'fast' ), // Menu title.
+			__( 'Fast Headless Checkout', 'fast' ), // Page title.
+			__( 'Headless Checkout', 'fast' ), // Menu title.
 			$capability, // Capability.
 			'edit.php?post_type=fastwc_headless_link' // Slug.
 		);
