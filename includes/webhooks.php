@@ -180,7 +180,7 @@ function fastwc_get_fast_webhooks() {
 		return array();
 	}
 
-	$cache_key   = 'fast_webhooks_' . $fast_app_id;
+	$cache_key   = 'fast_webhooks_cache_' . $fast_app_id;
 	$cache_group = 'fast_webhooks';
 	$cache_value = wp_cache_get( $cache_key, $cache_group );
 
@@ -192,7 +192,7 @@ function fastwc_get_fast_webhooks() {
 		$query    = fastwc_build_webhook_query();
 		$webhooks = wp_parse_id_list( $wpdb->get_col( $query ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
-		wp_cache_set( $cache_key, $webhooks, $cache_group );
+		wp_cache_set( $cache_key, $webhooks, $cache_group, DAY_IN_SECONDS );
 	}
 
 	if ( ! empty( $webhooks ) ) {
