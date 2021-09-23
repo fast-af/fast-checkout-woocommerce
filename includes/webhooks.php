@@ -223,6 +223,7 @@ function fastwc_maybe_clear_fast_webhooks_cache() {
 	$cache_group = 'fast_webhooks';
 
 	wp_cache_delete( $cache_key, $cache_group );
+	delete_option( FASTWC_OPTION_WEBHOOKS );
 }
 add_action( 'init', 'fastwc_maybe_clear_fast_webhooks_cache' );
 
