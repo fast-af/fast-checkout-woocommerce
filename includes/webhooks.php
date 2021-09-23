@@ -63,7 +63,7 @@ function fastwc_is_disabled_webhook( $webhook ) {
  * @return bool
  */
 function fastwc_is_fast_webhook( $webhook ) {
-	$fast_app_id   = fastwc_get_app_id();
+	$fast_app_id = fastwc_get_app_id();
 
 	// If there is no Fast App ID, then the webhook is not a Fast webhook.
 	if ( empty( $fast_app_id ) ) {
@@ -133,7 +133,7 @@ function fastwc_build_webhook_query() {
 
 	if ( ! empty( $webhooks_option ) ) {
 		$webhooks_ids = implode( ',', wp_parse_id_list( $webhooks_option ) );
-		$where_ids    = 'AND webhook_id IN ('  . $webhooks_ids . ')';
+		$where_ids    = 'AND webhook_id IN (' . $webhooks_ids . ')';
 
 		$query = trim(
 			"SELECT webhook_id
@@ -190,7 +190,7 @@ function fastwc_get_fast_webhooks() {
 		global $wpdb;
 
 		$query    = fastwc_build_webhook_query();
-		$webhooks = wp_parse_id_list( $wpdb->get_col( $query ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$webhooks = wp_parse_id_list( $wpdb->get_col( $query ) ); // phpcs:ignore
 
 		wp_cache_set( $cache_key, $webhooks, $cache_group, HOUR_IN_SECONDS );
 	}
