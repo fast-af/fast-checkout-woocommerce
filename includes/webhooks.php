@@ -66,7 +66,7 @@ function fastwc_is_fast_webhook( $webhook ) {
 	$fast_app_id   = fastwc_get_app_id();
 
 	// If there is no Fast App ID, then the webhook is not a Fast webhook.
-	if ( emtpy( $fast_app_id ) ) {
+	if ( empty( $fast_app_id ) ) {
 		return false;
 	}
 
