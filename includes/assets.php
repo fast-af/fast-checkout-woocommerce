@@ -102,7 +102,17 @@ function fastwc_enqueue_block_editor_assets() {
 	wp_enqueue_script(
 		$fastwc_block_editor_js,
 		FASTWC_URL . 'assets/dist/blocks/index.js',
-		array( 'wp-blocks', 'wp-i18n', 'wp-components', 'wp-element' ),
+		array(
+			'wp-api-fetch',
+			'wp-block-editor',
+			'wp-blocks',
+			'wp-components',
+			'wp-compose',
+			'wp-data',
+			'wp-element',
+			'wp-i18n',
+			'wp-url',
+		),
 		$block_asset_version,
 		true
 	);
