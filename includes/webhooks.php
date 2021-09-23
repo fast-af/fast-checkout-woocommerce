@@ -209,6 +209,24 @@ function fastwc_get_fast_webhooks() {
 }
 
 /**
+ * Maybe clear the cache on the Fast webhooks cache.
+ */
+function fastwc_maybe_clear_fast_webhooks_cache() {
+	$fast_app_id               = fastwc_get_app_id();
+	$fast_clear_webhooks_cache = isset( $_GET['fast_clear_webhooks_cache'] ) ? absint( $_GET['fast_clear_webhooks_cache'] ) : false; // phpcs:ignore
+
+	if ( empty( $fast_app_id ) || ! $fast_clear_webhooks_cache ) {
+		return;
+	}
+
+	$cache_key   = 'fast_webhooks_cache_' . $fast_app_id;
+	$cache_group = 'fast_webhooks';
+
+	wp_cache_delete( $cache_key, $cache_group );
+}
+add_action( 'init', 'fastwc_maybe_clear_fast_webhooks_cache' );
+
+/**
  * Check to see if all Fast webhooks are installed and active.
  *
  * @return bool
