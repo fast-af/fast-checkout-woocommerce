@@ -40,6 +40,7 @@ add_action( 'woocommerce_webhook_disabled_due_delivery_failures', 'fastwc_woocom
  * @param int $webhook_id The ID of the webhook that was saved.
  */
 function fastwc_woocommerce_webhook_options_save( $webhook_id ) {
+	fastwc_clear_fast_webhooks_cache();
 	fastwc_maybe_log_disabled_webhook( $webhook_id );
 }
 add_action( 'woocommerce_webhook_options_save', 'fastwc_woocommerce_webhook_options_save' );
