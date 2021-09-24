@@ -198,7 +198,7 @@ function fastwc_get_fast_webhooks() {
 	}
 
 	$cache_key   = fastwc_get_webhooks_cache_identifier( 'key' );
-	$cache_group = fastwc_get_webhooks_cache_identifier( 'grouop' );
+	$cache_group = fastwc_get_webhooks_cache_identifier( 'group' );
 	$cache_value = wp_cache_get( $cache_key, $cache_group );
 
 	if ( ! empty( $cache_value ) ) {
@@ -250,7 +250,7 @@ function fastwc_clear_fast_webhooks_cache() {
 	}
 
 	$cache_key   = fastwc_get_webhooks_cache_identifier( 'key' );
-	$cache_group = fastwc_get_webhooks_cache_identifier( 'grouop' );
+	$cache_group = fastwc_get_webhooks_cache_identifier( 'group' );
 
 	wp_cache_delete( $cache_key, $cache_group );
 	delete_option( FASTWC_OPTION_WEBHOOKS );
