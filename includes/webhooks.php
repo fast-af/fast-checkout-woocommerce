@@ -40,6 +40,7 @@ add_action( 'woocommerce_webhook_disabled_due_delivery_failures', 'fastwc_woocom
  * @param int $webhook_id The ID of the webhook that was saved.
  */
 function fastwc_woocommerce_webhook_options_save( $webhook_id ) {
+	fastwc_clear_fast_webhooks_cache();
 	fastwc_maybe_log_disabled_webhook( $webhook_id );
 }
 add_action( 'woocommerce_webhook_options_save', 'fastwc_woocommerce_webhook_options_save' );
@@ -168,6 +169,22 @@ function fastwc_build_webhook_query() {
 }
 
 /**
+ * Get one of the cache identifiers.
+ *
+ * @param string $identifier_type The type of identifier to get: key or group.
+ *
+ * @return string
+ */
+function fastwc_get_webhooks_cache_identifier( $identifier_type ) {
+	if ( 'group' === $identifier_type ) {
+		return 'fast_webhooks';
+	} else { // Assume it is 'key' if it isn't 'group'.
+		$fast_app_id = fastwc_get_app_id();
+		return 'fast_webhooks_cache_' . $fast_app_id;
+	}
+}
+
+/**
  * Get a list of Fast webhooks.
  *
  * @return array
@@ -180,8 +197,8 @@ function fastwc_get_fast_webhooks() {
 		return array();
 	}
 
-	$cache_key   = 'fast_webhooks_cache_' . $fast_app_id;
-	$cache_group = 'fast_webhooks';
+	$cache_key   = fastwc_get_webhooks_cache_identifier( 'key' );
+	$cache_group = fastwc_get_webhooks_cache_identifier( 'grouop' );
 	$cache_value = wp_cache_get( $cache_key, $cache_group );
 
 	if ( ! empty( $cache_value ) ) {
@@ -209,23 +226,35 @@ function fastwc_get_fast_webhooks() {
 }
 
 /**
- * Maybe clear the cache on the Fast webhooks cache.
+ * Maybe clear the Fast webhooks cache.
  */
 function fastwc_maybe_clear_fast_webhooks_cache() {
-	$fast_app_id               = fastwc_get_app_id();
 	$fast_clear_webhooks_cache = isset( $_GET['fast_clear_webhooks_cache'] ) ? absint( $_GET['fast_clear_webhooks_cache'] ) : false; // phpcs:ignore
 
-	if ( empty( $fast_app_id ) || ! $fast_clear_webhooks_cache ) {
+	if ( ! $fast_clear_webhooks_cache ) {
 		return;
 	}
 
-	$cache_key   = 'fast_webhooks_cache_' . $fast_app_id;
-	$cache_group = 'fast_webhooks';
+	fast_clear_webhooks_cache();
+}
+add_action( 'init', 'fastwc_maybe_clear_fast_webhooks_cache' );
+
+/**
+ * Clear the Fast webhooks cache.
+ */
+function fastwc_clear_fast_webhooks_cache() {
+	$fast_app_id = fastwc_get_app_id();
+
+	if ( empty( $fast_app_id ) ) {
+		return;
+	}
+
+	$cache_key   = fastwc_get_webhooks_cache_identifier( 'key' );
+	$cache_group = fastwc_get_webhooks_cache_identifier( 'grouop' );
 
 	wp_cache_delete( $cache_key, $cache_group );
 	delete_option( FASTWC_OPTION_WEBHOOKS );
 }
-add_action( 'init', 'fastwc_maybe_clear_fast_webhooks_cache' );
 
 /**
  * Check to see if all Fast webhooks are installed and active.
