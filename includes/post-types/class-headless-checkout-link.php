@@ -27,6 +27,20 @@ class Headless_Checkout_Link extends Post_Type {
 	protected $slug = '';
 
 	/**
+	 * Redirect post meta key.
+	 *
+	 * @var string
+	 */
+	protected $redirects_post_meta_key = 'fastwc_redirect_counter';
+
+	/**
+	 * Redirect column key.
+	 *
+	 * @var string
+	 */
+	protected $redirects_column_key = 'redirects_counter';
+
+	/**
 	 * Initialize the post type.
 	 */
 	protected function init() {
@@ -66,7 +80,12 @@ class Headless_Checkout_Link extends Post_Type {
 				);
 			}
 
-			add_filter( 'views_edit-fastwc_headless_link', array( $this, 'views_filter' ) );
+			// Display a description at the top of the headless checkout page.
+			\add_filter( 'views_edit-' . $this->name, array( $this, 'views_filter' ) );
+
+			// Display the counter column.
+			\add_filter( 'manage_' . $this->name . '_posts_columns', array( $this, 'manage_columns' ) );
+			\add_action( 'manage_' . $this->name . '_posts_custom_column', array( $this, 'manage_counter_column' ), 10, 2 );
 		}
 
 		\add_action( 'template_redirect', array( $this, 'maybe_redirect' ) );
@@ -247,12 +266,11 @@ class Headless_Checkout_Link extends Post_Type {
 	 */
 	protected function increment_redirect_counter() {
 		$link_post_id = \get_the_ID();
-		$meta_key     = 'fastwc_redirect_counter';
 
-		$current_count = \absint( \get_post_meta( $link_post_id, $meta_key, true ) );
+		$current_count = \absint( \get_post_meta( $link_post_id, $this->redirects_post_meta_key, true ) );
 		$current_count++;
 
-		\update_post_meta( $link_post_id, 'fastwc_redirect_counter', $current_count );
+		\update_post_meta( $link_post_id, $this->redirects_post_meta_key, $current_count );
 	}
 
 	/**
@@ -267,5 +285,44 @@ class Headless_Checkout_Link extends Post_Type {
 		);
 
 		return $views;
+	}
+
+	/**
+	 * Manage the columns in the editor.
+	 *
+	 * @param array $columns The list of columns.
+	 *
+	 * @return array
+	 */
+	public function manage_columns( $columns ) {
+		$new_columns = array();
+
+		$index = 0;
+		foreach ( $columns as $column_key => $column ) {
+			$new_columns[ $column_key ] = $column;
+
+			if ( 1 === $index ) {
+				$new_columns[ $this->redirects_column_key ] = __( 'Hits', 'fast' );
+			}
+			$index++;
+		}
+
+		return $new_columns;
+	}
+
+	/**
+	 * Manage the counter column.
+	 *
+	 * @param string $column  The name of the column to manage.
+	 * @param int    $post_id The ID of the current post.
+	 */
+	public function manage_counter_column( $column, $post_id ) {
+		if ( $this->redirects_column_key !== $column ) {
+			return;
+		}
+
+		$redirects = \absint( \get_post_meta( $post_id, $this->redirects_post_meta_key, true ) );
+
+		echo \esc_html( \absint( $redirects ) );
 	}
 }
