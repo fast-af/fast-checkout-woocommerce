@@ -2,6 +2,8 @@
 /**
  * Plugin Name: Fast Checkout for WooCommerce
  * Plugin URI: https://fast.co
+ * Author: Fast
+ * Author URI: https://fast.co
  * Description: Install the Checkout button that increases conversion, boosts sales and delights customers.
  * Version: 1.1.5
  * License: GPLv2
