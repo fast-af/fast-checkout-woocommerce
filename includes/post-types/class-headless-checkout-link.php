@@ -174,7 +174,15 @@ class Headless_Checkout_Link extends Post_Type {
 			}
 		}
 
-		return $query_args;
+		/**
+		 * Filter the list of query args used for the Fast Headless Checkout URL.
+		 *
+		 * @param array $query_args      The query args used to build the Fast headless Checkout URL.
+		 * @param array $meta_field_keys The list of meta field keys for fetching the query args.
+		 *
+		 * @return array
+		 */
+		return apply_filters( 'fastwc_headless_checkout_link_query_args', $query_args, $meta_field_keys );
 	}
 
 	/**
@@ -218,6 +226,14 @@ class Headless_Checkout_Link extends Post_Type {
 
 			$redirect_link_base = \get_option( FASTWC_SETTING_HEADLESS_LINK_BASE, FASTWC_HEADLESS_LINK_BASE );
 			$redirect_link      = \add_query_arg( $query_args, $redirect_link_base );
+
+			/**
+			 * Fires before the customer is redirected to the Fast Headless Checkout URL.
+			 *
+			 * @param string $redirect_link The Fast Headless Checkout URL to which the customer is redirected.
+			 * @param array  $query_args    The query args that get added to the checkout link.
+			 */
+			\do_action( 'fastwc_before_headless_checkout_link_redirect', $redirect_link, $query_args );
 
 			\wp_redirect( $redirect_link, 301 );
 			exit;
