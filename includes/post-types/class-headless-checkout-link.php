@@ -235,9 +235,24 @@ class Headless_Checkout_Link extends Post_Type {
 			 */
 			\do_action( 'fastwc_before_headless_checkout_link_redirect', $redirect_link, $query_args );
 
+			$this->increment_redirect_counter();
+
 			\wp_redirect( $redirect_link, 301 );
 			exit;
 		}
+	}
+
+	/**
+	 * Increment the redirect counter.
+	 */
+	protected function increment_redirect_counter() {
+		$link_post_id = \get_the_ID();
+		$meta_key     = 'fastwc_redirect_counter';
+
+		$current_count = \absint( \get_post_meta( $link_post_id, $meta_key, true ) );
+		$current_count++;
+
+		\update_post_meta( $link_post_id, 'fastwc_redirect_counter', $current_count );
 	}
 
 	/**
