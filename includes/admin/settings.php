@@ -53,8 +53,52 @@ function fastwc_updated_option( $option, $old_value, $value ) {
 add_action( 'updated_option', 'fastwc_updated_option', 10, 3 );
 
 add_action( 'admin_menu', 'fastwc_admin_create_menu' );
+add_action( 'admin_init', 'fastwc_maybe_redirect_after_activation', 1 );
 add_action( 'admin_init', 'fastwc_admin_setup_sections' );
 add_action( 'admin_init', 'fastwc_admin_setup_fields' );
+
+/**
+ * Add plugin action links to the Fast plugin on the plugins page.
+ *
+ * @param array  $plugin_meta The list of links for the plugin.
+ * @param string $plugin_file Path to the plugin file relative to the plugins directory.
+ * @param array  $plugin_data An array of plugin data.
+ * @param string $status      Status filter currently applied to the plugin list. Possible
+ *                            values are: 'all', 'active', 'inactive', 'recently_activated',
+ *                            'upgrade', 'mustuse', 'dropins', 'search', 'paused',
+ *                            'auto-update-enabled', 'auto-update-disabled'.
+ *
+ * @return array
+ */
+function fastwc_admin_plugin_row_meta( $plugin_meta, $plugin_file, $plugin_data, $status ) {
+	if ( plugin_basename( FASTWC_PATH . 'fast.php' ) !== $plugin_file ) {
+		return $plugin_meta;
+	}
+
+	// Add "Become a Seller!" CTA if the Fast App ID has not yet been set.
+	if ( function_exists( 'fastwc_get_app_id' ) ) {
+		$fast_app_id = fastwc_get_app_id();
+
+		if ( empty( $fast_app_id ) ) {
+			$fastwc_setting_fast_onboarding_url = fastwc_get_option_or_set_default( FASTWC_SETTING_ONBOARDING_URL, FASTWC_ONBOARDING_URL );
+
+			$plugin_meta[] = sprintf(
+				'<a href="%1$s" target="_blank" rel="noopener"><strong>%2$s</strong></a>',
+				esc_url( $fastwc_setting_fast_onboarding_url ),
+				esc_html__( 'Become a Seller!', 'fast' )
+			);
+		}
+	}
+
+	$plugin_meta[] = sprintf(
+		'<a href="%1$s">%2$s</a>',
+		esc_url( admin_url( 'admin.php?page=fast' ) ),
+		esc_html__( 'Settings', 'fast' )
+	);
+
+	return $plugin_meta;
+}
+add_action( 'plugin_row_meta', 'fastwc_admin_plugin_row_meta', 10, 4 );
 
 /**
  * Registers the Fast menu within wp-admin.
@@ -70,6 +114,26 @@ function fastwc_admin_create_menu() {
 	$position   = 100;
 
 	add_menu_page( $page_title, $menu_title, $capability, $slug, $callback, $icon, $position );
+}
+
+/**
+ * Maybe redirect to the Fast settings page after activation.
+ */
+function fastwc_maybe_redirect_after_activation() {
+	$activated = get_option( FASTWC_PLUGIN_ACTIVATED, false );
+
+	if ( $activated ) {
+		// Delete the flag to prevent an endless redirect loop.
+		delete_option( FASTWC_PLUGIN_ACTIVATED );
+
+		// Redirect to the Fast settings page.
+		wp_safe_redirect(
+			esc_url(
+				admin_url( 'admin.php?page=fast' )
+			)
+		);
+		exit;
+	}
 }
 
 /**
