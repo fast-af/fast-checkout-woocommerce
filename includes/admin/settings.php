@@ -15,6 +15,7 @@ require_once FASTWC_PATH . 'includes/admin/constants.php';
 require_once FASTWC_PATH . 'includes/admin/fields.php';
 
 add_action( 'admin_menu', 'fastwc_admin_create_menu' );
+add_action( 'admin_init', 'fastwc_maybe_redirect_after_activation', 1 );
 add_action( 'admin_init', 'fastwc_admin_setup_sections' );
 add_action( 'admin_init', 'fastwc_admin_setup_fields' );
 
@@ -88,6 +89,26 @@ function fastwc_admin_create_menu() {
 			$capability, // Capability.
 			'edit.php?post_type=fastwc_headless_link' // Slug.
 		);
+	}
+}
+
+/**
+ * Maybe redirect to the Fast settings page after activation.
+ */
+function fastwc_maybe_redirect_after_activation() {
+	$activated = get_option( FASTWC_PLUGIN_ACTIVATED, false );
+
+	if ( $activated ) {
+		// Delete the flag to prevent an endless redirect loop.
+		delete_option( FASTWC_PLUGIN_ACTIVATED );
+
+		// Redirect to the Fast settings page.
+		wp_safe_redirect(
+			esc_url(
+				admin_url( 'admin.php?page=fast' )
+			)
+		);
+		exit;
 	}
 }
 
