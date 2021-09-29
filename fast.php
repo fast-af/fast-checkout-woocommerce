@@ -2,6 +2,8 @@
 /**
  * Plugin Name: Fast Checkout for WooCommerce
  * Plugin URI: https://fast.co
+ * Author: Fast
+ * Author URI: https://fast.co
  * Description: Install the Checkout button that increases conversion, boosts sales and delights customers.
  * Version: 1.1.5
  * License: GPLv2
@@ -44,3 +46,16 @@ if ( fastwc_woocommerce_is_active() ) {
 	// Add Freemius integration.
 	require_once FASTWC_PATH . 'includes/freemius.php';
 }
+
+define( 'FASTWC_PLUGIN_ACTIVATED', 'fastwc_plugin_activated' );
+/**
+ * Add a flag indicating that the plugin was just activated.
+ */
+function fastwc_plugin_activated() {
+	// First make sure that WooCommerce is installed and active.
+	if ( fastwc_woocommerce_is_active() ) {
+		// Add a flag to show that the plugin was activated.
+		add_option( FASTWC_PLUGIN_ACTIVATED, true );
+	}
+}
+register_activation_hook( __FILE__, 'fastwc_plugin_activated' );
