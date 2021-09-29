@@ -38,6 +38,7 @@ define( 'FASTWC_JS_URL', 'https://js.fast.co/fast-woocommerce.js' );
 define( 'FASTWC_ONBOARDING_URL', 'https://fast.co/business' );
 define( 'FASTWC_HEADLESS_LINK_BASE', 'https://go.fast.co/' );
 define( 'FASTWC_HEADLESS_FAST_JS_URL', 'https://js.fast.co/fast.js' );
+define( 'FASTWC_SETTINGS_TIMESTAMPS', 'fastwc_settings_timestamps' );
 
 define(
 	'FASTWC_SETTING_PDP_BUTTON_STYLES_DEFAULT',

@@ -14,6 +14,44 @@ require_once FASTWC_PATH . 'includes/admin/constants.php';
 // Load admin fields.
 require_once FASTWC_PATH . 'includes/admin/fields.php';
 
+/**
+ * Add timestamp when an option is updated.
+ *
+ * @param string $option    Name of the updated option.
+ * @param mixed  $old_value The old option value.
+ * @param mixed  $value     The new option value.
+ */
+function fastwc_updated_option( $option, $old_value, $value ) {
+	if ( $old_value === $value ) {
+		return;
+	}
+
+	$stampable_options = array(
+		FASTWC_SETTING_APP_ID,
+		FASTWC_SETTING_FAST_JS_URL,
+		FASTWC_SETTING_FAST_JWKS_URL,
+		FASTWC_SETTING_ONBOARDING_URL,
+		FASTWC_SETTING_PDP_BUTTON_STYLES,
+		FASTWC_SETTING_CART_BUTTON_STYLES,
+		FASTWC_SETTING_MINI_CART_BUTTON_STYLES,
+		FASTWC_SETTING_CHECKOUT_BUTTON_STYLES,
+		FASTWC_SETTING_LOGIN_BUTTON_STYLES,
+		FASTWC_SETTING_HIDE_BUTTON_PRODUCTS,
+		FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE,
+		FASTWC_SETTING_PDP_BUTTON_HOOK,
+		FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER,
+	);
+
+	if ( in_array( $option, $stampable_options, true ) ) {
+		$fastwc_settings_timestamps = get_option( FASTWC_SETTINGS_TIMESTAMPS, array() );
+
+		$fastwc_settings_timestamps[ $option ] = time();
+
+		update_option( FASTWC_SETTINGS_TIMESTAMPS, $fastwc_settings_timestamps );
+	}
+}
+add_action( 'updated_option', 'fastwc_updated_option', 10, 3 );
+
 add_action( 'admin_menu', 'fastwc_admin_create_menu' );
 add_action( 'admin_init', 'fastwc_maybe_redirect_after_activation', 1 );
 add_action( 'admin_init', 'fastwc_admin_setup_sections' );
