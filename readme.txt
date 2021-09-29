@@ -65,3 +65,5 @@ Fast replaces your current payment processor. You can see our fee schedule, simi
 * Display admin notices whenever the Fast plugin is in Test Mode or Debug Mode.
 * Add a footer to the Fast settings page that includes useful links and the latest version number of the plugin.
 * Replace inline admin CSS with enqueued CSS file.
+
+[See changelog.txt for the complete Fast Checkout for WooCommerce changelog.](https://raw.githubusercontent.com/fast-af/fast-checkout-woocommerce/main/changelog.txt)
