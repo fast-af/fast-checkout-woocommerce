@@ -42,3 +42,15 @@ if ( fastwc_woocommerce_is_active() ) {
 	// Add Fast failed/disabled webhook handler.
 	require_once FASTWC_PATH . 'includes/webhooks.php';
 }
+
+define( 'FASTWC_PLUGIN_ACTIVATED', 'fastwc_plugin_activated' );
+/**
+ * Add a flag indicating that the plugin was just activated.
+ */
+function fastwc_plugin_activated() {
+	// First make sure that WooCommerce is installed and active.
+	if ( fastwc_woocommerce_is_active() ) {
+		// Add a flag to show that the plugin was activated.
+		add_option( FASTWC_PLUGIN_ACTIVATED, true );
+	}
+}
