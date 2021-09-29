@@ -54,3 +54,4 @@ function fastwc_plugin_activated() {
 		add_option( FASTWC_PLUGIN_ACTIVATED, true );
 	}
 }
+register_activation_hook( __FILE__, 'fastwc_plugin_activated' );
