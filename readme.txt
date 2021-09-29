@@ -65,35 +65,3 @@ Fast replaces your current payment processor. You can see our fee schedule, simi
 * Display admin notices whenever the Fast plugin is in Test Mode or Debug Mode.
 * Add a footer to the Fast settings page that includes useful links and the latest version number of the plugin.
 * Replace inline admin CSS with enqueued CSS file.
-
-= 1.0.8 =
-* Require an active WooCommerce plugin before loading Fast and add notification indicating that WooCommerce is required.
-* Add ability to check for specific WooCommerce versions before loading certain features.
-* Add an option under Fast settings to allow the admin to choose where the store redirects after successful checkout.
-* Update the Fast settings page to use templates.
-* Add a support tab to include documentation and support ticket link.
-
-= 1.0.7 =
-* Add tabs to the Fast settings page in the WordPress admin.
-
-= 1.0.6 =
-* Add an option to select the hook used to display the Fast Checkout button on product details pages.
-
-= 1.0.5 =
-* Fix a sytax error in the debug logging.
-
-= 1.0.4 =
-* Add debug mode and logging.
-
-= 1.0.3 =
-* Improve and simplify logic for conditions to hide checkout and login buttons.
-* Add check to hide buttons for shortcodes.
-
-= 1.0.2 =
-* Add an option to select specific products for which to hide the Fast Checkout button.
-
-= 1.0.1 =
-* Hide the Fast Checkout button for variable subscription products.
-
-= 1.0 =
-* Fast Checkout for WooCommerce launch
