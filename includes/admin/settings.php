@@ -42,13 +42,16 @@ function fastwc_maybe_redirect_after_activation() {
 	$activated = get_option( FASTWC_PLUGIN_ACTIVATED, false );
 
 	if ( $activated ) {
+		// Delete the flag to prevent an endless redirect loop.
 		delete_option( FASTWC_PLUGIN_ACTIVATED );
 
+		// Redirect to the Fast settings page.
 		wp_safe_redirect(
 			esc_url(
 				admin_url( 'admin.php?page=fast' )
 			)
 		);
+		exit;
 	}
 }
 
