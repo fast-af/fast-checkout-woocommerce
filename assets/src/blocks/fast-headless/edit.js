@@ -75,7 +75,7 @@ const edit = ( props ) => {
 		const appId = window?.fastwcHeadless?.appId;
 		const fastJs = window?.fastwcHeadless?.fastJs;
 
-		const fastCheckoutButton = `<fast-checkout-button app_id="${ appId }" product_id="${ productId }" variant_id="${ variantId }" product_options="${ JSON.stringify( productOptions ).replace( /"/g, '&quot;' ) }"></fast-checkout-button>
+		const fastCheckoutButton = `<fast-checkout-button app_id="${ appId }" product_id="${ productId }" variant_id="${ variantId }" quantity="${ quantity }" product_options="${ JSON.stringify( productOptions ).replace( /"/g, '&quot;' ) }"></fast-checkout-button>
 <script src="${ fastJs }" />`;
 
 		return fastCheckoutButton;
