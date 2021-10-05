@@ -62,9 +62,7 @@ class Freemius {
 	protected $freemius = null;
 
 	/**
-	 * Create a helper function for easy SDK access.
-	 *
-	 * @return Freemius
+	 * Construct the \FastWC\Freemius object.
 	 */
 	protected function __construct() {
 		if ( ! isset( $this->freemius ) ) {
@@ -73,19 +71,19 @@ class Freemius {
 
 			$this->freemius = \fs_dynamic_init(
 				array(
-					'id'                  => $this->id,
-					'slug'                => $this->slug,
-					'type'                => 'plugin',
-					'public_key'          => $this->public_key,
-					'is_premium'          => false,
-					'has_addons'          => false,
-					'has_paid_plans'      => false,
-					'menu'                => array(
-						'slug'           => $this->menu_slug,
-						'first-path'     => $this->first_path,
-						'account'        => false,
-						'contact'        => false,
-						'support'        => false,
+					'id'             => $this->id,
+					'slug'           => $this->slug,
+					'type'           => 'plugin',
+					'public_key'     => $this->public_key,
+					'is_premium'     => false,
+					'has_addons'     => false,
+					'has_paid_plans' => false,
+					'menu'           => array(
+						'slug'       => $this->menu_slug,
+						'first-path' => $this->first_path,
+						'account'    => false,
+						'contact'    => false,
+						'support'    => false,
 					),
 				)
 			);
@@ -126,14 +124,14 @@ class Freemius {
 	public function connect_message( $message, $user_first_name, $product_title, $user_login, $site_link, $freemius_link ) {
 
 		/* translators: %s: name (e.g. Hey John,) */
-	    $hey_x_text = \esc_html(
-	    	sprintf(
-	    		\fs_text_x_inline( 'Hey %s,', 'greeting', 'hey-x', 'fast' ),
-	    		$user_first_name
-	    	)
-	    );
+		$hey_x_text = \esc_html(
+			sprintf(
+				\fs_text_x_inline( 'Hey %s,', 'greeting', 'hey-x', 'fast' ),
+				$user_first_name
+			)
+		);
 
-	    // Set the default message string.
+		// Set the default message string.
 		$default_message = \fs_text_inline( 'Never miss an important update - opt in to our security & feature updates along side diagnostic tracking with %4$s.', 'connect-message', 'fast' );
 		if ( $this->freemius->is_plugin_update() ) {
 			$default_message = \fs_text_inline( 'Never miss an important update - opt in to our security & feature updates along side diagnostic tracking with %4$s. If you skip this, that\'s okay! %1$s will still work just fine.', 'connect-message_on-update', 'fast' );
