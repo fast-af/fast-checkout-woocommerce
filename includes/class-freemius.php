@@ -93,9 +93,6 @@ class Freemius {
 			// Add filters to update the opt-in message.
 			$this->freemius->add_filter( 'connect_message', array( $this, 'connect_message' ), 10, 6 );
 			$this->freemius->add_filter( 'connect_message_on_update', array( $this, 'connect_message' ), 10, 6 );
-
-			// Add filter to customize the lsit of permissions.
-			$this->freemius->add_filter( 'permission_list', array( $this, 'permissions' ) );
 		}
 	}
 
@@ -127,24 +124,30 @@ class Freemius {
 	 * @see https://freemius.com/help/documentation/wordpress-sdk/opt-in-message/
 	 */
 	public function connect_message( $message, $user_first_name, $product_title, $user_login, $site_link, $freemius_link ) {
-		// TODO: Update the message.
+
+		/* translators: %s: name (e.g. Hey John,) */
+	    $hey_x_text = \esc_html(
+	    	sprintf(
+	    		\fs_text_x_inline( 'Hey %s,', 'greeting', 'hey-x', 'fast' ),
+	    		$user_first_name
+	    	)
+	    );
+
+	    // Set the default message string.
+		$default_message = \fs_text_inline( 'Never miss an important update - opt in to our security & feature updates along side diagnostic tracking with %4$s.', 'connect-message', 'fast' );
+		if ( $this->freemius->is_plugin_update() ) {
+			$default_message = \fs_text_inline( 'Never miss an important update - opt in to our security & feature updates along side diagnostic tracking with %4$s. If you skip this, that\'s okay! %1$s will still work just fine.', 'connect-message_on-update', 'fast' );
+		}
+
+		$message = $hey_x_text . '<br>' . sprintf(
+			esc_html( $default_message ),
+			'<b>' . esc_html( $product_title ) . '</b>',
+			'<b>' . $user_login . '</b>',
+			'<a href="' . $site_link . '" target="_blank" rel="noopener noreferrer">' . $site_link . '</a>',
+			$freemius_link
+		);
 
 		return $message;
-	}
-
-	/**
-	 * Filter the permissions list.
-	 *
-	 * @param array $permissions The list of permissions to filter.
-	 *
-	 * @return array
-	 *
-	 * @see https://freemius.com/help/documentation/wordpress-sdk/opt-in-message/
-	 */
-	public function permissions( $persmissions ) {
-		// TODO: Filter the permissions list.
-
-		return $persmissions;
 	}
 }
 
