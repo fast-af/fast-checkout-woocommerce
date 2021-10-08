@@ -1,7 +1,14 @@
 {
     "name": "fast/fast",
     "description": "Fast for WooCommerce",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Freemius/wordpress-sdk.git"
+        }
+    ],
     "require": {
-        "firebase/php-jwt": "^5.2"
+        "firebase/php-jwt": "^5.2",
+        "freemius/wordpress-sdk": "dev-master"
     }
 }
