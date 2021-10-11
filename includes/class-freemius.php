@@ -65,7 +65,7 @@ class Freemius {
 	 * Construct the \FastWC\Freemius object.
 	 */
 	protected function __construct() {
-		if ( ! isset( $this->freemius ) ) {
+		if ( ! isset( $this->freemius ) && file_exists( FASTWC_PATH . 'vendor/freemius/wordpress-sdk/start.php' ) ) {
 			// Include Freemius SDK.
 			require_once FASTWC_PATH . 'vendor/freemius/wordpress-sdk/start.php';
 
