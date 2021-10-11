@@ -31,6 +31,7 @@ define( 'FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER', 'fast_pdp_button_hook_other' );
 define( 'FASTWC_JWKS_URL', 'https://api.fast.co/v1/oauth2/jwks' );
 define( 'FASTWC_JS_URL', 'https://js.fast.co/fast-woocommerce.js' );
 define( 'FASTWC_ONBOARDING_URL', 'https://fast.co/business' );
+define( 'FASTWC_SETTINGS_TIMESTAMPS', 'fastwc_settings_timestamps' );
 
 define(
 	'FASTWC_SETTING_PDP_BUTTON_STYLES_DEFAULT',
