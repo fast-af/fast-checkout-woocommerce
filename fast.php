@@ -45,6 +45,8 @@ if ( fastwc_woocommerce_is_active() ) {
 	require_once FASTWC_PATH . 'includes/blocks.php';
 	// Add Fast failed/disabled webhook handler.
 	require_once FASTWC_PATH . 'includes/webhooks.php';
+	// Add Freemius integration.
+	require_once FASTWC_PATH . 'includes/class-freemius.php';
 }
 
 define( 'FASTWC_PLUGIN_ACTIVATED', 'fastwc_plugin_activated' );
