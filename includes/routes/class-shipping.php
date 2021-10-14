@@ -184,8 +184,8 @@ class Shipping extends Route {
 	 * @return mixed
 	 */
 	protected function update_customer_information( $params ) {
-		$shipping_param = ! empty( $params['shipping'] ) ? $params['shipping'] : array();
-		$shipping_param = wp_parse_args(
+		$shipping_param = ! empty( $params['shipping'] ) ? $params['shipping'] : $this->maybe_get_shipping_address_from_order( $params );
+		$shipping_param = \wp_parse_args(
 			$shipping_param,
 			array(
 				'country'   => '',
@@ -231,6 +231,31 @@ class Shipping extends Route {
 
 		// Return false for no error.
 		return false;
+	}
+
+	/**
+	 * Get the shipping address from the order if an order ID is passed in.
+	 *
+	 * @param array $params The request params.
+	 *
+	 * @return array
+	 */
+	protected function maybe_get_shipping_address_from_order( $params ) {
+		$order_id         = ! empty( $params['order_id'] ) ? $params['order_id'] : 0;
+		$shipping_address = array();
+
+		// If no order ID is passed in with the request, do nothing.
+		if ( ! empty( $order_id ) ) {
+			$order = \wc_get_order( $order_id );
+
+			// If there is no order object with the passed in order ID, do nothing.
+			if ( ! empty( $order ) && method_exists( $order, 'get_address' ) ) {
+				// Get shipping address from the order.
+				$shipping_address = $order->get_address( 'shipping' );
+			}
+		}
+
+		return $shipping_address;
 	}
 
 	/**
