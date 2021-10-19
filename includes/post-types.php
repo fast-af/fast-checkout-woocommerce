@@ -14,7 +14,9 @@ require_once FASTWC_PATH . 'includes/post-types/class-headless-checkout-link.php
  * Register custom post types.
  */
 function fastwc_register_post_types() {
-	// Register the headless checkout link post type.
-	new \FastWC\Post_Types\Headless_Checkout_Link();
+    if ( fastwc_headless_is_enabled() && fastwc_gutenberg_is_active() ) {
+    	// Register the headless checkout link post type.
+    	new \FastWC\Post_Types\Headless_Checkout_Link();
+    }
 }
 add_action( 'init', 'fastwc_register_post_types' );

@@ -115,7 +115,7 @@ function fastwc_admin_create_menu() {
 
 	add_menu_page( $page_title, $menu_title, $capability, $slug, $callback, $icon, $position );
 
-	if ( fastwc_gutenberg_is_active() ) {
+	if ( fastwc_gutenberg_is_active() && fastwc_headless_is_enabled() ) {
 		// Add "Settings" submenu that points to the top-level menu item.
 		add_submenu_page( $slug, $page_title, __( 'Settings', 'fast' ), $capability, $slug );
 
@@ -231,6 +231,7 @@ function fastwc_admin_setup_sections() {
 		register_setting( $section_name, FASTWC_SETTING_FAST_JS_URL );
 		register_setting( $section_name, FASTWC_SETTING_FAST_JWKS_URL );
 		register_setting( $section_name, FASTWC_SETTING_ONBOARDING_URL );
+		register_setting( $section_name, FASTWC_SETTING_ENABLE_HEADLESS );
 		register_setting( $section_name, FASTWC_SETTING_HEADLESS_LINK_BASE );
 		register_setting( $section_name, FASTWC_SETTING_HEADLESS_FAST_JS_URL );
 	}
@@ -273,6 +274,7 @@ function fastwc_admin_setup_fields() {
 	add_settings_field( FASTWC_SETTING_FAST_JS_URL, __( 'Fast JS URL', 'fast' ), 'fastwc_fastwc_js_content', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_FAST_JWKS_URL, __( 'Fast JWKS URL', 'fast' ), 'fastwc_fastwc_jwks_content', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_ONBOARDING_URL, __( 'Fast Onboarding URL', 'fast' ), 'fastwc_onboarding_url_content', $settings_section, $settings_section );
+	add_settings_field( FASTWC_SETTING_ENABLE_HEADLESS, __( 'Enable Headless Link Tool', 'fast' ), 'fastwc_enable_headless', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_HEADLESS_LINK_BASE, __( 'Headless Checkout Link Base', 'fast' ), 'fastwc_headless_link_base', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_HEADLESS_FAST_JS_URL, __( 'Headless Fast JS URL', 'fast' ), 'fastwc_headless_fast_js_url', $settings_section, $settings_section );
 }
@@ -645,6 +647,22 @@ function fastwc_onboarding_url_content() {
 		array(
 			'name'  => FASTWC_SETTING_ONBOARDING_URL,
 			'value' => $url,
+		)
+	);
+}
+
+/**
+ * Renders a checkbox to set whether or not to enable the headless link tool.
+ */
+function fastwc_enable_headless() {
+	$fastwc_enable_headless = fastwc_headless_is_enabled() ? '1' : '0';
+
+	fastwc_settings_field_checkbox(
+		array(
+			'name'        => FASTWC_SETTING_ENABLE_HEADLESS,
+			'current'     => $fastwc_enable_headless,
+			'label'       => __( 'Enable the headless checkout link tool.', 'fast' ),
+			'description' => __( 'When this box is checked, the headless checkout link tool is enabled for use in the WordPress admin.', 'fast' ),
 		)
 	);
 }

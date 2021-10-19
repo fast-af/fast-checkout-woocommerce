@@ -289,3 +289,21 @@ function fastwc_get_normalized_product_options( $product_options ) {
 
 	return fastwc_is_json( $product_options ) ? $product_options : '';
 }
+
+/**
+ * Check to see if the headless checkout tool is enabled.
+ *
+ * @return bool
+ */
+function fastwc_headless_is_enabled() {
+	$is_enabled = get_option( FASTWC_SETTING_ENABLE_HEADLESS, FASTWC_SETTING_ENABLE_HEADLESS_NOT_SET );
+
+	if ( FASTWC_SETTING_ENABLE_HEADLESS_NOT_SET === $is_enabled ) {
+		// If the option is FASTWC_SETTING_ENABLE_HEADLESS_NOT_SET, then it hasn't yet been set. In this case, we
+		// want to configure debug mode to be off.
+		$is_enabled = 0;
+		update_option( FASTWC_SETTING_ENABLE_HEADLESS, $is_enabled );
+	}
+
+	return boolval( $is_enabled );
+}
