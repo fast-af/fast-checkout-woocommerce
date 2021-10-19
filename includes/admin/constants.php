@@ -36,7 +36,7 @@ define( 'FASTWC_SETTING_SAVED_HEADLESS_LINK_SLUG', 'fastwc_saved_headless_link_s
 define( 'FASTWC_JWKS_URL', 'https://api.fast.co/v1/oauth2/jwks' );
 define( 'FASTWC_JS_URL', 'https://js.fast.co/fast-woocommerce.js' );
 define( 'FASTWC_ONBOARDING_URL', 'https://fast.co/business' );
-define( 'FASTWC_HEADLESS_LINK_BASE', 'https://go.fast.co/' );
+define( 'FASTWC_HEADLESS_LINK_BASE', 'https://go.fast.co/checkout' );
 define( 'FASTWC_HEADLESS_FAST_JS_URL', 'https://js.fast.co/fast.js' );
 define( 'FASTWC_SETTINGS_TIMESTAMPS', 'fastwc_settings_timestamps' );
 
