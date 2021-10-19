@@ -13,6 +13,8 @@ define( 'FASTWC_SETTING_FAST_JWKS_URL', 'fast_fast_jwks_url' );
 define( 'FASTWC_SETTING_ONBOARDING_URL', 'fast_onboarding_url' );
 define( 'FASTWC_SETTING_HEADLESS_LINK_BASE', 'fastwc_headless_link_base' );
 define( 'FASTWC_SETTING_HEADLESS_FAST_JS_URL', 'fastwc_headless_fast_js_url' );
+define( 'FASTWC_SETTING_ENABLE_HEADLESS', 'fastwc_enable_headless' );
+define( 'FASTWC_SETTING_ENABLE_HEADLESS_NOT_SET', 'fast enable headless not set' );
 define( 'FASTWC_SETTING_DEBUG_MODE', 'fastwc_debug_mode' );
 define( 'FASTWC_SETTING_DEBUG_MODE_NOT_SET', 'fast debug mode not set' );
 define( 'FASTWC_SETTING_LOAD_BUTTON_STYLES', 'fastwc_load_button_styles' );
