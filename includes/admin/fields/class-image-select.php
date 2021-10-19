@@ -49,7 +49,7 @@ class Image_Select extends Select {
 					class="fast-image-select--label"
 					aria-label="<?php echo \esc_attr( $label ); ?>"
 				>
-					<span class="fast-image-select--label-text"><?php echo \esc_html( $label ); ?></span>
+					<span class="fast-image-select--label-text"><?php echo \esc_html( $label ); ?> <span class="dashicons dashicons-yes-alt"></span></span>
 					<?php if ( ! empty( $image ) ) : ?>
 					<img src="<?php echo \esc_url( $image ); ?>" class="fast-image-select--image" alt="<?php echo \esc_attr( $label ); ?>" />
 					<?php endif; ?>
