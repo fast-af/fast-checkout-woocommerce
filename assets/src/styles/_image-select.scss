@@ -25,10 +25,6 @@
 		line-height: 20px;
 	}
 
-	.dashicons {
-		display: none;
-	}
-
 	.dashicons-yes-alt:before {
         color: $fast-color-notice-success;
     }
@@ -42,12 +38,12 @@
 
 .fast-image-select--input:checked + label {
 
-	.fast-image-select--image {
-		border: 1px solid $fast-color-border-dark;
-		box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+	.fast-image-select--label-text {
+		font-weight: bold;
 	}
 
-	.dashicons {
-		display: inline-block;
+	.fast-image-select--image {
+		border: 1px solid $fast-color-border-dark;
+		box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.6);
 	}
 }
