@@ -14,6 +14,7 @@ define( 'FASTWC_SETTING_ONBOARDING_URL', 'fast_onboarding_url' );
 define( 'FASTWC_SETTING_DEBUG_MODE', 'fastwc_debug_mode' );
 define( 'FASTWC_SETTING_DEBUG_MODE_NOT_SET', 'fast debug mode not set' );
 define( 'FASTWC_SETTING_LOAD_BUTTON_STYLES', 'fastwc_load_button_styles' );
+define( 'FASTWC_SETTING_USE_DARK_MODE', 'fastwc_use_dark_mode' );
 define( 'FASTWC_SETTING_LOAD_BUTTON_STYLES_NOT_SET', 'fast load button styles not set' );
 define( 'FASTWC_SETTING_PDP_BUTTON_STYLES', 'fast_pdp_button_styles' );
 define( 'FASTWC_SETTING_CART_BUTTON_STYLES', 'fast_cart_button_styles' );
