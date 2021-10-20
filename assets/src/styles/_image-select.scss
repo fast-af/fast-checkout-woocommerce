@@ -28,7 +28,7 @@
 	&--image {
 		max-width: 100%;
 		height: auto;
-		border: 1px solid $fast-color-border;
+		border: 2px solid $fast-color-border;
 	}
 }
 
@@ -39,7 +39,7 @@
 	}
 
 	.fast-image-select--image {
-		border: 1px solid $fast-color-border-dark;
-		box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.6);
+		border: 2px solid $fast-color-black;
+		box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
 	}
 }
