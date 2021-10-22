@@ -2,3 +2,14 @@
 node_modules
 package-lock.json
 /vendor/freemius
+/vendor/webmozart
+/vendor/theseer
+/vendor/symfony
+/vendor/sebastian
+/vendor/phpunit
+/vendor/phpspec
+/vendor/phpdocumentor
+/vendor/phar-io
+/vendor/myclabs
+/vendor/doctrine
+/vendor/bin

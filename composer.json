@@ -10,5 +10,8 @@
     "require": {
         "firebase/php-jwt": "^5.2",
         "freemius/wordpress-sdk": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7"
     }
 }
