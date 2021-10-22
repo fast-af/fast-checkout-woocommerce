@@ -18,9 +18,6 @@ function fastwc_get_fast_webhook_topics() {
 		'order.deleted',
 		'order.updated',
 		'order.created',
-		'product.deleted',
-		'product.updated',
-		'product.created',
 	);
 }
 
@@ -272,7 +269,7 @@ function fastwc_woocommerce_has_fast_webhooks() {
 	$webhooks       = fastwc_get_fast_webhooks();
 	$webhooks_count = ! empty( $webhooks ) ? count( $webhooks ) : 0;
 
-	if ( 6 <= $webhooks_count ) {
+	if ( 3 <= $webhooks_count ) {
 		return true;
 	}
 
