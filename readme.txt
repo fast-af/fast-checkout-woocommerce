@@ -4,7 +4,7 @@ Tags: fast, fast checkout, checkout, woocommerce, woocommerce payment, woocommer
 Requires at least: 5.1
 Tested up to: 5.8
 Requires PHP: 7.2
-Stable tag: 1.1.6
+Stable tag: 1.1.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
@@ -34,6 +34,16 @@ Fast replaces your current payment processor. You can see our fee schedule, simi
 
  
 == Changelog ==
+
+= 1.1.8 =
+
+* Add an option to enable/disable dark mode for displaying the Fast buttons.
+* Update the "Select Product Button Location" option to help the selected option stand out more.
+* Update the webhook check to remove the check for product webhooks.
+
+= 1.1.7 =
+
+* Update shipping endpoint to get shipping address from order if no address passed in and order ID is passed in.
 
 = 1.1.6 =
 
