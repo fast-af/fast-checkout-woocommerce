@@ -10,6 +10,7 @@ $fastwc_cart_data      = fastwc_get_cart_data();
 $cart_data             = wp_json_encode( array_values( $fastwc_cart_data ) );
 $applied_coupons       = ! empty( WC()->cart ) ? WC()->cart->get_applied_coupons() : array();
 $applied_coupons_count = count( $applied_coupons );
+$fastwc_use_dark_mode  = fastwc_use_dark_mode();
 ?>
 	<fast-checkout-cart-button
 		app_id="<?php echo esc_attr( $fastwc_app_id ); ?>"
@@ -21,4 +22,7 @@ $applied_coupons_count = count( $applied_coupons );
 				<?php
 		}
 		?>
+		<?php if ( $fastwc_use_dark_mode ) : ?>
+		dark
+		<?php endif; ?>
 	></fast-checkout-cart-button>

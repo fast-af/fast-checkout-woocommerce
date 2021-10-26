@@ -22,16 +22,24 @@
 	&--label-text {
 		display: block;
 		margin-bottom: 6px;
+		line-height: 20px;
 	}
 
 	&--image {
 		max-width: 100%;
 		height: auto;
-		border: 1px solid $fast-color-border;
+		border: 2px solid $fast-color-border;
 	}
 }
 
-.fast-image-select--input:checked + label .fast-image-select--image {
-	border: 1px solid $fast-color-border-dark;
-	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+.fast-image-select--input:checked + label {
+
+	.fast-image-select--label-text {
+		font-weight: bold;
+	}
+
+	.fast-image-select--image {
+		border: 2px solid $fast-color-black;
+		box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
+	}
 }

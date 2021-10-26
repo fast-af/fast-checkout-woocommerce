@@ -189,6 +189,7 @@ function fastwc_admin_setup_sections() {
 	$section_name = 'fast_styles';
 	add_settings_section( $section_name, '', false, $section_name );
 	register_setting( $section_name, FASTWC_SETTING_LOAD_BUTTON_STYLES );
+	register_setting( $section_name, FASTWC_SETTING_USE_DARK_MODE );
 	register_setting( $section_name, FASTWC_SETTING_PDP_BUTTON_STYLES );
 	register_setting( $section_name, FASTWC_SETTING_CART_BUTTON_STYLES );
 	register_setting( $section_name, FASTWC_SETTING_MINI_CART_BUTTON_STYLES );
@@ -230,6 +231,7 @@ function fastwc_admin_setup_fields() {
 	// Button style settings.
 	$settings_section = 'fast_styles';
 	add_settings_field( FASTWC_SETTING_LOAD_BUTTON_STYLES, __( 'Load Button Styles', 'fast' ), 'fastwc_load_button_styles', $settings_section, $settings_section );
+	add_settings_field( FASTWC_SETTING_USE_DARK_MODE, __( 'Enable Dark Mode', 'fast' ), 'fastwc_setting_use_dark_mode', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_PDP_BUTTON_STYLES, __( 'Product page button styles', 'fast' ), 'fastwc_pdp_button_styles_content', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_CART_BUTTON_STYLES, __( 'Cart page button styles', 'fast' ), 'fastwc_cart_button_styles_content', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_MINI_CART_BUTTON_STYLES, __( 'Mini cart widget button styles', 'fast' ), 'fastwc_mini_cart_button_styles_content', $settings_section, $settings_section );
@@ -302,6 +304,22 @@ function fastwc_load_button_styles() {
 			'current'     => $fastwc_load_button_styles,
 			'label'       => __( 'Load the button styles as configured in the settings.', 'fast' ),
 			'description' => __( 'When this box is checked, the styles configured below will be loaded to provide additional styling to the loading of the Fast buttons.', 'fast' ),
+		)
+	);
+}
+
+/**
+ * Renders a checkbox to set whether or not to enable dark mode.
+ */
+function fastwc_setting_use_dark_mode() {
+	$fastwc_use_dark_mode = get_option( FASTWC_SETTING_USE_DARK_MODE, 0 );
+
+	fastwc_settings_field_checkbox(
+		array(
+			'name'        => FASTWC_SETTING_USE_DARK_MODE,
+			'current'     => $fastwc_use_dark_mode,
+			'label'       => __( 'Enable Dark Mode for the Fast Buttons.', 'fast' ),
+			'description' => __( 'When this box is checked, the Fast buttons will be rendered in dark mode.', 'fast' ),
 		)
 	);
 }

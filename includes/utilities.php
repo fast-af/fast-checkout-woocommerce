@@ -289,3 +289,27 @@ function fastwc_get_normalized_product_options( $product_options ) {
 
 	return fastwc_is_json( $product_options ) ? $product_options : '';
 }
+
+/**
+ * Check whether or not to use dark mode.
+ *
+ * @param int $product_id Optional. The ID of the product.
+ *
+ * @return bool
+ */
+function fastwc_use_dark_mode( $product_id = 0 ) {
+	$use_dark_mode = get_option( FASTWC_SETTING_USE_DARK_MODE, false );
+
+	/**
+	 * Filter the boolean for using dark mode. The product ID allows for setting
+	 * or disabling dark mode for specific products.
+	 *
+	 * @param bool $use_dark_mode The global dark mode setting.
+	 * @param int  $product_id    The ID of the product.
+	 *
+	 * @return bool
+	 */
+	$use_dark_mode = apply_filters( 'fast_use_dark_mode', $use_dark_mode, $product_id );
+
+	return $use_dark_mode;
+}
