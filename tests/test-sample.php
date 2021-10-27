@@ -2,7 +2,7 @@
 /**
  * Class SampleTest
  *
- * @package Fast_Checkout_For_Woocommerce
+ * @package Fast
  */
 
 /**
