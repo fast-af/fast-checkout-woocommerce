@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '07c1638e81b1f9790e2268a60ae8dfa6ac457c3b',
+        'reference' => 'be10bad99e064feabcdb1e4d333a9ef00aa297c8',
         'name' => 'fast/fast',
         'dev' => true,
     ),
@@ -25,7 +25,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '07c1638e81b1f9790e2268a60ae8dfa6ac457c3b',
+            'reference' => 'be10bad99e064feabcdb1e4d333a9ef00aa297c8',
             'dev_requirement' => false,
         ),
         'firebase/php-jwt' => array(
