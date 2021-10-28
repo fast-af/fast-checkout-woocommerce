@@ -129,18 +129,14 @@ abstract class Plugin {
 	 *
 	 * @return string
 	 */
-	protected function get_setting_title() {
-		return '';
-	}
+	abstract protected function get_setting_title();
 
 	/**
 	 * Get the setting description.
 	 *
 	 * @return string
 	 */
-	protected function get_setting_description() {
-		return '';
-	}
+	abstract protected function get_setting_description();
 
 	/**
 	 * Callback for rendering the setting.
