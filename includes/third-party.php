@@ -24,7 +24,7 @@ function fastwc_initialize_third_party_plugin_support() {
 	$fastwc_third_party_plugins = apply_filters(
 		'fastwc_third_party_plugin_classes',
 		array(
-			'FastWC\Third_Party\WooCommerce_Tiered_Pricing_Table'
+			'FastWC\Third_Party\WooCommerce_Tiered_Pricing_Table',
 		)
 	);
 
