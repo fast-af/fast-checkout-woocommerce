@@ -61,7 +61,7 @@ class WooCommerce_Tiered_Pricing_Table extends Plugin {
 			return;
 		}
 
-		if ( $item instanceof WC_Order_Item_Product ) {
+		if ( $item instanceof \WC_Order_Item_Product ) {
 			$product_id = $item->get_variation_id() ? $item->get_variation_id() : $item->get_product_id();
 			$qty        = $item->get_quantity();
 			$new_price   = \TierPricingTable\PriceManager::getPriceByRules( $qty, $product_id );
