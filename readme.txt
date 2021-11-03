@@ -26,13 +26,20 @@ Follow our installation guide over on [GitHub](https://github.com/fast-af/fast-c
  
 = How much does Fast cost? =
  
-Fast replaces your current payment processor. You can see our fee schedule, similar to Stripe's, on our [pricing page](https://www.fast.co/pricing). 
+Fast replaces your current payment processor. You can see our fee schedule, similar to Stripe's, on our [pricing page](https://www.fast.co/pricing).
 
- 
+= What's the next step after I install the plugin? =
+
+The first step to integrating Fast Checkout with your WooCommerce store is to [onboard as a seller with Fast](https://fast.co/business). Once you have onboarded, you will get a Fast App ID that you can enter in the Fast plugin settings.
+
+= What if I need help getting set up? =
+
+During the onboarding process, you can request professional installation, and our team will help guide you through the installation process.
+
 == Screenshots ==
- 
 
- 
+
+
 == Changelog ==
 
 = 1.1.8 =
