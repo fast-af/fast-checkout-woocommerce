@@ -165,13 +165,23 @@ function fastwc_should_show_advanced_settings() {
  * @return array
  */
 function fastwc_get_settings_tabs() {
-	return array(
-		'fast_app_info'  => __( 'App Info', 'fast' ),
-		'fast_styles'    => __( 'Styles', 'fast' ),
-		'fast_options'   => __( 'Options', 'fast' ),
-		'fast_test_mode' => __( 'Test Mode', 'fast' ),
-		'fast_support'   => __( 'Support', 'fast' ),
-		'fast_status'    => __( 'Status', 'fast' ),
+	/**
+	 * Filter the list of settins tabs.
+	 *
+	 * @param array $settings_tabs The settings tabs.
+	 *
+	 * @return array
+	 */
+	return apply_filters(
+		'fastwc_settings_tabs',
+		array(
+			'fast_app_info'  => __( 'App Info', 'fast' ),
+			'fast_styles'    => __( 'Styles', 'fast' ),
+			'fast_options'   => __( 'Options', 'fast' ),
+			'fast_test_mode' => __( 'Test Mode', 'fast' ),
+			'fast_support'   => __( 'Support', 'fast' ),
+			'fast_status'    => __( 'Status', 'fast' ),
+		)
 	);
 }
 

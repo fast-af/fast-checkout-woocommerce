@@ -33,6 +33,7 @@ define( 'FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE', 'fastwc_checkout_redirect_page'
 define( 'FASTWC_SETTING_PDP_BUTTON_HOOK', 'fast_pdp_button_hook' );
 define( 'FASTWC_DEFAULT_PDP_BUTTON_HOOK', 'woocommerce_after_add_to_cart_quantity' );
 define( 'FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER', 'fast_pdp_button_hook_other' );
+define( 'FASTWC_SETTING_PLUGIN_DO_INIT_FORMAT', 'fastwc_do_init_%s' );
 define( 'FASTWC_SETTING_HEADLESS_LINK_SLUG', 'fastwc_headless_link_slug' );
 define( 'FASTWC_DEFAULT_HEADLESS_LINK_SLUG', 'fast-checkout' );
 define( 'FASTWC_SETTING_SAVED_HEADLESS_LINK_SLUG', 'fastwc_saved_headless_link_slug' );
