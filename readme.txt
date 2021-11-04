@@ -4,7 +4,7 @@ Tags: fast, fast checkout, checkout, woocommerce, woocommerce payment, woocommer
 Requires at least: 5.1
 Tested up to: 5.8
 Requires PHP: 7.2
-Stable tag: 1.1.8
+Stable tag: 1.1.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
@@ -41,6 +41,11 @@ During the onboarding process, you can request professional installation, and ou
 
 
 == Changelog ==
+
+= 1.1.9 =
+
+* Add tools to enable support for third-party plugins
+* Update settings tab and include onboarding link to help new stores onboard with Fast
 
 = 1.1.8 =
 
