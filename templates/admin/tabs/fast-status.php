@@ -22,17 +22,7 @@ $fastwc_test_mode_class   = empty( $fastwc_test_mode ) ? 'dismiss' : 'yes-alt';
 
 <div class="fast-status">
 
-	<?php if ( empty( $fastwc_setting_app_id ) ) : ?>
-		<div class="fast-notice fast-notice-success">
-			<h2><?php esc_html_e( 'Welcome to Fast!', 'fast' ); ?></h2>
-			<p><?php esc_html_e( 'The first step to integrating Fast Checkout with your WooCommerce store is to become a seller with Fast. If you already have a seller account and an App ID, you can enter your App ID below.', 'fast' ); ?></p>
-			<p>
-				<a href="<?php echo esc_url( $fastwc_setting_fast_onboarding_url ); ?>" class="button button-primary" target="_blank" rel="noopener">
-					<?php esc_html_e( 'Become a seller on Fast.co', 'fast' ); ?> →
-				</a>
-			</p>
-		</div>
-	<?php endif; ?>
+	<?php fastwc_maybe_render_cta(); ?>
 
 	<table class="form-table" role="presentation">
 		<tbody>
