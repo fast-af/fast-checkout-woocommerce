@@ -5,11 +5,9 @@
  * @package Fast
  */
 
-?>
-<form method="post" action="options.php">
-	<?php
-	settings_fields( 'fast_third_party' );
-	do_settings_sections( 'fast_third_party' );
-	submit_button();
-	?>
-</form>
+fastwc_load_template(
+	'admin/fast-tab',
+	array(
+		'tab' => 'fast_third_party',
+	)
+);
