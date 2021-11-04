@@ -34,6 +34,19 @@ function fastwc_maybe_display_admin_notices() {
 add_action( 'admin_init', 'fastwc_maybe_display_admin_notices' );
 
 /**
+ * Maybe render the Fast "Become a Seller" CTA.
+ *
+ * @param string $context Optional. The context in which the CTA is to be loaded.
+ */
+function fastwc_maybe_render_cta( $context = '' ) {
+	$fast_app_id = fastwc_get_app_id();
+
+	if ( empty( $fast_app_id ) ) {
+		fastwc_load_template( 'admin/fast-cta', array( 'context' => $context ) );
+	}
+}
+
+/**
  * Template for printing an admin notice.
  *
  * @param string $message The message to display.
