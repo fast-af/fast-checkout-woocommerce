@@ -13,13 +13,6 @@ namespace FastWC\Third_Party;
 abstract class Plugin {
 
 	/**
-	 * Instance of the plugin class.
-	 *
-	 * @var FastWC\Third_Party\Plugin
-	 */
-	protected static $instance = null;
-
-	/**
 	 * Plugin slug.
 	 *
 	 * @var string
@@ -41,17 +34,14 @@ abstract class Plugin {
 	protected $section_name = 'fast_third_party';
 
 	/**
-	 * Get an instance of the plugin and initialize it.
+	 * Construct the plugin integration.
 	 */
-	public static function get_instance() {
-		if ( null === static::$instance ) {
-			static::$instance = new static();
-		}
+	public function __construct() {
 
-		if ( static::$instance->is_active() ) {
-			\add_action( 'admin_init', array( static::$instance, 'maybe_add_setting' ) );
+		if ( $this->is_active() ) {
+			\add_action( 'admin_init', array( $this, 'maybe_add_setting' ) );
 
-			$setting_name = static::$instance->get_setting_name();
+			$setting_name = $this->get_setting_name();
 
 			$do_init = boolval(
 				\get_option(
@@ -75,7 +65,7 @@ abstract class Plugin {
 			);
 
 			if ( $do_init ) {
-				static::$instance->init();
+				$this->init();
 			}
 		}
 	}
