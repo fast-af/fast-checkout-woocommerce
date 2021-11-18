@@ -56,17 +56,21 @@ class WC_Dynamic_Pricing_And_Discounts extends Plugin {
 	 *
 	 * @param WC_Data         $order    Object object.
 	 * @param WP_REST_Request $request  Request object.
+	 *
+	 * @return WC_Data
 	 */
 	function woocommerce_rest_pre_insert_shop_order_object( $order, $request ) {
 
 		// First, create a cart from the order objet.
 		\fastwc_create_cart_from_order( $order );
 
-		$cart = WC()->cart;
+		$cart = \WC()->cart;
 		\fastwc_log_info( 'Cart created in WC_Dynamic_Pricing_And_Discounts: ' . print_r( $cart, true ) );
 
 		// TODO: Update cart items with pricing rules.
 
 		// TODO: Update order items from cart items.
+
+		return $order;
 	}
 }
