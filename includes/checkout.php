@@ -126,12 +126,29 @@ function fastwc_woocommerce_rest_pre_insert_shop_order_object( $order, $request 
 
 	// For order updates with a coupon line item, make sure there is a cart object.
 	if (
-		empty( WC()->cart ) &&
 		isset( $request['coupon_lines'] ) &&
 		is_array( $request['coupon_lines'] )
 	) {
 		fastwc_log_info( 'Generating cart object on WC orders endpoint.' );
 
+		fastwc_create_cart_from_order( $order );
+
+		fastwc_log_debug( 'Cart generated on pre-insert order hook: ' . print_r( WC()->cart, true ) ); // phpcs:ignore
+	}
+
+	// Return the order object unchanged.
+	return $order;
+}
+add_filter( 'woocommerce_rest_pre_insert_shop_order_object', 'fastwc_woocommerce_rest_pre_insert_shop_order_object', 10, 2 );
+
+/**
+ * Generate a cart from the order object.
+ *
+ * @param WC_Data $order Object object.
+ */
+function fastwc_create_cart_from_order( $order ) {
+
+	if ( empty( WC()->cart ) ) {
 		wc_load_cart();
 
 		$items = $order->get_items();
@@ -143,17 +160,11 @@ function fastwc_woocommerce_rest_pre_insert_shop_order_object( $order, $request 
 			if ( is_callable( array( $product, 'get_id' ) ) ) {
 				WC()->cart->add_to_cart( $product->get_id(), $quantity );
 
-				fastwc_log_debug( 'Product added to cart on pre-insert order hook. Product ID: ' . $product->get_id() . ', Quantity: ' . $quantity );
+				fastwc_log_debug( 'Product added to cart from order. Product ID: ' . $product->get_id() . ', Quantity: ' . $quantity );
 			}
 		}
-
-		fastwc_log_debug( 'Cart generated on pre-insert order hook: ' . print_r( WC()->cart, true ) ); // phpcs:ignore
 	}
-
-	// Return the order object unchanged.
-	return $order;
 }
-add_filter( 'woocommerce_rest_pre_insert_shop_order_object', 'fastwc_woocommerce_rest_pre_insert_shop_order_object', 10, 3 );
 
 /**
  * Fast transition trash to on-hold.
