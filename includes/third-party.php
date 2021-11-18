@@ -32,11 +32,8 @@ function fastwc_initialize_third_party_plugin_support() {
 	);
 
 	foreach ( $fastwc_third_party_plugins as $fastwc_third_party_plugin ) {
-		if (
-			class_exists( $fastwc_third_party_plugin ) &&
-			method_exists( $fastwc_third_party_plugin, 'get_instance' )
-		) {
-			$fastwc_third_party_plugin::get_instance();
+		if ( class_exists( $fastwc_third_party_plugin ) ) {
+			new $fastwc_third_party_plugin();
 		}
 	}
 }
