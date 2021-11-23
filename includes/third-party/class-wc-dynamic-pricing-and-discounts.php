@@ -61,13 +61,18 @@ class WC_Dynamic_Pricing_And_Discounts extends Plugin {
 	 */
 	function woocommerce_rest_pre_insert_shop_order_object( $order, $request ) {
 
+		// Only do this if the RightPress_Product_Price_Cart class exists.
+		if ( ! class_exists( 'RightPress_Product_Price_Cart' ) ) {
+			return;
+		}
+
 		// First, create a cart from the order objet.
 		\fastwc_create_cart_from_order( $order );
+		\fastwc_log_info( 'Cart created in WC_Dynamic_Pricing_And_Discounts: ' . print_r( \WC()->cart, true ) );
 
-		$cart = \WC()->cart;
-		\fastwc_log_info( 'Cart created in WC_Dynamic_Pricing_And_Discounts: ' . print_r( $cart, true ) );
-
-		// TODO: Update cart items with pricing rules.
+		// Update cart items with pricing rules.
+		RightPress_Product_Price_Cart::get_instance()->cart_loaded_from_session( \WC()->cart );
+		\fastwc_log_info( 'Cart maybe updated by RightPress_Product_Price_Cart::cart_loaded_from_Session: ' . print_r( \WC()->cart, true ) );
 
 		// TODO: Update order items from cart items.
 
