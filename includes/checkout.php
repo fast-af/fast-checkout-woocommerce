@@ -253,7 +253,7 @@ function fastwc_maybe_hide_proceed_to_checkout_buttons() {
 
 	if ( $hide_regular_checkout_buttons ) {
 		remove_action( 'woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20 );
-		remove_action( 'woocommerce_widget_shopping_cart_buttons', 'woocommerce_widget_shopping_cart_button_view_cart', 10 );
+		remove_action( 'woocommerce_widget_shopping_cart_buttons', 'woocommerce_widget_shopping_cart_proceed_to_checkout', 20 );
 	}
 }
 add_action( 'init', 'fastwc_maybe_hide_proceed_to_checkout_buttons' );
