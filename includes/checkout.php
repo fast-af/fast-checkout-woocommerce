@@ -223,3 +223,22 @@ function fastwc_maybe_clear_cart_and_redirect() {
 	}
 }
 add_action( 'init', 'fastwc_maybe_clear_cart_and_redirect' );
+
+/**
+ * Maybe hide the regular "Proceed to Checkout" buttons.
+ */
+function fastwc_maybe_hide_proceed_to_checkout_buttons() {
+
+	// Do nothing in the admin.
+	if ( is_admin() ) {
+		return;
+	}
+
+	$hide_regular_checkout_buttons = get_option( FASTWC_SETTING_HIDE_REGULAR_CHECKOUT_BUTTONS, false );
+
+	if ( $hide_regular_checkout_buttons ) {
+		remove_action( 'woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20 );
+		remove_action( 'woocommerce_widget_shopping_cart_buttons', 'woocommerce_widget_shopping_cart_button_view_cart', 10 );
+	}
+}
+add_action( 'init', 'fastwc_maybe_hide_proceed_to_checkout_buttons' );
