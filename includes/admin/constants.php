@@ -8,6 +8,7 @@
 define( 'FASTWC_SETTING_APP_ID', 'fast_app_id' );
 define( 'FASTWC_SETTING_TEST_MODE', 'fast_test_mode' );
 define( 'FASTWC_SETTING_TEST_MODE_NOT_SET', 'fast test mode not set' );
+define( 'FASTWC_SETTING_TEST_MODE_USERS', 'fastwc_test_mode_users' );
 define( 'FASTWC_SETTING_FAST_JS_URL', 'fast_fast_js_url' );
 define( 'FASTWC_SETTING_FAST_JWKS_URL', 'fast_fast_jwks_url' );
 define( 'FASTWC_SETTING_ONBOARDING_URL', 'fast_onboarding_url' );
