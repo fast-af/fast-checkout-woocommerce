@@ -71,7 +71,7 @@ class WC_Dynamic_Pricing_And_Discounts extends Plugin {
 		\fastwc_log_info( 'Cart created in WC_Dynamic_Pricing_And_Discounts: ' . print_r( \WC()->cart, true ) );
 
 		// Update cart items with pricing rules.
-		RightPress_Product_Price_Cart::get_instance()->cart_loaded_from_session( \WC()->cart );
+		\RightPress_Product_Price_Cart::get_instance()->cart_loaded_from_session( \WC()->cart );
 		\fastwc_log_info( 'Cart maybe updated by RightPress_Product_Price_Cart::cart_loaded_from_Session: ' . print_r( \WC()->cart, true ) );
 
 		// TODO: Update order items from cart items.
