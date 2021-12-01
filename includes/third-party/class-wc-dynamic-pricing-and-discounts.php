@@ -92,6 +92,8 @@ class WC_Dynamic_Pricing_And_Discounts extends Plugin {
 			}
 
 			\fastwc_log_info( 'Cart Products: ' . print_r( $cart_products, true ) );
+		} else {
+			\fastwc_log_info( 'Cart empty? ' . print_r( WC()->cart, true ) );
 		}
 
 		return $order;
