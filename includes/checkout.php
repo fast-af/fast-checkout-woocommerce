@@ -169,6 +169,8 @@ function fastwc_create_cart_from_order( $order ) {
 				fastwc_log_debug( 'Product added to cart from order. Product ID: ' . $product->get_id() . ', Quantity: ' . $quantity );
 			}
 		}
+
+		fastwc_log_info( 'Cart loaded and products added in fastwc_create_cart_from_order: ' . print_r( WC()->cart, true ) );
 	}
 }
 
