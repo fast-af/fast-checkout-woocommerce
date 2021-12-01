@@ -77,22 +77,37 @@ class WC_Dynamic_Pricing_And_Discounts extends Plugin {
 		\fastwc_log_info( 'Cart maybe updated by RightPress_Product_Price_Cart::cart_loaded_from_Session: ' . print_r( \WC()->cart, true ) );
 
 		if ( ! WC()->cart->is_empty() ) {
-			// TODO: Update order items from cart items.
-			$cart_items = array();
+			// Update order items from cart items.
+			$cart_item_subtotals = array();
 			foreach ( WC()->cart->get_cart() as $cart_item ) {
 				$product  = $cart_item['data'];
 				$quantity = $cart_item['quantity'];
 				$price    = $product->get_price();
 
-				$cart_items[ $cart_item['product_id'] ] = array(
-					'product'  => $product,
-					'quantity' => $quantity,
-					'price'    => $price,
-					'subtotal' => $price * $quantity,
-				);
+				$cart_item_subtotals[ $cart_item['product_id'] ] = $price * $quantity;
 			}
 
-			\fastwc_log_info( 'Cart Products: ' . print_r( $cart_items, true ) );
+			\fastwc_log_info( 'Cart Products: ' . print_r( $cart_item_subtotals, true ) );
+
+			if ( ! empty( $order->get_items() ) ) {
+				foreach ( $order->get_items() as $order_item ) {
+					$product_id = $order_item->get_product_id();
+
+					if ( isset( $cart_item_subtotals[ $product_id ] ) ) {
+						$subtotal = $cart_item_subtotals[ $product_id ];
+
+						// Set the price.
+						$order_item->set_subtotal( $subtotal );
+						$order_item->set_total( $subtotal );
+
+						// Make new tax calculations.
+						$order_item->calculate_taxes();
+
+						// Save the line item data.
+						$order_item->save();
+					}
+				}
+			}
 		}
 
 		return $order;
