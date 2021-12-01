@@ -155,6 +155,8 @@ function fastwc_create_cart_from_order( $order ) {
 	if ( empty( WC()->cart ) ) {
 		wc_load_cart();
 
+		fastwc_log_info( 'Cart loaded in fastwc_create_cart_from_order: ' . print_r( WC()->cart, true ) );
+
 		$items = $order->get_items();
 
 		foreach ( $items as $item ) {
