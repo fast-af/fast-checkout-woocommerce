@@ -76,7 +76,23 @@ class WC_Dynamic_Pricing_And_Discounts extends Plugin {
 		\RightPress_Product_Price_Cart::get_instance()->cart_loaded_from_session( \WC()->cart );
 		\fastwc_log_info( 'Cart maybe updated by RightPress_Product_Price_Cart::cart_loaded_from_Session: ' . print_r( \WC()->cart, true ) );
 
-		// TODO: Update order items from cart items.
+		if ( ! WC()->cart->is_empty() ) {
+			// TODO: Update order items from cart items.
+			$cart_products = array();
+			foreach ( WC()->cart->get_cart() as $cart_item ) {
+				$product  = $cart_item['data'];
+				$quantity = $cart_item['quantity'];
+
+				$cart_products[ $cart_item['product_id'] ] = array(
+					'product'  => $product,
+					'quantity' => $quantity,
+					'price'    => WC()->cart->get_product_price( $product ),
+					'subtotal' => WC()->cart->get_product_subtotal( $product, $quantity ),
+				);
+			}
+
+			\fastwc_log_info( 'Cart Products: ' . print_r( $cart_products, true ) );
+		}
 
 		return $order;
 	}
