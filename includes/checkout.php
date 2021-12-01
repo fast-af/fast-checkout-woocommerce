@@ -150,6 +150,7 @@ function fastwc_create_cart_from_order( $order ) {
 
 	if ( empty( WC()->cart ) ) {
 		wc_load_cart();
+		WC()->cart->empty_cart();
 
 		fastwc_log_info( 'Cart loaded in fastwc_create_cart_from_order: ' . print_r( WC()->cart, true ) );
 
@@ -169,26 +170,6 @@ function fastwc_create_cart_from_order( $order ) {
 		fastwc_log_info( 'Cart loaded and products added in fastwc_create_cart_from_order: ' . print_r( WC()->cart, true ) );
 	}
 }
-
-/**
- * Log when an item is added to the cart.
- *
- * @param string $cart_item_key  The key of the cart item.
- * @param int    $product_id     The ID of the product added.
- * @param int    $quantity       The quantity of the product added.
- * @param int    $variation_id   The ID of the product variation.
- * @param ?      $variation      The product variation.
- * @param array  $cart_item_data The data of the cart item.
- */
-function fastwc_log_add_to_cart( $cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item_data ) {
-	fastwc_log_info( 'wc_add_to_cart cart_item_key: ' . $cart_item_key );
-	fastwc_log_info( 'wc_add_to_cart product_id: ' . $product_id );
-	fastwc_log_info( 'wc_add_to_cart quantity: ' . $quantity );
-	fastwc_log_info( 'wc_add_to_cart variation_id: ' . $variation_id );
-	fastwc_log_info( 'wc_add_to_cart variation: ' . print_r( $variation, true ) );
-	fastwc_log_info( 'wc_add_to_cart cart_item_data: ' . print_r( $cart_item_data, true ) );
-}
-add_action( 'woocommerce_add_to_cart', 'fastwc_log_add_to_cart', 10, 6 );
 
 /**
  * Fast transition trash to on-hold.
