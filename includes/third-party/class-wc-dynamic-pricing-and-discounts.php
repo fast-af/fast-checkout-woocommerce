@@ -82,18 +82,17 @@ class WC_Dynamic_Pricing_And_Discounts extends Plugin {
 			foreach ( WC()->cart->get_cart() as $cart_item ) {
 				$product  = $cart_item['data'];
 				$quantity = $cart_item['quantity'];
+				$price    = $product->get_price();
 
 				$cart_products[ $cart_item['product_id'] ] = array(
 					'product'  => $product,
 					'quantity' => $quantity,
-					'price'    => WC()->cart->get_product_price( $product ),
-					'subtotal' => WC()->cart->get_product_subtotal( $product, $quantity ),
+					'price'    => $price,
+					'subtotal' => $product * $price,
 				);
 			}
 
 			\fastwc_log_info( 'Cart Products: ' . print_r( $cart_products, true ) );
-		} else {
-			\fastwc_log_info( 'Cart empty? ' . print_r( WC()->cart, true ) );
 		}
 
 		return $order;
