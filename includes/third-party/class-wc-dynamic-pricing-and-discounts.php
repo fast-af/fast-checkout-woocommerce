@@ -88,7 +88,7 @@ class WC_Dynamic_Pricing_And_Discounts extends Plugin {
 					'product'  => $product,
 					'quantity' => $quantity,
 					'price'    => $price,
-					'subtotal' => $product * $price,
+					'subtotal' => $price * $quantity,
 				);
 			}
 
