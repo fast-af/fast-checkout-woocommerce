@@ -161,7 +161,22 @@ function fastwc_create_cart_from_order( $order ) {
 			$quantity = is_callable( array( $item, 'get_quantity' ) ) ? $item->get_quantity() : 0;
 
 			if ( is_callable( array( $product, 'get_id' ) ) ) {
-				WC()->cart->add_to_cart( $product->get_id(), $quantity );
+				$product_id   = $product->get_id();
+				$product_type = $product->get_type();
+				$variation_id = ( 'variation' === $product_type ) ? $product->get_variation_id() : 0;
+				$meta_data    = $product->get_meta_data();
+
+				\fastwc_log_info( 'Product Meta Data: ' . print_r( $meta_data, true ) );
+
+				/**
+				 * Add item to cart.
+				 * @param int   $product_id contains the id of the product to add to the cart.
+				 * @param int   $quantity contains the quantity of the item to add.
+				 * @param int   $variation_id ID of the variation being added to the cart.
+				 * @param array $variation attribute values.
+				 * @param array $cart_item_data extra cart item data we want to pass into the item.
+				 */
+				WC()->cart->add_to_cart( $product->get_id(), $quantity, $variation_id );
 
 				fastwc_log_debug( 'Product added to cart from order. Product ID: ' . $product->get_id() . ', Quantity: ' . $quantity );
 			}
