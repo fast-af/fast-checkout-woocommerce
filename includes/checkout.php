@@ -156,7 +156,8 @@ function fastwc_create_cart_from_order( $order, $request ) {
 	if ( empty( WC()->cart ) ) {
 		wc_load_cart();
 
-		fastwc_log_debug( 'Request details: ' . print_r( $request, true ) );
+		$request_line_items = isset( $request['line_items'] ) ? $request['line_items'] : array();
+		fastwc_log_debug( 'Request line items: ' . print_r( $request_line_items, true ) );
 
 		// Empty the cart to make sure no lingering products get added previously.
 		WC()->cart->empty_cart();
