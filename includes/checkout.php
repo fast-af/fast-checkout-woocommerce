@@ -135,7 +135,7 @@ function fastwc_woocommerce_rest_pre_insert_shop_order_object( $order, $request 
 	) {
 		fastwc_log_info( 'Generating cart object on WC orders endpoint.' );
 
-		fastwc_create_cart_from_order( $order );
+		fastwc_create_cart_from_order( $order, $request );
 
 		fastwc_log_debug( 'Cart generated on pre-insert order hook: ' . print_r( WC()->cart, true ) ); // phpcs:ignore
 	}
@@ -148,12 +148,15 @@ add_filter( 'woocommerce_rest_pre_insert_shop_order_object', 'fastwc_woocommerce
 /**
  * Generate a cart from the order object.
  *
- * @param WC_Data $order Object object.
+ * @param WC_Data         $order   Object object.
+ * @param WP_REST_Request $request Request object.
  */
-function fastwc_create_cart_from_order( $order ) {
+function fastwc_create_cart_from_order( $order, $request ) {
 
 	if ( empty( WC()->cart ) ) {
 		wc_load_cart();
+
+		fastwc_log_debug( 'Request details: ' . print_r( $request, true ) );
 
 		// Empty the cart to make sure no lingering products get added previously.
 		WC()->cart->empty_cart();
