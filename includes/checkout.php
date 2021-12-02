@@ -158,6 +158,8 @@ function fastwc_create_cart_from_request( $request ) {
 		WC()->cart->empty_cart();
 
 		foreach ( $request_line_items as $item ) {
+			fastwc_log_debug( 'Request line item: ' . print_r( $item, true ) ); // phpcs:ignore
+
 			// Skip items with 0 quantity.
 			if ( empty( $item['quantity'] ) || empty( $item['product_id'] ) ) {
 				continue;
