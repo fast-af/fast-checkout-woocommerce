@@ -84,7 +84,13 @@ class WC_Dynamic_Pricing_And_Discounts extends Plugin {
 				$quantity = $cart_item['quantity'];
 				$price    = $product->get_price();
 
-				$cart_item_subtotals[ $cart_item['product_id'] ] = $price * $quantity;
+				$cart_item_key = array(
+					'product_id'   => $cart_item['product_id'],
+					'variation_id' => ! empty( $cart_item['variation_id'] ) ? $cart_item['variation_id'] : 0,
+					'variation'    => ! emtpy( $cart_item['variation'] ) ? $cart_item['variation'] : array(),
+				);
+
+				$cart_item_subtotals[ $cart_item_key ] = $price * $quantity;
 			}
 
 			\fastwc_log_info( 'Cart Products: ' . print_r( $cart_item_subtotals, true ) );
