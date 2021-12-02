@@ -164,6 +164,8 @@ function fastwc_create_cart_from_order( $order ) {
 			$product  = is_callable( array( $item, 'get_product' ) ) ? $item->get_product() : null;
 			$quantity = is_callable( array( $item, 'get_quantity' ) ) ? $item->get_quantity() : 0;
 
+			fastwc_log_debug( 'Product from order item: ' . print_r( $product, true ) );
+
 			if ( is_callable( array( $product, 'get_id' ) ) ) {
 				$product_id           = $product->get_id();
 				$variation_id         = 0;
