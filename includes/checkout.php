@@ -193,10 +193,10 @@ function fastwc_create_cart_from_request( $request ) {
 			fastwc_log_debug(
 				sprintf(
 					'Product added to cart from order. Product ID: %1$s, Quantity: %2$s, Variation ID: %3$s, Variation Attributes: %4$s',
-					$product->get_id(),
+					$product_id,
 					$quantity,
 					$variation_id,
-					print_r( $variation_attributes, true ) // phpcs:ignore
+					print_r( $variation, true ) // phpcs:ignore
 				)
 			);
 		}
