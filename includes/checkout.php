@@ -166,7 +166,7 @@ function fastwc_create_cart_from_order( $order ) {
 				$variation_id = ( 'variation' === $product_type ) ? $product->get_variation_id() : 0;
 				$meta_data    = $product->get_meta_data();
 
-				\fastwc_log_info( 'Product Meta Data: ' . print_r( $meta_data, true ) );
+				fastwc_log_info( 'Product Meta Data: ' . print_r( $meta_data, true ) );
 
 				/**
 				 * Add item to cart.
@@ -178,7 +178,14 @@ function fastwc_create_cart_from_order( $order ) {
 				 */
 				WC()->cart->add_to_cart( $product->get_id(), $quantity, $variation_id );
 
-				fastwc_log_debug( 'Product added to cart from order. Product ID: ' . $product->get_id() . ', Quantity: ' . $quantity );
+				fastwc_log_debug(
+					sprintf(
+					 	'Product added to cart from order. Product ID: %1$s, Quantity: %2$s, Variation ID: %3$s',
+					 	$product->get_id(),
+					 	$quantity,
+					 	$variation_id
+					)
+				);
 			}
 		}
 	}
