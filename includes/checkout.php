@@ -135,7 +135,7 @@ function fastwc_woocommerce_rest_pre_insert_shop_order_object( $order, $request 
 	) {
 		fastwc_log_info( 'Generating cart object on WC orders endpoint.' );
 
-		fastwc_create_cart_from_order( $order, $request );
+		fastwc_create_cart_from_request( $request );
 
 		fastwc_log_debug( 'Cart generated on pre-insert order hook: ' . print_r( WC()->cart, true ) ); // phpcs:ignore
 	}
@@ -148,10 +148,9 @@ add_filter( 'woocommerce_rest_pre_insert_shop_order_object', 'fastwc_woocommerce
 /**
  * Generate a cart from the order object.
  *
- * @param WC_Data         $order   Object object.
  * @param WP_REST_Request $request Request object.
  */
-function fastwc_create_cart_from_order( $order, $request ) {
+function fastwc_create_cart_from_request( $request ) {
 
 	if ( empty( WC()->cart ) ) {
 		wc_load_cart();
@@ -162,45 +161,42 @@ function fastwc_create_cart_from_order( $order, $request ) {
 		// Empty the cart to make sure no lingering products get added previously.
 		WC()->cart->empty_cart();
 
-		$items = $order->get_items();
+		foreach ( $request_line_items as $item ) {
+			// Skip items with 0 quantity.
+			if ( empty( $item['quantity'] ) || empty( $item['product_id'] ) ) {
+				continue;
+			}
 
-		foreach ( $items as $item ) {
-			$product  = is_callable( array( $item, 'get_product' ) ) ? $item->get_product() : null;
-			$quantity = is_callable( array( $item, 'get_quantity' ) ) ? $item->get_quantity() : 0;
+			$product_id   = ! empty( $item['product_id'] ) ? $item['product_id'] : 0;
+			$variation_id = ! empty( $item['variation_id'] ) ? $item['variation_id'] : 0;
+			$quantity     = $item['quantity'];
+			$variation    = array();
 
-			fastwc_log_debug( 'Product from order item: ' . print_r( $product, true ) );
-
-			if ( is_callable( array( $product, 'get_id' ) ) ) {
-				$product_id           = $product->get_id();
-				$variation_id         = 0;
-				$variation_attributes = array();
-
-				if ( $product->is_type( 'variation' ) ) {
-					$variation_id = $product->get_variation_id();
-
-					if ( is_callable( array( $product, 'get_variation_attributes' ) ) ) {
-						$variation_attributes = $product->get_variation_attributes();
+			if ( ! empty( $item['meta_data'] ) ) {
+				foreach ( $item['meta_data'] as $item_attribute ) {
+					if ( ! empty( $item_attribute['key'] ) && ! empty( $item_attribute['value'] ) ) {
+						$variation[ $item_attribute['key'] ] = $item_attribute['value'];
 					}
 				}
-
-				// Add the product to the cart.
-				WC()->cart->add_to_cart(
-					$product_id,
-					$quantity,
-					$variation_id,
-					$variation_attributes
-				);
-
-				fastwc_log_debug(
-					sprintf(
-					 	'Product added to cart from order. Product ID: %1$s, Quantity: %2$s, Variation ID: %3$s, Variation Attributes: %4$s',
-					 	$product->get_id(),
-					 	$quantity,
-					 	$variation_id,
-					 	print_r( $variation_attributes, true )
-					)
-				);
 			}
+
+			// Add the product to the cart.
+			WC()->cart->add_to_cart(
+				$product_id,
+				$quantity,
+				$variation_id,
+				$variation
+			);
+
+			fastwc_log_debug(
+				sprintf(
+				 	'Product added to cart from order. Product ID: %1$s, Quantity: %2$s, Variation ID: %3$s, Variation Attributes: %4$s',
+				 	$product->get_id(),
+				 	$quantity,
+				 	$variation_id,
+				 	print_r( $variation_attributes, true )
+				)
+			);
 		}
 	}
 }
