@@ -152,7 +152,7 @@ function fastwc_create_cart_from_request( $request ) {
 		wc_load_cart();
 
 		$request_line_items = isset( $request['line_items'] ) ? $request['line_items'] : array();
-		fastwc_log_debug( 'Request line items: ' . print_r( $request_line_items, true ) );
+		fastwc_log_debug( 'Request line items: ' . print_r( $request_line_items, true ) ); // phpcs:ignore
 
 		// Empty the cart to make sure no lingering products get added previously.
 		WC()->cart->empty_cart();
@@ -186,11 +186,11 @@ function fastwc_create_cart_from_request( $request ) {
 
 			fastwc_log_debug(
 				sprintf(
-				 	'Product added to cart from order. Product ID: %1$s, Quantity: %2$s, Variation ID: %3$s, Variation Attributes: %4$s',
-				 	$product->get_id(),
-				 	$quantity,
-				 	$variation_id,
-				 	print_r( $variation_attributes, true )
+					'Product added to cart from order. Product ID: %1$s, Quantity: %2$s, Variation ID: %3$s, Variation Attributes: %4$s',
+					$product->get_id(),
+					$quantity,
+					$variation_id,
+					print_r( $variation_attributes, true ) // phpcs:ignore
 				)
 			);
 		}
