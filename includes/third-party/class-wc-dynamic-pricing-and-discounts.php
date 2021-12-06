@@ -90,6 +90,8 @@ class WC_Dynamic_Pricing_And_Discounts extends Plugin {
 					'variation'    => ! empty( $cart_item['variation'] ) ? $cart_item['variation'] : array(),
 				);
 
+				\fastwc_log_info( 'Cart item key: ' . print_r( $cart_item_key, true ) );
+
 				$cart_item_subtotals[ $cart_item_key ] = $price * $quantity;
 			}
 
