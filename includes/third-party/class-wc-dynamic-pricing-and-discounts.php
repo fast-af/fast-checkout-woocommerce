@@ -92,7 +92,7 @@ class WC_Dynamic_Pricing_And_Discounts extends Plugin {
 
 				\fastwc_log_info( 'Cart item key: ' . print_r( $cart_item_key, true ) );
 
-				$cart_item_subtotals[ $cart_item_key ] = $price * $quantity;
+				$cart_item_subtotals[ json_encode( $cart_item_key ) ] = $price * $quantity;
 			}
 
 			\fastwc_log_info( 'Cart Products: ' . print_r( $cart_item_subtotals, true ) );
