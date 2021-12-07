@@ -22,6 +22,13 @@ class WC_Dynamic_Pricing_And_Discounts extends Plugin {
 	protected $slug = 'wc-dynamic-pricing-and-discounts/wc-dynamic-pricing-and-discounts.php';
 
 	/**
+	 * Array of cart item subtotals.
+	 *
+	 * @var array
+	 */
+	protected $cart_item_subtotals = array();
+
+	/**
 	 * Initialize the plugin.
 	 */
 	protected function init() {
@@ -78,69 +85,103 @@ class WC_Dynamic_Pricing_And_Discounts extends Plugin {
 
 		if ( ! WC()->cart->is_empty() ) {
 			// Update order items from cart items.
-			$cart_item_subtotals = array();
-			foreach ( WC()->cart->get_cart() as $cart_item ) {
-				$product  = $cart_item['data'];
-				$quantity = $cart_item['quantity'];
-				$price    = $product->get_price();
+			$this->get_cart_item_subtotals();
+			$order = $this->update_order_items( $order );
+		}
 
-				$cart_item_key = json_encode(
-					array(
-						'product_id'   => $cart_item['product_id'],
-						'variation_id' => ! empty( $cart_item['variation_id'] ) ? $cart_item['variation_id'] : 0,
-						'variation'    => ! empty( $cart_item['variation'] ) ? $cart_item['variation'] : array(),
-					)
-				);
+		return $order;
+	}
 
-				\fastwc_log_info( 'Cart item key: ' . $cart_item_key );
+	/**
+	 * Get a cart item key.
+	 *
+	 * @param int   $product_id   The ID of the product.
+	 * @param int   $variation_id The ID of the product variation.
+	 * @param array $variation    The variation attributes.
+	 *
+	 * @return string
+	 */
+	protected function get_cart_item_key( $product_id, $variation_id, $variation ) {
+		return json_encode(
+			array(
+				'product_id'   => $product_id,
+				'variation_id' => $variation_id,
+				'variation'    => $variation;
+			)
+		);
+	}
 
-				$cart_item_subtotals[ $cart_item_key ] = $price * $quantity;
-			}
+	/**
+	 * Get subtotals from cart items.
+	 */
+	protected function get_cart_item_subtotals() {
+		$this->cart_item_subtotals = array();
 
-			\fastwc_log_info( 'Cart Products: ' . print_r( $cart_item_subtotals, true ) );
+		foreach ( WC()->cart->get_cart() as $cart_item ) {
+			$product  = $cart_item['data'];
+			$quantity = $cart_item['quantity'];
+			$price    = $product->get_price();
 
-			if ( ! empty( $order->get_items() ) ) {
-				foreach ( $order->get_items() as $order_item ) {
-					$product_id   = $order_item->get_product_id();
-					$variation_id = $order_item->get_variation_id();
-					$meta_data    = $order_item->get_meta_data();
-					$variation    = array();
+			$cart_item_key = $this->get_cart_item_key(
+				$cart_item['product_id'],
+				! empty( $cart_item['variation_id'] ) ? $cart_item['variation_id'] : 0,
+				! empty( $cart_item['variation'] ) ? $cart_item['variation'] : array()
+			);
 
-					if ( ! empty( $meta_data ) ) {
-						foreach ( $meta_data as $meta_data_item ) {
-							$mdi_data  = $meta_data_item->get_data();
-							$mdi_key   = ! empty( $mdi_data['key'] ) ? $mdi_data['key'] : '';
-							$mdi_value = ! empty( $mdi_data['value'] ) ? $mdi_data['value'] : '';
+			\fastwc_log_info( 'Cart item key: ' . $cart_item_key );
 
-							if ( 0 === strpos( $mdi_key, 'attribute_' ) ) {
-								$variation[ $mdi_key ] = $mdi_value;
-							}
+			$this->cart_item_subtotals[ $cart_item_key ] = $price * $quantity;
+		}
+
+		\fastwc_log_info( 'Cart Products: ' . print_r( $this->cart_item_subtotals, true ) );
+	}
+
+	/**
+	 * Update order items.
+	 *
+	 * @param WC_Data $order Object object.
+	 *
+	 * @return WC_Data
+	 */
+	protected function update_order_items( $order ) {
+
+		if ( ! empty( $order->get_items() ) ) {
+			foreach ( $order->get_items() as $order_item ) {
+				$meta_data = $order_item->get_meta_data();
+				$variation = array();
+
+				if ( ! empty( $meta_data ) ) {
+					foreach ( $meta_data as $meta_data_item ) {
+						$mdi_data  = $meta_data_item->get_data();
+						$mdi_key   = ! empty( $mdi_data['key'] ) ? $mdi_data['key'] : '';
+						$mdi_value = ! empty( $mdi_data['value'] ) ? $mdi_data['value'] : '';
+
+						if ( 0 === strpos( $mdi_key, 'attribute_' ) ) {
+							$variation[ $mdi_key ] = $mdi_value;
 						}
 					}
+				}
 
-					$cart_item_key = json_encode(
-						array(
-							'product_id'   => $product_id,
-							'variation_id' => $variation_id,
-							'variation'    => $variation,
-						)
-					);
+				$cart_item_key = $this->get_cart_item_key(
+					$order_item->get_product_id(),
+					$order_item->get_variation_id(),
+					$variation
+				);
 
-					\fastwc_log_info( 'Cart item key from order: ' . $cart_item_key );
+				\fastwc_log_info( 'Cart item key from order: ' . $cart_item_key );
 
-					if ( isset( $cart_item_subtotals[ $cart_item_key ] ) ) {
-						$subtotal = $cart_item_subtotals[ $cart_item_key ];
+				if ( isset( $this->cart_item_subtotals[ $cart_item_key ] ) ) {
+					$subtotal = $this->cart_item_subtotals[ $cart_item_key ];
 
-						// Set the price.
-						$order_item->set_subtotal( $subtotal );
-						$order_item->set_total( $subtotal );
+					// Set the price.
+					$order_item->set_subtotal( $subtotal );
+					$order_item->set_total( $subtotal );
 
-						// Make new tax calculations.
-						$order_item->calculate_taxes();
+					// Make new tax calculations.
+					$order_item->calculate_taxes();
 
-						// Save the line item data.
-						$order_item->save();
-					}
+					// Save the line item data.
+					$order_item->save();
 				}
 			}
 		}
