@@ -102,7 +102,7 @@ class WC_Dynamic_Pricing_And_Discounts extends Plugin {
 					$product_id   = $order_item->get_product_id();
 					$variation_id = $order_item->get_variation_id();
 
-					if ( method_exists( array( $order_item, 'get_changes' ) ) ) {
+					if ( method_exists( $order_item, 'get_changes' ) ) {
 						$changes      = $order_item->get_changes();
 						\fastwc_log_info( 'Changes on order item: ' . print_r( $changes, true ) );
 					} else {
