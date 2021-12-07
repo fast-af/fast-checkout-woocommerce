@@ -103,13 +103,30 @@ class WC_Dynamic_Pricing_And_Discounts extends Plugin {
 					$product_id   = $order_item->get_product_id();
 					$variation_id = $order_item->get_variation_id();
 					$meta_data    = $order_item->get_meta_data();
-					$changes      = $order_item->get_changes();
+					$variation    = array();
 
-					\fastwc_log_info( 'Changes on order item: ' . print_r( $changes, true ) );
-					\fastwc_log_info( 'Meta data on order item: ' . print_r( $meta_data, true ) );
+					if ( ! empty( $meta_data ) ) {
+						foreach ( $meta_data as $meta_data_item ) {
+							$mdi_data  = $meta_data_item->get_data();
+							$mdi_key   = ! empty( $mdi_data['key'] ) ? $mdi_data['key'] : '';
+							$mdi_value = ! empty( $mdi_data['value'] ) ? $mdi_data['value'] : '';
 
-					if ( isset( $cart_item_subtotals[ $product_id ] ) ) {
-						$subtotal = $cart_item_subtotals[ $product_id ];
+							if ( 0 === strpos( $mdi_key, 'attribute_' ) ) {
+								$variation[ $mdi_key ] = $mdi_value;
+							}
+						}
+					}
+
+					$cart_item_key = array(
+						'product_id'   => $product_id,
+						'variation_id' => $variation_id,
+						'variation'    => $variation,
+					);
+
+					\fastwc_log_info( 'Cart item key from order: ' . print_r( $cart_item_key, true ) );
+
+					if ( isset( $cart_item_subtotals[ json_encode( $cart_item_key ) ] ) ) {
+						$subtotal = $cart_item_subtotals[ json_encode( $cart_item_key ) ];
 
 						// Set the price.
 						$order_item->set_subtotal( $subtotal );
