@@ -99,7 +99,15 @@ class WC_Dynamic_Pricing_And_Discounts extends Plugin {
 
 			if ( ! empty( $order->get_items() ) ) {
 				foreach ( $order->get_items() as $order_item ) {
-					$product_id = $order_item->get_product_id();
+					$product_id   = $order_item->get_product_id();
+					$variation_id = $order_item->get_variation_id();
+
+					if ( method_exists( array( $order_item, 'get_changes' ) ) ) {
+						$changes      = $order_item->get_changes();
+						\fastwc_log_info( 'Changes on order item: ' . print_r( $changes, true ) );
+					} else {
+						\fastwc_log_info( 'get_changes does not exist' );
+					}
 
 					if ( isset( $cart_item_subtotals[ $product_id ] ) ) {
 						$subtotal = $cart_item_subtotals[ $product_id ];
