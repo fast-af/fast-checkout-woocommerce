@@ -66,7 +66,6 @@ class WC_Dynamic_Pricing_And_Discounts extends Plugin {
 			return;
 		}
 
-		\fastwc_log_info( 'Request object: ' . print_r( $request, true ) );
 		\fastwc_log_info( 'Order before cart created in WC_Dynamic_Pricing_And_Discounts: ' . print_r( $order, true ) );
 
 		// First, create a cart from the request objet.
