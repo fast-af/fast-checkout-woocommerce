@@ -106,7 +106,7 @@ class WC_Dynamic_Pricing_And_Discounts extends Plugin {
 			array(
 				'product_id'   => $product_id,
 				'variation_id' => $variation_id,
-				'variation'    => $variation;
+				'variation'    => $variation,
 			)
 		);
 	}
