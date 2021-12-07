@@ -85,15 +85,17 @@ class WC_Dynamic_Pricing_And_Discounts extends Plugin {
 				$quantity = $cart_item['quantity'];
 				$price    = $product->get_price();
 
-				$cart_item_key = array(
-					'product_id'   => $cart_item['product_id'],
-					'variation_id' => ! empty( $cart_item['variation_id'] ) ? $cart_item['variation_id'] : 0,
-					'variation'    => ! empty( $cart_item['variation'] ) ? $cart_item['variation'] : array(),
+				$cart_item_key = json_encode(
+					array(
+						'product_id'   => $cart_item['product_id'],
+						'variation_id' => ! empty( $cart_item['variation_id'] ) ? $cart_item['variation_id'] : 0,
+						'variation'    => ! empty( $cart_item['variation'] ) ? $cart_item['variation'] : array(),
+					)
 				);
 
-				\fastwc_log_info( 'Cart item key: ' . print_r( $cart_item_key, true ) );
+				\fastwc_log_info( 'Cart item key: ' . $cart_item_key );
 
-				$cart_item_subtotals[ json_encode( $cart_item_key ) ] = $price * $quantity;
+				$cart_item_subtotals[ $cart_item_key ] = $price * $quantity;
 			}
 
 			\fastwc_log_info( 'Cart Products: ' . print_r( $cart_item_subtotals, true ) );
@@ -117,16 +119,18 @@ class WC_Dynamic_Pricing_And_Discounts extends Plugin {
 						}
 					}
 
-					$cart_item_key = array(
-						'product_id'   => $product_id,
-						'variation_id' => $variation_id,
-						'variation'    => $variation,
+					$cart_item_key = json_encode(
+						array(
+							'product_id'   => $product_id,
+							'variation_id' => $variation_id,
+							'variation'    => $variation,
+						)
 					);
 
-					\fastwc_log_info( 'Cart item key from order: ' . print_r( $cart_item_key, true ) );
+					\fastwc_log_info( 'Cart item key from order: ' . $cart_item_key );
 
-					if ( isset( $cart_item_subtotals[ json_encode( $cart_item_key ) ] ) ) {
-						$subtotal = $cart_item_subtotals[ json_encode( $cart_item_key ) ];
+					if ( isset( $cart_item_subtotals[ $cart_item_key ] ) ) {
+						$subtotal = $cart_item_subtotals[ $cart_item_key ];
 
 						// Set the price.
 						$order_item->set_subtotal( $subtotal );
