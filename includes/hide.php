@@ -98,9 +98,15 @@ function fastwc_is_hidden_for_test_mode( $should_hide ) {
 		// There is code in the settings page that actually sets this to enabled the first time the user views the form.
 		$fastwc_test_mode = get_option( FASTWC_SETTING_TEST_MODE, '1' );
 		if ( $fastwc_test_mode ) {
-			// In test mode, we only want to show the button if the user is an admin or their email ends with @fast.co.
-			$current_user = wp_get_current_user();
-			if ( ! preg_match( '/@fast.co$/i', $current_user->user_email ) && ! $current_user->has_cap( 'administrator' ) ) {
+			// In test mode, we only want to show the button if the user is an admin,
+			// if their email ends with @fast.co, or if they have been specifically given access.
+			$fastwc_test_mode_users = get_option( FASTWC_SETTING_TEST_MODE_USERS, array() );
+			$current_user           = wp_get_current_user();
+			if (
+				! preg_match( '/@fast.co$/i', $current_user->user_email ) // All users with fast.co email addresses can view the buttons in Test Mode.
+				&& ! $current_user->has_cap( 'administrator' ) // All administrators can view the buttons in Test Mode.
+				&& ! in_array( $current_user->ID, $fastwc_test_mode_users, true ) // All users given access can view the buttons in Test mode.
+			) {
 				// User is not an admin or a Fast employee. Return early so button never sees the light of day.
 				$should_hide = true;
 			}
