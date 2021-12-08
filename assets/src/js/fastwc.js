@@ -17,6 +17,45 @@
 		init: function() {
 			fastSelect.initProductSelect();
 			fastSelect.initRedirectPageSelect();
+			fastSelect.initTestModeUserSelect();
+		},
+
+		/**
+		 * Get the ajax object.
+		 *
+		 * @param {Object} element The Select2 element.
+		 * @param {String} action  The query action.
+		 *
+		 * @return {Object}
+		 */
+		ajaxObject: function( element, action ) {
+			return {
+				url: ajaxurl,
+				data: function( params ) {
+					var query = {
+						term : params.term,
+						action : action,
+						security: element.attr('data-security'),
+					};
+
+					return query;
+				},
+				processResults: function( data ) {
+					var terms = [];
+
+					if ( data ) {
+						$.each( data, function( id, text ) {
+							terms.push( {
+								id: id,
+								text: text
+							} );
+						} );
+					}
+
+					return { results: terms };
+				},
+				cache: true,
+			};
 		},
 
 		/**
@@ -29,33 +68,7 @@
 
 			productSelect.select2(
 				{
-					ajax: {
-						url: ajaxurl,
-						data: function( params ) {
-							var query = {
-								term : params.term,
-								action : 'woocommerce_json_search_products',
-								security: productSelect.attr('data-security'),
-							};
-
-							return query;
-						},
-						processResults: function( data ) {
-							var terms = [];
-
-							if ( data ) {
-								$.each( data, function( id, text ) {
-									terms.push( {
-										id: id,
-										text: text
-									} );
-								} );
-							}
-
-							return { results: terms };
-						},
-						cache: true,
-					},
+					ajax: fastSelect.ajaxObject( productSelect, 'woocommerce_json_search_products' ),
 				}
 			);
 		},
@@ -70,38 +83,27 @@
 
 			redirectPageSelect.select2(
 				{
-					ajax: {
-						url: ajaxurl,
-						dataType: 'json',
-						data: function( params ) {
-							var query = {
-								term : params.term,
-								action : 'fastwc_search_pages',
-								security: redirectPageSelect.attr('data-security'),
-							};
-
-							return query;
-						},
-						processResults: function( data ) {
-							var terms = [];
-
-							if ( data ) {
-								$.each( data, function( id, text ) {
-									terms.push( {
-										id: id,
-										text: text
-									} );
-								} );
-							}
-
-							return { results: terms };
-						},
-						cache: true,
-					},
+					ajax: fastSelect.ajaxObject( redirectPageSelect, 'fastwc_search_pages' ),
 					minimumInputLength: 3,
 				}
 			);
 		},
+
+		/**
+		 * Initialize the Test Mode User select field.
+		 *
+		 * @returns {void}
+		 */
+		 initTestModeUserSelect: function() {
+		 	var testModeUserSelect = $( '.fast-select--test-mode-users' );
+
+			testModeUserSelect.select2(
+				{
+					ajax: fastSelect.ajaxObject( testModeUserSelect, 'fastwc_search_users' ),
+					minimumInputLength: 3,
+				}
+			);
+		 },
 
 	};
 

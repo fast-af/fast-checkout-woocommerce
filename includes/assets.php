@@ -19,6 +19,13 @@ add_action( 'login_enqueue_scripts', 'fastwc_enqueue_script' );
  * Enqueue admin assets.
  */
 function fastwc_admin_enqueue_scripts() {
+	// Only load the Fast admin scripts on the Fast settings pages.
+	$current_screen = get_current_screen();
+
+	if ( ! empty( $current_screen ) && isset( $current_screen->id ) && 'toplevel_page_fast' !== $current_screen->id ) {
+		return;
+	}
+
 	/**
 	 * Load the Select2 library.
 	 *
@@ -49,11 +56,6 @@ function fastwc_admin_enqueue_scripts() {
 		true
 	);
 
-	$current_screen = get_current_screen();
-
-	if ( ! empty( $current_screen ) && isset( $current_screen->id ) && 'toplevel_page_fast' !== $current_screen->id ) {
-		return;
-	}
 	wp_enqueue_style(
 		'fast-admin-css',
 		FASTWC_URL . 'assets/dist/styles.css',
