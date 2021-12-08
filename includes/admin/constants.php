@@ -8,6 +8,7 @@
 define( 'FASTWC_SETTING_APP_ID', 'fast_app_id' );
 define( 'FASTWC_SETTING_TEST_MODE', 'fast_test_mode' );
 define( 'FASTWC_SETTING_TEST_MODE_NOT_SET', 'fast test mode not set' );
+define( 'FASTWC_SETTING_TEST_MODE_USERS', 'fastwc_test_mode_users' );
 define( 'FASTWC_SETTING_FAST_JS_URL', 'fast_fast_js_url' );
 define( 'FASTWC_SETTING_FAST_JWKS_URL', 'fast_fast_jwks_url' );
 define( 'FASTWC_SETTING_ONBOARDING_URL', 'fast_onboarding_url' );
@@ -33,6 +34,7 @@ define( 'FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE', 'fastwc_checkout_redirect_page'
 define( 'FASTWC_SETTING_PDP_BUTTON_HOOK', 'fast_pdp_button_hook' );
 define( 'FASTWC_DEFAULT_PDP_BUTTON_HOOK', 'woocommerce_after_add_to_cart_quantity' );
 define( 'FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER', 'fast_pdp_button_hook_other' );
+define( 'FASTWC_SETTING_HIDE_REGULAR_CHECKOUT_BUTTONS', 'fastwc_hide_regular_checkout_buttons' );
 define( 'FASTWC_SETTING_PLUGIN_DO_INIT_FORMAT', 'fastwc_do_init_%s' );
 define( 'FASTWC_SETTING_HEADLESS_LINK_SLUG', 'fastwc_headless_link_slug' );
 define( 'FASTWC_DEFAULT_HEADLESS_LINK_SLUG', 'fast-checkout' );

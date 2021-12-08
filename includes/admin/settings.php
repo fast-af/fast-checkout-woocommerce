@@ -40,6 +40,7 @@ function fastwc_updated_option( $option, $old_value, $value ) {
 		FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE,
 		FASTWC_SETTING_PDP_BUTTON_HOOK,
 		FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER,
+		FASTWC_SETTING_TEST_MODE_USERS,
 	);
 
 	if ( in_array( $option, $stampable_options, true ) ) {
@@ -227,11 +228,13 @@ function fastwc_admin_setup_sections() {
 	register_setting( $section_name, FASTWC_SETTING_HIDE_BUTTON_PRODUCTS );
 	register_setting( $section_name, FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE );
 	register_setting( $section_name, FASTWC_SETTING_HEADLESS_LINK_SLUG );
+	register_setting( $section_name, FASTWC_SETTING_HIDE_REGULAR_CHECKOUT_BUTTONS );
 	register_setting( $section_name, FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER );
 
 	$section_name = 'fast_test_mode';
 	add_settings_section( $section_name, '', false, $section_name );
 	register_setting( $section_name, FASTWC_SETTING_TEST_MODE );
+	register_setting( $section_name, FASTWC_SETTING_TEST_MODE_USERS );
 	register_setting( $section_name, FASTWC_SETTING_DEBUG_MODE );
 	register_setting( $section_name, FASTWC_SETTING_DISABLE_MULTICURRENCY );
 
@@ -273,11 +276,13 @@ function fastwc_admin_setup_fields() {
 	add_settings_field( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS, __( 'Hide Buttons for these Products', 'fast' ), 'fastwc_hide_button_products', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE, __( 'Checkout Redirect Page', 'fast' ), 'fastwc_checkout_redirect_page', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_HEADLESS_LINK_SLUG, __( 'Headless Checkout Link Path', 'fast' ), 'fastwc_headless_link_slug', $settings_section, $settings_section );
+	add_settings_field( FASTWC_SETTING_HIDE_REGULAR_CHECKOUT_BUTTONS, __( 'Hide WooCommerce Checkout Buttons on Cart', 'fast' ), 'fastwc_hide_regular_checkout_buttons', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, __( 'Display Login in Footer', 'fast' ), 'fastwc_show_login_button_footer', $settings_section, $settings_section );
 
 	// Test Mode settings.
 	$settings_section = 'fast_test_mode';
 	add_settings_field( FASTWC_SETTING_TEST_MODE, __( 'Test Mode', 'fast' ), 'fastwc_test_mode_content', $settings_section, $settings_section );
+	add_settings_field( FASTWC_SETTING_TEST_MODE_USERS, __( 'Test Mode Users', 'fast' ), 'fastwc_test_mode_users', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_DEBUG_MODE, __( 'Debug Mode', 'fast' ), 'fastwc_debug_mode_content', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_DISABLE_MULTICURRENCY, __( 'Disable Multicurrency Support', 'fast' ), 'fastwc_disable_multicurrency_content', $settings_section, $settings_section );
 
@@ -553,6 +558,22 @@ function fastwc_headless_link_slug() {
 }
 
 /**
+ * Hides the regular checkout buttons.
+ */
+function fastwc_hide_regular_checkout_buttons() {
+	$fastwc_hide_regular_checkout_buttons = get_option( FASTWC_SETTING_HIDE_REGULAR_CHECKOUT_BUTTONS, '0' );
+
+	fastwc_settings_field_checkbox(
+		array(
+			'name'        => FASTWC_SETTING_HIDE_REGULAR_CHECKOUT_BUTTONS,
+			'current'     => $fastwc_hide_regular_checkout_buttons,
+			'label'       => __( 'Hide WooCommerce Checkout Buttons on Cart', 'fast' ),
+			'description' => __( 'Hide the standard WooCommerce "Proceed to Checkout" buttons on the cart page and the mini cart widget.', 'fast' ),
+		)
+	);
+}
+
+/**
  * Renders the show login in footer field.
  */
 function fastwc_show_login_button_footer() {
@@ -594,6 +615,40 @@ function fastwc_test_mode_content() {
 			'current'     => $fastwc_test_mode,
 			'label'       => __( 'Enable test mode', 'fast' ),
 			'description' => __( 'When test mode is enabled, only logged-in admin users will see the Fast Checkout button.', 'fast' ),
+		)
+	);
+}
+
+/**
+ * Renders the Test Mode Users field.
+ */
+function fastwc_test_mode_users() {
+	$fastwc_test_mode_users = get_option( FASTWC_SETTING_TEST_MODE_USERS, array() );
+
+	$selected = array();
+	if ( ! empty( $fastwc_test_mode_users ) ) {
+		if ( ! is_array( $fastwc_test_mode_users ) ) {
+			$fastwc_test_mode_users = array( $fastwc_test_mode_users );
+		}
+
+		$fastwc_selected_test_mode_users = get_users(
+			array(
+				'include' => $fastwc_test_mode_users,
+			)
+		);
+
+		foreach ( $fastwc_selected_test_mode_users as $fastwc_test_mode_user ) {
+			$selected[ $fastwc_test_mode_user->id ] = $fastwc_test_mode_user->display_name;
+		}
+	}
+
+	fastwc_settings_field_ajax_select(
+		array(
+			'name'        => FASTWC_SETTING_TEST_MODE_USERS,
+			'selected'    => $selected,
+			'class'       => 'fast-select fast-select--test-mode-users',
+			'description' => __( 'Select users who can view the Fast buttons in Test Mode. Note that administrators are already able to view the Fast buttons in Test Mode, so they cannot be selected here.', 'fast' ),
+			'nonce'       => 'search-users',
 		)
 	);
 }
@@ -788,3 +843,39 @@ function fastwc_ajax_search_pages() {
 	wp_send_json( $return );
 }
 add_action( 'wp_ajax_fastwc_search_pages', 'fastwc_ajax_search_pages' );
+
+/**
+ * Search users to return for the user select Ajax.
+ */
+function fastwc_ajax_search_users() {
+	check_ajax_referer( 'search-users', 'security' );
+
+	$return = array();
+
+	if ( isset( $_GET['term'] ) ) {
+		$q_term = sprintf(
+			'*%s*', // Add leading and trailing '*' for wildcard search.
+			(string) sanitize_text_field( wp_unslash( $_GET['term'] ) )
+		);
+	}
+
+	if ( empty( $q_term ) ) {
+		wp_die();
+	}
+
+	$search_results = get_users(
+		array(
+			'search'       => $q_term,
+			'role__not_in' => 'Administrator',
+		)
+	);
+
+	if ( ! empty( $search_results ) ) {
+		foreach ( $search_results as $search_result_user ) {
+			$return[ $search_result_user->ID ] = $search_result_user->display_name;
+		}
+	}
+
+	wp_send_json( $return );
+}
+add_action( 'wp_ajax_fastwc_search_users', 'fastwc_ajax_search_users' );
