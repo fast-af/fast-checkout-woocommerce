@@ -40,6 +40,7 @@ function fastwc_updated_option( $option, $old_value, $value ) {
 		FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE,
 		FASTWC_SETTING_PDP_BUTTON_HOOK,
 		FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER,
+		FASTWC_SETTING_TEST_MODE_USERS,
 	);
 
 	if ( in_array( $option, $stampable_options, true ) ) {
@@ -218,6 +219,7 @@ function fastwc_admin_setup_sections() {
 	$section_name = 'fast_test_mode';
 	add_settings_section( $section_name, '', false, $section_name );
 	register_setting( $section_name, FASTWC_SETTING_TEST_MODE );
+	register_setting( $section_name, FASTWC_SETTING_TEST_MODE_USERS );
 	register_setting( $section_name, FASTWC_SETTING_DEBUG_MODE );
 	register_setting( $section_name, FASTWC_SETTING_DISABLE_MULTICURRENCY );
 
@@ -261,6 +263,7 @@ function fastwc_admin_setup_fields() {
 	// Test Mode settings.
 	$settings_section = 'fast_test_mode';
 	add_settings_field( FASTWC_SETTING_TEST_MODE, __( 'Test Mode', 'fast' ), 'fastwc_test_mode_content', $settings_section, $settings_section );
+	add_settings_field( FASTWC_SETTING_TEST_MODE_USERS, __( 'Test Mode Users', 'fast' ), 'fastwc_test_mode_users', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_DEBUG_MODE, __( 'Debug Mode', 'fast' ), 'fastwc_debug_mode_content', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_DISABLE_MULTICURRENCY, __( 'Disable Multicurrency Support', 'fast' ), 'fastwc_disable_multicurrency_content', $settings_section, $settings_section );
 
@@ -580,6 +583,40 @@ function fastwc_test_mode_content() {
 }
 
 /**
+ * Renders the Test Mode Users field.
+ */
+function fastwc_test_mode_users() {
+	$fastwc_test_mode_users = get_option( FASTWC_SETTING_TEST_MODE_USERS, array() );
+
+	$selected = array();
+	if ( ! empty( $fastwc_test_mode_users ) ) {
+		if ( ! is_array( $fastwc_test_mode_users ) ) {
+			$fastwc_test_mode_users = array( $fastwc_test_mode_users );
+		}
+
+		$fastwc_selected_test_mode_users = get_users(
+			array(
+				'include' => $fastwc_test_mode_users,
+			)
+		);
+
+		foreach ( $fastwc_selected_test_mode_users as $fastwc_test_mode_user ) {
+			$selected[ $fastwc_test_mode_user->id ] = $fastwc_test_mode_user->display_name;
+		}
+	}
+
+	fastwc_settings_field_ajax_select(
+		array(
+			'name'        => FASTWC_SETTING_TEST_MODE_USERS,
+			'selected'    => $selected,
+			'class'       => 'fast-select fast-select--test-mode-users',
+			'description' => __( 'Select users who can view the Fast buttons in Test Mode. Note that administrators are already able to view the Fast buttons in Test Mode, so they cannot be selected here.', 'fast' ),
+			'nonce'       => 'search-users',
+		)
+	);
+}
+
+/**
  * Renders the Debug Mode field.
  */
 function fastwc_debug_mode_content() {
@@ -725,3 +762,39 @@ function fastwc_ajax_search_pages() {
 	wp_send_json( $return );
 }
 add_action( 'wp_ajax_fastwc_search_pages', 'fastwc_ajax_search_pages' );
+
+/**
+ * Search users to return for the user select Ajax.
+ */
+function fastwc_ajax_search_users() {
+	check_ajax_referer( 'search-users', 'security' );
+
+	$return = array();
+
+	if ( isset( $_GET['term'] ) ) {
+		$q_term = sprintf(
+			'*%s*', // Add leading and trailing '*' for wildcard search.
+			(string) sanitize_text_field( wp_unslash( $_GET['term'] ) )
+		);
+	}
+
+	if ( empty( $q_term ) ) {
+		wp_die();
+	}
+
+	$search_results = get_users(
+		array(
+			'search'       => $q_term,
+			'role__not_in' => 'Administrator',
+		)
+	);
+
+	if ( ! empty( $search_results ) ) {
+		foreach ( $search_results as $search_result_user ) {
+			$return[ $search_result_user->ID ] = $search_result_user->display_name;
+		}
+	}
+
+	wp_send_json( $return );
+}
+add_action( 'wp_ajax_fastwc_search_users', 'fastwc_ajax_search_users' );
