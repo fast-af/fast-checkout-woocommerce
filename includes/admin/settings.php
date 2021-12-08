@@ -212,6 +212,7 @@ function fastwc_admin_setup_sections() {
 	register_setting( $section_name, FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER );
 	register_setting( $section_name, FASTWC_SETTING_HIDE_BUTTON_PRODUCTS );
 	register_setting( $section_name, FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE );
+	register_setting( $section_name, FASTWC_SETTING_HIDE_REGULAR_CHECKOUT_BUTTONS );
 	register_setting( $section_name, FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER );
 
 	$section_name = 'fast_test_mode';
@@ -254,6 +255,7 @@ function fastwc_admin_setup_fields() {
 	add_settings_field( FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER, __( 'Enter Alternate Product Button Location', 'fast' ), 'fastwc_pdp_button_hook_other', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS, __( 'Hide Buttons for these Products', 'fast' ), 'fastwc_hide_button_products', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE, __( 'Checkout Redirect Page', 'fast' ), 'fastwc_checkout_redirect_page', $settings_section, $settings_section );
+	add_settings_field( FASTWC_SETTING_HIDE_REGULAR_CHECKOUT_BUTTONS, __( 'Hide WooCommerce Checkout Buttons on Cart', 'fast' ), 'fastwc_hide_regular_checkout_buttons', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, __( 'Display Login in Footer', 'fast' ), 'fastwc_show_login_button_footer', $settings_section, $settings_section );
 
 	// Test Mode settings.
@@ -511,6 +513,22 @@ function fastwc_checkout_redirect_page() {
 			'description' => __( 'Select a page to redirect to after a successful cart checkout. Leave blank to redirect to the cart.', 'fast' ),
 			'nonce'       => 'search-pages',
 			'multiple'    => false,
+		)
+	);
+}
+
+/**
+ * Hides the regular checkout buttons.
+ */
+function fastwc_hide_regular_checkout_buttons() {
+	$fastwc_hide_regular_checkout_buttons = get_option( FASTWC_SETTING_HIDE_REGULAR_CHECKOUT_BUTTONS, '0' );
+
+	fastwc_settings_field_checkbox(
+		array(
+			'name'        => FASTWC_SETTING_HIDE_REGULAR_CHECKOUT_BUTTONS,
+			'current'     => $fastwc_hide_regular_checkout_buttons,
+			'label'       => __( 'Hide WooCommerce Checkout Buttons on Cart', 'fast' ),
+			'description' => __( 'Hide the standard WooCommerce "Proceed to Checkout" buttons on the cart page and the mini cart widget.', 'fast' ),
 		)
 	);
 }
