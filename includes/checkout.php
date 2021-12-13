@@ -117,35 +117,23 @@ add_action( 'woocommerce_before_checkout_form', 'fastwc_woocommerce_before_check
 /**
  * Handle the order object before it is inserted via the REST API.
  *
- * @param WC_Data         $order    Object object.
- * @param WP_REST_Request $request  Request object.
+ * @param WC_Data         $order   Object object.
+ * @param WP_REST_Request $request Request object.
  */
 function fastwc_woocommerce_rest_pre_insert_shop_order_object( $order, $request ) {
+
+	fastwc_log_debug( 'Request object: ' . print_r( $request, true ) );
 
 	fastwc_log_debug( 'fastwc_woocommerce_rest_pre_insert_shop_order_object ' . print_r( $order, true ) ); // phpcs:ignore
 
 	// For order updates with a coupon line item, make sure there is a cart object.
 	if (
-		empty( WC()->cart ) &&
 		isset( $request['coupon_lines'] ) &&
 		is_array( $request['coupon_lines'] )
 	) {
 		fastwc_log_info( 'Generating cart object on WC orders endpoint.' );
 
-		wc_load_cart();
-
-		$items = $order->get_items();
-
-		foreach ( $items as $item ) {
-			$product  = is_callable( array( $item, 'get_product' ) ) ? $item->get_product() : null;
-			$quantity = is_callable( array( $item, 'get_quantity' ) ) ? $item->get_quantity() : 0;
-
-			if ( is_callable( array( $product, 'get_id' ) ) ) {
-				WC()->cart->add_to_cart( $product->get_id(), $quantity );
-
-				fastwc_log_debug( 'Product added to cart on pre-insert order hook. Product ID: ' . $product->get_id() . ', Quantity: ' . $quantity );
-			}
-		}
+		fastwc_create_cart_from_request( $request );
 
 		fastwc_log_debug( 'Cart generated on pre-insert order hook: ' . print_r( WC()->cart, true ) ); // phpcs:ignore
 	}
@@ -153,7 +141,65 @@ function fastwc_woocommerce_rest_pre_insert_shop_order_object( $order, $request 
 	// Return the order object unchanged.
 	return $order;
 }
-add_filter( 'woocommerce_rest_pre_insert_shop_order_object', 'fastwc_woocommerce_rest_pre_insert_shop_order_object', 10, 3 );
+add_filter( 'woocommerce_rest_pre_insert_shop_order_object', 'fastwc_woocommerce_rest_pre_insert_shop_order_object', 10, 2 );
+
+/**
+ * Generate a cart from the order object.
+ *
+ * @param WP_REST_Request $request Request object.
+ */
+function fastwc_create_cart_from_request( $request ) {
+
+	if ( empty( WC()->cart ) ) {
+		wc_load_cart();
+
+		$request_line_items = isset( $request['line_items'] ) ? $request['line_items'] : array();
+		fastwc_log_debug( 'Request line items: ' . print_r( $request_line_items, true ) ); // phpcs:ignore
+
+		// Empty the cart to make sure no lingering products get added previously.
+		WC()->cart->empty_cart();
+
+		foreach ( $request_line_items as $item ) {
+			fastwc_log_debug( 'Request line item: ' . print_r( $item, true ) ); // phpcs:ignore
+
+			// Skip items with 0 quantity.
+			if ( empty( $item['quantity'] ) || empty( $item['product_id'] ) ) {
+				continue;
+			}
+
+			$product_id   = ! empty( $item['product_id'] ) ? $item['product_id'] : 0;
+			$variation_id = ! empty( $item['variation_id'] ) ? $item['variation_id'] : 0;
+			$quantity     = $item['quantity'];
+			$variation    = array();
+
+			if ( ! empty( $item['meta_data'] ) ) {
+				foreach ( $item['meta_data'] as $item_attribute ) {
+					if ( ! empty( $item_attribute['key'] ) && ! empty( $item_attribute['value'] ) ) {
+						$variation[ $item_attribute['key'] ] = $item_attribute['value'];
+					}
+				}
+			}
+
+			// Add the product to the cart.
+			WC()->cart->add_to_cart(
+				$product_id,
+				$quantity,
+				$variation_id,
+				$variation
+			);
+
+			fastwc_log_debug(
+				sprintf(
+					'Product added to cart from order. Product ID: %1$s, Quantity: %2$s, Variation ID: %3$s, Variation Attributes: %4$s',
+					$product_id,
+					$quantity,
+					$variation_id,
+					print_r( $variation, true ) // phpcs:ignore
+				)
+			);
+		}
+	}
+}
 
 /**
  * Fast transition trash to on-hold.
