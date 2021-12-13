@@ -226,8 +226,6 @@ class Shipping extends Route {
 
 		// See if we need to calculate anything.
 		if ( ! \WC()->cart->needs_shipping() ) {
-			\fastwc_log_debug( 'Fast Shipping Endpiont Request: ' . print_r( $this->request, true ) );
-			\fastwc_log_debug( 'Fast Shipping Endpiont Cart: ' . print_r( \WC()->cart, true ) );
 			return new \WP_Error( 'shipping_methods_error', 'no shipping methods available for product and address', array( 'status' => 400 ) );
 		}
 
