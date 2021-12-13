@@ -10,7 +10,7 @@
 namespace FastWC\Third_Party;
 
 /**
- * Fast base third-party plugin class.
+ * Fast third-party plugin class for WooCommerce Tiered Pricing Table.
  */
 class WooCommerce_Tiered_Pricing_Table extends Plugin {
 
