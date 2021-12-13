@@ -297,7 +297,7 @@ add_action( 'init', 'fastwc_maybe_hide_proceed_to_checkout_buttons' );
  * @param string    $used_by   The customer who used the coupon.
  */
 function fastwc_log_coupon_usage_on_increase( $coupon, $new_count, $used_by ) {
-	fastwc_log_info( 'Coupon (increase): ' . print_r( $coupon, true ) );
+	fastwc_log_info( 'Coupon (increase): ' . $coupon->get_code() );
 	fastwc_log_info( 'New coupon usage count (increase): ' . $new_count );
 	fastwc_log_info( 'Coupon used by (increase): ' . $used_by );
 }
@@ -311,7 +311,7 @@ add_action( 'woocommerce_increase_coupon_usage_count', 'fastwc_log_coupon_usage_
  * @param string    $used_by   The customer who used the coupon.
  */
 function fastwc_log_coupon_usage_on_decrease( $coupon, $new_count, $used_by ) {
-	fastwc_log_info( 'Coupon (decrease): ' . print_r( $coupon, true ) );
+	fastwc_log_info( 'Coupon (decrease): ' . $coupon->get_code() );
 	fastwc_log_info( 'New coupon usage count (decrease): ' . $new_count );
 	fastwc_log_info( 'Coupon used by (decrease): ' . $used_by );
 }
