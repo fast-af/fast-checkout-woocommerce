@@ -9,6 +9,8 @@
 require_once FASTWC_PATH . 'includes/third-party/class-plugin.php';
 // Load the WooCommerce Tiered Pricing Table class.
 require_once FASTWC_PATH . 'includes/third-party/class-woocommerce-tiered-pricing-table.php';
+// Load the WooCommerce Dynamic Pricing and Discounts class.
+require_once FASTWC_PATH . 'includes/third-party/class-wc-dynamic-pricing-and-discounts.php';
 
 /**
  * Initialize the third-party plugin tools.
@@ -25,15 +27,13 @@ function fastwc_initialize_third_party_plugin_support() {
 		'fastwc_third_party_plugin_classes',
 		array(
 			'FastWC\Third_Party\WooCommerce_Tiered_Pricing_Table',
+			'FastWC\Third_Party\WC_Dynamic_Pricing_And_Discounts',
 		)
 	);
 
 	foreach ( $fastwc_third_party_plugins as $fastwc_third_party_plugin ) {
-		if (
-			class_exists( $fastwc_third_party_plugin ) &&
-			method_exists( $fastwc_third_party_plugin, 'get_instance' )
-		) {
-			$fastwc_third_party_plugin::get_instance();
+		if ( class_exists( $fastwc_third_party_plugin ) ) {
+			new $fastwc_third_party_plugin();
 		}
 	}
 }
