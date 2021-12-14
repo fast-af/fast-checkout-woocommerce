@@ -126,6 +126,11 @@ function fastwc_woocommerce_rest_pre_insert_shop_order_object( $order, $request 
 
 	fastwc_log_debug( 'fastwc_woocommerce_rest_pre_insert_shop_order_object ' . print_r( $order, true ) ); // phpcs:ignore
 
+	// Remove coupon lines from request if the coupon has already been applied to the order.
+	fastwc_check_request_coupon_lines( $request, $order );
+
+	fastwc_log_debug( 'Request object after coupon lines check: ' . print_r( $request, true ) );
+
 	// For order updates with a coupon line item, make sure there is a cart object.
 	if (
 		isset( $request['coupon_lines'] ) &&
@@ -290,29 +295,37 @@ function fastwc_maybe_hide_proceed_to_checkout_buttons() {
 add_action( 'init', 'fastwc_maybe_hide_proceed_to_checkout_buttons' );
 
 /**
- * Log coupon usage on increase usage count.
+ * Check coupon codes from the request object to avoid applying the same coupon code more than once.
  *
- * @param WC_Coupon $coupon    The coupon object.
- * @param int       $new_count The new usage count.
- * @param string    $used_by   The customer who used the coupon.
+ * @param WP_REST_Request $request Request object.
+ * @param WC_Data         $order   Object object.
  */
-function fastwc_log_coupon_usage_on_increase( $coupon, $new_count, $used_by ) {
-	fastwc_log_info( 'Coupon (increase): ' . $coupon->get_code() );
-	fastwc_log_info( 'New coupon usage count (increase): ' . $new_count );
-	fastwc_log_info( 'Coupon used by (increase): ' . $used_by );
-}
-add_action( 'woocommerce_increase_coupon_usage_count', 'fastwc_log_coupon_usage_on_increase', 10, 3 );
+function fastwc_check_request_coupon_lines( $request, $order ) {
+	// Do nothing if there are no coupons in the request.
+	if ( empty( $request['coupon_lines'] ) || count( $request['coupon_lines'] ) > 1 ) {
+		return;
+	}
 
-/**
- * Log coupon usage on decrease usage count.
- *
- * @param WC_Coupon $coupon    The coupon object.
- * @param int       $new_count The new usage count.
- * @param string    $used_by   The customer who used the coupon.
- */
-function fastwc_log_coupon_usage_on_decrease( $coupon, $new_count, $used_by ) {
-	fastwc_log_info( 'Coupon (decrease): ' . $coupon->get_code() );
-	fastwc_log_info( 'New coupon usage count (decrease): ' . $new_count );
-	fastwc_log_info( 'Coupon used by (decrease): ' . $used_by );
+	$current_order_coupons      = array_values( $order->get_coupons() );
+	$current_order_coupon_codes = array_map(
+		function( $coupon ) {
+			return $coupon->get_code();
+		},
+		$current_order_coupons
+	);
+
+	$new_coupon_lines = array();
+	foreach ( $request['coupon_lines'] as $coupon_line ) {
+		if ( empty( $coupon_line['code'] ) ) {
+			continue;
+		}
+
+		$coupon_code = wc_format_coupon_code( $coupon_line['code'] );
+
+		if ( ! in_array( $coupon_code, $current_order_coupon_codes, true ) ) {
+			$new_coupon_lines[] = $coupon_line;
+		}
+	}
+
+	$request['coupon_lines'] = $new_coupon_lines;
 }
-add_action( 'woocommerce_decrease_coupon_usage_count', 'fastwc_log_coupon_usage_on_decrease', 10, 3 );
