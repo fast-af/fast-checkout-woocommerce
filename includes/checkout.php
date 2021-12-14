@@ -306,6 +306,8 @@ function fastwc_check_request_coupon_lines( $request, $order ) {
 		return;
 	}
 
+	$discounts = new WC_Discounts( $order );
+
 	$current_order_coupons      = array_values( $order->get_coupons() );
 	$current_order_coupon_codes = array_map(
 		function( $coupon ) {
@@ -327,5 +329,9 @@ function fastwc_check_request_coupon_lines( $request, $order ) {
 		}
 	}
 
-	$request['coupon_lines'] = $new_coupon_lines;
+	if ( empty( $new_coupon_lines ) ) {
+		unset( $request['coupon_lines'] );
+	} else {
+		$request['coupon_lines'] = $new_coupon_lines;
+	}
 }
