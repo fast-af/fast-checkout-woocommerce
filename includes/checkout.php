@@ -126,7 +126,6 @@ function fastwc_woocommerce_rest_pre_insert_shop_order_object( $order, $request 
 
 	$order = fastwc_maybe_update_order_for_multicurrency( $order, $request );
 
-	fastwc_log_debug( 'Request object: ' . print_r( $request, true ) );
 	fastwc_log_debug( 'Request object: ' . print_r( $request, true ) ); // phpcs:ignore
 
 	fastwc_log_debug( 'fastwc_woocommerce_rest_pre_insert_shop_order_object ' . print_r( $order, true ) ); // phpcs:ignore
