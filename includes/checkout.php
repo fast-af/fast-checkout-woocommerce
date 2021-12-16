@@ -130,6 +130,11 @@ function fastwc_woocommerce_rest_pre_insert_shop_order_object( $order, $request 
 
 	fastwc_log_debug( 'fastwc_woocommerce_rest_pre_insert_shop_order_object ' . print_r( $order, true ) ); // phpcs:ignore
 
+	// Remove coupon lines from request if the coupon has already been applied to the order.
+	fastwc_check_request_coupon_lines( $request, $order );
+
+	fastwc_log_debug( 'Request object after coupon lines check: ' . print_r( $request, true ) ); // phpcs:ignore
+
 	// For order updates with a coupon line item, make sure there is a cart object.
 	if (
 		isset( $request['coupon_lines'] ) &&
@@ -292,3 +297,50 @@ function fastwc_maybe_hide_proceed_to_checkout_buttons() {
 	}
 }
 add_action( 'init', 'fastwc_maybe_hide_proceed_to_checkout_buttons' );
+
+/**
+ * Check coupon codes from the request object to avoid applying the same coupon code more than once.
+ *
+ * @param WP_REST_Request $request Request object.
+ * @param WC_Data         $order   Object object.
+ */
+function fastwc_check_request_coupon_lines( $request, $order ) {
+	// Do nothing if there are no coupons in the request.
+	if ( empty( $request['coupon_lines'] ) || count( $request['coupon_lines'] ) > 1 ) {
+		return;
+	}
+
+	$discounts = new WC_Discounts( $order );
+
+	$current_order_coupons = array_values( $order->get_coupons() );
+	if ( empty( $current_order_coupons ) ) {
+		return;
+	}
+
+	$current_order_coupon_codes = array_map(
+		function( $coupon ) {
+			return $coupon->get_code();
+		},
+		$current_order_coupons
+	);
+
+	$new_coupon_lines = array();
+	foreach ( $request['coupon_lines'] as $coupon_line ) {
+		if ( empty( $coupon_line['code'] ) ) {
+			continue;
+		}
+
+		$coupon_code = wc_format_coupon_code( $coupon_line['code'] );
+
+		if ( ! in_array( $coupon_code, $current_order_coupon_codes, true ) ) {
+			$new_coupon_lines[] = $coupon_line;
+		}
+	}
+
+	if ( empty( $new_coupon_lines ) ) {
+		unset( $request['coupon_lines'] );
+		$order->recalculate_coupons();
+	} else {
+		$request['coupon_lines'] = $new_coupon_lines;
+	}
+}
