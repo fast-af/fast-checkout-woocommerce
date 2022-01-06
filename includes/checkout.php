@@ -247,18 +247,20 @@ function fastwc_order_status_trash_to_on_hold( $order_id, $order ) {
 add_action( 'woocommerce_order_status_trash_to_on-hold', 'fastwc_order_status_trash_to_on_hold', 10, 2 );
 
 /**
- * Clear the cart of `fast_order_created=1` is added to the URL.
+ * Clear the cart if `fast_order_created={ORDER_ID}` is added to the URL.
  */
 function fastwc_maybe_clear_cart_and_redirect() {
-	$fast_order_created = isset( $_GET['fast_order_created'] ) ? absint( $_GET['fast_order_created'] ) : false; // phpcs:ignore
+	// Get the order ID from the `fast_order_created` query parameter in the URL, or set it to false.
+	$order_id = isset( $_GET['fast_order_created'] ) ? absint( $_GET['fast_order_created'] ) : false; // phpcs:ignore
 
-	if (
-		1 === $fast_order_created &&
-		! empty( WC()->cart ) &&
-		is_callable( array( WC()->cart, 'empty_cart' ) )
-	) {
-		fastwc_log_info( 'Clearing cart and redirecting after order created.' );
-		WC()->cart->empty_cart();
+	if ( ! empty( $order_id ) ) {
+		if (
+			! empty( WC()->cart ) &&
+			is_callable( array( WC()->cart, 'empty_cart' ) )
+		) {
+			fastwc_log_info( 'Clearing cart and redirecting after order created.' );
+			WC()->cart->empty_cart();
+		}
 
 		$redirect_page = absint( get_option( FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE, 0 ) );
 		$redirect_url  = wc_get_cart_url();
@@ -269,6 +271,17 @@ function fastwc_maybe_clear_cart_and_redirect() {
 			// Only change the redirect URL if the redirect page URL is valid.
 			$redirect_url = ! empty( $redirect_page_url ) ? $redirect_page_url : $redirect_url;
 		}
+
+		/**
+		 * Apply filters to the redirect URL and include the Order ID so that
+		 * a custom redirect URL can be created based on the Order ID.
+		 *
+		 * @param string $redirect_url The redirect URL.
+		 * @param int    $order_id     The order ID.
+		 *
+		 * @return string
+		 */
+		$redirect_url = apply_filters( 'fastwc_order_created_redirect_url', $redirect_url, $order_id );
 
 		wp_safe_redirect( $redirect_url );
 	}
