@@ -251,10 +251,10 @@ add_action( 'woocommerce_order_status_trash_to_on-hold', 'fastwc_order_status_tr
  */
 function fastwc_maybe_clear_cart_and_redirect() {
 	// Get the order ID from the `fast_order_created` query parameter in the URL, or set it to false.
-	$fast_order_id     = isset( $_GET['fast_order_created'] ) ? sanitize_text_field( $_GET['fast_order_created'] ) : false; // phpcs:ignore
+	$fast_order_id = isset( $_GET['fast_order_created'] ) ? sanitize_text_field( $_GET['fast_order_created'] ) : false; // phpcs:ignore
 
 	// Check if the order is PDP order.
-	$fast_order_is_pdp             = isset( $_GET['fast_is_pdp'] ) ? absint( $_GET['fast_is_pdp'] ) ? false; // phpcs:ignore
+	$fast_order_is_pdp             = isset( $_GET['fast_is_pdp'] ) ? absint( $_GET['fast_is_pdp'] ) : false; // phpcs:ignore
 	$fast_redirect_after_pdp_order = get_option( FASTWC_SETTING_REDIRECT_AFTER_PDP, false );
 
 	if (
@@ -275,7 +275,7 @@ function fastwc_maybe_clear_cart_and_redirect() {
 					$fast_clear_cart_after_pdp_order
 				) ||
 				! $fast_order_is_pdp
-			)
+			) &&
 			! empty( WC()->cart ) &&
 			is_callable( array( WC()->cart, 'empty_cart' ) )
 		) {
@@ -293,6 +293,9 @@ function fastwc_maybe_clear_cart_and_redirect() {
 			$redirect_url = ! empty( $redirect_page_url ) ? $redirect_page_url : $redirect_url;
 		}
 
+		// Get order ID from Fast order ID.
+		$order_id = fastwc_get_order_id_by_fast_order_id( $fast_order_id );
+
 		/**
 		 * Apply filters to the redirect URL and include the Order ID so that
 		 * a custom redirect URL can be created based on the Order ID.
@@ -308,6 +311,55 @@ function fastwc_maybe_clear_cart_and_redirect() {
 	}
 }
 add_action( 'init', 'fastwc_maybe_clear_cart_and_redirect' );
+
+/**
+ * Get the WC order ID by the Fast order ID.
+ *
+ * @param string $fast_order_id The Fast order ID.
+ *
+ * @return int
+ */
+function fastwc_get_order_id_by_fast_order_id( $fast_order_id ) {
+	$orders = wc_get_orders(
+		array(
+			'fast_order_id' => $fast_order_id,
+		)
+	);
+
+	$order_id = 0;
+
+	if ( ! empty( $orders ) ) {
+		$order    = $orders[0];
+		$order_id = $order->get_id();
+	}
+
+	return $order_id;
+}
+
+/**
+ * Handle the wc_get_orders query by fast_order_id.
+ *
+ * @param array $query      Args for WP_Query.
+ * @param array $query_vars Query vars from WC_Order_Query.
+ *
+ * @return array
+ */
+function fastwc_woocommerce_order_data_store_cpt_get_orders_query() {
+	if ( ! empty( $query_vars['fast_order_id'] ) ) {
+		$query['meta_query'][] = array(
+			'key'   => 'fast_order_id',
+			'value' => esc_attr( $query_vars['fast_order_id'] ),
+		);
+	}
+
+	return $query;
+}
+add_filter(
+	'woocommerce_order_data_store_cpt_get_orders_query',
+	'fastwc_woocommerce_order_data_store_cpt_get_orders_query',
+	10,
+	2
+);
 
 /**
  * Maybe hide the regular "Proceed to Checkout" buttons.
