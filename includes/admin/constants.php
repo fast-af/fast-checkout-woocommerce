@@ -5,25 +5,31 @@
  * @package Fast
  */
 
+// Settings sections.
+define( 'FASTWC_SECTION_APP_INFO', 'fast_app_info' );
+define( 'FASTWC_SECTION_STYLES', 'fast_styles' );
+define( 'FASTWC_SECTION_OPTIONS', 'fast_options' );
+deinfe( 'FASTWC_SECTION_TEST_MODE', 'fast_test_mode' );
+define( 'FASTWC_SECTION_SUPPORT', 'fast_support' );
+define( 'FASTWC_SECTION_STATUS', 'fast_status' );
+define( 'FASTWC_SECTION_ADVANCED', 'fast_advanced' );
+
+// Settings.
 define( 'FASTWC_SETTING_APP_ID', 'fast_app_id' );
 define( 'FASTWC_SETTING_TEST_MODE', 'fast_test_mode' );
-define( 'FASTWC_SETTING_TEST_MODE_NOT_SET', 'fast test mode not set' );
 define( 'FASTWC_SETTING_TEST_MODE_USERS', 'fastwc_test_mode_users' );
 define( 'FASTWC_SETTING_FAST_JS_URL', 'fast_fast_js_url' );
 define( 'FASTWC_SETTING_FAST_JWKS_URL', 'fast_fast_jwks_url' );
 define( 'FASTWC_SETTING_ONBOARDING_URL', 'fast_onboarding_url' );
 define( 'FASTWC_SETTING_DEBUG_MODE', 'fastwc_debug_mode' );
-define( 'FASTWC_SETTING_DEBUG_MODE_NOT_SET', 'fast debug mode not set' );
 define( 'FASTWC_SETTING_LOAD_BUTTON_STYLES', 'fastwc_load_button_styles' );
 define( 'FASTWC_SETTING_USE_DARK_MODE', 'fastwc_use_dark_mode' );
-define( 'FASTWC_SETTING_LOAD_BUTTON_STYLES_NOT_SET', 'fast load button styles not set' );
 define( 'FASTWC_SETTING_PDP_BUTTON_STYLES', 'fast_pdp_button_styles' );
 define( 'FASTWC_SETTING_CART_BUTTON_STYLES', 'fast_cart_button_styles' );
 define( 'FASTWC_SETTING_MINI_CART_BUTTON_STYLES', 'fast_mini_cart_button_styles' );
 define( 'FASTWC_SETTING_CHECKOUT_BUTTON_STYLES', 'fast_checkout_button_styles' );
 define( 'FASTWC_SETTING_LOGIN_BUTTON_STYLES', 'fast_login_button_styles' );
 define( 'FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER', 'fastwc_show_login_button_footer' );
-define( 'FASTWC_SETTING_LOGIN_FOOTER_NOT_SET', 'fast login in footer not set' );
 define( 'FASTWC_SETTING_DISABLE_MULTICURRENCY', 'fastwc_disable_multicurrency' );
 define( 'FASTWC_SETTING_HIDE_BUTTON_PRODUCTS', 'fast_hide_button_products' );
 define( 'FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE', 'fastwc_checkout_redirect_page' );
