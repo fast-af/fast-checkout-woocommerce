@@ -247,14 +247,35 @@ function fastwc_order_status_trash_to_on_hold( $order_id, $order ) {
 add_action( 'woocommerce_order_status_trash_to_on-hold', 'fastwc_order_status_trash_to_on_hold', 10, 2 );
 
 /**
- * Clear the cart if `fast_order_created={ORDER_ID}` is added to the URL.
+ * Maybe clear the cart and redirect if `fast_order_created={ORDER_ID}` is added to the URL.
  */
 function fastwc_maybe_clear_cart_and_redirect() {
 	// Get the order ID from the `fast_order_created` query parameter in the URL, or set it to false.
-	$order_id = isset( $_GET['fast_order_created'] ) ? absint( $_GET['fast_order_created'] ) : false; // phpcs:ignore
+	$fast_order_id     = isset( $_GET['fast_order_created'] ) ? sanitize_text_field( $_GET['fast_order_created'] ) : false; // phpcs:ignore
 
-	if ( ! empty( $order_id ) ) {
+	// Check if the order is PDP order.
+	$fast_order_is_pdp             = isset( $_GET['fast_is_pdp'] ) ? absint( $_GET['fast_is_pdp'] ) ? false; // phpcs:ignore
+	$fast_redirect_after_pdp_order = get_option( FASTWC_SETTING_REDIRECT_AFTER_PDP, false );
+
+	if (
+		! empty( $fast_order_id ) &&
+		(
+			(
+				$fast_order_is_pdp &&
+				$fast_redirect_after_pdp_order
+			) ||
+			! $fast_order_is_pdp
+		)
+	) {
+		$fast_clear_cart_after_pdp_order = get_option( FASTWC_SETTING_CLEAR_CART_AFTER_PDP, false );
 		if (
+			(
+				(
+					$fast_order_is_pdp &&
+					$fast_clear_cart_after_pdp_order
+				) ||
+				! $fast_order_is_pdp
+			)
 			! empty( WC()->cart ) &&
 			is_callable( array( WC()->cart, 'empty_cart' ) )
 		) {
