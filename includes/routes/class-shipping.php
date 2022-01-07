@@ -39,6 +39,9 @@ class Shipping extends Route {
 	public function callback( $request ) {
 		$this->request = $request;
 
+		\fastwc_log_info( 'Begin Fast shipping endpoint' );
+		\fastwc_log_debug( 'Shipping Endpoint Request: ' . print_r( $request, true ) );
+
 		$params = $this->request->get_params();
 		$return = false;
 
@@ -61,6 +64,8 @@ class Shipping extends Route {
 		// Cleanup cart.
 		\WC()->cart->empty_cart();
 
+		\fastwc_log_debug( 'Fast shipping endpoint response: ' . print_r( $return, true ) );
+
 		return $return;
 	}
 
@@ -73,6 +78,8 @@ class Shipping extends Route {
 			\WC()->session = new $session_class();
 			\WC()->session->init();
 		}
+
+		\fastwc_log_info( 'WC session initialized for Fast shipping endpoint' );
 	}
 
 	/**
@@ -82,6 +89,8 @@ class Shipping extends Route {
 		if ( null === \WC()->customer ) {
 			\WC()->customer = new \WC_Customer( get_current_user_id(), false );
 		}
+
+		\fastwc_log_info( 'WC customer initialized for Fast shipping endpoint' );
 	}
 
 	/**
@@ -99,6 +108,9 @@ class Shipping extends Route {
 			// This cart may contain items from prev session empty before using.
 			\WC()->cart->empty_cart();
 		}
+
+		\fastwc_log_info( 'WC cart initialized for Fast shipping endpoint' );
+		\fastwc_log_debug( 'WC Cart for shipping endpoint: ' . print_r( \WC()->cart, true ) );
 	}
 
 	/**
@@ -124,9 +136,17 @@ class Shipping extends Route {
 			try {
 				\WC()->cart->add_to_cart( $line_item['product_id'], $line_item['quantity'], $variation_id, $variation_attribute_values );
 			} catch ( \Exception $e ) {
-				return \WP_Error( 'add_to_cart_error', $e->getMessage(), array( 'status' => 500 ) );
+				$return_error = new \WP_Error( 'add_to_cart_error', $e->getMessage(), array( 'status' => 500 ) );
+
+				\fastwc_log_error( 'Add to cart error on Fast shipping endpoint: ' . print_r( $return_error, true ) );
+				\fastwc_log_debug( 'Line item that caused error: ' . print_r( $line_item, true ) );
+
+				return $return_error;
 			}
 		}
+
+		\fastwc_log_info( 'Line items added to cart for shipping endpoint.' );
+		\fastwc_log_debug( 'Line items: ' . print_r( $params['line_items'], true ) );
 
 		// Return false to indicate no error.
 		return false;
@@ -170,6 +190,9 @@ class Shipping extends Route {
 			);
 		}
 
+		\fastwc_log_info( 'Updating customer props for shipping endpoint.' );
+		\fastwc_log_debug( 'Customer props: ' . print_r( $customer_props, true ) );
+
 		// Update customer information.
 		\WC()->customer->set_props( $customer_props );
 
@@ -182,8 +205,15 @@ class Shipping extends Route {
 
 		// See if we need to calculate anything.
 		if ( ! \WC()->cart->needs_shipping() ) {
-			return new \WP_Error( 'shipping_methods_error', 'no shipping methods available for product and address', array( 'status' => 400 ) );
+			$return_error = new \WP_Error( 'shipping_methods_error', 'no shipping methods available for product and address', array( 'status' => 400 ) );
+
+			\fastwc_log_error( 'Shipping methods error on Fast shipping endpoint: ' . print_r( $return_error, true ) );
+			\fastwc_log_debug( 'Cart contents: ' . print_r( \WC()->cart->get_cart_contents(), true ) );
+
+			return $return_error;
 		}
+
+		\fastwc_log_info( 'Customer props updated for shipping endpoint.' );
 
 		// Return false for no error.
 		return false;
@@ -200,6 +230,8 @@ class Shipping extends Route {
 		$order_id         = ! empty( $params['order_id'] ) ? $params['order_id'] : 0;
 		$shipping_address = array();
 
+		\fastwc_log_info( 'Maybe getting shipping address from order: ' . $order_id );
+
 		// If no order ID is passed in with the request, do nothing.
 		if ( ! empty( $order_id ) ) {
 			$order = \wc_get_order( $order_id );
@@ -210,6 +242,8 @@ class Shipping extends Route {
 				$shipping_address = $order->get_address( 'shipping' );
 			}
 		}
+
+		\fastwc_log_debug( 'Shipping address from order on Fast shipping endpoint: ' . print_r( $shipping_address, true ) );
 
 		return $shipping_address;
 	}
@@ -229,7 +263,11 @@ class Shipping extends Route {
 			$count_packages = count( $packages );
 			for ( $x = 1; $x < $count_packages; $x++ ) {
 				if ( $packages[0]->destination !== $packages[ $x ]->destination ) {
-					return new \WP_Error( 'shipping_packages', 'Shipping package to > 1 address is not supported', array( 'status' => 400 ) );
+					$return_error = new \WP_Error( 'shipping_packages', 'Shipping package to > 1 address is not supported', array( 'status' => 400 ) );
+
+					\fastwc_log_error( 'Shipping packages error on Fast shipping endpoint: ' . print_r( $return_error, true ) );
+
+					return $return_error;
 				}
 			}
 		}
@@ -241,6 +279,8 @@ class Shipping extends Route {
 			}
 		}
 		$calculated_packages = \WC()->shipping()->calculate_shipping( $packages );
+
+		\fastwc_log_info( 'Calculated packages from Fast shipping endpoint: ' . print_r( $calculated_packages, true ) );
 
 		$resp = $this->get_item_response( $calculated_packages );
 
