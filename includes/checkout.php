@@ -255,14 +255,14 @@ add_action( 'woocommerce_order_status_trash_to_on-hold', 'fastwc_order_status_tr
  */
 function fastwc_maybe_clear_cart_and_redirect() {
 	// Get the order ID from the `fast_order_created` query parameter in the URL, or set it to false.
-	$fast_order_id = isset( $_GET['fast_order_created'] ) ? sanitize_text_field( $_GET['fast_order_created'] ) : false; // phpcs:ignore
+	$order_id = isset( $_GET['fast_order_created'] ) ? sanitize_text_field( $_GET['fast_order_created'] ) : false; // phpcs:ignore
 
 	// Check if the order is PDP order.
 	$fast_order_is_pdp             = isset( $_GET['fast_is_pdp'] ) ? absint( $_GET['fast_is_pdp'] ) : false; // phpcs:ignore
 	$fast_redirect_after_pdp_order = get_option( FASTWC_SETTING_REDIRECT_AFTER_PDP, false );
 
 	if (
-		! empty( $fast_order_id ) &&
+		! empty( $order_id ) &&
 		(
 			(
 				$fast_order_is_pdp &&
@@ -296,9 +296,6 @@ function fastwc_maybe_clear_cart_and_redirect() {
 			// Only change the redirect URL if the redirect page URL is valid.
 			$redirect_url = ! empty( $redirect_page_url ) ? $redirect_page_url : $redirect_url;
 		}
-
-		// Get order ID from Fast order ID.
-		$order_id = fastwc_get_order_id_by_fast_order_id( $fast_order_id );
 
 		/**
 		 * Apply filters to the redirect URL and include the Order ID so that
