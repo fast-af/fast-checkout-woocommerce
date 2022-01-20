@@ -561,7 +561,7 @@ function fastwc_redirect_after_pdp_order() {
 }
 
 /**
- * Redirect the user after checkout.
+ * Clear the cart after checkout.
  */
 function fastwc_clear_cart_after_pdp_order() {
 	$fastwc_clear_cart_after_pdp_order = get_option( FASTWC_SETTING_CLEAR_CART_AFTER_PDP, '0' );
