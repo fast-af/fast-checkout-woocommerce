@@ -321,7 +321,7 @@ function fastwc_maybe_clear_cart_and_redirect() {
 		wp_safe_redirect( $redirect_url );
 	}
 }
-add_action( 'init', 'fastwc_maybe_clear_cart_and_redirect' );
+add_action( 'template_redirect', 'fastwc_maybe_clear_cart_and_redirect' );
 
 /**
  * Get the WC order ID by the Fast order ID.
