@@ -247,14 +247,28 @@ function fastwc_order_status_trash_to_on_hold( $order_id, $order ) {
 add_action( 'woocommerce_order_status_trash_to_on-hold', 'fastwc_order_status_trash_to_on_hold', 10, 2 );
 
 /**
+ * Register custom query vars
+ *
+ * @param array $vars The array of available query variables
+ * 
+ * @link https://codex.wordpress.org/Plugin_API/Filter_Reference/query_vars
+ */
+function fastwc_register_query_vars( $vars ) {
+	$vars[] = 'fast_order_created';
+	$vars[] = 'fast_is_pdp';
+	return $vars;
+}
+add_filter( 'query_vars', 'fastwc_register_query_vars' );
+
+/**
  * Maybe clear the cart and redirect if `fast_order_created={ORDER_ID}` is added to the URL.
  */
 function fastwc_maybe_clear_cart_and_redirect() {
 	// Get the order ID from the `fast_order_created` query parameter in the URL, or set it to false.
-	$order_id = isset( $_GET['fast_order_created'] ) ? sanitize_text_field( $_GET['fast_order_created'] ) : false; // phpcs:ignore
+	$order_id = get_query_var( 'fast_order_created', false );
 
 	// Check if the order is PDP order.
-	$fast_order_is_pdp             = isset( $_GET['fast_is_pdp'] ) ? absint( $_GET['fast_is_pdp'] ) : false; // phpcs:ignore
+	$fast_order_is_pdp             = get_query_var( 'fast_is_pdp', false );
 	$fast_redirect_after_pdp_order = get_option( FASTWC_SETTING_REDIRECT_AFTER_PDP, false );
 
 	if (
