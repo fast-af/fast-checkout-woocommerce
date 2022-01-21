@@ -255,6 +255,7 @@ add_action( 'woocommerce_order_status_trash_to_on-hold', 'fastwc_order_status_tr
  */
 function fastwc_register_query_vars( $vars ) {
 	$vars[] = 'fast_order_created';
+	$vars[] = 'fast_order_id';
 	$vars[] = 'fast_is_pdp';
 	return $vars;
 }
@@ -266,6 +267,9 @@ add_filter( 'query_vars', 'fastwc_register_query_vars' );
 function fastwc_maybe_clear_cart_and_redirect() {
 	// Get the order ID from the `fast_order_created` query parameter in the URL, or set it to false.
 	$order_id = get_query_var( 'fast_order_created', false );
+
+	// Get the Fast order ID.
+	$fast_order_id = get_query_var( 'fast_order_id', false );
 
 	// Check if the order is PDP order.
 	$fast_order_is_pdp             = get_query_var( 'fast_is_pdp', false );
@@ -311,12 +315,14 @@ function fastwc_maybe_clear_cart_and_redirect() {
 		 * Apply filters to the redirect URL and include the Order ID so that
 		 * a custom redirect URL can be created based on the Order ID.
 		 *
-		 * @param string $redirect_url The redirect URL.
-		 * @param int    $order_id     The order ID.
+		 * @param string $redirect_url      The redirect URL.
+		 * @param int    $order_id          The order ID passed in through the URL.
+		 * @param string $fast_order_id     The Fast order ID passed in through the URL.
+		 * @param bool   $fast_order_is_pdp Flag for PDP orders.
 		 *
 		 * @return string
 		 */
-		$redirect_url = apply_filters( 'fastwc_order_created_redirect_url', $redirect_url, $order_id );
+		$redirect_url = apply_filters( 'fastwc_order_created_redirect_url', $redirect_url, $order_id, $fast_order_id, $fast_order_is_pdp );
 
 		wp_safe_redirect( $redirect_url );
 	}
