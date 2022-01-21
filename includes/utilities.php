@@ -331,3 +331,14 @@ function fastwc_use_dark_mode( $product_id = 0 ) {
 
 	return $use_dark_mode;
 }
+
+/**
+ * Get the Fast order ID from the WooCommerce order ID.
+ *
+ * @param int $wc_order_id The WooCommerce order ID.
+ *
+ * @return string
+ */
+function fastwc_get_fast_order_id_from_woocommerce_order_id( $wc_order_id ) {
+	return ! empty( $wc_order_id ) ? get_post_meta( $wc_order_id, 'fast_order_id', true ) : '';
+}
