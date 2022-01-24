@@ -361,7 +361,7 @@ function fastwc_get_order_id_by_fast_order_id( $fast_order_id ) {
  *
  * @return array
  */
-function fastwc_woocommerce_order_data_store_cpt_get_orders_query() {
+function fastwc_woocommerce_order_data_store_cpt_get_orders_query( $query, $query_vars ) {
 	if ( ! empty( $query_vars['fast_order_id'] ) ) {
 		$query['meta_query'][] = array(
 			'key'   => 'fast_order_id',
