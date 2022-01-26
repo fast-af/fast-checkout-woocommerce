@@ -325,6 +325,7 @@ function fastwc_maybe_clear_cart_and_redirect() {
 		$redirect_url = apply_filters( 'fastwc_order_created_redirect_url', $redirect_url, $order_id, $fast_order_id, $fast_order_is_pdp );
 
 		wp_safe_redirect( $redirect_url );
+		exit;
 	}
 }
 add_action( 'template_redirect', 'fastwc_maybe_clear_cart_and_redirect' );
