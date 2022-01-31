@@ -12,10 +12,18 @@ require_once FASTWC_PATH . 'includes/hide.php';
 
 /**
  * Returns cart item data that Fast Checkout button can interpret.
- * This function also populates some global variables about cart state, such as whether it contains products we don't support.
+ * This function also populates some global variables about cart state,
+ * such as whether it contains products we don't support.
+ *
+ * @return array
  */
 function fastwc_get_cart_data() {
 	$fastwc_cart_data = array();
+
+	/**
+	 * Action triggered before cart data is fetched.
+	 */
+	do_action( 'fastwc_before_get_cart_data' );
 
 	if ( ! empty( WC()->cart ) ) {
 		foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
@@ -44,6 +52,13 @@ function fastwc_get_cart_data() {
 		fastwc_log_debug( 'Fetched cart data: ' . print_r( $fastwc_cart_data, true ) ); // phpcs:ignore
 	}
 
+	/**
+	 * Action triggered after cart data is fetched.
+	 *
+	 * @param array $fastwc_cart_data The cart data that is fetched.
+	 */
+	do_action( 'fastwc_after_get_cart_data', $fastwc_cart_data );
+
 	return $fastwc_cart_data;
 }
 
@@ -65,7 +80,23 @@ function fastwc_maybe_render_checkout_button( $button_type, $template ) {
 		return;
 	}
 
+	/**
+	 * Action triggered before loading the checkout button.
+	 *
+	 * @param string $button_type The type of button. Should be either 'pdp' or 'cart'.
+	 * @param string $template    The template to render.
+	 */
+	do_action( 'fastwc_before_render_checkout_button', $button_type, $template );
+
 	fastwc_load_template( $template );
+
+	/**
+	 * Action triggered after loading the checkout button.
+	 *
+	 * @param string $button_type The type of button. Should be either 'pdp' or 'cart'.
+	 * @param string $template    The template that was rendered.
+	 */
+	do_action( 'fastwc_after_render_checkout_button', $button_type, $template );
 }
 
 /**
@@ -390,6 +421,15 @@ function fastwc_maybe_hide_proceed_to_checkout_buttons() {
 	}
 
 	$hide_regular_checkout_buttons = get_option( FASTWC_SETTING_HIDE_REGULAR_CHECKOUT_BUTTONS, false );
+
+	/**
+	 * Filter flag to hide regular checkout buttons.
+	 *
+	 * @param bool $hide_regular_checkout_buttons The flag to hide regular checkout buttons.
+	 *
+	 * @return bool
+	 */
+	$hide_regular_checkout_buttons = apply_filters( 'fastwc_hide_regular_checkout_buttons', $hide_regular_checkout_buttons );
 
 	if ( $hide_regular_checkout_buttons ) {
 		remove_action( 'woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20 );
