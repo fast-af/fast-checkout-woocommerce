@@ -90,7 +90,21 @@ abstract class Block {
 		) {
 			ob_start();
 
+			/**
+			 * Action to be triggered before a block is rendered.
+			 *
+			 * @param string $template The name of the block template being rendered.
+			 */
+			\do_action( 'fastwc_before_render_block', $this->teplate );
+
 			\fastwc_load_template( $this->template, $attributes );
+
+			/**
+			 * Action to be triggered after a block is rendered.
+			 *
+			 * @param string $template The name of the block template being rendered.
+			 */
+			\do_action( 'fastwc_after_render_block', $this->teplate );
 
 			$block_output = ob_get_clean();
 		}
