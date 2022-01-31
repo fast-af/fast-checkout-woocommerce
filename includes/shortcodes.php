@@ -93,6 +93,9 @@ function fastwc_shortcode_button_template( $template, $atts ) {
 
 	fastwc_log_info( 'Rendering shortcode template: ' . $template );
 
+	// Start the output buffer.
+	ob_start();
+
 	/**
 	 * Action that triggers before a shortcode template is rendered.
 	 *
@@ -100,13 +103,8 @@ function fastwc_shortcode_button_template( $template, $atts ) {
 	 */
 	do_action( 'fastwc_before_render_shortcode', $template );
 
-	// Start the output buffer.
-	ob_start();
-
 	// Load the button template, passing in `$atts` as the template's `$args`.
 	fastwc_load_template( $template, $atts );
-
-	$shortcode_output = ob_get_clean();
 
 	/**
 	 * Action that triggers after a shortcode template is rendered.
@@ -115,5 +113,5 @@ function fastwc_shortcode_button_template( $template, $atts ) {
 	 */
 	do_action( 'fastwc_after_render_shortcode', $template );
 
-	return $shortcode_output;
+	return ob_get_clean();
 }
