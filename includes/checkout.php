@@ -280,8 +280,8 @@ add_action( 'woocommerce_order_status_trash_to_on-hold', 'fastwc_order_status_tr
 /**
  * Register custom query vars
  *
- * @param array $vars The array of available query variables
- * 
+ * @param array $vars The array of available query variables.
+ *
  * @link https://codex.wordpress.org/Plugin_API/Filter_Reference/query_vars
  */
 function fastwc_register_query_vars( $vars ) {
