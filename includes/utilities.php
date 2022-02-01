@@ -28,12 +28,18 @@ function fastwc_load_template( $template_name, $args = array() ) {
 	// Check each file location and load the first one that exists.
 	foreach ( $locations as $location ) {
 		if ( file_exists( $location ) ) {
+			$action_template_name = str_replace(
+				array( '/', '-' ),
+				'_',
+				$template_name
+			);
+
 			/**
 			 * Action hook to trigger before loading the template.
 			 *
 			 * @param array $args Array of args that get passed to the template.
 			 */
-			do_action( "fastwc_before_load_template_{$template_name}", $args );
+			do_action( "fastwc_before_load_template_{$action_template_name}", $args );
 
 			/**
 			 * WordPress load_template function to load the located template.
@@ -49,7 +55,7 @@ function fastwc_load_template( $template_name, $args = array() ) {
 			 *
 			 * @param array $args Array of args that get passed to the template.
 			 */
-			do_action( "fastwc_after_load_template_{$template_name}", $args );
+			do_action( "fastwc_after_load_template_{$action_template_name}", $args );
 
 			fastwc_log_info( 'Loaded template: ' . $location );
 			return;
