@@ -484,3 +484,39 @@ function fastwc_check_request_coupon_lines( $request, $order ) {
 		$request['coupon_lines'] = $new_coupon_lines;
 	}
 }
+
+/**
+ * Render extra button content.
+ *
+ * @param string $location Location to check.
+ */
+function fastwc_maybe_render_button_extra_content( $location ) {
+	$button_extra_content          = get_option( FASTWC_SETTING_BUTTON_WRAPPER_CONTENT, '' );
+	$button_extra_content_location = get_option( FASTWC_SETTING_BUTTON_WRAPPER_CONTENT_LOCATION, '' );
+
+	if (
+		! empty( $button_extra_content )
+		&& ! empty( $button_extra_content_location )
+		&& $button_extra_content_location === $location
+	) {
+		echo wp_kses_post( $button_extra_content );
+	}
+}
+
+/**
+ * Maybe render button extra content before the button.
+ */
+function fastwc_maybe_render_extra_content_before_button() {
+	fastwc_maybe_render_button_extra_content( 'before' );
+}
+add_action( 'fastwc_before_load_template_buttons_fast_checkout_button', 'fastwc_maybe_render_extra_content_before_button' );
+add_action( 'fastwc_before_load_template_buttons_fast_checkout_cart_button', 'fastwc_maybe_render_extra_content_before_button' );
+
+/**
+ * Maybe render button extra content after the button.
+ */
+function fastwc_maybe_render_extra_content_after_button() {
+	fastwc_maybe_render_button_extra_content( 'after' );
+}
+add_action( 'fastwc_after_load_template_buttons_fast_checkout_button', 'fastwc_maybe_render_extra_content_after_button' );
+add_action( 'fastwc_after_load_template_buttons_fast_checkout_cart_button', 'fastwc_maybe_render_extra_content_after_button' );

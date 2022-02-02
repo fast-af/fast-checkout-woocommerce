@@ -32,6 +32,8 @@ define( 'FASTWC_SETTING_CLEAR_CART_AFTER_PDP', 'fastwc_clear_cart_after_pdp' );
 define( 'FASTWC_SETTING_PDP_BUTTON_HOOK', 'fast_pdp_button_hook' );
 define( 'FASTWC_DEFAULT_PDP_BUTTON_HOOK', 'woocommerce_after_add_to_cart_quantity' );
 define( 'FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER', 'fast_pdp_button_hook_other' );
+define( 'FASTWC_SETTING_BUTTON_WRAPPER_CONTENT', 'fastwc_button_wrapper_content' );
+define( 'FASTWC_SETTING_BUTTON_WRAPPER_CONTENT_LOCATION', 'fastwc_button_wrapper_content_location' );
 define( 'FASTWC_SETTING_HIDE_REGULAR_CHECKOUT_BUTTONS', 'fastwc_hide_regular_checkout_buttons' );
 define( 'FASTWC_SETTING_PLUGIN_DO_INIT_FORMAT', 'fastwc_do_init_%s' );
 define( 'FASTWC_JWKS_URL', 'https://api.fast.co/v1/oauth2/jwks' );

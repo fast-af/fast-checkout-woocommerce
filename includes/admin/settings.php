@@ -40,6 +40,8 @@ function fastwc_updated_option( $option, $old_value, $value ) {
 		FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE,
 		FASTWC_SETTING_PDP_BUTTON_HOOK,
 		FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER,
+		FASTWC_SETTING_BUTTON_WRAPPER_CONTENT,
+		FASTWC_SETTING_BUTTON_WRAPPER_CONTENT_LOCATION,
 		FASTWC_SETTING_TEST_MODE_USERS,
 	);
 
@@ -211,6 +213,8 @@ function fastwc_admin_setup_sections() {
 	add_settings_section( $section_name, '', false, $section_name );
 	register_setting( $section_name, FASTWC_SETTING_PDP_BUTTON_HOOK );
 	register_setting( $section_name, FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER );
+	register_setting( $section_name, FASTWC_SETTING_BUTTON_WRAPPER_CONTENT );
+	register_setting( $section_name, FASTWC_SETTING_BUTTON_WRAPPER_CONTENT_LOCATION );
 	register_setting( $section_name, FASTWC_SETTING_HIDE_BUTTON_PRODUCTS );
 	register_setting( $section_name, FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE );
 	register_setting( $section_name, FASTWC_SETTING_REDIRECT_AFTER_PDP );
@@ -257,6 +261,8 @@ function fastwc_admin_setup_fields() {
 	$settings_section = 'fast_options';
 	add_settings_field( FASTWC_SETTING_PDP_BUTTON_HOOK, __( 'Select Product Button Location', 'fast' ), 'fastwc_pdp_button_hook', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER, __( 'Enter Alternate Product Button Location', 'fast' ), 'fastwc_pdp_button_hook_other', $settings_section, $settings_section );
+	add_settings_field( FASTWC_SETTING_BUTTON_WRAPPER_CONTENT, __( 'Extra Button Content', 'fast' ), 'fastwc_button_wrapper_content', $settings_section, $settings_section );
+	add_settings_field( FASTWC_SETTING_BUTTON_WRAPPER_CONTENT_LOCATION, __( 'Location of Extra Button Content', 'fast' ), 'fastwc_button_wrapper_content_location', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS, __( 'Hide Buttons for these Products', 'fast' ), 'fastwc_hide_button_products', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE, __( 'Checkout Redirect Page', 'fast' ), 'fastwc_checkout_redirect_page', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_REDIRECT_AFTER_PDP, __( 'Redirect to a custom page after a PDP order', 'fast' ), 'fastwc_redirect_after_pdp_order', $settings_section, $settings_section );
@@ -459,6 +465,43 @@ function fastwc_pdp_button_hook_other() {
 			'name'        => FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER,
 			'description' => __( 'Enter an alternative location for displaying the Fast Product Checkout button. For advanced users only.', 'fast' ),
 			'value'       => $fastwc_setting_pdp_button_hook_other,
+		)
+	);
+}
+
+/**
+ * Renders the extra button content field.
+ */
+function fastwc_button_wrapper_content() {
+	$fastwc_setting_button_wrapper_content = fastwc_get_option_or_set_default( FASTWC_SETTING_BUTTON_WRAPPER_CONTENT, '' );
+
+	fastwc_settings_field_textarea(
+		array(
+			'name'        => FASTWC_SETTING_BUTTON_WRAPPER_CONTENT,
+			'description' => __( 'Enter content to be displayed before or after the Fast Checkout buttons. (Basic HTML allowed.)', 'fast' ),
+			'value'       => $fastwc_setting_button_wrapper_content,
+		)
+	);
+}
+
+/**
+ * Renders the extra button content location field.
+ */
+function fastwc_button_wrapper_content_location() {
+	$fastwc_setting_button_wrapper_content_location = fastwc_get_option_or_set_default( FASTWC_SETTING_BUTTON_WRAPPER_CONTENT_LOCATION, '' );
+
+	$location_options = array(
+		'before' => __( 'Before' ),
+		'after'  => __( 'After' ),
+	);
+
+	fastwc_settings_field_select(
+		array(
+			'name'        => FASTWC_SETTING_BUTTON_WRAPPER_CONTENT_LOCATION,
+			'description' => __( 'Select if the extra button content should be displayed before (above) or after (below) the button', 'fast' ),
+			'options'     => $location_options,
+			'empty_label' => __( 'Select a location', 'fast' ),
+			'value'       => $fastwc_setting_button_wrapper_content_location,
 		)
 	);
 }
