@@ -28,6 +28,19 @@ function fastwc_load_template( $template_name, $args = array() ) {
 	// Check each file location and load the first one that exists.
 	foreach ( $locations as $location ) {
 		if ( file_exists( $location ) ) {
+			$action_template_name = str_replace(
+				array( '/', '-' ),
+				'_',
+				$template_name
+			);
+
+			/**
+			 * Action hook to trigger before loading the template.
+			 *
+			 * @param array $args Array of args that get passed to the template.
+			 */
+			do_action( "fastwc_before_load_template_{$action_template_name}", $args );
+
 			/**
 			 * WordPress load_template function to load the located template.
 			 *
@@ -36,6 +49,14 @@ function fastwc_load_template( $template_name, $args = array() ) {
 			 * @param array  $args         Array of args to pass to the tepmlate. Requires WP 5.5+.
 			 */
 			load_template( $location, false, $args );
+
+			/**
+			 * Action hook to trigger after loading the template.
+			 *
+			 * @param array $args Array of args that get passed to the template.
+			 */
+			do_action( "fastwc_after_load_template_{$action_template_name}", $args );
+
 			fastwc_log_info( 'Loaded template: ' . $location );
 			return;
 		}
@@ -54,7 +75,16 @@ function fastwc_get_pdp_button_hook() {
 		$fastwc_pdp_button_hook = get_option( FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER, FASTWC_DEFAULT_PDP_BUTTON_HOOK );
 	}
 
-	return ! empty( $fastwc_pdp_button_hook ) ? $fastwc_pdp_button_hook : FASTWC_DEFAULT_PDP_BUTTON_HOOK;
+	$fastwc_pdp_button_hook = ! empty( $fastwc_pdp_button_hook ) ? $fastwc_pdp_button_hook : FASTWC_DEFAULT_PDP_BUTTON_HOOK;
+
+	/**
+	 * Filter to overrie the Fast PDP button hook.
+	 *
+	 * @param string $fastwc_pdp_button_hook The selected PDP button hook.
+	 *
+	 * @return string
+	 */
+	return apply_filters( 'fastwc_pdp_button_hook', $fastwc_pdp_button_hook );
 }
 
 /**
@@ -75,7 +105,14 @@ function fastwc_get_products_to_hide_buttons() {
 		fastwc_log_info( 'Products fetched to hide buttons: ' . print_r( $fastwc_hidden_products, true ) ); // phpcs:ignore
 	}
 
-	return $fastwc_hidden_products;
+	/**
+	 * Filter to override the list of products for which the button should be hidden.
+	 *
+	 * @param array $fastwc_hidden_products The list of products for which the button should be hidden.
+	 *
+	 * @return array
+	 */
+	return apply_filters( 'fastwc_hidden_products', $fastwc_hidden_products );
 }
 
 /**
