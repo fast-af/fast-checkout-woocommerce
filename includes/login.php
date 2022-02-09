@@ -27,7 +27,17 @@ function fastwc_add_login_to_footer() {
 	$show_in_footer = get_option( FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, 1 );
 
 	if ( ! empty( $show_in_footer ) ) {
+		/**
+		 * Action to trigger before the Fast login button is added to the footer.
+		 */
+		do_action( 'fastwc_before_add_login_to_footer' );
+
 		fastwc_load_template( 'fast-login' );
+
+		/**
+		 * Action to trigger after the Fast login button is added to the footer.
+		 */
+		do_action( 'fastwc_after_add_login_to_footer' );
 
 		fastwc_log_info( 'Loaded login template' );
 	}
@@ -102,6 +112,7 @@ function fastwc_login_init() {
 	header( 'Expires: Mon, 01 Jan 1990 01:00:00 GMT' );
 
 	wp_safe_redirect( 'https://' . wp_unslash( $_SERVER['HTTP_HOST'] ) . $target_page . $get_query );
+	exit;
 }
 add_action( 'init', 'fastwc_login_init' );
 
