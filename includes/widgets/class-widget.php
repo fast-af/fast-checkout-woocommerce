@@ -45,7 +45,21 @@ class Widget extends \WP_Widget {
 			'instance' => $instance,
 		);
 
+		/**
+		 * Action to trigger before rendering a widget.
+		 *
+		 * @param string $template The template of the widget to render.
+		 */
+		\do_action( 'fastwc_before_render_widget', $this->template );
+
 		\fastwc_load_template( 'widgets/fast-widget', $widget_data );
+
+		/**
+		 * Action to trigger after rendering a widget.
+		 *
+		 * @param string $template The template of the widget that was rendered.
+		 */
+		\do_action( 'fastwc_after_render_widget', $this->template );
 	}
 
 	/**

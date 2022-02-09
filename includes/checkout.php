@@ -12,10 +12,18 @@ require_once FASTWC_PATH . 'includes/hide.php';
 
 /**
  * Returns cart item data that Fast Checkout button can interpret.
- * This function also populates some global variables about cart state, such as whether it contains products we don't support.
+ * This function also populates some global variables about cart state,
+ * such as whether it contains products we don't support.
+ *
+ * @return array
  */
 function fastwc_get_cart_data() {
 	$fastwc_cart_data = array();
+
+	/**
+	 * Action triggered before cart data is fetched.
+	 */
+	do_action( 'fastwc_before_get_cart_data' );
 
 	if ( ! empty( WC()->cart ) ) {
 		foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
@@ -44,6 +52,13 @@ function fastwc_get_cart_data() {
 		fastwc_log_debug( 'Fetched cart data: ' . print_r( $fastwc_cart_data, true ) ); // phpcs:ignore
 	}
 
+	/**
+	 * Action triggered after cart data is fetched.
+	 *
+	 * @param array $fastwc_cart_data The cart data that is fetched.
+	 */
+	do_action( 'fastwc_after_get_cart_data', $fastwc_cart_data );
+
 	return $fastwc_cart_data;
 }
 
@@ -65,7 +80,23 @@ function fastwc_maybe_render_checkout_button( $button_type, $template ) {
 		return;
 	}
 
+	/**
+	 * Action triggered before loading the checkout button.
+	 *
+	 * @param string $button_type The type of button. Should be either 'pdp' or 'cart'.
+	 * @param string $template    The template to render.
+	 */
+	do_action( 'fastwc_before_render_checkout_button', $button_type, $template );
+
 	fastwc_load_template( $template );
+
+	/**
+	 * Action triggered after loading the checkout button.
+	 *
+	 * @param string $button_type The type of button. Should be either 'pdp' or 'cart'.
+	 * @param string $template    The template that was rendered.
+	 */
+	do_action( 'fastwc_after_render_checkout_button', $button_type, $template );
 }
 
 /**
@@ -247,18 +278,59 @@ function fastwc_order_status_trash_to_on_hold( $order_id, $order ) {
 add_action( 'woocommerce_order_status_trash_to_on-hold', 'fastwc_order_status_trash_to_on_hold', 10, 2 );
 
 /**
- * Clear the cart of `fast_order_created=1` is added to the URL.
+ * Register custom query vars
+ *
+ * @param array $vars The array of available query variables.
+ *
+ * @link https://codex.wordpress.org/Plugin_API/Filter_Reference/query_vars
+ */
+function fastwc_register_query_vars( $vars ) {
+	$vars[] = 'fast_order_created';
+	$vars[] = 'fast_order_id';
+	$vars[] = 'fast_is_pdp';
+	return $vars;
+}
+add_filter( 'query_vars', 'fastwc_register_query_vars' );
+
+/**
+ * Maybe clear the cart and redirect if `fast_order_created={ORDER_ID}` is added to the URL.
  */
 function fastwc_maybe_clear_cart_and_redirect() {
-	$fast_order_created = isset( $_GET['fast_order_created'] ) ? absint( $_GET['fast_order_created'] ) : false; // phpcs:ignore
+	// Get the order ID from the `fast_order_created` query parameter in the URL, or set it to false.
+	$order_id = get_query_var( 'fast_order_created', false );
+
+	// Get the Fast order ID.
+	$fast_order_id = get_query_var( 'fast_order_id', false );
+
+	// Check if the order is PDP order.
+	$fast_order_is_pdp             = get_query_var( 'fast_is_pdp', false );
+	$fast_redirect_after_pdp_order = get_option( FASTWC_SETTING_REDIRECT_AFTER_PDP, false );
 
 	if (
-		1 === $fast_order_created &&
-		! empty( WC()->cart ) &&
-		is_callable( array( WC()->cart, 'empty_cart' ) )
+		! empty( $order_id ) &&
+		(
+			(
+				$fast_order_is_pdp &&
+				$fast_redirect_after_pdp_order
+			) ||
+			! $fast_order_is_pdp
+		)
 	) {
-		fastwc_log_info( 'Clearing cart and redirecting after order created.' );
-		WC()->cart->empty_cart();
+		$fast_clear_cart_after_pdp_order = get_option( FASTWC_SETTING_CLEAR_CART_AFTER_PDP, false );
+		if (
+			(
+				(
+					$fast_order_is_pdp &&
+					$fast_clear_cart_after_pdp_order
+				) ||
+				! $fast_order_is_pdp
+			) &&
+			! empty( WC()->cart ) &&
+			is_callable( array( WC()->cart, 'empty_cart' ) )
+		) {
+			fastwc_log_info( 'Clearing cart and redirecting after order created.' );
+			WC()->cart->empty_cart();
+		}
 
 		$redirect_page = absint( get_option( FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE, 0 ) );
 		$redirect_url  = wc_get_cart_url();
@@ -270,10 +342,73 @@ function fastwc_maybe_clear_cart_and_redirect() {
 			$redirect_url = ! empty( $redirect_page_url ) ? $redirect_page_url : $redirect_url;
 		}
 
+		/**
+		 * Apply filters to the redirect URL and include the Order ID so that
+		 * a custom redirect URL can be created based on the Order ID.
+		 *
+		 * @param string $redirect_url      The redirect URL.
+		 * @param int    $order_id          The order ID passed in through the URL.
+		 * @param string $fast_order_id     The Fast order ID passed in through the URL.
+		 * @param bool   $fast_order_is_pdp Flag for PDP orders.
+		 *
+		 * @return string
+		 */
+		$redirect_url = apply_filters( 'fastwc_order_created_redirect_url', $redirect_url, $order_id, $fast_order_id, $fast_order_is_pdp );
+
 		wp_safe_redirect( $redirect_url );
+		exit;
 	}
 }
-add_action( 'init', 'fastwc_maybe_clear_cart_and_redirect' );
+add_action( 'template_redirect', 'fastwc_maybe_clear_cart_and_redirect' );
+
+/**
+ * Get the WC order ID by the Fast order ID.
+ *
+ * @param string $fast_order_id The Fast order ID.
+ *
+ * @return int
+ */
+function fastwc_get_order_id_by_fast_order_id( $fast_order_id ) {
+	$orders = wc_get_orders(
+		array(
+			'fast_order_id' => $fast_order_id,
+		)
+	);
+
+	$order_id = 0;
+
+	if ( ! empty( $orders ) ) {
+		$order    = $orders[0];
+		$order_id = $order->get_id();
+	}
+
+	return $order_id;
+}
+
+/**
+ * Handle the wc_get_orders query by fast_order_id.
+ *
+ * @param array $query      Args for WP_Query.
+ * @param array $query_vars Query vars from WC_Order_Query.
+ *
+ * @return array
+ */
+function fastwc_woocommerce_order_data_store_cpt_get_orders_query( $query, $query_vars ) {
+	if ( ! empty( $query_vars['fast_order_id'] ) ) {
+		$query['meta_query'][] = array(
+			'key'   => 'fast_order_id',
+			'value' => esc_attr( $query_vars['fast_order_id'] ),
+		);
+	}
+
+	return $query;
+}
+add_filter(
+	'woocommerce_order_data_store_cpt_get_orders_query',
+	'fastwc_woocommerce_order_data_store_cpt_get_orders_query',
+	10,
+	2
+);
 
 /**
  * Maybe hide the regular "Proceed to Checkout" buttons.
@@ -286,6 +421,15 @@ function fastwc_maybe_hide_proceed_to_checkout_buttons() {
 	}
 
 	$hide_regular_checkout_buttons = get_option( FASTWC_SETTING_HIDE_REGULAR_CHECKOUT_BUTTONS, false );
+
+	/**
+	 * Filter flag to hide regular checkout buttons.
+	 *
+	 * @param bool $hide_regular_checkout_buttons The flag to hide regular checkout buttons.
+	 *
+	 * @return bool
+	 */
+	$hide_regular_checkout_buttons = apply_filters( 'fastwc_hide_regular_checkout_buttons', $hide_regular_checkout_buttons );
 
 	if ( $hide_regular_checkout_buttons ) {
 		remove_action( 'woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20 );
@@ -340,3 +484,39 @@ function fastwc_check_request_coupon_lines( $request, $order ) {
 		$request['coupon_lines'] = $new_coupon_lines;
 	}
 }
+
+/**
+ * Render extra button content.
+ *
+ * @param string $location Location to check.
+ */
+function fastwc_maybe_render_button_extra_content( $location ) {
+	$button_extra_content          = get_option( FASTWC_SETTING_BUTTON_WRAPPER_CONTENT, '' );
+	$button_extra_content_location = get_option( FASTWC_SETTING_BUTTON_WRAPPER_CONTENT_LOCATION, '' );
+
+	if (
+		! empty( $button_extra_content )
+		&& ! empty( $button_extra_content_location )
+		&& $button_extra_content_location === $location
+	) {
+		echo wp_kses_post( $button_extra_content );
+	}
+}
+
+/**
+ * Maybe render button extra content before the button.
+ */
+function fastwc_maybe_render_extra_content_before_button() {
+	fastwc_maybe_render_button_extra_content( 'before' );
+}
+add_action( 'fastwc_before_load_template_buttons_fast_checkout_button', 'fastwc_maybe_render_extra_content_before_button' );
+add_action( 'fastwc_before_load_template_buttons_fast_checkout_cart_button', 'fastwc_maybe_render_extra_content_before_button' );
+
+/**
+ * Maybe render button extra content after the button.
+ */
+function fastwc_maybe_render_extra_content_after_button() {
+	fastwc_maybe_render_button_extra_content( 'after' );
+}
+add_action( 'fastwc_after_load_template_buttons_fast_checkout_button', 'fastwc_maybe_render_extra_content_after_button' );
+add_action( 'fastwc_after_load_template_buttons_fast_checkout_cart_button', 'fastwc_maybe_render_extra_content_after_button' );
