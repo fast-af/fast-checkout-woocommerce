@@ -37,6 +37,7 @@ class Select extends Field {
 			'class'       => 'fast-select',
 			'description' => '',
 			'options'     => array(),
+			'empty_label' => '',
 			'value'       => '',
 		);
 	}
@@ -51,6 +52,9 @@ class Select extends Field {
 			name="<?php echo \esc_attr( $this->args['name'] ); ?>"
 			id="<?php echo \esc_attr( $this->rgs['id'] ); ?>"
 		>
+		<?php if ( ! empty( $this->args['empty_label'] ) ) : ?>
+		<option value="" <?php \selected( $this->args['value'], '' ); ?>><?php echo \esc_html( $this->args['empty_label'] ); ?></option>
+		<?php endif; ?>
 		<?php
 		foreach ( $this->args['options'] as $value => $label ) :
 			?>
