@@ -284,6 +284,8 @@ class Shipping extends Route {
 
 		$resp = $this->get_item_response( $calculated_packages );
 
+		\fastwc_log_info( 'Calculated package response: ' . print_r( $resp, true ) );
+
 		return new \WP_REST_Response( $resp, 200 );
 	}
 
