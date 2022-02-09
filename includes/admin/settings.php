@@ -40,6 +40,8 @@ function fastwc_updated_option( $option, $old_value, $value ) {
 		FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE,
 		FASTWC_SETTING_PDP_BUTTON_HOOK,
 		FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER,
+		FASTWC_SETTING_BUTTON_WRAPPER_CONTENT,
+		FASTWC_SETTING_BUTTON_WRAPPER_CONTENT_LOCATION,
 		FASTWC_SETTING_TEST_MODE_USERS,
 	);
 
@@ -212,8 +214,14 @@ function fastwc_admin_setup_sections() {
 	add_settings_section( $section_name, '', false, $section_name );
 	register_setting( $section_name, FASTWC_SETTING_PDP_BUTTON_HOOK );
 	register_setting( $section_name, FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER );
+	register_setting( $section_name, FASTWC_SETTING_BUTTON_WRAPPER_CONTENT );
+	register_setting( $section_name, FASTWC_SETTING_BUTTON_WRAPPER_CONTENT_LOCATION );
 	register_setting( $section_name, FASTWC_SETTING_HIDE_BUTTON_PRODUCTS );
 	register_setting( $section_name, FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE );
+	register_setting( $section_name, FASTWC_SETTING_REDIRECT_AFTER_PDP );
+	register_setting( $section_name, FASTWC_SETTING_CLEAR_CART_AFTER_PDP );
+	register_setting( $section_name, FASTWC_SETTING_HIDE_REGULAR_CHECKOUT_BUTTONS );
+	register_setting( $section_name, FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER );
 	new FastWC\Admin\Settings\Hide_Regular_Checkout();
 	new FastWC\Admin\Settings\Show_Login_Button();
 
@@ -255,8 +263,12 @@ function fastwc_admin_setup_fields() {
 	$settings_section = FASTWC_SECTION_OPTIONS;
 	add_settings_field( FASTWC_SETTING_PDP_BUTTON_HOOK, __( 'Select Product Button Location', 'fast' ), 'fastwc_pdp_button_hook', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER, __( 'Enter Alternate Product Button Location', 'fast' ), 'fastwc_pdp_button_hook_other', $settings_section, $settings_section );
+	add_settings_field( FASTWC_SETTING_BUTTON_WRAPPER_CONTENT, __( 'Extra Button Content', 'fast' ), 'fastwc_button_wrapper_content', $settings_section, $settings_section );
+	add_settings_field( FASTWC_SETTING_BUTTON_WRAPPER_CONTENT_LOCATION, __( 'Location of Extra Button Content', 'fast' ), 'fastwc_button_wrapper_content_location', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS, __( 'Hide Buttons for these Products', 'fast' ), 'fastwc_hide_button_products', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE, __( 'Checkout Redirect Page', 'fast' ), 'fastwc_checkout_redirect_page', $settings_section, $settings_section );
+	add_settings_field( FASTWC_SETTING_REDIRECT_AFTER_PDP, __( 'Redirect to a custom page after a PDP order', 'fast' ), 'fastwc_redirect_after_pdp_order', $settings_section, $settings_section );
+	add_settings_field( FASTWC_SETTING_CLEAR_CART_AFTER_PDP, __( 'Clear the cart after a PDP order', 'fast' ), 'fastwc_clear_cart_after_pdp_order', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_HIDE_REGULAR_CHECKOUT_BUTTONS, __( 'Hide WooCommerce Checkout Buttons on Cart', 'fast' ), 'fastwc_hide_regular_checkout_buttons', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, __( 'Display Login in Footer', 'fast' ), 'fastwc_show_login_button_footer', $settings_section, $settings_section );
 
@@ -421,6 +433,43 @@ function fastwc_pdp_button_hook_other() {
 }
 
 /**
+ * Renders the extra button content field.
+ */
+function fastwc_button_wrapper_content() {
+	$fastwc_setting_button_wrapper_content = fastwc_get_option_or_set_default( FASTWC_SETTING_BUTTON_WRAPPER_CONTENT, '' );
+
+	fastwc_settings_field_textarea(
+		array(
+			'name'        => FASTWC_SETTING_BUTTON_WRAPPER_CONTENT,
+			'description' => __( 'Enter content to be displayed before or after the Fast Checkout buttons. (Basic HTML allowed.)', 'fast' ),
+			'value'       => $fastwc_setting_button_wrapper_content,
+		)
+	);
+}
+
+/**
+ * Renders the extra button content location field.
+ */
+function fastwc_button_wrapper_content_location() {
+	$fastwc_setting_button_wrapper_content_location = fastwc_get_option_or_set_default( FASTWC_SETTING_BUTTON_WRAPPER_CONTENT_LOCATION, '' );
+
+	$location_options = array(
+		'before' => __( 'Before' ),
+		'after'  => __( 'After' ),
+	);
+
+	fastwc_settings_field_select(
+		array(
+			'name'        => FASTWC_SETTING_BUTTON_WRAPPER_CONTENT_LOCATION,
+			'description' => __( 'Select if the extra button content should be displayed before (above) or after (below) the button', 'fast' ),
+			'options'     => $location_options,
+			'empty_label' => __( 'Select a location', 'fast' ),
+			'value'       => $fastwc_setting_button_wrapper_content_location,
+		)
+	);
+}
+
+/**
  * Renders the Hide Buttons for Products field.
  */
 function fastwc_hide_button_products() {
@@ -477,6 +526,100 @@ function fastwc_checkout_redirect_page() {
 			'description' => __( 'Select a page to redirect to after a successful cart checkout. Leave blank to redirect to the cart.', 'fast' ),
 			'nonce'       => 'search-pages',
 			'multiple'    => false,
+		)
+	);
+}
+
+/**
+ * Redirect the user after checkout.
+ */
+function fastwc_redirect_after_pdp_order() {
+	$fastwc_redirect_after_pdp_order = get_option( FASTWC_SETTING_REDIRECT_AFTER_PDP, '0' );
+
+	fastwc_settings_field_checkbox(
+		array(
+			'name'        => FASTWC_SETTING_REDIRECT_AFTER_PDP,
+			'current'     => $fastwc_redirect_after_pdp_order,
+			'label'       => __( 'Redirect the customer after a PDP order.', 'fast' ),
+			'description' => __( 'Check this box to redirect the customer after they complete the PDP order.', 'fast' ),
+		)
+	);
+}
+
+/**
+ * Clear the cart after checkout.
+ */
+function fastwc_clear_cart_after_pdp_order() {
+	$fastwc_clear_cart_after_pdp_order = get_option( FASTWC_SETTING_CLEAR_CART_AFTER_PDP, '0' );
+
+	fastwc_settings_field_checkbox(
+		array(
+			'name'        => FASTWC_SETTING_CLEAR_CART_AFTER_PDP,
+			'current'     => $fastwc_clear_cart_after_pdp_order,
+			'label'       => __( 'Clear the cart after a PDP order.', 'fast' ),
+			'description' => __( 'Check this box to clear the cart after the customer complete the PDP order.', 'fast' ),
+		)
+	);
+}
+
+/**
+ * Hides the regular checkout buttons.
+ */
+function fastwc_hide_regular_checkout_buttons() {
+	$fastwc_hide_regular_checkout_buttons = get_option( FASTWC_SETTING_HIDE_REGULAR_CHECKOUT_BUTTONS, '0' );
+
+	fastwc_settings_field_checkbox(
+		array(
+			'name'        => FASTWC_SETTING_HIDE_REGULAR_CHECKOUT_BUTTONS,
+			'current'     => $fastwc_hide_regular_checkout_buttons,
+			'label'       => __( 'Hide WooCommerce Checkout Buttons on Cart', 'fast' ),
+			'description' => __( 'Hide the standard WooCommerce "Proceed to Checkout" buttons on the cart page and the mini cart widget.', 'fast' ),
+		)
+	);
+}
+
+/**
+ * Renders the show login in footer field.
+ */
+function fastwc_show_login_button_footer() {
+	$fastwc_show_login_button_footer = get_option( FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, FASTWC_SETTING_LOGIN_FOOTER_NOT_SET );
+
+	if ( FASTWC_SETTING_LOGIN_FOOTER_NOT_SET === $fastwc_show_login_button_footer ) {
+		// If the option is FASTWC_SETTING_LOGIN_FOOTER_NOT_SET, then it hasn't yet been set. In this case, we
+		// want to configure it to true.
+		$fastwc_show_login_button_footer = '1';
+		update_option( FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, $fastwc_show_login_button_footer );
+	}
+
+	fastwc_settings_field_checkbox(
+		array(
+			'name'        => FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER,
+			'current'     => $fastwc_show_login_button_footer,
+			'label'       => __( 'Display Fast Login Button in Footer', 'fast' ),
+			'description' => __( 'The Fast Login button displays in the footer by default for non-logged in users. Uncheck this option to prevent the Fast Login button from displaying in the footer.', 'fast' ),
+		)
+	);
+}
+
+/**
+ * Renders the Test Mode field.
+ */
+function fastwc_test_mode_content() {
+	$fastwc_test_mode = get_option( FASTWC_SETTING_TEST_MODE, FASTWC_SETTING_TEST_MODE_NOT_SET );
+
+	if ( FASTWC_SETTING_TEST_MODE_NOT_SET === $fastwc_test_mode ) {
+		// If the option is FASTWC_SETTING_TEST_MODE_NOT_SET, then it hasn't yet been set. In this case, we
+		// want to configure test mode to be on.
+		$fastwc_test_mode = '1';
+		update_option( FASTWC_SETTING_TEST_MODE, '1' );
+	}
+
+	fastwc_settings_field_checkbox(
+		array(
+			'name'        => 'fast_test_mode',
+			'current'     => $fastwc_test_mode,
+			'label'       => __( 'Enable test mode', 'fast' ),
+			'description' => __( 'When test mode is enabled, only logged-in admin users will see the Fast Checkout button.', 'fast' ),
 		)
 	);
 }
