@@ -4,7 +4,7 @@ Tags: fast, fast checkout, checkout, woocommerce, woocommerce payment, woocommer
 Requires at least: 5.1
 Tested up to: 5.8
 Requires PHP: 7.2
-Stable tag: 1.1.11
+Stable tag: 1.1.15
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
@@ -41,6 +41,24 @@ During the onboarding process, you can request professional installation, and ou
 
 
 == Changelog ==
+
+= 1.1.15 =
+
+* Add additional hooks to help facilitate customization by developers.
+* Add an option to be able to add content above or below the Fast Checkout buttons.
+
+= 1.1.14 =
+
+* Add exit after redirect.
+
+= 1.1.13 =
+
+* Update to use get_query_var in place of $_GET to retrieve URL query parameters.
+* Fix PHP notice.
+
+= 1.1.12 =
+
+* Update order redirect functionality to enable custom redirect URL's.
 
 = 1.1.11 =
 
