@@ -128,7 +128,7 @@ function fastwc_log_filter_callbacks( $filter ) {
 function fastwc_rest_post_dispatch( $result, $server, $request ) {
 	$route = $request->get_route();
 
-	if ( '/wc/fast/v1/shippig' === $route ) {
+	if ( '/wc/fast/v1/shipping' === $route ) {
 		fastwc_log_filter_callbacks( 'rest_post_dispatch' );
 		fastwc_log_debug( 'Result rest_post_dispatch: ' . print_r( $result, true ) );
 		fastwc_log_debug( 'Request rest_post_dispatch: ' . print_r( $request, true ) );
@@ -151,7 +151,7 @@ add_filter( 'rest_post_dispatch', 'fastwc_rest_post_dispatch', 10, 3 );
 function fastwc_rest_pre_serve_request( $served, $result, $request, $server ) {
 	$route = $request->get_route();
 
-	if ( '/wc/fast/v1/shippig' === $route ) {
+	if ( '/wc/fast/v1/shipping' === $route ) {
 		fastwc_log_filter_callbacks( 'rest_pre_serve_request' );
 		fastwc_log_debug( 'Result rest_pre_serve_request: ' . print_r( $result, true ) );
 		fastwc_log_debug( 'Request rest_pre_serve_request: ' . print_r( $request, true ) );
@@ -173,7 +173,7 @@ add_filter( 'rest_pre_serve_request', 'fastwc_rest_pre_serve_request', 10, 4 );
 function fastwc_rest_pre_echo_response( $result, $server, $request ) {
 	$route = $request->get_route();
 
-	if ( '/wc/fast/v1/shippig' === $route ) {
+	if ( '/wc/fast/v1/shipping' === $route ) {
 		fastwc_log_filter_callbacks( 'rest_pre_echo_response' );
 		fastwc_log_debug( 'Result rest_pre_echo_response: ' . print_r( $result, true ) );
 		fastwc_log_debug( 'Request rest_pre_echo_response: ' . print_r( $request, true ) );
