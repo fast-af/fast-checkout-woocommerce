@@ -100,3 +100,30 @@ function fastwc_api_permission_callback() {
 function fastwc_api_managewc_permission_callback() {
 	return fastwc_api_general_permission_callback( 'manage_woocommerce', 'API Manage WooCommerce Permission Callback' );
 }
+
+/**
+ * Log rest response.
+ *
+ * @param mixed           $response The response object.
+ * @param array           $handler  Route handler used for the request.
+ * @param WP_REST_Request $request  The request used to generate the response.
+ *
+ * @return mixed
+ */
+function fastwc_rest_request_after_callbacks( $response, $handler, $request ) {
+	global $wp_filter;
+
+	$filter_callbacks = ! empty( $wp_filter['rest_request_after_callbacks'] ) ? $wp_filter['rest_request_after_callbacks'] : array();
+
+	$route = $request->get_route();
+
+	if ( '/wc/fast/v1/shipping' === $route ) {
+		fastwc_log_debug( 'Callbacks for rest_request_after_callbacks: ' . print_r( $filter_callbacks, true ) );
+		fastwc_log_debug( 'Response object after callbacks: ' . print_r( $response, true ) );
+		fastwc_log_debug( 'Route handler: ' . print_r( $handler, true ) );
+		fastwc_log_debug( 'Request: ' . print_r( $request, true ) );
+	}
+
+	return $response;
+}
+add_filter( 'rest_request_after_callbacks', 'fastwc_rest_request_after_callbacks', PHP_INT_MAX, 3 );
