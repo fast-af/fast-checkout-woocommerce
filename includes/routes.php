@@ -102,28 +102,83 @@ function fastwc_api_managewc_permission_callback() {
 }
 
 /**
- * Log rest response.
+ * Log the filter callbacks.
  *
- * @param mixed           $response The response object.
- * @param array           $handler  Route handler used for the request.
- * @param WP_REST_Request $request  The request used to generate the response.
- *
- * @return mixed
+ * @param string $filter The name of the filter.
  */
-function fastwc_rest_request_after_callbacks( $response, $handler, $request ) {
+function fastwc_log_filter_callbacks( $filter ) {
 	global $wp_filter;
 
-	$filter_callbacks = ! empty( $wp_filter['rest_request_after_callbacks'] ) ? $wp_filter['rest_request_after_callbacks'] : array();
+	$filter_callbacks = ! empty( $wp_filter[ $filter ] ) ? $wp_filter[ $filter ] : array();
 
+	if ( ! empty( $filter_callbacks ) ) {
+		fastwc_log_debug( 'Filter callbacks (' . $filter . '):' . print_r( $filter_callbacks, true ) );
+	}
+}
+
+/**
+ * Filter the REST response after dispatch.
+ *
+ * @param WP_HTTP_Response $result  The result to send to the client. Usually a WP_REST_Response.
+ * @param WP_REST_Server   $server  The REST Server.
+ * @param WP_REST_Request  $request The request object.
+ *
+ * @return WP_HTTP_Response
+ */
+function fastwc_rest_post_dispatch( $result, $server, $request ) {
 	$route = $request->get_route();
 
-	if ( '/wc/fast/v1/shipping' === $route ) {
-		fastwc_log_debug( 'Callbacks for rest_request_after_callbacks: ' . print_r( $filter_callbacks, true ) );
-		fastwc_log_debug( 'Response object after callbacks: ' . print_r( $response, true ) );
-		fastwc_log_debug( 'Route handler: ' . print_r( $handler, true ) );
-		fastwc_log_debug( 'Request: ' . print_r( $request, true ) );
+	if ( '/wc/fast/v1/shippig' === $route ) {
+		fastwc_log_filter_callbacks( 'rest_post_dispatch' );
+		fastwc_log_debug( 'Result rest_post_dispatch: ' . print_r( $result, true ) );
+		fastwc_log_debug( 'Request rest_post_dispatch: ' . print_r( $request, true ) );
 	}
 
-	return $response;
+	return $result;
 }
-add_filter( 'rest_request_after_callbacks', 'fastwc_rest_request_after_callbacks', PHP_INT_MAX, 3 );
+add_filter( 'rest_post_dispatch', 'fastwc_rest_post_dispatch', 10, 3 );
+
+/**
+ * Filter whether the REST API request has already been served.
+ *
+ * @param bool             $served  Whether the request has been served (default false).
+ * @param WP_HTTP_Response $result  Result to send to the client. Usually a WP_REST_Response.
+ * @param WP_REST_Request  $request Request used to generate the response.
+ * @param WP_REST_Server   $server  Server instance.
+ *
+ * @return bool
+ */
+function fastwc_rest_pre_serve_request( $served, $result, $request, $server ) {
+	$route = $request->get_route();
+
+	if ( '/wc/fast/v1/shippig' === $route ) {
+		fastwc_log_filter_callbacks( 'rest_pre_serve_request' );
+		fastwc_log_debug( 'Result rest_pre_serve_request: ' . print_r( $result, true ) );
+		fastwc_log_debug( 'Request rest_pre_serve_request: ' . print_r( $request, true ) );
+	}
+
+	return $served;
+}
+add_filter( 'rest_pre_serve_request', 'fastwc_rest_pre_serve_request', 10, 4 );
+
+/**
+ * Filter the REST API response.
+ *
+ * @param array            $result  Response data to send to the client.
+ * @param WP_REST_Server   $server  Server instance.
+ * @param WP_REST_Request  $request Request used to generate the response.
+ *
+ * @return array
+ */
+function fastwc_rest_pre_echo_response( $result, $server, $request ) {
+	$route = $request->get_route();
+
+	if ( '/wc/fast/v1/shippig' === $route ) {
+		fastwc_log_filter_callbacks( 'rest_pre_echo_response' );
+		fastwc_log_debug( 'Result rest_pre_echo_response: ' . print_r( $result, true ) );
+		fastwc_log_debug( 'Request rest_pre_echo_response: ' . print_r( $request, true ) );
+	}
+
+	return $result;
+}
+add_filter( 'rest_pre_echo_response', 'fastwc_rest_pre_echo_response', 10, 3 );
