@@ -11,6 +11,19 @@
 require_once FASTWC_PATH . 'includes/hide.php';
 
 /**
+ * Load the Fast WC Gateway class
+ *
+ * @param array $gateways The WC payment gateways.
+ *
+ * @return array
+ */
+function fastwc_add_payment_gateway( $gateways ) {
+	$gateways[] = 'FastWC\WC_Gateway_Fast';
+	return $gateways;
+}
+add_filter( 'woocommerce_payment_gateways', 'fastwc_add_payment_gateway' );
+
+/**
  * Returns cart item data that Fast Checkout button can interpret.
  * This function also populates some global variables about cart state,
  * such as whether it contains products we don't support.

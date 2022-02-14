@@ -47,6 +47,15 @@ if ( fastwc_woocommerce_is_active() ) {
 	require_once FASTWC_PATH . 'includes/third-party.php';
 	// Add Freemius integration.
 	require_once FASTWC_PATH . 'includes/class-freemius.php';
+
+	/**
+	 * Load the Fast payment gateway after plugins are loaded.
+	 */
+	function fastwc_plugins_loaded() {
+		// Add the Fast Checkout payment gateway object.
+		require_once FASTWC_PATH . 'includes/class-wc-gateway-fast.php';
+	}
+	add_action( 'plugins_loaded', 'fastwc_plugins_loaded' );
 }
 
 define( 'FASTWC_PLUGIN_ACTIVATED', 'fastwc_plugin_activated' );
