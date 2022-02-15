@@ -15,10 +15,10 @@
 		 * @returns {void}
 		 */
 		maybeHideCheckout: function() {
-			var fastPaymentMethod = $( 'li.payment_method_Fast > div.payment_method_Fast' ),
+			var selectedPaymentMethod = $( '.woocommerce-checkout input[name="payment_method"]:checked' ).attr( 'id' ),
 				placeOrder = $( 'div.place-order' );
 
-			if ( fastPaymentMethod && fastPaymentMethod.is(':visible') && placeOrder ) {
+			if ( selectedPaymentMethod == 'payment_method_Fast' && placeOrder ) {
 				placeOrder.hide();
 			} else {
 				placeOrder.show();
