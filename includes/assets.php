@@ -50,7 +50,7 @@ function fastwc_admin_enqueue_scripts() {
 
 	wp_enqueue_script(
 		'fastwc-admin-js',
-		FASTWC_URL . 'assets/dist/scripts.min.js',
+		FASTWC_URL . 'assets/dist/admin/scripts.min.js',
 		array( 'jquery', 'select2' ),
 		FASTWC_VERSION,
 		true
