@@ -14,7 +14,7 @@
 		 *
 		 * @returns {void}
 		 */
-		maybeHideCheckout: function() 
+		maybeHideCheckout: function() {
 			var fastPaymentMethod = $( 'li.payment_method_Fast > div.payment_method_Fast' ),
 				placeOrder = $( 'div.place-order' );
 
