@@ -44,7 +44,8 @@ class WC_Gateway_Fast extends \WC_Payment_Gateway {
 		$this->init_settings();
 
 		// Load the settings.
-		$this->enabled     = $this->get_option( 'enabled' );
+		$this->enabled = $this->get_option( 'enabled' );
+		$this->title   = __( 'Fast Checkout', 'fast' );
 
 		// Action hook to saves the settings
 		add_action(
