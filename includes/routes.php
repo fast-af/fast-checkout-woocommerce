@@ -136,7 +136,7 @@ function fastwc_rest_post_dispatch( $result, $server, $request ) {
 
 	return $result;
 }
-add_filter( 'rest_post_dispatch', 'fastwc_rest_post_dispatch', 10, 3 );
+add_filter( 'rest_post_dispatch', 'fastwc_rest_post_dispatch', 9999, 3 );
 
 /**
  * Filter whether the REST API request has already been served.
@@ -159,7 +159,7 @@ function fastwc_rest_pre_serve_request( $served, $result, $request, $server ) {
 
 	return $served;
 }
-add_filter( 'rest_pre_serve_request', 'fastwc_rest_pre_serve_request', 10, 4 );
+add_filter( 'rest_pre_serve_request', 'fastwc_rest_pre_serve_request', 9999, 4 );
 
 /**
  * Filter the REST API response.
@@ -181,4 +181,4 @@ function fastwc_rest_pre_echo_response( $result, $server, $request ) {
 
 	return $result;
 }
-add_filter( 'rest_pre_echo_response', 'fastwc_rest_pre_echo_response', 10, 3 );
+add_filter( 'rest_pre_echo_response', 'fastwc_rest_pre_echo_response', 9999, 3 );
