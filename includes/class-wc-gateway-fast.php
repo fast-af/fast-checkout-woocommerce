@@ -45,8 +45,6 @@ class WC_Gateway_Fast extends \WC_Payment_Gateway {
 
 		// Load the settings.
 		$this->enabled     = $this->get_option( 'enabled' );
-		$this->title       = $this->get_option( 'title' );
-		$this->description = $this->get_option( 'description' );
 
 		// Action hook to saves the settings
 		add_action(
@@ -69,19 +67,6 @@ class WC_Gateway_Fast extends \WC_Payment_Gateway {
 				'label'       => __( 'Enable Fast', 'fast' ),
 				'description' => $this->fast_disclaimer,
 				'default'     => 'no'
-			),
-			'title' => array(
-				'title'       => __( 'Title', 'text-domain'),
-				'type'        => 'text',
-				'description' => __( 'This controls the title which the user sees during checkout.', 'text-domain' ),
-				'default'     => __( 'Fast Checkout', 'text-domain' ),
-				'desc_tip'    => true,
-			),
-			'description' => array(
-				'title'       => __( 'Description', 'text-domain' ),
-				'type'        => 'textarea',
-				'description' => __( 'This controls the description which the user sees during checkout.', 'text-domain' ),
-				'default'     => '',
 			),
 		);
 	}
