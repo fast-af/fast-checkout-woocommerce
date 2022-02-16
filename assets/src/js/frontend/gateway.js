@@ -34,4 +34,8 @@
 		fastGateway.maybeHideCheckout();
 	} );
 
+	$( document.body ).on( 'updated_checkout', function() {
+		fastGateway.maybeHideCheckout();
+	} );
+
 } ) ( jQuery );
