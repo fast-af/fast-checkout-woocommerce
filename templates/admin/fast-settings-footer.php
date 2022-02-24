@@ -6,6 +6,8 @@
  */
 
 $fastwc_setting_fast_onboarding_url = fastwc_get_option_or_set_default( FASTWC_SETTING_ONBOARDING_URL, FASTWC_ONBOARDING_URL );
+$fastwc_setting_fast_dashboard_url  = fastwc_get_option_or_set_default( FASTWC_SETTING_DASHBOARD_URL, FASTWC_DASHBOARD_URL );
+$fastwc_app_id                      = fastwc_get_app_id();
 ?>
 
 <div class="fast-footer">
@@ -26,11 +28,19 @@ $fastwc_setting_fast_onboarding_url = fastwc_get_option_or_set_default( FASTWC_S
 				?>
 			</a>
 		</li>
+		<?php if ( empty( $fastwc_app_id ) ) : ?>
 		<li class="fast-footer-link">
-			<a href="<?php echo esc_url( $fastwc_setting_fast_onboarding_url ); ?>" target="_blank" rel="noopener" title="<?php esc_attr_e( 'Login to the Fast Seller Dashboard', 'fast' ); ?>">
+			<a href="<?php echo esc_url( $fastwc_setting_fast_onboarding_url ); ?>" target="_blank" rel="noopener" title="<?php esc_attr_e( 'Become a Seller', 'fast' ); ?>">
+				<?php esc_html_e( 'Become a Seller', 'fast' ); ?>
+			</a>
+		</li>
+		<?php endif; ?>
+		<li class="fast-footer-link">
+			<a href="<?php echo esc_url( $fastwc_setting_fast_dashboard_url ); ?>" target="_blank" rel="noopener" title="<?php esc_attr_e( 'Login to the Fast Seller Dashboard', 'fast' ); ?>">
 				<?php esc_html_e( 'Seller Login', 'fast' ); ?>
 			</a>
 		</li>
+		<?php endif; ?>
 		<li class="fast-footer-link">
 			<a href="https://www.fast.co/home" target="_blank" rel="noopener" title="<?php esc_attr_e( 'Learn more about Fast', 'fast' ); ?>">
 				<?php esc_html_e( 'About', 'fast' ); ?>
