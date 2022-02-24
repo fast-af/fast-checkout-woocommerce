@@ -47,7 +47,7 @@ function fastwc_handle_1_1_16_upgrades() {
 			$dashboard_url  = 'https://fast-site.staging.slowfast.co/business';
 			break;
 
-		//  Sandbox URL.
+		// Sandbox URL.
 		case 'https://fast-site.sandbox.fast.co/business':
 		case 'https://fast-site.sandbox.fast.co/business/':
 			$onboarding_url = 'https://fast-site.sandbox.fast.co/business-sign-up';
