@@ -40,7 +40,6 @@ $fastwc_app_id                      = fastwc_get_app_id();
 				<?php esc_html_e( 'Seller Login', 'fast' ); ?>
 			</a>
 		</li>
-		<?php endif; ?>
 		<li class="fast-footer-link">
 			<a href="https://www.fast.co/home" target="_blank" rel="noopener" title="<?php esc_attr_e( 'Learn more about Fast', 'fast' ); ?>">
 				<?php esc_html_e( 'About', 'fast' ); ?>
