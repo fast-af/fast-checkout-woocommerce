@@ -21,6 +21,8 @@ require_once FASTWC_PATH . 'includes/version.php';
 
 // Check whether the woocommerce plugin is active.
 if ( fastwc_woocommerce_is_active() ) {
+	// Fast upgrade functions.
+	require_once FASTWC_PATH . 'includes/upgrade.php';
 	// Fast debug functions.
 	require_once FASTWC_PATH . 'includes/debug.php';
 	// WP Admin plugin settings.
