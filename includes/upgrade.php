@@ -39,32 +39,18 @@ function fastwc_handle_1_1_16_upgrades() {
 	$onboarding_url = get_option( FASTWC_SETTING_ONBOARDING_URL );
 	$dashboard_url  = get_option( FASTWC_SETTING_DASHBOARD_URL );
 
-	switch ( $onboarding_url ) {
-		// Staging URL.
-		case 'https://fast-site.staging.slowfast.co/business':
-		case 'https://fast-site.staging.slowfast.co/business/':
-			$onboarding_url = 'https://fast-site.staging.slowfast.co/business-sign-up';
-			$dashboard_url  = 'https://fast-site.staging.slowfast.co/business';
-			break;
-
-		// Sandbox URL.
-		case 'https://fast-site.sandbox.fast.co/business':
-		case 'https://fast-site.sandbox.fast.co/business/':
-			$onboarding_url = 'https://fast-site.sandbox.fast.co/business-sign-up';
-			$dashboard_url  = 'https://fast-site.sandbox.fast.co/business';
-			break;
-
-		// Dev URL.
-		case 'https://fast-site.dev.slow.dev/business':
-		case 'https://fast-site.dev.slow.dev/business/':
-			$onboarding_url = 'https://fast-site.dev.slow.dev/business-sign-up';
-			$dashboard_url  = 'https://fast-site.dev.slow.dev/business';
-			break;
-
-		default:
-			$onboarding_url = FASTWC_ONBOARDING_URL;
-			$dashboard_url  = FASTWC_DASHBOARD_URL;
-			break;
+	if ( false !== strpos( $onboarding_url, 'staging' ) ) {
+		$onboarding_url = 'https://fast-site.staging.slowfast.co/business-sign-up';
+		$dashboard_url  = 'https://fast-site.staging.slowfast.co/business';
+	} elseif ( false !== strpos( $onboarding_url, 'sandbox' ) ) {
+		$onboarding_url = 'https://fast-site.sandbox.fast.co/business-sign-up';
+		$dashboard_url  = 'https://fast-site.sandbox.fast.co/business';
+	} elseif ( false !== strpos( $onboarding_url, 'dev' ) ) {
+		$onboarding_url = 'https://fast-site.dev.slow.dev/business-sign-up';
+		$dashboard_url  = 'https://fast-site.dev.slow.dev/business';
+	} else {
+		$onboarding_url = FASTWC_ONBOARDING_URL;
+		$dashboard_url  = FASTWC_DASHBOARD_URL;
 	}
 
 	update_option( FASTWC_SETTING_ONBOARDING_URL, $onboarding_url );
