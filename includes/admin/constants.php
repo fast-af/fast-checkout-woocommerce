@@ -12,6 +12,7 @@ define( 'FASTWC_SETTING_TEST_MODE_USERS', 'fastwc_test_mode_users' );
 define( 'FASTWC_SETTING_FAST_JS_URL', 'fast_fast_js_url' );
 define( 'FASTWC_SETTING_FAST_JWKS_URL', 'fast_fast_jwks_url' );
 define( 'FASTWC_SETTING_ONBOARDING_URL', 'fast_onboarding_url' );
+define( 'FASTWC_SETTING_DASHBOARD_URL', 'fastwc_dashboard_url' );
 define( 'FASTWC_SETTING_HEADLESS_LINK_BASE', 'fastwc_headless_link_base' );
 define( 'FASTWC_SETTING_HEADLESS_FAST_JS_URL', 'fastwc_headless_fast_js_url' );
 define( 'FASTWC_SETTING_ENABLE_HEADLESS', 'fastwc_enable_headless' );
@@ -45,6 +46,8 @@ define( 'FASTWC_SETTING_HIDE_REGULAR_CHECKOUT_BUTTONS', 'fastwc_hide_regular_che
 define( 'FASTWC_SETTING_PLUGIN_DO_INIT_FORMAT', 'fastwc_do_init_%s' );
 define( 'FASTWC_JWKS_URL', 'https://api.fast.co/v1/oauth2/jwks' );
 define( 'FASTWC_JS_URL', 'https://js.fast.co/fast-woocommerce.js' );
+define( 'FASTWC_ONBOARDING_URL', 'https://fast.co/business-sign-up' );
+define( 'FASTWC_DASHBOARD_URL', 'https://fast.co/business' );
 define( 'FASTWC_ONBOARDING_URL', 'https://fast.co/business' );
 define( 'FASTWC_HEADLESS_LINK_BASE', 'https://go.fast.co/checkout' );
 define( 'FASTWC_HEADLESS_FAST_JS_URL', 'https://js.fast.co/fast.js' );
