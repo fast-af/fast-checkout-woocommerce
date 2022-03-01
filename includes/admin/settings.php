@@ -824,8 +824,6 @@ function fastwc_dashboard_url_content() {
 		array(
 			'name'  => FASTWC_SETTING_DASHBOARD_URL,
 			'value' => $url,
-			'name'  => FASTWC_SETTING_ONBOARDING_URL,
-			'value' => $url,
 		)
 	);
 }
