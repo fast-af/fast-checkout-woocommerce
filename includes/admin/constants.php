@@ -12,6 +12,7 @@ define( 'FASTWC_SETTING_TEST_MODE_USERS', 'fastwc_test_mode_users' );
 define( 'FASTWC_SETTING_FAST_JS_URL', 'fast_fast_js_url' );
 define( 'FASTWC_SETTING_FAST_JWKS_URL', 'fast_fast_jwks_url' );
 define( 'FASTWC_SETTING_ONBOARDING_URL', 'fast_onboarding_url' );
+define( 'FASTWC_SETTING_DASHBOARD_URL', 'fastwc_dashboard_url' );
 define( 'FASTWC_SETTING_DEBUG_MODE', 'fastwc_debug_mode' );
 define( 'FASTWC_SETTING_DEBUG_MODE_NOT_SET', 'fast debug mode not set' );
 define( 'FASTWC_SETTING_LOAD_BUTTON_STYLES', 'fastwc_load_button_styles' );
@@ -38,7 +39,8 @@ define( 'FASTWC_SETTING_HIDE_REGULAR_CHECKOUT_BUTTONS', 'fastwc_hide_regular_che
 define( 'FASTWC_SETTING_PLUGIN_DO_INIT_FORMAT', 'fastwc_do_init_%s' );
 define( 'FASTWC_JWKS_URL', 'https://api.fast.co/v1/oauth2/jwks' );
 define( 'FASTWC_JS_URL', 'https://js.fast.co/fast-woocommerce.js' );
-define( 'FASTWC_ONBOARDING_URL', 'https://fast.co/business' );
+define( 'FASTWC_ONBOARDING_URL', 'https://fast.co/business-sign-up' );
+define( 'FASTWC_DASHBOARD_URL', 'https://fast.co/business' );
 define( 'FASTWC_SETTINGS_TIMESTAMPS', 'fastwc_settings_timestamps' );
 
 define(
