@@ -31,6 +31,7 @@ function fastwc_updated_option( $option, $old_value, $value ) {
 		FASTWC_SETTING_FAST_JS_URL,
 		FASTWC_SETTING_FAST_JWKS_URL,
 		FASTWC_SETTING_ONBOARDING_URL,
+		FASTWC_SETTING_DASHBOARD_URL,
 		FASTWC_SETTING_PDP_BUTTON_STYLES,
 		FASTWC_SETTING_CART_BUTTON_STYLES,
 		FASTWC_SETTING_MINI_CART_BUTTON_STYLES,
@@ -250,6 +251,7 @@ function fastwc_admin_setup_sections() {
 		register_setting( $section_name, FASTWC_SETTING_FAST_JS_URL );
 		register_setting( $section_name, FASTWC_SETTING_FAST_JWKS_URL );
 		register_setting( $section_name, FASTWC_SETTING_ONBOARDING_URL );
+		register_setting( $section_name, FASTWC_SETTING_DASHBOARD_URL );
 		register_setting( $section_name, FASTWC_SETTING_ENABLE_HEADLESS );
 		register_setting( $section_name, FASTWC_SETTING_HEADLESS_LINK_BASE );
 		register_setting( $section_name, FASTWC_SETTING_HEADLESS_FAST_JS_URL );
@@ -299,6 +301,7 @@ function fastwc_admin_setup_fields() {
 	add_settings_field( FASTWC_SETTING_FAST_JS_URL, __( 'Fast JS URL', 'fast' ), 'fastwc_fastwc_js_content', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_FAST_JWKS_URL, __( 'Fast JWKS URL', 'fast' ), 'fastwc_fastwc_jwks_content', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_ONBOARDING_URL, __( 'Fast Onboarding URL', 'fast' ), 'fastwc_onboarding_url_content', $settings_section, $settings_section );
+	add_settings_field( FASTWC_SETTING_DASHBOARD_URL, __( 'Fast Seller Dashboard URL', 'fast' ), 'fastwc_dashboard_url_content', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_ENABLE_HEADLESS, __( 'Enable Headless Link Tool', 'fast' ), 'fastwc_enable_headless', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_HEADLESS_LINK_BASE, __( 'Headless Checkout Link Base', 'fast' ), 'fastwc_headless_link_base', $settings_section, $settings_section );
 	add_settings_field( FASTWC_SETTING_HEADLESS_FAST_JS_URL, __( 'Headless Fast JS URL', 'fast' ), 'fastwc_headless_fast_js_url', $settings_section, $settings_section );
@@ -805,6 +808,22 @@ function fastwc_onboarding_url_content() {
 
 	fastwc_settings_field_input(
 		array(
+			'name'  => FASTWC_SETTING_ONBOARDING_URL,
+			'value' => $url,
+		)
+	);
+}
+
+/**
+ * Renders the dashboard URL field.
+ */
+function fastwc_dashboard_url_content() {
+	$url = fastwc_get_option_or_set_default( FASTWC_SETTING_DASHBOARD_URL, FASTWC_DASHBOARD_URL );
+
+	fastwc_settings_field_input(
+		array(
+			'name'  => FASTWC_SETTING_DASHBOARD_URL,
+			'value' => $url,
 			'name'  => FASTWC_SETTING_ONBOARDING_URL,
 			'value' => $url,
 		)

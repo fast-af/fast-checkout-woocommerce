@@ -5,7 +5,7 @@
  * Author: Fast
  * Author URI: https://fast.co
  * Description: Install the Checkout button that increases conversion, boosts sales and delights customers.
- * Version: 1.1.15
+ * Version: 1.1.16
  * License: GPLv2
  * License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  *
@@ -14,13 +14,15 @@
 
 define( 'FASTWC_PATH', plugin_dir_path( __FILE__ ) );
 define( 'FASTWC_URL', plugin_dir_url( __FILE__ ) );
-define( 'FASTWC_VERSION', '1.1.15' );
+define( 'FASTWC_VERSION', '1.1.16' );
 
 // WooCommerce version utilities.
 require_once FASTWC_PATH . 'includes/version.php';
 
 // Check whether the woocommerce plugin is active.
 if ( fastwc_woocommerce_is_active() ) {
+	// Fast upgrade functions.
+	require_once FASTWC_PATH . 'includes/upgrade.php';
 	// Fast debug functions.
 	require_once FASTWC_PATH . 'includes/debug.php';
 	// WP Admin plugin settings.
