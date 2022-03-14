@@ -232,7 +232,7 @@ function fastwc_maybe_clear_fast_webhooks_cache() {
 		return;
 	}
 
-	fast_clear_webhooks_cache();
+	fastwc_clear_webhooks_cache();
 }
 add_action( 'init', 'fastwc_maybe_clear_fast_webhooks_cache' );
 
