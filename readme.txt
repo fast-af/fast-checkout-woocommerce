@@ -2,7 +2,7 @@
 Contributors: fastaf, corywebb
 Tags: fast, fast checkout, checkout, woocommerce, woocommerce payment, woocommerce checkout, quick checkout, 1 click checkout, one click checkout
 Requires at least: 5.1
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 7.2
 Stable tag: 1.1.17
 License: GPLv2 or later
