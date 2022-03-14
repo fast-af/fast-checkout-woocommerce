@@ -50,7 +50,7 @@ add_action( 'woocommerce_webhook_options_save', 'fastwc_woocommerce_webhook_opti
  * @return bool
  */
 function fastwc_is_disabled_webhook( $webhook ) {
-	return 'disabled' === $webhook->get_status();
+	return ! empty( $webhook ) && 'disabled' === $webhook->get_status();
 }
 
 /**
@@ -96,7 +96,7 @@ function fastwc_get_disabled_webhooks() {
 		foreach ( $disabled_webhooks as $webhook_topic => $webhook_id ) {
 			$webhook = wc_get_webhook( $webhook_id );
 
-			if ( ! empty( $webhook ) && ! fastwc_is_disabled_webhook( $webhook ) ) {
+			if ( ! fastwc_is_disabled_webhook( $webhook ) ) {
 				unset( $disabled_webhooks[ $webhook_topic ] );
 				$did_unset = true;
 			}
