@@ -578,12 +578,12 @@ CSS;
 	 * @param string $option The option key for which to add a timestamp.
 	 */
 	public static function add_timestamp( $option ) {
-		if ( in_array( $option, Config::get_stampable_options(), true ) ) {
-			$timestamps = Config::get_timestamps();
+		if ( in_array( $option, static::get_stampable_options(), true ) ) {
+			$timestamps = static::get_timestamps();
 
 			$timestamps[ $option ] = time();
 
-			\update_option( Config::KEY_TIMESTAMPS, $timestamps );
+			\update_option( static::KEY_TIMESTAMPS, $timestamps );
 		}
 	}
 }
