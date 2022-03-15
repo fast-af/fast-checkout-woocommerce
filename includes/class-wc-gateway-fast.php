@@ -47,7 +47,7 @@ class WC_Gateway_Fast extends \WC_Payment_Gateway {
 		$this->enabled = $this->get_option( 'enabled' );
 		$this->title   = __( 'Fast Checkout', 'fast' );
 
-		// Action hook to saves the settings
+		// Action hook to saves the settings.
 		add_action(
 			'woocommerce_update_options_payment_gateways_' . $this->id,
 			array( $this, 'process_admin_options' )
@@ -67,7 +67,7 @@ class WC_Gateway_Fast extends \WC_Payment_Gateway {
 				'type'        => 'checkbox',
 				'label'       => __( 'Enable Fast', 'fast' ),
 				'description' => $this->fast_disclaimer,
-				'default'     => 'no'
+				'default'     => 'no',
 			),
 		);
 	}
