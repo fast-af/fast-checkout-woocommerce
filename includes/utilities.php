@@ -5,6 +5,8 @@
  * @package Fast
  */
 
+use FastWC\Config;
+
 /**
  * Load a Fast temlate.
  *
@@ -69,13 +71,13 @@ function fastwc_load_template( $template_name, $args = array() ) {
  * @return string
  */
 function fastwc_get_pdp_button_hook() {
-	$fastwc_pdp_button_hook = get_option( FASTWC_SETTING_PDP_BUTTON_HOOK, FASTWC_DEFAULT_PDP_BUTTON_HOOK );
+	$fastwc_pdp_button_hook = Config::get_pdp_button_hook();
 
 	if ( 'other' === $fastwc_pdp_button_hook ) {
-		$fastwc_pdp_button_hook = get_option( FASTWC_SETTING_PDP_BUTTON_HOOK_OTHER, FASTWC_DEFAULT_PDP_BUTTON_HOOK );
+		$fastwc_pdp_button_hook = Config::get_other_pdp_button_hook();
 	}
 
-	$fastwc_pdp_button_hook = ! empty( $fastwc_pdp_button_hook ) ? $fastwc_pdp_button_hook : FASTWC_DEFAULT_PDP_BUTTON_HOOK;
+	$fastwc_pdp_button_hook = ! empty( $fastwc_pdp_button_hook ) ? $fastwc_pdp_button_hook : Config::DEFAULT_PDP_BUTTON_HOOK;
 
 	/**
 	 * Filter to overrie the Fast PDP button hook.
@@ -93,7 +95,7 @@ function fastwc_get_pdp_button_hook() {
  * @return array
  */
 function fastwc_get_products_to_hide_buttons() {
-	$fastwc_hidden_products = get_option( FASTWC_SETTING_HIDE_BUTTON_PRODUCTS );
+	$fastwc_hidden_products = Config::get_products_to_hide_buttons();
 
 	if ( ! empty( $fastwc_hidden_products ) ) {
 		$fastwc_count_products = count( $fastwc_hidden_products );
@@ -275,11 +277,11 @@ function fastwc_product_is_subscription( $product_id ) {
  */
 function fastwc_get_button_styles( $button_type = '' ) {
 	$types = array(
-		'pdp'       => FASTWC_SETTING_PDP_BUTTON_STYLES,
-		'mini_cart' => FASTWC_SETTING_MINI_CART_BUTTON_STYLES,
-		'login'     => FASTWC_SETTING_LOGIN_BUTTON_STYLES,
-		'checkout'  => FASTWC_SETTING_CHECKOUT_BUTTON_STYLES,
-		'cart'      => FASTWC_SETTING_CART_BUTTON_STYLES,
+		'pdp'       => Config::KEY_PDP_BUTTON_STYLES,
+		'mini_cart' => Config::KEY_MINI_CART_BUTTON_STYLES,
+		'login'     => Config::KEY_LOGIN_BUTTON_STYLES,
+		'checkout'  => Config::KEY_CHECKOUT_BUTTON_STYLES,
+		'cart'      => Config::KEY_CART_BUTTON_STYLES,
 	);
 
 	// If $button_type is empty, use all button types.
@@ -335,8 +337,6 @@ function fastwc_get_normalized_product_options( $product_options ) {
  * @return bool
  */
 function fastwc_use_dark_mode( $product_id = 0 ) {
-	$use_dark_mode = get_option( FASTWC_SETTING_USE_DARK_MODE, false );
-
 	/**
 	 * Filter the boolean for using dark mode. The product ID allows for setting
 	 * or disabling dark mode for specific products.
@@ -346,9 +346,7 @@ function fastwc_use_dark_mode( $product_id = 0 ) {
 	 *
 	 * @return bool
 	 */
-	$use_dark_mode = apply_filters( 'fast_use_dark_mode', $use_dark_mode, $product_id );
-
-	return $use_dark_mode;
+	return apply_filters( 'fast_use_dark_mode', Config::should_use_dark_mode(), $product_id );
 }
 
 /**

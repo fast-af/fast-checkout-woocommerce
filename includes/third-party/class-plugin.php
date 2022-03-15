@@ -7,6 +7,8 @@
 
 namespace FastWC\Third_Party;
 
+use FastWC\Config;
+
 /**
  * Fast base third-party plugin class.
  */
@@ -82,7 +84,7 @@ abstract class Plugin {
 	 */
 	protected function get_setting_name() {
 		return sprintf(
-			FASTWC_SETTING_PLUGIN_DO_INIT_FORMAT,
+			Config::KEY_PLUGIN_DO_INIT_FORMAT,
 			str_replace( array( '/', '.' ), '_', $this->slug )
 		);
 	}

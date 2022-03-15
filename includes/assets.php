@@ -5,11 +5,13 @@
  * @package Fast
  */
 
+use FastWC\Config;
+
 /**
  * Enqueue the Fast Woocommerce script.
  */
 function fastwc_enqueue_script() {
-	$fastwc_js = fastwc_get_option_or_set_default( FASTWC_SETTING_FAST_JS_URL, FASTWC_JS_URL );
+	$fastwc_js = Config::get_fast_js_url();
 	wp_enqueue_script( 'fast-woocommerce', $fastwc_js, array(), '1.20.0', true );
 }
 add_action( 'wp_enqueue_scripts', 'fastwc_enqueue_script' );
@@ -69,9 +71,7 @@ add_action( 'admin_enqueue_scripts', 'fastwc_admin_enqueue_scripts' );
  * Load the styles in the head.
  */
 function fastwc_wp_head() {
-	$fastwc_load_button_styles = get_option( FASTWC_SETTING_LOAD_BUTTON_STYLES, true );
-
-	if ( empty( $fastwc_load_button_styles ) ) {
+	if ( ! Config::should_load_button_styles() ) {
 		return;
 	}
 

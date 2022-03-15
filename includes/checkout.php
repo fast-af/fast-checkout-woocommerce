@@ -7,6 +7,8 @@
  * @package Fast
  */
 
+use FastWC\Config;
+
 // Load helpers to check if/when to hide the Fast Checkout buttons.
 require_once FASTWC_PATH . 'includes/hide.php';
 
@@ -304,7 +306,7 @@ function fastwc_maybe_clear_cart_and_redirect() {
 
 	// Check if the order is PDP order.
 	$fast_order_is_pdp             = get_query_var( 'fast_is_pdp', false );
-	$fast_redirect_after_pdp_order = get_option( FASTWC_SETTING_REDIRECT_AFTER_PDP, false );
+	$fast_redirect_after_pdp_order = Config::should_redirect_after_pdp_checkout();
 
 	if (
 		! empty( $order_id ) &&
@@ -316,7 +318,7 @@ function fastwc_maybe_clear_cart_and_redirect() {
 			! $fast_order_is_pdp
 		)
 	) {
-		$fast_clear_cart_after_pdp_order = get_option( FASTWC_SETTING_CLEAR_CART_AFTER_PDP, false );
+		$fast_clear_cart_after_pdp_order = Config::should_clear_cart_after_pdp_checkout();
 		if (
 			(
 				(
@@ -332,7 +334,7 @@ function fastwc_maybe_clear_cart_and_redirect() {
 			WC()->cart->empty_cart();
 		}
 
-		$redirect_page = absint( get_option( FASTWC_SETTING_CHECKOUT_REDIRECT_PAGE, 0 ) );
+		$redirect_page = absint( Config::get_checkout_redirect_page() );
 		$redirect_url  = wc_get_cart_url();
 
 		if ( ! empty( $redirect_page ) ) {
@@ -420,7 +422,7 @@ function fastwc_maybe_hide_proceed_to_checkout_buttons() {
 		return;
 	}
 
-	$hide_regular_checkout_buttons = get_option( FASTWC_SETTING_HIDE_REGULAR_CHECKOUT_BUTTONS, false );
+	$hide_regular_checkout_buttons = Config::should_hide_regular_checkout_buttons();
 
 	/**
 	 * Filter flag to hide regular checkout buttons.
@@ -491,8 +493,8 @@ function fastwc_check_request_coupon_lines( $request, $order ) {
  * @param string $location Location to check.
  */
 function fastwc_maybe_render_button_extra_content( $location ) {
-	$button_extra_content          = get_option( FASTWC_SETTING_BUTTON_WRAPPER_CONTENT, '' );
-	$button_extra_content_location = get_option( FASTWC_SETTING_BUTTON_WRAPPER_CONTENT_LOCATION, '' );
+	$button_extra_content          = Config::get_button_wrapper_content();
+	$button_extra_content_location = Config::get_button_wrapper_content_location();
 
 	if (
 		! empty( $button_extra_content )

@@ -5,6 +5,8 @@
  * @package Fast
  */
 
+use FastWC\Config;
+
 // Define a key to use for the Fast version option.
 define( 'FASTWC_OPTION_VERSION', 'fastwc_version' );
 
@@ -36,8 +38,8 @@ add_action( 'admin_init', 'fastwc_handle_upgrades' );
  */
 function fastwc_handle_1_1_16_upgrades() {
 	// Update the onboarding URL setting value.
-	$onboarding_url = get_option( FASTWC_SETTING_ONBOARDING_URL );
-	$dashboard_url  = get_option( FASTWC_SETTING_DASHBOARD_URL );
+	$onboarding_url = Config::get_onboarding_url();
+	$dashboard_url  = Config::get_dashboard_url();
 
 	if ( false !== strpos( $onboarding_url, 'staging' ) ) {
 		$onboarding_url = 'https://fast-site.staging.slowfast.co/business-sign-up';
@@ -49,10 +51,10 @@ function fastwc_handle_1_1_16_upgrades() {
 		$onboarding_url = 'https://fast-site.dev.slow.dev/business-sign-up';
 		$dashboard_url  = 'https://fast-site.dev.slow.dev/business';
 	} else {
-		$onboarding_url = FASTWC_ONBOARDING_URL;
-		$dashboard_url  = FASTWC_DASHBOARD_URL;
+		$onboarding_url = Config::DEFAULT_ONBOARDING_URL;
+		$dashboard_url  = Config::DEFAULT_DASHBOARD_URL;
 	}
 
-	update_option( FASTWC_SETTING_ONBOARDING_URL, $onboarding_url );
-	update_option( FASTWC_SETTING_DASHBOARD_URL, $dashboard_url );
+	update_option( Config::KEY_ONBOARDING_URL, $onboarding_url );
+	update_option( Config::KEY_DASHBOARD_URL, $dashboard_url );
 }

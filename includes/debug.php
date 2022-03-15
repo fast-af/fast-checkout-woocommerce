@@ -11,9 +11,7 @@
  * @return bool
  */
 function fastwc_debug_mode_enabled() {
-	$fastwc_debug_mode = get_option( FASTWC_SETTING_DEBUG_MODE, 0 );
-
-	return fastwc_woocommerce_version_is_at_least( '3.2' ) && ! empty( $fastwc_debug_mode );
+	return fastwc_woocommerce_version_is_at_least( '3.2' ) && FastWC\Config::is_debug_mode();
 }
 
 /**

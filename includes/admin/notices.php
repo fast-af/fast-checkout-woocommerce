@@ -5,21 +5,21 @@
  * @package Fast
  */
 
+use FastWC\Config;
+
 /**
  * Check for conditions to display admin notices.
  */
 function fastwc_maybe_display_admin_notices() {
-	$fast_app_id              = fastwc_get_app_id();
-	$fastwc_debug_mode        = get_option( FASTWC_SETTING_DEBUG_MODE, 0 );
-	$fastwc_test_mode         = get_option( FASTWC_SETTING_TEST_MODE, '1' );
+	$fast_app_id              = Config::get_app_id();
 	$fastwc_has_webhooks      = fastwc_woocommerce_has_fast_webhooks();
 	$fastwc_disabled_webhooks = fastwc_get_disabled_webhooks();
 
-	if ( ! empty( $fastwc_debug_mode ) ) {
+	if ( Config::is_debug_mode() ) {
 		add_action( 'admin_notices', 'fastwc_settings_admin_notice_debug_mode' );
 	}
 
-	if ( ! empty( $fastwc_test_mode ) ) {
+	if ( Config::is_test_mode() ) {
 		add_action( 'admin_notices', 'fastwc_settings_admin_notice_test_mode' );
 	}
 
@@ -39,7 +39,7 @@ add_action( 'admin_init', 'fastwc_maybe_display_admin_notices' );
  * @param string $context Optional. The context in which the CTA is to be loaded.
  */
 function fastwc_maybe_render_cta( $context = '' ) {
-	$fast_app_id = fastwc_get_app_id();
+	$fast_app_id = Config::get_app_id();
 
 	if ( empty( $fast_app_id ) ) {
 		fastwc_load_template( 'admin/fast-cta', array( 'context' => $context ) );

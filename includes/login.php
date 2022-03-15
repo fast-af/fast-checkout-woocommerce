@@ -7,6 +7,8 @@
  * @package Fast
  */
 
+use FastWC\Config;
+
 $loader = require_once __DIR__ . '/../vendor/autoload.php';
 
 define( 'FASTWC_PARAM_WP_NONCE', '_wpnonce' );
@@ -24,9 +26,7 @@ function fastwc_add_login_to_footer() {
 	}
 
 	// The admin might want to disable this in favor of using a widget.
-	$show_in_footer = get_option( FASTWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, 1 );
-
-	if ( ! empty( $show_in_footer ) ) {
+	if ( Config::should_show_login_in_footer() ) {
 		/**
 		 * Action to trigger before the Fast login button is added to the footer.
 		 */
@@ -153,14 +153,14 @@ function fastwc_backend_join_get_parameters( $parameters ) {
  * @throws UnexpectedValueException Thrown when JWT audience doesn't match this app's ID.
  */
 function fastwc_backend_verify_jwt( $token_str ) {
-	$res     = wp_remote_get( get_option( FASTWC_SETTING_FAST_JWKS_URL ) );
+	$res     = wp_remote_get( Config::get_fast_jwks_url() );
 	$jwks    = wp_remote_retrieve_body( $res );
 	$keys    = json_decode( $jwks, true );
 	$key_set = JWK::parseKeySet( $keys );
 
 	$claims = JWT::decode( $token_str, $key_set, array( 'RS256' ) );
 
-	$app_id = fastwc_get_app_id();
+	$app_id = Config::get_app_id();
 	if ( $app_id !== $claims->aud ) {
 		throw new UnexpectedValueException( 'Audience mismatch' );
 	}

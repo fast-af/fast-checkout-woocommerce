@@ -5,6 +5,8 @@
  * @package Fast
  */
 
+use FastWC\Config;
+
 /**
  * Check if we should hide the Fast Checkout PDP button.
  *
@@ -96,11 +98,10 @@ function fastwc_is_hidden_for_test_mode( $should_hide ) {
 	if ( ! $should_hide ) {
 		// If test mode option is not yet set (e.g. plugin was just installed), treat it as enabled.
 		// There is code in the settings page that actually sets this to enabled the first time the user views the form.
-		$fastwc_test_mode = get_option( FASTWC_SETTING_TEST_MODE, '1' );
-		if ( $fastwc_test_mode ) {
+		if ( Config::is_test_mode() ) {
 			// In test mode, we only want to show the button if the user is an admin,
 			// if their email ends with @fast.co, or if they have been specifically given access.
-			$fastwc_test_mode_users = get_option( FASTWC_SETTING_TEST_MODE_USERS, array() );
+			$fastwc_test_mode_users = Config::get_test_mode_users();
 			$current_user           = wp_get_current_user();
 			if (
 				! preg_match( '/@fast.co$/i', $current_user->user_email ) // All users with fast.co email addresses can view the buttons in Test Mode.
@@ -131,7 +132,7 @@ add_filter( 'fastwc_should_hide_login_button', 'fastwc_is_hidden_for_test_mode',
 function fastwc_is_app_id_empty( $should_hide ) {
 
 	if ( ! $should_hide ) {
-		$fastwc_app_id = fastwc_get_app_id();
+		$fastwc_app_id = Config::get_app_id();
 
 		if ( empty( $fastwc_app_id ) ) {
 			$should_hide = true;

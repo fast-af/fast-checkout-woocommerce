@@ -7,6 +7,8 @@
 
 namespace FastWC\Admin\Fields;
 
+use FastWC\Config;
+
 /**
  * Base field class.
  */
@@ -112,7 +114,7 @@ abstract class Field {
 	 */
 	protected function maybe_render_timestamp() {
 		// Check for timestamp and render if available.
-		$fastwc_timestamps = \get_option( FASTWC_SETTINGS_TIMESTAMPS, array() );
+		$fastwc_timestamps = Config::get_timestamps();
 
 		if ( empty( $fastwc_timestamps ) || empty( $fastwc_timestamps[ $this->args['name'] ] ) ) {
 			return;

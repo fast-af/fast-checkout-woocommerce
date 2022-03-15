@@ -5,6 +5,8 @@
  * @package Fast
  */
 
+use FastWC\Config;
+
 define( 'FASTWC_OPTION_WEBHOOKS', 'fastwc_webhooks' );
 define( 'FASTWC_OPTION_DISABLED_WEBHOOKS', 'fastwc_disabled_webhooks' );
 
@@ -61,7 +63,7 @@ function fastwc_is_disabled_webhook( $webhook ) {
  * @return bool
  */
 function fastwc_is_fast_webhook( $webhook ) {
-	$fast_app_id = fastwc_get_app_id();
+	$fast_app_id = Config::get_app_id();
 
 	// If there is no Fast App ID, then the webhook is not a Fast webhook.
 	if ( empty( $fast_app_id ) ) {
@@ -176,7 +178,7 @@ function fastwc_get_webhooks_cache_identifier( $identifier_type ) {
 	if ( 'group' === $identifier_type ) {
 		return 'fast_webhooks';
 	} else { // Assume it is 'key' if it isn't 'group'.
-		$fast_app_id = fastwc_get_app_id();
+		$fast_app_id = Config::get_app_id();
 		return 'fast_webhooks_cache_' . $fast_app_id;
 	}
 }
@@ -187,7 +189,7 @@ function fastwc_get_webhooks_cache_identifier( $identifier_type ) {
  * @return array
  */
 function fastwc_get_fast_webhooks() {
-	$fast_app_id = fastwc_get_app_id();
+	$fast_app_id = Config::get_app_id();
 
 	// If there is no Fast App ID, there is no way to check for valid webhooks.
 	if ( empty( $fast_app_id ) ) {
@@ -240,7 +242,7 @@ add_action( 'init', 'fastwc_maybe_clear_fast_webhooks_cache' );
  * Clear the Fast webhooks cache.
  */
 function fastwc_clear_fast_webhooks_cache() {
-	$fast_app_id = fastwc_get_app_id();
+	$fast_app_id = Config::get_app_id();
 
 	if ( empty( $fast_app_id ) ) {
 		return;
@@ -259,7 +261,7 @@ function fastwc_clear_fast_webhooks_cache() {
  * @return bool
  */
 function fastwc_woocommerce_has_fast_webhooks() {
-	$fast_app_id = fastwc_get_app_id();
+	$fast_app_id = Config::get_app_id();
 
 	// If there is no Fast App ID, there is no way to check for valid webhooks.
 	if ( empty( $fast_app_id ) ) {
