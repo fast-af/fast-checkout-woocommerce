@@ -5,7 +5,7 @@
  * @package Fast
  */
 
-$fastwc_setting_fast_onboarding_url = fastwc_get_option_or_set_default( FASTWC_SETTING_ONBOARDING_URL, FASTWC_ONBOARDING_URL );
+$fastwc_setting_fast_onboarding_url = FastWC\Config::get_onboarding_url();
 
 $image_urls = array(
 	'onboarding' => FASTWC_URL . '/assets/img/get-started-as-seller.jpg',

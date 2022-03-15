@@ -5,9 +5,11 @@
  * @package Fast
  */
 
-$fastwc_setting_app_id    = fastwc_get_app_id();
-$fastwc_debug_mode        = get_option( FASTWC_SETTING_DEBUG_MODE, 0 );
-$fastwc_test_mode         = get_option( FASTWC_SETTING_TEST_MODE, '1' );
+use FastWC\Config;
+
+$fastwc_setting_app_id    = Config::get_app_id();
+$fastwc_debug_mode        = Config::is_debug_mode();
+$fastwc_test_mode         = Config::is_test_mode();
 $fastwc_has_webhooks      = fastwc_woocommerce_has_fast_webhooks();
 $fastwc_disabled_webhooks = fastwc_get_disabled_webhooks();
 

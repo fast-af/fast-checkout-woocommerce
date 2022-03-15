@@ -5,7 +5,7 @@
  * @package Fast
  */
 
-$fastwc_app_id         = fastwc_get_app_id();
+$fastwc_app_id         = FastWC\Config::get_app_id();
 $fastwc_cart_data      = fastwc_get_cart_data();
 $cart_data             = wp_json_encode( array_values( $fastwc_cart_data ) );
 $applied_coupons       = ! empty( WC()->cart ) ? WC()->cart->get_applied_coupons() : array();

@@ -5,7 +5,7 @@
  * @package Fast
  */
 
-$fastwc_setting_fast_onboarding_url = fastwc_get_option_or_set_default( FASTWC_SETTING_ONBOARDING_URL, FASTWC_ONBOARDING_URL );
+$fastwc_setting_fast_onboarding_url = FastWC\Config::get_onboarding_url();
 
 $cta_context = ! empty( $args['context'] ) ? $args['context'] : 'empty';
 $cta_message = __( 'The first step to integrating Fast Checkout with your WooCommerce store is to become a seller with Fast. If you already have a seller account and an App ID, you can enter your App ID in the App Info tab.', 'fast' );

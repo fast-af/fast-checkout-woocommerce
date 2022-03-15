@@ -5,7 +5,7 @@
  * @package Fast
  */
 
-$fastwc_app_id        = fastwc_get_app_id();
+$fastwc_app_id        = FastWC\Config::get_app_id();
 $nonce                = wp_create_nonce( 'fast-backend-login-auth' );
 $fastwc_use_dark_mode = fastwc_use_dark_mode();
 ?>

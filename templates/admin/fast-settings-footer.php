@@ -5,9 +5,9 @@
  * @package Fast
  */
 
-$fastwc_setting_fast_onboarding_url = fastwc_get_option_or_set_default( FASTWC_SETTING_ONBOARDING_URL, FASTWC_ONBOARDING_URL );
-$fastwc_setting_fast_dashboard_url  = fastwc_get_option_or_set_default( FASTWC_SETTING_DASHBOARD_URL, FASTWC_DASHBOARD_URL );
-$fastwc_app_id                      = fastwc_get_app_id();
+$fastwc_setting_fast_onboarding_url = FastWC\Config::get_onboarding_url();
+$fastwc_setting_fast_dashboard_url  = FastWC\Config::get_dashboard_url();
+$fastwc_app_id                      = FastWC\Config::get_app_id();
 ?>
 
 <div class="fast-footer">
