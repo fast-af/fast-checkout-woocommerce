@@ -25,6 +25,8 @@ if ( fastwc_woocommerce_is_active() ) {
 	require_once FASTWC_PATH . 'includes/upgrade.php';
 	// Fast debug functions.
 	require_once FASTWC_PATH . 'includes/debug.php';
+	// Fast Config class.
+	require_once FASTWC_PATH . 'includes/class-config.php';
 	// WP Admin plugin settings.
 	require_once FASTWC_PATH . 'includes/admin/settings.php';
 	// Loads Fast js and css assets.
