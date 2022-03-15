@@ -10,7 +10,7 @@ namespace FastWC\Routes;
 /**
  * Fast shipping route object.
  */
-class Shipping extends Route {
+class Shipping extends Base {
 
 	/**
 	 * Route name.
@@ -27,6 +27,20 @@ class Shipping extends Route {
 	protected $methods = 'POST';
 
 	/**
+	 * Currency code.
+	 *
+	 * @var string
+	 */
+	protected $currency = '';
+
+	/**
+	 * WooCommerce base currency code.
+	 *
+	 * @var string
+	 */
+	protected $wc_currency = '';
+
+	/**
 	 * Given shipping address and product, attempts to calculate available shipping rates for the address.
 	 * Doesn't support shipping > 1 address.
 	 *
@@ -41,6 +55,8 @@ class Shipping extends Route {
 
 		$params = $this->request->get_params();
 		$return = false;
+
+		$this->get_currency();
 
 		// This is needed for session to work.
 		\WC()->frontend_includes();
@@ -62,6 +78,34 @@ class Shipping extends Route {
 		\WC()->cart->empty_cart();
 
 		return $return;
+	}
+
+	/**
+	 * Get the currency from the request object.
+	 */
+	protected function get_currency() {
+		if ( empty( $this->request ) ) {
+			return;
+		}
+
+		$params = $this->request->get_params();
+
+		// Maybe set the wc_currency parameter.
+		if ( empty( $this->wc_currency ) ) {
+			$this->wc_currency = \get_woocommerce_currency();
+		}
+
+		// Get the order ID from the request params.
+		$order_id = ! empty( $params['order_id'] ) ? $params['order_id'] : 0;
+
+		if ( empty( $order_id ) ) {
+			$this->currency = ! empty( $params['currency'] ) ? $params['currency'] : $this->wc_currency;
+		} else {
+			$order          = new \WC_Order( $order_id );
+			$this->currency = \fastwc_get_order_currency( $order );
+		}
+
+		\add_filter( 'woocommerce_currency', array( $this, 'update_woocommerce_currency' ), PHP_INT_MAX );
 	}
 
 	/**
@@ -327,10 +371,36 @@ class Shipping extends Route {
 			'meta_data'     => $this->get_rate_meta_data( $rate ),
 		);
 
+		$rate_info = \fastwc_maybe_update_shipping_rate_for_multicurrency( $rate_info, $this->wc_currency, $this->currency, $this->request );
+
+		$rate_info['price'] = \wc_format_decimal( $rate_info['price'], 2 );
+		if ( ! empty( $rate_info['taxes'] ) ) {
+			$rate_taxes = $rate_info['taxes'];
+
+			foreach ( $rate_taxes as $rate_tax_id => $rate_tax ) {
+				$rate_info['taxes'][ $rate_tax_id ] = \wc_format_decimal( $rate_tax, 2 );
+			}
+		}
+
 		return array_merge(
 			$rate_info,
 			$this->get_store_currency_response()
 		);
+	}
+
+	/**
+	 * Update WC currency.
+	 *
+	 * @param string $currency The base currency.
+	 *
+	 * @return string
+	 */
+	public function update_woocommerce_currency( $currency ) {
+		if ( ! empty( $this->currency ) ) {
+			$currnecy = $this->currency;
+		}
+
+		return $currency;
 	}
 
 	/**
@@ -340,6 +410,7 @@ class Shipping extends Route {
 	 */
 	protected function get_store_currency_response() {
 		$position = \get_option( 'woocommerce_currency_pos' );
+		$currency = ! empty( $this->currency ) ? $this->currency : \get_woocommerce_currency();
 		$symbol   = html_entity_decode( \get_woocommerce_currency_symbol( $currency ) );
 		$prefix   = '';
 		$suffix   = '';
@@ -362,7 +433,7 @@ class Shipping extends Route {
 		}
 
 		return array(
-			'currency_code'               => \get_woocommerce_currency(),
+			'currency_code'               => $currency,
 			'currency_symbol'             => $symbol,
 			'currency_minor_unit'         => \wc_get_price_decimals(),
 			'currency_decimal_separator'  => \wc_get_price_decimal_separator(),
