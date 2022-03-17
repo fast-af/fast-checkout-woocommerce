@@ -102,6 +102,11 @@ function fastwc_is_hidden_for_test_mode( $should_hide ) {
 			// if their email ends with @fast.co, or if they have been specifically given access.
 			$fastwc_test_mode_users = get_option( FASTWC_SETTING_TEST_MODE_USERS, array() );
 			$current_user           = wp_get_current_user();
+
+			if ( empty( $fastwc_test_mode_users ) || ! is_array( $fastwc_test_mode_users ) ) {
+				$fastwc_test_mode_users = array();
+			}
+
 			if (
 				! preg_match( '/@fast.co$/i', $current_user->user_email ) // All users with fast.co email addresses can view the buttons in Test Mode.
 				&& ! $current_user->has_cap( 'administrator' ) // All administrators can view the buttons in Test Mode.
